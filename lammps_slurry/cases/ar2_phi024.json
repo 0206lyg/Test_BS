@@ -1,0 +1,24 @@
+{
+  "description": "Stage 1 dynamics smoke case: oblate graphite, lubrication and normal elastic repulsion only. Not a steady-state viscosity calculation.",
+  "particle": {
+    "count": 108,
+    "semi_axes_m": [1.65e-6, 1.65e-6, 8.25e-7],
+    "density_kg_m3": 2260.0
+  },
+  "volume_fraction": 0.24,
+  "medium_description": "Assumed Newtonian CMC 90k medium at 0.01 Pa s; this is a case input, not a measured universal CMC viscosity. For water use 0.00089 Pa s and change this description.",
+  "medium_dynamic_viscosity_Pa_s": 0.01,
+  "shear_rate_s_inv": 100.0,
+  "lubrication": {
+    "cutoff_m": 4.125e-8,
+    "regularization_gap_m": 5e-9
+  },
+  "normal_stiffness_N_m": 1.0,
+  "time_step_s": 1e-11,
+  "steps": 1000,
+  "output_interval_steps": 100,
+  "initialization": {
+    "seed": 1729,
+    "maximum_attempts_per_particle": 20000
+  }
+}

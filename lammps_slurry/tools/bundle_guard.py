@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""Reject mixed source bundles and stale or relocated slurry builds."""
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+
+RELEASE_ID = "20261016-path-fix"
+MANIFEST_SCHEMA = 1
+
+
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def read_json(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except (OSError, ValueError) as error:
+        raise RuntimeError("Cannot read {}: {}".format(path, error)) from error
+
+
+def check_source(root, expected_release=RELEASE_ID):
+    root = Path(root).expanduser().resolve()
+    release = read_json(root / "release.json")
+    if not isinstance(release, dict) or release.get("release_id") != expected_release:
+        raise RuntimeError("Source release does not match {} in {}. Extract the complete "
+                           "matching ZIP directly into this directory."
+                           .format(expected_release, root))
+    required = (
+        "lammps_slurry/CMakeLists.txt", "lammps_slurry/lammps-version.json",
+        "lammps_slurry/src/fix_slurry_implicit.cpp",
+        "lammps_slurry/src/slurry_spheroid_hydro_math.h",
+        "lammps_slurry/src/slurry_solver_workspace.h",
+        "lammps_slurry/src/slurry_eigen_ilu_math.h",
+        "lammps_slurry/tools/prepare_case.py", "lammps_slurry/tools/build.py",
+        "lammps_slurry/tools/bundle_guard.py",
+        "lammps_slurry/vendor/gr_re2/ellipsoidGap.h",
+        "lammps_slurry/vendor/eigen3/Eigen/Core",
+    )
+    for relative in required:
+        if not (root / relative).is_file():
+            raise RuntimeError("Incomplete source bundle: missing {}. Re-extract the "
+                               "complete matching ZIP.".format(root / relative))
+    prepare = root / "lammps_slurry/tools/prepare_case.py"
+    expected_prepare = release.get("prepare_case_sha256")
+    if not expected_prepare or sha256_file(prepare) != expected_prepare:
+        raise RuntimeError("prepare_case.py does not match release {}. The source bundle "
+                           "may contain an older input generator; re-extract the complete "
+                           "matching ZIP.".format(expected_release))
+    return release
+
+
+def source_snapshot(root):
+    """Fingerprint compiled source and input-generation code, not run defaults."""
+    root = Path(root).expanduser().resolve()
+    project = root / "lammps_slurry"
+    files = {
+        root / "release.json", project / "CMakeLists.txt",
+        project / "lammps-version.json", project / "tools/prepare_case.py",
+        project / "tools/build.py", project / "tools/bundle_guard.py",
+    }
+    for path in (project / "src").rglob("*"):
+        if path.is_file() and path.suffix in (".cpp", ".h", ".hpp", ".c", ".cc"):
+            files.add(path)
+    for path in (project / "vendor").rglob("*"):
+        if path.is_file():
+            files.add(path)
+    hashes = {str(path.relative_to(root)): sha256_file(path)
+              for path in sorted(files)}
+    encoded = json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {"sha256": hashlib.sha256(encoded).hexdigest(), "files": hashes}
+
+
+def build_identity(root, snapshot, executable, plugin, packer):
+    """Called only after a successful build, CTest and plugin load check."""
+    root = Path(root).expanduser().resolve()
+    release = check_source(root)
+    paths = {"executable": executable, "plugin": plugin, "packer": packer}
+    return {
+        "bundle_integrity_schema": MANIFEST_SCHEMA,
+        "bundle_release": release["release_id"],
+        "bundle_root": str(root),
+        "source_fingerprint": snapshot["sha256"],
+        "source_files": snapshot["files"],
+        "binary_sha256": {name: sha256_file(Path(path).resolve())
+                          for name, path in paths.items()},
+        **{name: str(Path(path).expanduser().resolve()) for name, path in paths.items()},
+    }
+
+
+def check_build(root, expected_release, executable, plugin, packer, manifest):
+    root = Path(root).expanduser().resolve()
+    check_source(root, expected_release)
+    record = read_json(manifest)
+    if not isinstance(record, dict) or record.get("bundle_integrity_schema") != MANIFEST_SCHEMA:
+        raise RuntimeError("Build manifest has no supported source/binary identity.")
+    if record.get("bundle_release") != expected_release:
+        raise RuntimeError("Build belongs to a different source release.")
+    if record.get("bundle_root") != str(root):
+        raise RuntimeError("Build belongs to another source directory: {} (current {})."
+                           .format(record.get("bundle_root", "unknown"), root))
+    snapshot = source_snapshot(root)
+    if record.get("source_fingerprint") != snapshot["sha256"]:
+        old = record.get("source_files", {})
+        changed = sorted(name for name in set(old) | set(snapshot["files"])
+                         if old.get(name) != snapshot["files"].get(name))
+        detail = ", ".join(changed[:3]) or "unknown file"
+        raise RuntimeError("Source has changed since the verified build: {}.".format(detail))
+    for name, path in (("executable", executable), ("plugin", plugin), ("packer", packer)):
+        actual = Path(path).expanduser().resolve()
+        if not actual.is_file():
+            raise RuntimeError("Missing {}: {}.".format(name, actual))
+        if record.get(name) != str(actual):
+            raise RuntimeError("{} path does not match the verified build: {} (expected {})."
+                               .format(name, actual, record.get(name, "unknown")))
+        if record.get("binary_sha256", {}).get(name) != sha256_file(actual):
+            raise RuntimeError("{} content differs from the verified build: {}."
+                               .format(name, actual))
+    return record
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    for command in ("check-source", "check-build"):
+        subparser = subparsers.add_parser(command)
+        subparser.add_argument("--root", type=Path, required=True)
+        subparser.add_argument("--expected-release", required=True)
+        if command == "check-build":
+            for name in ("executable", "plugin", "packer", "manifest"):
+                subparser.add_argument("--" + name, type=Path, required=True)
+    args = parser.parse_args()
+    try:
+        if args.command == "check-source":
+            check_source(args.root, args.expected_release)
+        else:
+            check_build(args.root, args.expected_release, args.executable,
+                        args.plugin, args.packer, args.manifest)
+    except (OSError, RuntimeError, TypeError, AttributeError) as error:
+        print("Slurry version check failed: {}\nNo simulation was started. "
+              "From {}, run 'sbatch build_slurry_cpu.sbatch', wait for "
+              "'Build complete', then submit the run again."
+              .format(error, args.root.expanduser().resolve()), file=sys.stderr)
+        return 1
+    print("Slurry {} verified: {} ({})".format(args.command, args.expected_release,
+                                             args.root.expanduser().resolve()))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

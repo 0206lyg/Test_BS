@@ -1,0 +1,22 @@
+{
+  "source_repository": "https://github.com/0206lyg/Test_LB",
+  "source_commit": "058daeee6854bfcb1c1ad1cc5cabd699446845db",
+  "description": "Unmodified snapshots of the three header-only graphite geometry/lubrication kernels used by the LAMMPS pair. All local includes are contained in this directory; no OpenLB runtime is required. LICENSE is preserved from the source tree. Update these snapshots deliberately when porting kernel changes.",
+  "files": [
+    {
+      "name": "particleMath.h",
+      "source_path": "olb-1.9r0/src/slurry/gr_re2/particleMath.h",
+      "sha256": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62"
+    },
+    {
+      "name": "ellipsoidGap.h",
+      "source_path": "olb-1.9r0/src/slurry/gr_re2/ellipsoidGap.h",
+      "sha256": "ea49a44080d90858744dfffdc2228f1c3d4ffcbef3ab5d4734dcb665e43cc376"
+    },
+    {
+      "name": "nearFieldResistance.h",
+      "source_path": "olb-1.9r0/src/slurry/gr_re2/nearFieldResistance.h",
+      "sha256": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983"
+    }
+  ]
+}
