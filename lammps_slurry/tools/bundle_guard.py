@@ -8,8 +8,9 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261016-path-fix"
+RELEASE_ID = "20261018-ar-basis-pipeline-trial"
 MANIFEST_SCHEMA = 1
+OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
 
 def sha256_file(path):
@@ -40,7 +41,17 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/slurry_spheroid_hydro_math.h",
         "lammps_slurry/src/slurry_solver_workspace.h",
         "lammps_slurry/src/slurry_eigen_ilu_math.h",
+        "lammps_slurry/src/slurry_spd_table.h",
+        "lammps_slurry/src/slurry_spd_coordinates.h",
+        "lammps_slurry/src/slurry_objective_film.h",
         "lammps_slurry/tools/prepare_case.py", "lammps_slurry/tools/build.py",
+        "lammps_slurry/tools/precompute_fast.cpp",
+        "lammps_slurry/tools/slurry_generate_basis.cpp",
+        "lammps_slurry/tools/basis_cylindrical_kernel.h",
+        "lammps_slurry/tests/test_basis_physical.cpp",
+        "validation_basis/run_physical_gate.py",
+        "lammps_slurry/tests/test_table_interpolation.cpp",
+        "validation_basis/run_interpolation_gate.py",
         "lammps_slurry/tools/bundle_guard.py",
         "lammps_slurry/vendor/gr_re2/ellipsoidGap.h",
         "lammps_slurry/vendor/eigen3/Eigen/Core",
@@ -66,6 +77,10 @@ def source_snapshot(root):
         root / "release.json", project / "CMakeLists.txt",
         project / "lammps-version.json", project / "tools/prepare_case.py",
         project / "tools/build.py", project / "tools/bundle_guard.py",
+        project / "tools/precompute_fast.cpp",
+        project / "tools/slurry_generate_basis.cpp", project / "tools/basis_cylindrical_kernel.h",
+        project / "tests/test_basis_physical.cpp", root / "validation_basis/run_physical_gate.py",
+        project / "tests/test_table_interpolation.cpp", root / "validation_basis/run_interpolation_gate.py",
     }
     for path in (project / "src").rglob("*"):
         if path.is_file() and path.suffix in (".cpp", ".h", ".hpp", ".c", ".cc"):
@@ -84,12 +99,17 @@ def build_identity(root, snapshot, executable, plugin, packer):
     root = Path(root).expanduser().resolve()
     release = check_source(root)
     paths = {"executable": executable, "plugin": plugin, "packer": packer}
+    offline = {name: Path(packer).resolve().with_name(name) for name in OFFLINE_TOOLS}
+    for path in offline.values():
+        if not path.is_file():
+            raise RuntimeError("Build is missing its offline generation/validation executable: {}".format(path))
     return {
         "bundle_integrity_schema": MANIFEST_SCHEMA,
         "bundle_release": release["release_id"],
         "bundle_root": str(root),
         "source_fingerprint": snapshot["sha256"],
         "source_files": snapshot["files"],
+        "offline_tools": {name: {"path": str(path), "sha256": sha256_file(path)} for name, path in offline.items()},
         "binary_sha256": {name: sha256_file(Path(path).resolve())
                           for name, path in paths.items()},
         **{name: str(Path(path).expanduser().resolve()) for name, path in paths.items()},
@@ -114,6 +134,11 @@ def check_build(root, expected_release, executable, plugin, packer, manifest):
                          if old.get(name) != snapshot["files"].get(name))
         detail = ", ".join(changed[:3]) or "unknown file"
         raise RuntimeError("Source has changed since the verified build: {}.".format(detail))
+    for name in OFFLINE_TOOLS:
+        path = Path(packer).resolve().with_name(name)
+        expected = record.get("offline_tools", {}).get(name, {})
+        if expected.get("path") != str(path) or not path.is_file() or expected.get("sha256") != sha256_file(path):
+            raise RuntimeError("Offline generation/validation tool differs from the verified build: {}".format(name))
     for name, path in (("executable", executable), ("plugin", plugin), ("packer", packer)):
         actual = Path(path).expanduser().resolve()
         if not actual.is_file():
@@ -129,7 +154,8 @@ def check_build(root, expected_release, executable, plugin, packer, manifest):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers = parser.add_subparsers(dest="command")
+    subparsers.required = True  # argparse keyword support starts at Python 3.7.
     for command in ("check-source", "check-build"):
         subparser = subparsers.add_parser(command)
         subparser.add_argument("--root", type=Path, required=True)

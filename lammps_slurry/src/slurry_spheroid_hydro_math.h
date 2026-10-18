@@ -31,7 +31,7 @@ using Mat6=std::array<double,36>;
 namespace gr=slurry::gr_re2::graphite;
 
 struct Pair {
-  bool active=false,exact_sphere=false;
+  bool active=false,exact_sphere=false,uncompleted_asymptotic=false;
   Vec3 normal{0,0,1},tangent1{1,0,0},tangent2{0,1,0};
   Vec3 lever_i{},lever_j{},contact_displacement{};
   double gap=0,regularized_gap=0,epsilon=0,cutoff=0;
@@ -118,18 +118,24 @@ inline Vec3 world(const Pair&p,const Vec6&v,int offset=0)
 // An explicitly oversized spherical cutoff can therefore differ from the
 // nonspherical local cutoff. The near-sphere limit is continuous inside both
 // active domains, not across those deliberately different truncation boundaries.
+// asymptotic_only is an analytic subtraction basis for a separately matched
+// model. It has no cutoff/log clamp or positive-square completion and is NOT
+// a standalone dissipative finite-gap resistance. The default path is unchanged.
 inline Pair make_pair(const gr::Body&bi,const gr::Body&bj,const gr::GapResult&gap,
-                      double eta,double epsilon,double cutoff_cap)
+                      double eta,double epsilon,double cutoff_cap,
+                      bool asymptotic_only=false)
 {
-  if(!(eta>0)||!(epsilon>0)||!(cutoff_cap>0)||!std::isfinite(eta)||
+  if(!(eta>0)||!(asymptotic_only?epsilon>=0:epsilon>0)||!(cutoff_cap>0)||!std::isfinite(eta)||
      !std::isfinite(epsilon)||!std::isfinite(cutoff_cap)||!std::isfinite(gap.gap))
     throw std::invalid_argument("Invalid spheroid lubrication viscosity, epsilon, cutoff or gap");
   Pair p;p.normal=gr::normalized(gap.normal);p.gap=gap.gap;p.epsilon=epsilon;
   p.regularized_gap=std::max(p.gap,0.0)+epsilon;
+  if(!(p.regularized_gap>0))throw std::invalid_argument("Singular lubrication requires positive regularized gap");
+  p.uncompleted_asymptotic=asymptotic_only;
   p.lever_i=gap.leverI;p.lever_j=gap.leverJ;
   p.contact_displacement=gr::sub(p.lever_i,p.lever_j);
   const Mat3 qi=detail::implicit_shape(bi),qj=detail::implicit_shape(bj);
-  p.exact_sphere=detail::is_sphere(bi)&&detail::is_sphere(bj);
+  p.exact_sphere=!asymptotic_only&&detail::is_sphere(bi)&&detail::is_sphere(bj);
   if(p.exact_sphere) {
     p.sphere=SlurryPairHydro::make_sphere_pair(bi.axes[0],bj.axes[0],p.normal,
       p.gap,eta,epsilon,cutoff_cap);
@@ -161,11 +167,12 @@ inline Pair make_pair(const gr::Body&bi,const gr::Body&bj,const gr::GapResult&ga
   const double kjmax=.5*(kj11+kj22+std::hypot(kj11-kj22,2*kj12));
   p.minimum_curvature_radius=1/std::max({ki1,ki2,kjmax});
   p.log_reference_length=1/(ki1+ki2)+1/(kj11+kj22);
-  p.cutoff=std::min(cutoff_cap,.5*p.log_reference_length);
-  p.active=p.gap<p.cutoff;
+  p.cutoff=asymptotic_only?cutoff_cap:std::min(cutoff_cap,.5*p.log_reference_length);
+  p.active=asymptotic_only||p.gap<p.cutoff;
   if(!p.active)return p;
   const double pi=std::acos(-1.),root=std::sqrt(l1*l2),sum=l1+l2;
-  const double log=std::max(std::log(p.log_reference_length/p.regularized_gap),0.0);
+  const double raw_log=std::log(p.log_reference_length/p.regularized_gap);
+  const double log=asymptotic_only?raw_log:std::max(raw_log,0.0);
   p.normal_resistance=3*pi*eta/(p.regularized_gap*root*sum);
 
   // Tangential 4x4 block of Appendix A, written as the local Couette and
@@ -183,7 +190,11 @@ inline Pair make_pair(const gr::Body&bi,const gr::Body&bj,const gr::GapResult&ga
 
   // Separate sliding and relative rolling/pump through a Schur factorization.
   // For spheres this gives precisely Mari's unequal-radius shear levers/pump.
-  if(c0>0) {
+  if(asymptotic_only) {
+    // Preserve the signed logarithmic coefficients even outside the near
+    // limit. Their finite-gap replacement is supplied by the residual model.
+    p.shear=lower;
+  } else if(c0>0) {
     const long double aa=lower[0],ab=lower[1],ad=lower[7],det=aa*ad-ab*ab;
     if(!(det>0))throw std::domain_error("Nonpositive spheroid shear block");
     double m[2][2]{};
@@ -224,10 +235,16 @@ inline Pair make_pair(const gr::Body&bi,const gr::Body&bj,const gr::GapResult&ga
   p.normal_cross[3]=-1.5*nfac*(B*c/(r2*d2)-A*s/(r1*d1));
   p.normal_cross[4]= 1.5*nfac*(A*c/(r1*d1)+B*s/(r2*d2));
   p.normal_cross[5]=nfac*s*c*(ki1-ki2)*(1/l1-1/l2);
-  Vec6 normal_mode{};
-  for(int k=0;k<6;++k)normal_mode[k]=p.normal_cross[k]/p.normal_resistance;
-  normal_mode[2]=1;
-  detail::outer_add(p.squeeze,normal_mode,p.normal_resistance);
+  if(asymptotic_only) {
+    p.squeeze[6*2+2]=p.normal_resistance;
+    for(int k=0;k<6;++k)if(k!=2)
+      p.squeeze[6*2+k]=p.squeeze[6*k+2]=p.normal_cross[k];
+  } else {
+    Vec6 normal_mode{};
+    for(int k=0;k<6;++k)normal_mode[k]=p.normal_cross[k]/p.normal_resistance;
+    normal_mode[2]=1;
+    detail::outer_add(p.squeeze,normal_mode,p.normal_resistance);
+  }
   for(int k=0;k<36;++k) {
     p.resistance[k]=p.squeeze[k]+p.shear[k]+p.pump[k];
     if(!std::isfinite(p.resistance[k]))throw std::overflow_error("Spheroid lubrication resistance overflow");
@@ -296,7 +313,7 @@ inline Evaluation evaluate(const Pair&p,const Vec12&q_scaled,const Vec12&backgro
   out.power_squeeze=detail::dot6(v,gn);out.power_shear=detail::dot6(v,gt);out.power_pump=detail::dot6(v,gp);
   out.power=out.power_squeeze+out.power_shear+out.power_pump;
   const double cross=detail::dot6(p.normal_cross,v);
-  out.power_completion=p.normal_resistance>0?cross*cross/p.normal_resistance:0;
+  out.power_completion=!p.uncompleted_asymptotic&&p.normal_resistance>0?cross*cross/p.normal_resistance:0;
   return out;
 }
 } // namespace SlurrySpheroidHydro

@@ -1,0 +1,30 @@
+{
+  "units": "c=eta=1; input=(nonaffine midpoint relative translation,a relativeOmega,aE5); a/c=10",
+  "construction": "Conditional reduction of independent full17 Stokes reference; H0 from exact isolated spheroid grand matrices. No generic-hybrid prediction enters fixture.",
+  "limitation": "Two checked configurations only, not a universal error guarantee. Unqualified30nm is excluded.",
+  "fixture_sha256": "8e36e8be1753623c8e3460a76a13ee130444fa3bcbb71472dd9614f9881f8038",
+  "cases": [
+    {
+      "case": "offset75_boundary_checked",
+      "source_file": "parallel_h05_n128_m14_d5.json",
+      "source_sha256": "c244ed3e89b9cb51e819d6a2f2127c9af36487b2a34bdee953a9e3857e63baaa",
+      "reference_status": "All17 off-grid boundary and reciprocity passed; independent refinement covers rigid12, not strain5.",
+      "maximum_boundary_residual": 0.0006008403493915501,
+      "raw_reciprocity": 4.6258938432779676e-08,
+      "gap_over_c": 0.5,
+      "all11_error_limit": 0.073,
+      "force_free_strain_error_limit": 0.042
+    },
+    {
+      "case": "tilted150_full17_qualified",
+      "source_file": "tilt_h1_n96_m12_d03_grand.json",
+      "source_sha256": "c960985433899eab3ad8bd834bd03f3a4e2447dce1c6e4d489db9f0fea5b0d30",
+      "reference_status": "All17 boundary, reciprocity and independent resolution/source refinement passed.",
+      "maximum_boundary_residual": 0.0007225398700813512,
+      "raw_reciprocity": 2.463593438376807e-07,
+      "gap_over_c": 1.0,
+      "all11_error_limit": 0.081,
+      "force_free_strain_error_limit": 0.0012
+    }
+  ]
+}

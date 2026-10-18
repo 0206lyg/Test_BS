@@ -1,0 +1,143 @@
+{
+  "aspect_ratio": 10,
+  "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+  "basis_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+  "basis_slot": "near",
+  "cases": [
+    {
+      "all11_error": 0.0018994443389283022,
+      "free_strain_error": 4.409400914773265e-05,
+      "h_over_c": 0.5,
+      "isolated_self_error": 1.2479731092145265e-14,
+      "limit": 0.05,
+      "name": "offset75_boundary_checked",
+      "normal_error": -0.0003827029567420315,
+      "passed": true,
+      "positive_total": true,
+      "stage": "independent_physical"
+    },
+    {
+      "all11_error": 0.004438774576620563,
+      "free_strain_error": 0.0004025452634621729,
+      "h_over_c": 1,
+      "isolated_self_error": 1.3379646330510597e-15,
+      "limit": 0.05,
+      "name": "tilted150_full17_qualified",
+      "normal_error": -0.0015563676562524442,
+      "passed": true,
+      "positive_total": true,
+      "stage": "independent_physical"
+    }
+  ],
+  "command": [
+    "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/plugin_build/slurry_basis_physical_probe",
+    "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/tests/data/independent_pair_reference.txt",
+    "direct_basis",
+    "161"
+  ],
+  "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "coverage": "Two fixed AR10 configurations only; no continuous gap, orientation, bulk or other-AR accuracy claim.",
+  "elapsed_seconds": 26.525332626000818,
+  "evaluated_path": "direct_basis",
+  "executable_path": "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/plugin_build/slurry_basis_physical_probe",
+  "executable_sha256": "60424a3f8475be52726a8973eca22d6aa4b635cb42d83313847251bec7460e2e",
+  "exit_code": 0,
+  "film_grid": 161,
+  "fixture_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/tests/data/independent_pair_reference.txt",
+  "fixture_sha256": "8e36e8be1753623c8e3460a76a13ee130444fa3bcbb71472dd9614f9881f8038",
+  "gate": "source_physical",
+  "inputs_unchanged_during_run": true,
+  "limit": 0.05,
+  "log_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/ar10_current_direct.log",
+  "max_all11_error": 0.004438774576620563,
+  "max_error": 0.004438774576620563,
+  "max_free_strain_error": 0.0004025452634621729,
+  "maximum_gap_over_c": 1.0,
+  "minimum_gap_over_c": 0.5,
+  "not_run": [],
+  "passed": true,
+  "records": [
+    {
+      "aspect_ratio": 10,
+      "basis_slot": "near",
+      "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "evaluated_path": "direct_basis",
+      "film_grid": 161,
+      "hybrid": true,
+      "physical_limit": 0.05,
+      "stage": "metadata"
+    },
+    {
+      "all11_error": 1.2799573112509677e-07,
+      "aspect_ratio": 10,
+      "limit": 0.001,
+      "passed": true,
+      "raw_reciprocity": 1.209251779463789e-10,
+      "slot": "primary",
+      "stage": "isolated_units",
+      "strain_block_error": 8.053692608960105e-08,
+      "units": "c=eta=1; input U,aOmega,aE; output F,T/a,S/a"
+    },
+    {
+      "all11_error": 1.279957329014536e-07,
+      "aspect_ratio": 10,
+      "limit": 0.001,
+      "passed": true,
+      "raw_reciprocity": 1.2092563923069184e-10,
+      "slot": "near",
+      "stage": "isolated_units",
+      "strain_block_error": 8.053692608834809e-08,
+      "units": "c=eta=1; input U,aOmega,aE; output F,T/a,S/a"
+    },
+    {
+      "h_over_c": 0.5,
+      "linear_residual": 8.248301651346554e-14,
+      "min_eigenvalue": 11.382167594738346,
+      "name": "offset75_boundary_checked",
+      "passed": true,
+      "raw_reciprocity": 2.2785124699754235e-05,
+      "reciprocity_limit": 0.01,
+      "slot": "near",
+      "stage": "raw_full17"
+    },
+    {
+      "all11_error": 0.0018994443389283022,
+      "free_strain_error": 4.409400914773265e-05,
+      "h_over_c": 0.5,
+      "isolated_self_error": 1.2479731092145265e-14,
+      "limit": 0.05,
+      "name": "offset75_boundary_checked",
+      "normal_error": -0.0003827029567420315,
+      "passed": true,
+      "positive_total": true,
+      "stage": "independent_physical"
+    },
+    {
+      "h_over_c": 1,
+      "linear_residual": 1.1370342653247838e-14,
+      "min_eigenvalue": 11.787177279051345,
+      "name": "tilted150_full17_qualified",
+      "passed": true,
+      "raw_reciprocity": 5.014747072125448e-05,
+      "reciprocity_limit": 0.01,
+      "slot": "near",
+      "stage": "raw_full17"
+    },
+    {
+      "all11_error": 0.004438774576620563,
+      "free_strain_error": 0.0004025452634621729,
+      "h_over_c": 1,
+      "isolated_self_error": 1.3379646330510597e-15,
+      "limit": 0.05,
+      "name": "tilted150_full17_qualified",
+      "normal_error": -0.0015563676562524442,
+      "passed": true,
+      "positive_total": true,
+      "stage": "independent_physical"
+    }
+  ],
+  "schema_version": 1,
+  "source_code_sha256": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611"
+}

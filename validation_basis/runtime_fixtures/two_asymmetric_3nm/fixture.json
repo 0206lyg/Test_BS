@@ -1,0 +1,53 @@
+{
+  "name": "two_asymmetric_3nm",
+  "purpose": "Actual LAMMPS plugin integration/stability smoke only",
+  "note": "Common surface normal z; support-point construction gives exact initial 3nm gap.",
+  "aspect_ratio": 10,
+  "semiaxes_m": [
+    1.5e-06,
+    1.5e-06,
+    1.5e-07
+  ],
+  "box_m": [
+    1e-05,
+    1e-05,
+    1e-05
+  ],
+  "particles": [
+    {
+      "position_m": [
+        8.742542913917387e-07,
+        -0.0,
+        -1.8683557883591672e-07
+      ],
+      "director": [
+        0.07293518110673816,
+        0.0,
+        0.9973366830498752
+      ]
+    },
+    {
+      "position_m": [
+        -8.381430292717232e-07,
+        -8.458927414263654e-07,
+        2.545751602615479e-07
+      ],
+      "director": [
+        0.09612545206380527,
+        0.09701425571450989,
+        0.9906301689599851
+      ]
+    }
+  ],
+  "shear_rate_per_s": 100.0,
+  "timestep_s": 1e-06,
+  "steps": 20,
+  "phi": 0.0028274333882308132,
+  "mpi": false,
+  "not_validated": [
+    "steady-state viscosity",
+    "physical source accuracy",
+    "production table accuracy",
+    "MPI scaling"
+  ]
+}

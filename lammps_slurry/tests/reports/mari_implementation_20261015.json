@@ -1,0 +1,789 @@
+{
+  "date": "2026-10-15",
+  "scope": "Sphere-first Mari leading singular lubrication implementation; no claim of reproduced bulk viscosity curve",
+  "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+  "compiler": "GCC 13.3.0",
+  "mpi": "MPICH 5.0.2 (local shared-memory transport)",
+  "ctest": {
+    "passed": 8,
+    "failed": 0
+  },
+  "source_sha256": {
+    "lammps_slurry/src/slurry_pair_hydro_math.h": "7765ac59f3265f69629f54e73c50590044a2387e56afd7b50d27b588d4fa468a",
+    "lammps_slurry/src/slurry_implicit_math.h": "26af1f724dbd5a2776ea5ab91412477372203913bc6116fb5e78c14e0c9ad05a",
+    "lammps_slurry/src/fix_slurry_implicit.cpp": "bc1977294183f00087d7d03d6dd2d0a7b712f9de2d364c317e418d79f009b162",
+    "lammps_slurry/src/fix_slurry_implicit.h": "3d7f18443155ddb8ed6f333048ea061ca9dd57e4f749c629a73f0334dd872b56",
+    "lammps_slurry/tools/prepare_case.py": "99fbd815645207cc3ad1c353f80fd35456a272f380218761865cbcd5a14ea5a7",
+    "lammps_slurry/run_slurry_cpu.sbatch": "64317d735d4cf933252b881219a0b8d256ae38ec501f8ba76870fb485510c117"
+  },
+  "mari_runtime": {
+    "scope": "Small spherical-pair numerical validation; not a dense Mari curve",
+    "epsilon_m": 1.5e-10,
+    "hcut_m": 7.5e-08,
+    "radius_m": 1.5e-07,
+    "ranks": [
+      1,
+      2
+    ],
+    "checks": {
+      "1": {
+        "einstein": {
+          "phi": 1.4137166941154064e-05,
+          "expected_eta_relative": 1.000035342917353
+        },
+        "contact-gap0p3nm": {
+          "maximum_speed_error_m_s": 5.421010862427522e-20,
+          "maximum_gap_step_error_m": 2.2360634700836844e-23,
+          "inferred_initial_resistance_N_s_m": 2.3561944901994344e-06
+        },
+        "contact-gap2nm": {
+          "maximum_speed_error_m_s": 5.421010862427522e-20,
+          "maximum_gap_step_error_m": 2.396074438376904e-23,
+          "inferred_initial_resistance_N_s_m": 4.931569863193662e-07
+        },
+        "sub3nm_resistance_ratio": {
+          "measured": 4.777777777791783,
+          "expected": 4.777777777777779
+        },
+        "dt_refinement": {
+          "position_dt_vs_half_m": 4.0736878848848626e-14,
+          "position_half_vs_quarter_m": 2.036820967204708e-14,
+          "viscosity_dt_Pa_s": 0.010000985684036973,
+          "viscosity_half_Pa_s": 0.010000985684134331,
+          "viscosity_quarter_Pa_s": 0.010000985684183011
+        },
+        "shear_rate_scaling": {
+          "shear_rate_ratio": 10.0,
+          "maximum_viscosity_difference_Pa_s": 3.469446951953614e-18
+        },
+        "maximum_unequal_pair_pump_dissipation_W": 6.083123748078861e-22,
+        "crossing": {
+          "maximum_position_error_m": 3.7276287979043627e-20,
+          "maximum_tangential_stress_Pa": 1.8615871053430926e-05,
+          "maximum_sticking": 1.0,
+          "maximum_sliding": 1.0
+        }
+      },
+      "2": {
+        "einstein": {
+          "phi": 1.4137166941154064e-05,
+          "expected_eta_relative": 1.000035342917353
+        },
+        "contact-gap0p3nm": {
+          "maximum_speed_error_m_s": 5.421010862427522e-20,
+          "maximum_gap_step_error_m": 2.2360634700836844e-23,
+          "inferred_initial_resistance_N_s_m": 2.3561944901994344e-06
+        },
+        "contact-gap2nm": {
+          "maximum_speed_error_m_s": 5.421010862427522e-20,
+          "maximum_gap_step_error_m": 2.396074438376904e-23,
+          "inferred_initial_resistance_N_s_m": 4.931569863193662e-07
+        },
+        "sub3nm_resistance_ratio": {
+          "measured": 4.777777777791783,
+          "expected": 4.777777777777779
+        },
+        "dt_refinement": {
+          "position_dt_vs_half_m": 4.0736878848848626e-14,
+          "position_half_vs_quarter_m": 2.036820967204708e-14,
+          "viscosity_dt_Pa_s": 0.010000985684036973,
+          "viscosity_half_Pa_s": 0.010000985684134331,
+          "viscosity_quarter_Pa_s": 0.010000985684183011
+        },
+        "shear_rate_scaling": {
+          "shear_rate_ratio": 10.0,
+          "maximum_viscosity_difference_Pa_s": 3.469446951953614e-18
+        },
+        "maximum_unequal_pair_pump_dissipation_W": 6.083123748078861e-22,
+        "crossing": {
+          "maximum_position_error_m": 3.7276287979043627e-20,
+          "maximum_tangential_stress_Pa": 1.8615871053430926e-05,
+          "maximum_sticking": 1.0,
+          "maximum_sliding": 1.0
+        }
+      }
+    },
+    "energy": {
+      "sphere-einstein": {
+        "1": {
+          "power_scale_W": 1.0000353429173533e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000353429173533e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 0.0,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000353429173533e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000353429173533e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 0.0,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "contact-gap0p3nm": {
+        "1": {
+          "power_scale_W": 1.842104781568246e-12,
+          "maximum_power_balance_error_W": 4.0389678347315804e-28,
+          "maximum_scaled_power_error": 2.1925831120708944e-16,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 2.30962202725587e-34,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 3.2925327398012782e-34
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.216527857252298e-34,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.842104781568246e-12,
+          "maximum_power_balance_error_W": 4.0389678347315804e-28,
+          "maximum_scaled_power_error": 2.1925831120708944e-16,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 2.30962202725587e-34,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 3.2925327398012782e-34
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.216527857252298e-34,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "contact-gap2nm": {
+        "1": {
+          "power_scale_W": 4.433638544528165e-13,
+          "maximum_power_balance_error_W": 7.573064690121713e-29,
+          "maximum_scaled_power_error": 1.7080924874825698e-16,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.4987063223950813e-36,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 2.1365139298329523e-36
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.4382978141987859e-36,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.433638544528165e-13,
+          "maximum_power_balance_error_W": 7.573064690121713e-29,
+          "maximum_scaled_power_error": 1.7080924874825698e-16,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.4987063223950813e-36,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 2.1365139298329523e-36
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.4382978141987859e-36,
+            "lub_shear_dissipation_W": 0.0,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "equal-oblique": {
+        "1": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684036977e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948197927315927e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684036977e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948197927315927e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "unequal-oblique": {
+        "1": {
+          "power_scale_W": 1.0001799687220312e-13,
+          "maximum_power_balance_error_W": 1.0097419586828951e-28,
+          "maximum_scaled_power_error": 1.0095602694113957e-15,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001797292472062e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.861291577811592e-19,
+            "lub_shear_dissipation_W": 5.542886860199537e-20,
+            "lub_pump_dissipation_W": 5.140803578677838e-22
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0001799687220312e-13,
+          "maximum_power_balance_error_W": 1.0097419586828951e-28,
+          "maximum_scaled_power_error": 1.0095602694113957e-15,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001797292472062e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.861291577811592e-19,
+            "lub_shear_dissipation_W": 5.542886860199537e-20,
+            "lub_pump_dissipation_W": 5.140803578677838e-22
+          }
+        }
+      },
+      "equal-below3nm": {
+        "1": {
+          "power_scale_W": 1.0001004021592193e-13,
+          "maximum_power_balance_error_W": 1.792291976662139e-27,
+          "maximum_scaled_power_error": 1.7921120447432835e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001001986922905e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 5.824331314066847e-20,
+            "lub_shear_dissipation_W": 2.8438696235979237e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0001004021592193e-13,
+          "maximum_power_balance_error_W": 1.792291976662139e-27,
+          "maximum_scaled_power_error": 1.7921120447432835e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001001986922905e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 5.824331314066847e-20,
+            "lub_shear_dissipation_W": 2.8438696235979237e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "equal-half-dt": {
+        "1": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684134334e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948187312108834e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684134334e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948187312108834e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "equal-quarter-dt": {
+        "1": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684183012e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948182004562575e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000987063577696e-13,
+          "maximum_power_balance_error_W": 1.3126645462877636e-27,
+          "maximum_scaled_power_error": 1.3125349907393825e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684183012e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.948182004562575e-19,
+            "lub_shear_dissipation_W": 3.2387234655739415e-20,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "equal-shear10": {
+        "1": {
+          "power_scale_W": 1.0000987063577697e-15,
+          "maximum_power_balance_error_W": 1.3213420162451948e-29,
+          "maximum_scaled_power_error": 1.3212116042598952e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684036978e-15,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.9481979273159636e-21,
+            "lub_shear_dissipation_W": 3.238723465573748e-22,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000987063577697e-15,
+          "maximum_power_balance_error_W": 1.3213420162451948e-29,
+          "maximum_scaled_power_error": 1.3212116042598952e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000985684036978e-15,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 1.9481979273159636e-21,
+            "lub_shear_dissipation_W": 3.238723465573748e-22,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-interior": {
+        "1": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258055802854865e-23,
+          "maximum_scaled_power_error": 6.599107147733388e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624529834615e-25,
+            "lub_shear_dissipation_W": 6.115518275506239e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258055802854865e-23,
+          "maximum_scaled_power_error": 6.599107147733388e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624529834615e-25,
+            "lub_shear_dissipation_W": 6.115518275506239e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-crossing": {
+        "1": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258156777050733e-23,
+          "maximum_scaled_power_error": 6.599129922299893e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624528138393e-25,
+            "lub_shear_dissipation_W": 6.115518275493498e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258156777050733e-23,
+          "maximum_scaled_power_error": 6.599129922299893e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624528138393e-25,
+            "lub_shear_dissipation_W": 6.115518275493498e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-segmented": {
+        "1": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258055802854865e-23,
+          "maximum_scaled_power_error": 6.599107147733388e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624529778052e-25,
+            "lub_shear_dissipation_W": 6.115518275506239e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.433638543496631e-13,
+          "maximum_power_balance_error_W": 2.9258055802854865e-23,
+          "maximum_scaled_power_error": 6.599107147733388e-11,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000832756145044e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          },
+          "minimum_lubrication_mode_powers_W": {
+            "lub_squeeze_dissipation_W": 2.811624529778052e-25,
+            "lub_shear_dissipation_W": 6.115518275506239e-23,
+            "lub_pump_dissipation_W": 0.0
+          }
+        }
+      }
+    }
+  },
+  "legacy_runtime": {
+    "dt_s": 1e-06,
+    "contact_gap_m": 3e-09,
+    "mu": 0.1,
+    "kt_N_m": 80.0,
+    "ranks": [
+      1,
+      2
+    ],
+    "checks": {
+      "1": {
+        "einstein": {
+          "phi": 1.4137166941154064e-05,
+          "expected_eta_relative": 1.000035342917353
+        },
+        "oblate_maximum_stress_error_Pa": 1.1655173354219173e-18,
+        "oblate_contact_rotation": {
+          "maximum_rotation_stress_Pa": 1.2496366267392413e-05,
+          "maximum_rotation_stress_error_Pa": 5.505714157152952e-20
+        },
+        "outside-contact_maximum_gap_error_m": 8.64403740117914e-22,
+        "at-contact_maximum_gap_error_m": 3.312858353274876e-22,
+        "soft-contact_maximum_gap_error_m": 1.675040740419881e-22,
+        "geometric-overlap_maximum_gap_error_m": 9.223063829966259e-23,
+        "crossing": {
+          "maximum_position_error_m": 4.5046294334916117e-20,
+          "maximum_tangential_stress_Pa": 1.8381001732171368e-05,
+          "maximum_sticking": 1.0,
+          "maximum_sliding": 1.0
+        }
+      },
+      "2": {
+        "einstein": {
+          "phi": 1.4137166941154064e-05,
+          "expected_eta_relative": 1.000035342917353
+        },
+        "oblate_maximum_stress_error_Pa": 1.1655173354219173e-18,
+        "oblate_contact_rotation": {
+          "maximum_rotation_stress_Pa": 1.2496366267392413e-05,
+          "maximum_rotation_stress_error_Pa": 5.505714157152952e-20
+        },
+        "outside-contact_maximum_gap_error_m": 8.64403740117914e-22,
+        "at-contact_maximum_gap_error_m": 3.312858353274876e-22,
+        "soft-contact_maximum_gap_error_m": 1.675040740419881e-22,
+        "geometric-overlap_maximum_gap_error_m": 9.223063829966259e-23,
+        "crossing": {
+          "maximum_position_error_m": 4.5046294334916117e-20,
+          "maximum_tangential_stress_Pa": 1.8381001732171368e-05,
+          "maximum_sticking": 1.0,
+          "maximum_sliding": 1.0
+        }
+      }
+    },
+    "energy": {
+      "sphere-einstein": {
+        "1": {
+          "power_scale_W": 1.0000353429173533e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000353429173533e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0000353429173533e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000353429173533e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "outside-contact": {
+        "1": {
+          "power_scale_W": 0.0,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 0.0,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "at-contact": {
+        "1": {
+          "power_scale_W": 0.0,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 0.0,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "soft-contact": {
+        "1": {
+          "power_scale_W": 4.829856291800708e-13,
+          "maximum_power_balance_error_W": 2.524354896707238e-29,
+          "maximum_scaled_power_error": 5.2265631608804786e-17,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.829856291800708e-13,
+          "maximum_power_balance_error_W": 2.524354896707238e-29,
+          "maximum_scaled_power_error": 5.2265631608804786e-17,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "geometric-overlap": {
+        "1": {
+          "power_scale_W": 7.727770066878526e-12,
+          "maximum_power_balance_error_W": 1.183417575576353e-25,
+          "maximum_scaled_power_error": 1.531383006138497e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 7.727770066878526e-12,
+          "maximum_power_balance_error_W": 1.183417575576353e-25,
+          "maximum_scaled_power_error": 1.531383006138497e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 0.0,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-interior": {
+        "1": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.236119913081453e-26,
+          "maximum_scaled_power_error": 4.629785605222027e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.236119913081453e-26,
+          "maximum_scaled_power_error": 4.629785605222027e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-crossing": {
+        "1": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.2127770258578975e-26,
+          "maximum_scaled_power_error": 4.5814552081714457e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.2127770258578975e-26,
+          "maximum_scaled_power_error": 4.5814552081714457e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "friction-segmented": {
+        "1": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.236119913081453e-26,
+          "maximum_scaled_power_error": 4.629785605222027e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 4.829856290881567e-13,
+          "maximum_power_balance_error_W": 2.236119913081453e-26,
+          "maximum_scaled_power_error": 4.629785605222027e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0000771250572793e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "oblate-stress": {
+        "1": {
+          "power_scale_W": 1.0001581002788827e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001580958832386e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 1.0001581002788827e-13,
+          "maximum_power_balance_error_W": 0.0,
+          "maximum_scaled_power_error": 0.0,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.0001580958832386e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      },
+      "oblate-friction": {
+        "1": {
+          "power_scale_W": 2.751208369958443e-13,
+          "maximum_power_balance_error_W": 5.086575116865084e-27,
+          "maximum_scaled_power_error": 1.8488512801892636e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.000340112234178e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        },
+        "2": {
+          "power_scale_W": 2.751208369958443e-13,
+          "maximum_power_balance_error_W": 5.086575116865084e-27,
+          "maximum_scaled_power_error": 1.8488512801892636e-14,
+          "minimum_dissipative_powers_W": {
+            "hydro_dissipation_W": 1.000340112234178e-13,
+            "sliding_power_W": 0.0,
+            "contact_discrete_dissipation_W": 0.0
+          }
+        }
+      }
+    }
+  },
+  "dense_execution": {
+    "case": "AR1 phi0.50 N64 short dense execution",
+    "steady_state_claim": false,
+    "dt_s": 1e-06,
+    "shear_rate_per_s": 100,
+    "steps": 1000,
+    "strain": 0.1,
+    "normal_contact_onset_nm": 3,
+    "friction_mu": 0.1,
+    "epsilon_relative": 0.001,
+    "cutoff_relative": 0.5,
+    "final_eta_Pa_s": 0.19102666869012466,
+    "final_eta_relative": 19.102666869012467,
+    "maximum_force_residual_all_steps": 9.827338867978369e-11,
+    "maximum_contacts_recorded": 93.0,
+    "maximum_actual_overlap_m_all_steps": 0.0,
+    "maximum_relative_power_balance_error_recorded": 1.5043169005040637e-10,
+    "maximum_pump_dissipation_W_recorded": 1.3785852587582484e-16,
+    "plugin_sha256": "c61ee59e86ea0d57387929a258592b80cb2749b513f2b08ff36a5525851112c1"
+  }
+}

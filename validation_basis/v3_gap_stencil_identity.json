@@ -1,0 +1,36 @@
+{
+  "scope": "Grid arithmetic only; unchanged angular grid and source equations below0.5 require their own source identity check",
+  "passed": true,
+  "query_effective_gap_over_c": 0.021,
+  "v2_gap_count": 30,
+  "v3_gap_count": 29,
+  "v3_full_payload_MiB": 810.2724609375,
+  "v2_v3_gap_stencil_identical": true,
+  "stencil": {
+    "indices": [
+      7,
+      8,
+      9,
+      10
+    ],
+    "gaps": [
+      0.011313708498984762,
+      0.016,
+      0.022627416997969524,
+      0.032
+    ],
+    "weights": [
+      -0.03422934259977016,
+      0.23356167989456597,
+      0.8509298224526574,
+      -0.0502621597474532
+    ]
+  },
+  "v3_smoke_gaps": [
+    0.001,
+    0.02,
+    0.5,
+    1.0,
+    5.001
+  ]
+}

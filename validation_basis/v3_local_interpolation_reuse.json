@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "gate": "v3_local_interpolation_exact_transfer",
+  "status": "passed_by_exact_transfer",
+  "passed": true,
+  "scope": "Transfer of the completed V2 original 3 nm local interpolation result to V3 by exact grid, basis and formula identity. The 3072 stencil values were NOT recomputed for V3.",
+  "pose": {
+    "theta_i": 0.073,
+    "theta_j": 0.137,
+    "phi": 0.79,
+    "h_over_c": 0.02,
+    "epsilon_over_c": 0.001
+  },
+  "current_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "current_v3_basis_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6",
+  "historical_measurement": {
+    "model": "HYBRID_V2",
+    "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+    "basis_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+    "source_evaluations_completed": true,
+    "populated_stencil_nodes": 3072,
+    "all11_interpolation_error": 0.0005620056310633448,
+    "free_strain_interpolation_error": 0.0002488604539874206,
+    "limit": 0.01,
+    "reciprocity_error": 0.0
+  },
+  "actual_v3_checks": {
+    "compiled_grid_check": {
+      "theta_nodes_identical": true,
+      "phi_nodes_identical": true,
+      "gap_stencil_weights_bitwise_identical": true,
+      "theta_count": 34,
+      "phi_count": 48,
+      "v2_gap_count": 30,
+      "v3_gap_count": 29,
+      "gap_indices": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "gap_nodes": [
+        0.011313708498984762,
+        0.016,
+        0.022627416997969524,
+        0.032
+      ],
+      "gap_weights": [
+        -0.03422934259977016,
+        0.23356167989456597,
+        0.8509298224526574,
+        -0.0502621597474532
+      ]
+    },
+    "direct_query_check": {
+      "pose_count": 1,
+      "matrix_entries_compared": 121,
+      "maximum_absolute_total11_difference": 0.0,
+      "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+      "scope": "Direct V2 and V3 source evaluations at the original 3 nm query only; not all stencil nodes"
+    }
+  },
+  "all_low_gap_node_identity": {
+    "type": "algebraic and byte identity, not new source evaluations",
+    "serialized_basis_body_identical": true,
+    "serialized_basis_body_sha256": "2ee292332acc2d096fd356df8f080ffc3315ab9754d0611b739d59f7b610e7f4",
+    "source_formula_scope": "For 0 < h_eff/c < 0.5, every orientation uses identical near-basis residuals at 0.5 and 1, the identical film operator and log1p weighting. V2 chooses left=0 in this range; V3 also uses left=0. Its unused far anchor and changed cache identity do not enter the arithmetic. This establishes source-formula identity at all low-gap stencil nodes, not a rerun of their evaluations.",
+    "all_required_gap_nodes_below_0p5": true,
+    "interpolator_and_coordinates_unchanged_sha256": {
+      "src/slurry_spd_table.h": "61425c6d3c2b8a756800c353fcb1c4d566d76b49907391abc6d93fb4c97edc38",
+      "src/slurry_spd_coordinates.h": "9b1a250a51b6cc77061c0c210e63cac173f1455451c8b497ecb9e64a4241961d"
+    }
+  },
+  "evidence": [
+    {
+      "path": "validation_basis/local_v2_interpolation_reflected_summary.json",
+      "sha256": "a72ad5c16d1a0025f4b3165182c2e23dbf73629be45c2f46595f316737b21e1a"
+    },
+    {
+      "path": "validation_basis/v3_compiled_stencil_identity.json",
+      "sha256": "e9c759a92bf56271a32be19581b9ce958ba65456652a2a7f69e5bda40e3ae58e"
+    },
+    {
+      "path": "validation_basis/v3_near_segment_identity.json",
+      "sha256": "402ddbbb22f87e0a5c423e3b3c8687a00b5796575b78ca0590ecda707accb6dc"
+    }
+  ],
+  "not_performed": {
+    "new_v3_3072_node_source_run": true,
+    "complete_full_resolution_table": true,
+    "additional_interpolation_poses": true,
+    "independent_physics_test": true
+  },
+  "inputs_verified_current": true
+}

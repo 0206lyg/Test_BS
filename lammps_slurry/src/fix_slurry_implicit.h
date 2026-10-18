@@ -14,6 +14,9 @@ FixStyle(slurry/implicit,FixSlurryImplicit);
 #include <string>
 #include <vector>
 namespace SlurryImplicit { struct SolverWorkspace; }
+namespace SlurryFiniteGap { struct Catalogue; }
+namespace SlurryScattering { class Provider; }
+namespace SlurrySPDTable { class Provider; }
 namespace LAMMPS_NS {
 class FixSlurryImplicit : public Fix {
  public:
@@ -30,7 +33,14 @@ class FixSlurryImplicit : public Fix {
   double viscosity_, shear_, cutoff_, roughness_, stiffness_;
   double contact_gap_=0., friction_=0., tangential_stiffness_=0.;
   bool mari_lubrication_=false;
-  bool spheroid_lubrication_=false, root_solver_=true;
+  bool spheroid_lubrication_=false, finite_gap_lubrication_=false, root_solver_=true;
+  bool finite_gap_fast_=false;
+  double finite_gap_range_=0.5, finite_gap_inner_ratio_=0.8;
+  std::unique_ptr<SlurryFiniteGap::Catalogue> finite_gap_catalogue_;
+#ifdef SLURRY_HAVE_EIGEN
+  std::unique_ptr<SlurryScattering::Provider> finite_gap_provider_;
+  std::unique_ptr<SlurrySPDTable::Provider> finite_gap_fast_provider_;
+#endif
   int preconditioner_backend_=0;
   bool adaptive_forcing_=false;
   bool solver_cache_=false;
@@ -56,6 +66,7 @@ class FixSlurryImplicit : public Fix {
     std::array<double,4> lu_counts{};
     std::array<double,8> profile{};
     double maximum_gap_curvature_ratio=0.,completion_added_power=0.;
+    double finite_gap_stress=0.,finite_gap_power=0.,finite_gap_bound_min=0.;
     double force_residual_N=0.,force_tolerance_N=0.;
     std::array<double,9> stress{};
     std::array<double,16> diagnostic{};
@@ -70,6 +81,7 @@ class FixSlurryImplicit : public Fix {
   bigint last_output_step_=-1,interval_steps_=0;
   double interval_duration_=0.,interval_start_strain_=0.,interval_end_strain_=0.;
   std::array<long double,9> interval_stress_{};
+  long double interval_finite_gap_stress_=0.;
   std::array<long double,8> interval_profile_{};
   double interval_max_overlap_=0.,interval_max_compression_=0.,interval_max_residual_=0.;
   long double selected_stress_integral_=0.;

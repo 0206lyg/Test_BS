@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "scope": "Actual serial LAMMPS plugin connection and short trajectory checks only",
+  "status": "pass",
+  "formal_exit_code": 0,
+  "physics_ready": false,
+  "lammps": {
+    "version": "30 Sep 2026",
+    "source_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+    "pristine_source": true,
+    "mpi": "serial stubs",
+    "packages": [
+      "ASPHERE",
+      "PLUGIN"
+    ],
+    "cmake_version": "3.29.6",
+    "compiler": "GNU13.3.0",
+    "build_type": "Release",
+    "cxx_standard": 17,
+    "system_packages_installed": false
+  },
+  "plugin": {
+    "build_exit_code": 0,
+    "load_exit_code": 0,
+    "numerical_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+    "sha256": "b82eb207704600a7e5f91745ee37b9a86f13c620698cb960fa45f82c6e9977c2"
+  },
+  "inputs": {
+    "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/install/bin/lmp": "f8329258720e3e8abf716a37581a4f25d091550fcd1985b16aaee2a2f8a96b15",
+    "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/plugin_build/libslurry.so": "b82eb207704600a7e5f91745ee37b9a86f13c620698cb960fa45f82c6e9977c2",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/ar10_smoke.spt": "8df80123c711298fa0aef2c87e232ef19ac1f959288d87df0bcb46c3e9b0f75e",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/ar10_smoke.spt.json": "59e23d0e60937f7ce80e671232ba6868ea27dc5bf282dfe89749ede1346ffb7b"
+  },
+  "table_grid": {
+    "ar": 10.0,
+    "theta_nodes": 4,
+    "phi_nodes": 8,
+    "gap_nodes": 6,
+    "matching_joins": [
+      0.5,
+      1.0,
+      2.5
+    ],
+    "format": "SLURRY_SPD_LOGFOURIER_V2"
+  },
+  "table_provenance": {
+    "schema_version": 1,
+    "profile": "smoke",
+    "physics_ready": false,
+    "scope": "Coarse global table for executable plumbing only; no quantitative rheology claim",
+    "source_gate": "Direct-source internal checks and finite/SPD conditioned node matrices; no independent physical-accuracy certification",
+    "table_format": "SLURRY_SPD_LOGFOURIER_V2",
+    "matching_joins": [
+      0.5,
+      1,
+      2.5
+    ],
+    "ar": 10,
+    "epsilon_over_c": 0.001,
+    "outer_range_over_a": 0.5,
+    "h_min": 0.001,
+    "h_max": 5.001,
+    "n_theta": 4,
+    "n_phi": 8,
+    "n_gap": 6,
+    "film_grid": 161,
+    "threads": 4,
+    "source_basis": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+    "basis_fnv1a64": "61a020d6addd4875",
+    "executable_fnv1a64": "c880f5f74d33c23e",
+    "provided_source_fingerprint": "1979527f2d7ba11919fb1af226418aa88ecb617fbff6a129b7febdb2a6265c1a",
+    "cache_identity_fnv1a64": "a0670e658f2c223e",
+    "payload_bytes": 405504,
+    "source_poses": 52,
+    "chunk_source_poses": 128,
+    "chunks": 1,
+    "resumed_chunks": 0,
+    "resumed_source_poses": 0,
+    "minimum_normalized_eigenvalue": 0.05879289742860432,
+    "maximum_double_pole_log_relative_change": 1.9138050796906143e-14,
+    "elapsed_seconds": 163.162086481
+  },
+  "table_fingerprint_difference": "Smoke table was generated before the canonical_frame repair and unused-header deletion. Its original fingerprint is preserved. These changes do not alter correction()-based node generation; the final plugin exercises the repaired make_pair() frame.",
+  "cases": [
+    {
+      "name": "two_asymmetric_3nm",
+      "status": "pass",
+      "steps": 20,
+      "dt_s": 1e-06,
+      "shear_rate_per_s": 100.0,
+      "particle_count": 2,
+      "fixture_sha256": "f6ac3dfc5f5b3593c0a873f7535e3b8a577f255bcf40212b59c6b318c513aad0",
+      "input_sha256": "9791518cee1ff45d8a58e10f39801832666ec30d7307fa9031d6b446cfb800f1",
+      "formal_exit_code": 0,
+      "elapsed_seconds": 0.0660838949988829,
+      "energy": {
+        "power_scale_W": 1.0301955760412644e-13,
+        "maximum_power_balance_error_W": 1.0640155889621007e-26,
+        "maximum_scaled_power_error": 1.0328287304928998e-13,
+        "minimum_dissipative_powers_W": {
+          "hydro_dissipation_W": 1.0301922689693633e-13,
+          "sliding_power_W": 0.0,
+          "contact_discrete_dissipation_W": 0.0
+        }
+      },
+      "min_active_pairs": 1.0,
+      "max_active_pairs": 1.0,
+      "max_force_residual_N": 1.0321342095016749e-21,
+      "max_force_residual_over_tolerance": 0.006282155114295153,
+      "minimum_strain_bound": 2.0037089319412913,
+      "final_eta_relative_smoke_only": 1.030195576041217,
+      "final_sigma_finite_gap_Pa_smoke_only": 0.002427351536300273
+    },
+    {
+      "name": "eight_connected_stack",
+      "status": "pass",
+      "steps": 20,
+      "dt_s": 1e-06,
+      "shear_rate_per_s": 100.0,
+      "particle_count": 8,
+      "fixture_sha256": "de3a64524f8d541314b8a8213c0c84b44de0d79745194924c104f801a869e03e",
+      "input_sha256": "9791518cee1ff45d8a58e10f39801832666ec30d7307fa9031d6b446cfb800f1",
+      "formal_exit_code": 0,
+      "elapsed_seconds": 0.18064401199990243,
+      "energy": {
+        "power_scale_W": 1.0207944715430351e-13,
+        "maximum_power_balance_error_W": 2.9832826169286136e-25,
+        "maximum_scaled_power_error": 2.922510554371515e-12,
+        "minimum_dissipative_powers_W": {
+          "hydro_dissipation_W": 1.0204570267171867e-13,
+          "sliding_power_W": 0.0,
+          "contact_discrete_dissipation_W": 0.0
+        }
+      },
+      "min_active_pairs": 18.0,
+      "max_active_pairs": 18.0,
+      "max_force_residual_N": 2.396844266994988e-20,
+      "max_force_residual_over_tolerance": 0.8137560487154286,
+      "minimum_strain_bound": 1.98895784584156,
+      "final_eta_relative_smoke_only": 1.020457026715724,
+      "final_sigma_finite_gap_Pa_smoke_only": -0.05892523790659468
+    }
+  ],
+  "not_run": [],
+  "selected_ctest": {
+    "formal_exit_code": 0,
+    "passed": 4,
+    "failed": 0,
+    "tests": [
+      "slurry_grand_pair_math",
+      "slurry_grand_system_passivity",
+      "slurry_implicit_resistance_contact",
+      "slurry_stress_analytic_limits"
+    ]
+  },
+  "initial_integration_failure": {
+    "case": "eight_connected_stack",
+    "stage": "after step0",
+    "lammps_exit_code": 1,
+    "harness_exit_code": 2,
+    "message": "Grand pair frame must be a proper rotation",
+    "unchanged_fixture_sha256": "de3a64524f8d541314b8a8213c0c84b44de0d79745194924c104f801a869e03e"
+  },
+  "repair": {
+    "header": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/src/slurry_finite_gap_math.h",
+    "before_sha256": "9e03c7462c33a1cc146ad77700f2afa56bc5e4be06926ffb0cc0a350d609ac02",
+    "after_sha256": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+    "change": "Construct a right-handed tangent basis via normalized cross products after the existing gauge choice; preserve geometry and the existing rotation guard.",
+    "before_max_orthogonality_error": 1.2543998839653625e-08,
+    "after_max_orthogonality_error": 4.440892098500626e-16,
+    "tilts": [
+      0.01,
+      0.0001,
+      1e-06,
+      1e-08,
+      1e-09,
+      1e-10,
+      0.0
+    ],
+    "unchanged_guard_tolerance": 1e-10,
+    "regression_exit_code": 0,
+    "actual_eight_particle_before_status": "failed after step0",
+    "actual_fixture_after_status": "pass",
+    "regression_ctest": "slurry_grand_pair_math"
+  },
+  "portable_fixture_inputs": {
+    "validation_basis/runtime_fixtures/eight_connected_stack/fixture.json": "cc28e2f951fa829fd53c40b7e482f228aacd8bdbf113c9520088ac37ba61d99c",
+    "validation_basis/runtime_fixtures/eight_connected_stack/particles.data": "de3a64524f8d541314b8a8213c0c84b44de0d79745194924c104f801a869e03e",
+    "validation_basis/runtime_fixtures/two_asymmetric_3nm/fixture.json": "dd49f17eff2343a481a4a61a8c4ff3b9c3fead984d1312490fd13b90b744a60b",
+    "validation_basis/runtime_fixtures/two_asymmetric_3nm/particles.data": "f6ac3dfc5f5b3593c0a873f7535e3b8a577f255bcf40212b59c6b318c513aad0"
+  },
+  "runner": "validation_basis/run_runtime_smoke.py",
+  "runner_sha256": "2500115cff43ef505d73b580c03a5a17626ac57c1e3eadeb27e99d7b66571338",
+  "limitations": [
+    "Coarse smoke table has no quantitative viscosity validity.",
+    "No equilibrium or bulk viscosity convergence established.",
+    "No MPI or scaling test.",
+    "No full production table was generated or loaded.",
+    "Measured viscosity fields are instantaneous smoke observables, not physical validation or equilibrium results."
+  ],
+  "compiled_probe_tools": {
+    "physical_probe": {
+      "path": "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/plugin_build/slurry_basis_physical_probe",
+      "sha256": "60424a3f8475be52726a8973eca22d6aa4b635cb42d83313847251bec7460e2e",
+      "build_exit_code": 0,
+      "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "run_status": "delegated_to_validation_agent"
+    },
+    "interpolation_probe": {
+      "path": "/workspace/scratch/b72f2fb4bee2/lammps_integration_env/plugin_build/slurry_table_interpolation_probe",
+      "sha256": "49531dda3f991c5686ea609cfdd3b09dbeab9202b409f0bc444fcc6328d1f152",
+      "build_exit_code": 0,
+      "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "run_status": "compiled_only_local_interpolation_owned_by_runtime_agent"
+    }
+  }
+}

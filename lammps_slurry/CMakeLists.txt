@@ -59,8 +59,85 @@ install(TARGETS slurry LIBRARY DESTINATION lib/lammps/plugins)
 add_executable(slurry_pack src/pack_spheroids.cpp)
 install(TARGETS slurry_pack RUNTIME DESTINATION bin)
 
+# Offline generation only. Runtime finite_gap_fast loads the resulting table;
+# it does not call this executable or its Stokes/film evaluators per timestep.
+if(SLURRY_ENABLE_LU)
+  # Bind numerical validation reports to the headers actually compiled into
+  # each probe. A current-tree hash plus an unrelated executable hash is not
+  # sufficient evidence that a standalone probe was rebuilt.
+  find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter)
+  file(GLOB SLURRY_NUMERICAL_INPUTS CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/vendor/gr_re2/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tools/basis_*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tools/slurry_generate_basis.cpp")
+  list(APPEND SLURRY_NUMERICAL_INPUTS
+    "${CMAKE_CURRENT_SOURCE_DIR}/tools/precompute_fast.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tools/prepare_case.py")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${SLURRY_NUMERICAL_INPUTS})
+  execute_process(COMMAND "${Python3_EXECUTABLE}" -c
+    "import importlib.util,sys; s=importlib.util.spec_from_file_location('slurry_prepare',sys.argv[1]); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); print(m.fast_source_fingerprint())"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tools/prepare_case.py"
+    OUTPUT_VARIABLE SLURRY_NUMERICAL_SOURCE_FINGERPRINT OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE SLURRY_FINGERPRINT_STATUS)
+  string(LENGTH "${SLURRY_NUMERICAL_SOURCE_FINGERPRINT}" SLURRY_FINGERPRINT_LENGTH)
+  if(NOT SLURRY_FINGERPRINT_STATUS EQUAL 0 OR NOT SLURRY_FINGERPRINT_LENGTH EQUAL 64 OR
+     NOT SLURRY_NUMERICAL_SOURCE_FINGERPRINT MATCHES "^[0-9a-f]+$")
+    message(FATAL_ERROR "Could not fingerprint numerical sources for validation probes.")
+  endif()
+  add_executable(slurry_precompute_fast tools/precompute_fast.cpp)
+  target_include_directories(slurry_precompute_fast PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+  target_link_libraries(slurry_precompute_fast PRIVATE slurry_solver_options)
+  find_package(OpenMP QUIET COMPONENTS CXX)
+  if(OpenMP_CXX_FOUND)
+    target_link_libraries(slurry_precompute_fast PRIVATE OpenMP::OpenMP_CXX)
+  endif()
+  install(TARGETS slurry_precompute_fast RUNTIME DESTINATION bin)
+  add_executable(slurry_generate_basis tools/slurry_generate_basis.cpp)
+  target_include_directories(slurry_generate_basis PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+  target_link_libraries(slurry_generate_basis PRIVATE slurry_solver_options)
+  install(TARGETS slurry_generate_basis RUNTIME DESTINATION bin)
+  add_executable(slurry_basis_physical_probe tests/test_basis_physical.cpp)
+  target_include_directories(slurry_basis_physical_probe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+  target_link_libraries(slurry_basis_physical_probe PRIVATE slurry_solver_options)
+  target_compile_definitions(slurry_basis_physical_probe PRIVATE
+    "SLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"${SLURRY_NUMERICAL_SOURCE_FINGERPRINT}\"")
+  install(TARGETS slurry_basis_physical_probe RUNTIME DESTINATION bin)
+  add_executable(slurry_table_interpolation_probe tests/test_table_interpolation.cpp)
+  target_include_directories(slurry_table_interpolation_probe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+  target_link_libraries(slurry_table_interpolation_probe PRIVATE slurry_solver_options)
+  target_compile_definitions(slurry_table_interpolation_probe PRIVATE
+    "SLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"${SLURRY_NUMERICAL_SOURCE_FINGERPRINT}\"")
+  install(TARGETS slurry_table_interpolation_probe RUNTIME DESTINATION bin)
+endif()
+
 include(CTest)
 if(BUILD_TESTING)
+  if(SLURRY_ENABLE_LU AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/models/ar10_matched.ssb")
+    add_executable(slurry_matched_hybrid_test tests/test_matched_hybrid.cpp)
+    target_include_directories(slurry_matched_hybrid_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    target_link_libraries(slurry_matched_hybrid_test PRIVATE slurry_solver_options)
+    add_test(NAME slurry_matched_hybrid_golden COMMAND slurry_matched_hybrid_test
+      "${CMAKE_CURRENT_SOURCE_DIR}/models/ar10_matched.ssb"
+      "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/matched_hybrid_golden.txt")
+    add_executable(slurry_independent_pair_reference_test tests/test_independent_pair_reference.cpp)
+    target_include_directories(slurry_independent_pair_reference_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    target_link_libraries(slurry_independent_pair_reference_test PRIVATE slurry_solver_options)
+    add_test(NAME slurry_independent_stokes_reference COMMAND slurry_independent_pair_reference_test
+      "${CMAKE_CURRENT_SOURCE_DIR}/models/ar10_matched.ssb"
+      "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/independent_pair_reference.txt")
+  endif()
+  foreach(SLURRY_GRAND_TEST grand_pair_math grand_pair_lookup grand_reduced)
+    add_executable(slurry_${SLURRY_GRAND_TEST}_test tests/test_${SLURRY_GRAND_TEST}.cpp)
+    target_include_directories(slurry_${SLURRY_GRAND_TEST}_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    add_test(NAME slurry_${SLURRY_GRAND_TEST} COMMAND slurry_${SLURRY_GRAND_TEST}_test)
+  endforeach()
+  if(SLURRY_ENABLE_LU)
+    add_executable(slurry_grand_system_check_test tests/test_grand_system_check.cpp)
+    target_include_directories(slurry_grand_system_check_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    target_link_libraries(slurry_grand_system_check_test PRIVATE slurry_solver_options)
+    add_test(NAME slurry_grand_system_passivity COMMAND slurry_grand_system_check_test)
+  endif()
   if(SLURRY_ENABLE_LU)
     add_executable(slurry_eigen_lu_solver_test tests/test_eigen_lu_solver.cpp)
     target_include_directories(slurry_eigen_lu_solver_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")

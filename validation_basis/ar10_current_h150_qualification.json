@@ -1,0 +1,1014 @@
+{
+  "aspect_ratio": 10,
+  "axes": [
+    [
+      0.025811286645980556,
+      0,
+      0.9996668332407947
+    ],
+    [
+      0.025811286645980556,
+      0,
+      0.9996668332407947
+    ]
+  ],
+  "comparison_helper_sha256": "66c6806ce6b9f81ba4e1f20c7e9feba41c70dcabc69a1f3c256947dc00471888",
+  "gate": "refined_heldout_bridge_consistency",
+  "h_over_c": 1.5,
+  "independent_physical_reference": false,
+  "inputs": {
+    "coarse": {
+      "filename": "ar10_L16_h150_phi512_query.json",
+      "sha256": "4d5d5ef5f7dfb21bca0a2935d225b2c2b8e31a7b68e4768ec8684af038fa166c"
+    },
+    "fine": {
+      "filename": "ar10_L20_h150_phi256_query.json",
+      "sha256": "0d94abc1ee7d8d30b55897388fbb7c2b75de90627b3505729a3a730cdc0a13df"
+    },
+    "product": {
+      "filename": "ar10_current_query_h150.json",
+      "sha256": "82f45fd8092698ae95d3e5154ae3680fef88fbbb50c1e34de10cab8828be56ff"
+    },
+    "quadrature": {
+      "filename": "ar10_L20_h150_phi512_query.json",
+      "sha256": "1e0fc139323f00f20a3dd3fc15dd6e5f6cdf76e43e29c0cd5bfba666d3e03b73"
+    }
+  },
+  "not_run": [],
+  "order_refinement": {
+    "all11_error": 7.544635095668717e-06,
+    "free_strain_error": 2.7818797655454475e-06,
+    "limit": 0.005,
+    "normal_entry_relative_error": -3.363424070590426e-06,
+    "passed": true
+  },
+  "passed": false,
+  "product_accuracy_tested": true,
+  "product_comparison": {
+    "all11_error": 0.0648512064203175,
+    "free_strain_error": 0.022821363351329005,
+    "limit": 0.05,
+    "normal_entry_relative_error": 0.03805570112197354,
+    "passed": false
+  },
+  "product_limit": 0.05,
+  "quadrature_refinement": {
+    "all11_error": 1.7985612998927536e-14,
+    "free_strain_error": 1.3100631690576847e-14,
+    "limit": 0.005,
+    "normal_entry_relative_error": -5.218048215738236e-15,
+    "passed": true
+  },
+  "queries": {
+    "coarse": {
+      "anchor_gaps": [
+        0.5,
+        1,
+        2.5
+      ],
+      "aspect_ratio": 10,
+      "axes": [
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ],
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ]
+      ],
+      "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "basis_coefficients_sha256": "857f268d1009e417b898bb3ad79a1245ac9345315d9c7fe972e7570249b75a9f",
+      "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L16_nr128_hybrid_v2_phi512.ssb",
+      "basis_sha256": "84095c4baff0072f014c4c516fbe3e9f189d48529d20535dbfa5de48b035de0a",
+      "command": [
+        "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+        "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L16_nr128_hybrid_v2_phi512.ssb",
+        "1.5",
+        "161",
+        "direct_basis"
+      ],
+      "compiled_source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "elapsed_seconds": 97.34944707300019,
+      "epsilon_over_c": 0,
+      "evaluated_path": "direct_basis",
+      "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+      "executable_sha256": "0855435cbee29f68b9628d48c28417b4795f0865052e371fd7563020c046c05c",
+      "exit_code": 0,
+      "film_grid": 161,
+      "h_over_c": 1.5,
+      "hybrid_version": 2,
+      "inputs_unchanged_during_run": true,
+      "linear_residual": 1.6054551962746788e-14,
+      "physical_accuracy_tested": false,
+      "positive_total": true,
+      "query_completed": true,
+      "raw_reciprocity": 1.7802448954278555e-07,
+      "reduced11": [
+        [
+          213.09068682436498,
+          5.430861828278572e-14,
+          -139.06562012484756,
+          -4.748206272811631e-13,
+          -3.496822047868273e-11,
+          -7.324876517240631e-14,
+          -41.5269013485852,
+          8.676751620654425,
+          -5.399239013249177e-15,
+          21.25582046362691,
+          -5.08369964573937e-15
+        ],
+        [
+          5.430861828278572e-14,
+          188.3701173566735,
+          -2.018804700327652e-12,
+          -1.0888630237422996e-09,
+          -8.22951411126413e-13,
+          4.2764635794008314e-11,
+          -7.290175952224431e-15,
+          5.341403111112908e-13,
+          -40.762828107704145,
+          7.132596137503656e-13,
+          -21.81668771150787
+        ],
+        [
+          -139.06562012484756,
+          -2.018804700327652e-12,
+          3904.134019299465,
+          3.966336311020516e-11,
+          3.3843777052238866e-10,
+          1.7770457780353134e-12,
+          29.00315265192267,
+          -1001.2721808834996,
+          2.921740238115894e-13,
+          -1359.2287904962704,
+          1.146819163017645e-13
+        ],
+        [
+          -4.748206272811631e-13,
+          -1.0888630237422996e-09,
+          3.966336311020516e-11,
+          422.33974386482276,
+          -7.849719478089803e-13,
+          4.443937820828152,
+          -2.8372453452271754e-13,
+          -1.0166608698076472e-11,
+          1.1988093707596374e-09,
+          -1.400760077796706e-11,
+          1.5013105492471175e-10
+        ],
+        [
+          -3.496822047868273e-11,
+          -8.22951411126413e-13,
+          3.3843777052238866e-10,
+          -7.849719478089803e-13,
+          309.0917126399016,
+          -5.6525997094283275e-14,
+          3.275999518999032e-10,
+          -4.2632638048777473e-10,
+          3.5030688937976524e-13,
+          -6.38095550910794e-11,
+          -1.447454965232454e-14
+        ],
+        [
+          -7.324876517240631e-14,
+          4.2764635794008314e-11,
+          1.7770457780353134e-12,
+          4.443937820828152,
+          -5.6525997094283275e-14,
+          104.94300810519569,
+          1.0531923641478612e-14,
+          -4.381314721216768e-13,
+          -5.936467728577757e-11,
+          -6.246847695942922e-13,
+          -1.2125110700438315e-11
+        ],
+        [
+          -41.5269013485852,
+          -7.290175952224431e-15,
+          29.00315265192267,
+          -2.8372453452271754e-13,
+          3.275999518999032e-10,
+          1.0531923641478612e-14,
+          144.99124497462114,
+          -3.172757109975988,
+          -9.352169877654937e-15,
+          -11.503729126312123,
+          2.291280199984082e-15
+        ],
+        [
+          8.676751620654425,
+          5.341403111112908e-13,
+          -1001.2721808834996,
+          -1.0166608698076472e-11,
+          -4.2632638048777473e-10,
+          -4.381314721216768e-13,
+          -3.172757109975988,
+          343.8889470650168,
+          -7.437934124673731e-14,
+          348.48451913272527,
+          -2.953215749887942e-14
+        ],
+        [
+          -5.399239013249177e-15,
+          -40.762828107704145,
+          2.921740238115894e-13,
+          1.1988093707596374e-09,
+          3.5030688937976524e-13,
+          -5.936467728577757e-11,
+          -9.352169877654937e-15,
+          -7.437934124673731e-14,
+          143.66376111677573,
+          -1.0382567350662464e-13,
+          -0.9348120752322733
+        ],
+        [
+          21.25582046362691,
+          7.132596137503656e-13,
+          -1359.2287904962704,
+          -1.400760077796706e-11,
+          -6.38095550910794e-11,
+          -6.246847695942922e-13,
+          -11.503729126312123,
+          348.48451913272527,
+          -1.0382567350662464e-13,
+          499.9247520863907,
+          -4.0991689925527816e-14
+        ],
+        [
+          -5.08369964573937e-15,
+          -21.81668771150787,
+          1.146819163017645e-13,
+          1.5013105492471175e-10,
+          -1.447454965232454e-14,
+          -1.2125110700438315e-11,
+          2.291280199984082e-15,
+          -2.953215749887942e-14,
+          -0.9348120752322733,
+          -4.0991689925527816e-14,
+          24.98638366961449
+        ]
+      ],
+      "reference_only": true,
+      "reference_overlay": {
+        "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+        "expected_L20_density_entries": 22844160,
+        "files": [
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/tools/slurry_generate_basis.cpp",
+            "base_sha256": "0c282293cf2b24f3ae7c5a19bfa19dee60264a53114745c3450e2cd1d3538a80",
+            "bound_replacements": 2,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_generate_basis.cpp",
+            "copy_sha256": "95996dd0727b9d297368888355058cc64e8d2fc0ff5aad41617913d73f2d0b4c",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_math.h",
+            "base_sha256": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
+            "bound_replacements": 1,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_math.h",
+            "copy_sha256": "3d0770ae4983e0555b2a22ea8361e532521da4c3686df45e067416d114db207f",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_provider.h",
+            "base_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "bound_replacements": 0,
+            "byte_identical": true,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_provider.h",
+            "copy_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "difference": "No changes"
+          }
+        ],
+        "generation_initial_overlay_identity": {
+          "base_production_fingerprint": "1979527f2d7ba11919fb1af226418aa88ecb617fbff6a129b7febdb2a6265c1a",
+          "overlay_fingerprint": "dd3fac02209cdddaf45d3e8d182247cbb4dcca3c2fc5d2cbe9645fd565927a1b"
+        },
+        "old_matrix_entry_limit": 16000000,
+        "overlay_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+        "overlay_fingerprint_derivation": "SHA256(json.dumps({base: base_production_fingerprint, files: {copy_path: copy_sha256}}, sort_keys=True).encode()) using standard Python JSON separators and stored relative paths.",
+        "physics_modified": false,
+        "production_files_modified": false,
+        "purpose": "Generate/load L20Nr128 reference at the single heldout gap h/c=.25 to qualify L16 reference convergence; product remains L12Nr96 and unchanged.",
+        "query_rebind_note": "Final production runtime-frame fix and unused residual-header removal changed aggregate fingerprint. All copied generator/math/provider bytes still exactly match their recorded production bases, with only specified capacity replacements; generation depends on no changed runtime-frame headers. Query will compile against this final base.",
+        "reference_matrix_entry_limit": 24000000,
+        "reference_only": true,
+        "schema": "reference_only_bound_override_v1"
+      },
+      "reference_overlay_manifest_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/reference_L20/provenance.json",
+      "reference_overlay_manifest_sha256": "804cfb15e74f2a417da43c36aaa248e2ee02994506f5af06754fa83a1eb4a7c8",
+      "schema_version": 1,
+      "source_degree": 16,
+      "source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "source_nphi": 512,
+      "source_rings": 128,
+      "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+    },
+    "fine": {
+      "anchor_gaps": [
+        0.5,
+        1,
+        2.5
+      ],
+      "aspect_ratio": 10,
+      "axes": [
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ],
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ]
+      ],
+      "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "basis_coefficients_sha256": "6d3ca6c9ee1309722fffae14e158a1f63593a4f39d818ac9882290055e2dbf8c",
+      "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L20_nr128_hybrid_v2_phi256.ssb",
+      "basis_sha256": "a4233ceec2fdad0532edaeb0e30ae4401a636b857056a2fc1dc0b02453c97603",
+      "command": [
+        "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+        "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L20_nr128_hybrid_v2_phi256.ssb",
+        "1.5",
+        "161",
+        "direct_basis"
+      ],
+      "compiled_source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "elapsed_seconds": 103.24496328699934,
+      "epsilon_over_c": 0,
+      "evaluated_path": "direct_basis",
+      "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+      "executable_sha256": "0855435cbee29f68b9628d48c28417b4795f0865052e371fd7563020c046c05c",
+      "exit_code": 0,
+      "film_grid": 161,
+      "h_over_c": 1.5,
+      "hybrid_version": 2,
+      "inputs_unchanged_during_run": true,
+      "linear_residual": 8.524470715076075e-15,
+      "physical_accuracy_tested": false,
+      "positive_total": true,
+      "query_completed": true,
+      "raw_reciprocity": 1.1470498491926068e-08,
+      "reduced11": [
+        [
+          213.09087668005435,
+          -5.731131693762202e-14,
+          -139.06477996680712,
+          -7.204273906836245e-13,
+          5.038261682550587e-12,
+          4.063858033333814e-14,
+          -41.52705304707842,
+          8.676329855071891,
+          1.605556373082041e-14,
+          21.255526549034514,
+          8.161172159247102e-15
+        ],
+        [
+          -5.731131693762202e-14,
+          188.37013593104646,
+          4.586384856556514e-13,
+          -7.282129225931092e-12,
+          -7.135827050447223e-13,
+          2.789998657405135e-13,
+          1.961451964808311e-14,
+          -1.1043258744534312e-13,
+          -40.762861079940436,
+          -1.6326346331619612e-13,
+          -21.816689095057804
+        ],
+        [
+          -139.06477996680712,
+          4.586384856556514e-13,
+          3904.1471506019457,
+          2.0364907556631018e-11,
+          -1.0149813719607903e-10,
+          -1.206151953798154e-12,
+          29.00217291611391,
+          -1001.2768228191012,
+          -6.173865957587582e-14,
+          -1359.2336083503455,
+          -1.2684197799770213e-13
+        ],
+        [
+          -7.204273906836245e-13,
+          -7.282129225931092e-12,
+          2.0364907556631018e-11,
+          422.34103265460567,
+          8.331197470989318e-13,
+          4.443931113302078,
+          1.6075393359972535e-13,
+          -5.200291817470112e-12,
+          3.3432494406309065e-12,
+          -7.160688707152441e-12,
+          -1.6484431730462354e-11
+        ],
+        [
+          5.038261682550587e-12,
+          -7.135827050447223e-13,
+          -1.0149813719607903e-10,
+          8.331197470989318e-13,
+          309.09404464167676,
+          8.51203826568315e-14,
+          -6.061554102473094e-13,
+          2.5554515237160702e-11,
+          1.2991125144589847e-13,
+          3.329794023343771e-11,
+          7.680902651147469e-14
+        ],
+        [
+          4.063858033333814e-14,
+          2.789998657405135e-13,
+          -1.206151953798154e-12,
+          4.443931113302078,
+          8.51203826568315e-14,
+          104.94301135206001,
+          -1.6133253094398715e-15,
+          3.185605296163512e-13,
+          1.7221405121662708e-13,
+          4.2517506341306173e-13,
+          1.3924844771688578e-12
+        ],
+        [
+          -41.52705304707842,
+          1.961451964808311e-14,
+          29.00217291611391,
+          1.6075393359972535e-13,
+          -6.061554102473094e-13,
+          -1.6133253094398715e-15,
+          144.99137934635476,
+          -3.172339057305562,
+          -7.691331690152398e-15,
+          -11.503379562368668,
+          -1.8103121948714256e-15
+        ],
+        [
+          8.676329855071891,
+          -1.1043258744534312e-13,
+          -1001.2768228191012,
+          -5.200291817470112e-12,
+          2.5554515237160702e-11,
+          3.185605296163512e-13,
+          -3.172339057305562,
+          343.89071513360165,
+          1.7363321988417234e-15,
+          348.4862076302747,
+          3.432111934348648e-14
+        ],
+        [
+          1.605556373082041e-14,
+          -40.762861079940436,
+          -6.173865957587582e-14,
+          3.3432494406309065e-12,
+          1.2991125144589847e-13,
+          1.7221405121662708e-13,
+          -7.691331690152398e-15,
+          1.7363321988417234e-15,
+          143.66382079378243,
+          2.3672145807343213e-14,
+          -0.9348113304050485
+        ],
+        [
+          21.255526549034514,
+          -1.6326346331619612e-13,
+          -1359.2336083503455,
+          -7.160688707152441e-12,
+          3.329794023343771e-11,
+          4.2517506341306173e-13,
+          -11.503379562368668,
+          348.4862076302747,
+          2.3672145807343213e-14,
+          499.92652106772084,
+          4.405665932926922e-14
+        ],
+        [
+          8.161172159247102e-15,
+          -21.816689095057804,
+          -1.2684197799770213e-13,
+          -1.6484431730462354e-11,
+          7.680902651147469e-14,
+          1.3924844771688578e-12,
+          -1.8103121948714256e-15,
+          3.432111934348648e-14,
+          -0.9348113304050485,
+          4.405665932926922e-14,
+          24.986384998206535
+        ]
+      ],
+      "reference_only": true,
+      "reference_overlay": {
+        "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+        "expected_L20_density_entries": 22844160,
+        "files": [
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/tools/slurry_generate_basis.cpp",
+            "base_sha256": "0c282293cf2b24f3ae7c5a19bfa19dee60264a53114745c3450e2cd1d3538a80",
+            "bound_replacements": 2,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_generate_basis.cpp",
+            "copy_sha256": "95996dd0727b9d297368888355058cc64e8d2fc0ff5aad41617913d73f2d0b4c",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_math.h",
+            "base_sha256": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
+            "bound_replacements": 1,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_math.h",
+            "copy_sha256": "3d0770ae4983e0555b2a22ea8361e532521da4c3686df45e067416d114db207f",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_provider.h",
+            "base_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "bound_replacements": 0,
+            "byte_identical": true,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_provider.h",
+            "copy_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "difference": "No changes"
+          }
+        ],
+        "generation_initial_overlay_identity": {
+          "base_production_fingerprint": "1979527f2d7ba11919fb1af226418aa88ecb617fbff6a129b7febdb2a6265c1a",
+          "overlay_fingerprint": "dd3fac02209cdddaf45d3e8d182247cbb4dcca3c2fc5d2cbe9645fd565927a1b"
+        },
+        "old_matrix_entry_limit": 16000000,
+        "overlay_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+        "overlay_fingerprint_derivation": "SHA256(json.dumps({base: base_production_fingerprint, files: {copy_path: copy_sha256}}, sort_keys=True).encode()) using standard Python JSON separators and stored relative paths.",
+        "physics_modified": false,
+        "production_files_modified": false,
+        "purpose": "Generate/load L20Nr128 reference at the single heldout gap h/c=.25 to qualify L16 reference convergence; product remains L12Nr96 and unchanged.",
+        "query_rebind_note": "Final production runtime-frame fix and unused residual-header removal changed aggregate fingerprint. All copied generator/math/provider bytes still exactly match their recorded production bases, with only specified capacity replacements; generation depends on no changed runtime-frame headers. Query will compile against this final base.",
+        "reference_matrix_entry_limit": 24000000,
+        "reference_only": true,
+        "schema": "reference_only_bound_override_v1"
+      },
+      "reference_overlay_manifest_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/reference_L20/provenance.json",
+      "reference_overlay_manifest_sha256": "804cfb15e74f2a417da43c36aaa248e2ee02994506f5af06754fa83a1eb4a7c8",
+      "schema_version": 1,
+      "source_degree": 20,
+      "source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "source_nphi": 256,
+      "source_rings": 128,
+      "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+    },
+    "product": {
+      "anchor_gaps": [
+        0.5,
+        1,
+        2.5
+      ],
+      "aspect_ratio": 10,
+      "axes": [
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ],
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ]
+      ],
+      "basis_coefficients_sha256": "c5f363fdd66111b4ef0ed3b212afe247443a54158f1c151fce079ff6f6bc4d83",
+      "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+      "basis_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+      "command": [
+        "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_current",
+        "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+        "1.5",
+        "161"
+      ],
+      "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "elapsed_seconds": 9.697093962999134,
+      "epsilon_over_c": 0,
+      "evaluated_path": "matched_provider",
+      "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_current",
+      "executable_sha256": "c7bc40ef0354362c29b61394e7749327a232b069273bdb427be3d8be93c58584",
+      "exit_code": 0,
+      "film_grid": 161,
+      "h_over_c": 1.5,
+      "hybrid_version": 2,
+      "inputs_unchanged_during_run": true,
+      "physical_accuracy_tested": false,
+      "positive_total": true,
+      "query_completed": true,
+      "reduced11": [
+        [
+          213.55985961239958,
+          1.5558954372024928e-13,
+          -144.73559257713387,
+          -1.59512644491187e-11,
+          5.226302387020015e-07,
+          -7.875054826015957e-13,
+          -41.765096393080974,
+          9.070707690440095,
+          -8.561483196669255e-14,
+          23.520208995719734,
+          -1.762879601309806e-14
+        ],
+        [
+          1.5558954372024928e-13,
+          188.63090104344894,
+          -3.53430533635231e-12,
+          -3.4006139130805705e-07,
+          1.4948259384010568e-13,
+          -1.6590628903743734e-07,
+          -4.047786060256123e-14,
+          8.322312610393196e-13,
+          -40.86477702464508,
+          1.2461103147327172e-12,
+          -21.607143503964927
+        ],
+        [
+          -144.73559257713387,
+          -3.53430533635231e-12,
+          4052.722207701479,
+          1.2730261163466106e-12,
+          -1.2945880650695061e-06,
+          2.6738239057458674e-11,
+          31.08580788168034,
+          -1020.450115990394,
+          1.6579860122403953e-12,
+          -1411.9002893265365,
+          1.0545233807654215e-13
+        ],
+        [
+          -1.59512644491187e-11,
+          -3.4006139130805705e-07,
+          1.2730261163466106e-12,
+          443.13601811945364,
+          6.079726294257703e-12,
+          4.954867135290495,
+          5.8061903934043495e-12,
+          2.5931685647261077e-12,
+          -1.459011561421703e-07,
+          -3.675137635413276e-12,
+          6.237946816296318e-08
+        ],
+        [
+          5.226302387020015e-07,
+          1.4948259384010568e-13,
+          -1.2945880650695061e-06,
+          6.079726294257703e-12,
+          326.838921258634,
+          5.570160896184777e-14,
+          -6.189228033606507e-07,
+          2.858922450339861e-07,
+          -1.5694718118498081e-13,
+          3.8343019153437746e-07,
+          -2.7587428476389486e-14
+        ],
+        [
+          -7.875054826015957e-13,
+          -1.6590628903743734e-07,
+          2.6738239057458674e-11,
+          4.954867135290495,
+          5.570160896184777e-14,
+          105.10274362803376,
+          2.9402878440590817e-13,
+          -5.800090783061787e-12,
+          1.518900301701899e-07,
+          -9.484309491246494e-12,
+          1.7901061389053422e-08
+        ],
+        [
+          -41.765096393080974,
+          -4.047786060256123e-14,
+          31.08580788168034,
+          5.8061903934043495e-12,
+          -6.189228033606507e-07,
+          2.9402878440590817e-13,
+          145.48059897271614,
+          -3.3105992933710087,
+          3.964496991881424e-14,
+          -12.283609408062738,
+          7.756190182645006e-15
+        ],
+        [
+          9.070707690440095,
+          8.322312610393196e-13,
+          -1020.450115990394,
+          2.5931685647261077e-12,
+          2.858922450339861e-07,
+          -5.800090783061787e-12,
+          -3.3105992933710087,
+          346.0241444821063,
+          -4.0297950027839997e-13,
+          355.2592809503497,
+          -2.3314139893799724e-14
+        ],
+        [
+          -8.561483196669255e-14,
+          -40.86477702464508,
+          1.6579860122403953e-12,
+          -1.459011561421703e-07,
+          -1.5694718118498081e-13,
+          1.518900301701899e-07,
+          3.964496991881424e-14,
+          -4.0297950027839997e-13,
+          144.11935990664392,
+          -5.862971607942118e-13,
+          -0.9839842045360054
+        ],
+        [
+          23.520208995719734,
+          1.2461103147327172e-12,
+          -1411.9002893265365,
+          -3.675137635413276e-12,
+          3.8343019153437746e-07,
+          -9.484309491246494e-12,
+          -12.283609408062738,
+          355.2592809503497,
+          -5.862971607942118e-13,
+          518.6324864718305,
+          -3.689576371994583e-14
+        ],
+        [
+          -1.762879601309806e-14,
+          -21.607143503964927,
+          1.0545233807654215e-13,
+          6.237946816296318e-08,
+          -2.7587428476389486e-14,
+          1.7901061389053422e-08,
+          7.756190182645006e-15,
+          -2.3314139893799724e-14,
+          -0.9839842045360054,
+          -3.689576371994583e-14,
+          24.985409657323764
+        ]
+      ],
+      "schema_version": 1,
+      "source_degree": 12,
+      "source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "source_nphi": 128,
+      "source_rings": 96,
+      "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+    },
+    "quadrature": {
+      "anchor_gaps": [
+        0.5,
+        1,
+        2.5
+      ],
+      "aspect_ratio": 10,
+      "axes": [
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ],
+        [
+          0.025811286645980556,
+          0,
+          0.9996668332407947
+        ]
+      ],
+      "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+      "basis_coefficients_sha256": "6d3ca6c9ee1309722fffae14e158a1f63593a4f39d818ac9882290055e2dbf8c",
+      "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L20_nr128_hybrid_v2_phi512.ssb",
+      "basis_sha256": "61559bd254b42086a0b85162767837ed43e3407a59e6d18ea4327ca2d585582e",
+      "command": [
+        "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+        "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L20_nr128_hybrid_v2_phi512.ssb",
+        "1.5",
+        "161",
+        "direct_basis"
+      ],
+      "compiled_source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "elapsed_seconds": 69.39617318299861,
+      "epsilon_over_c": 0,
+      "evaluated_path": "direct_basis",
+      "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_reference",
+      "executable_sha256": "0855435cbee29f68b9628d48c28417b4795f0865052e371fd7563020c046c05c",
+      "exit_code": 0,
+      "film_grid": 161,
+      "h_over_c": 1.5,
+      "hybrid_version": 2,
+      "inputs_unchanged_during_run": true,
+      "linear_residual": 6.7872344922744615e-15,
+      "physical_accuracy_tested": false,
+      "positive_total": true,
+      "query_completed": true,
+      "raw_reciprocity": 1.1470498112856505e-08,
+      "reduced11": [
+        [
+          213.0908766800544,
+          -6.884562056690926e-14,
+          -139.0647799668087,
+          -8.38277971114166e-13,
+          5.7082339766455414e-12,
+          5.3014736477976716e-14,
+          -41.52705304707844,
+          8.676329855072307,
+          9.530601440997215e-15,
+          21.255526549035096,
+          6.621117246592197e-15
+        ],
+        [
+          -6.884562056690926e-14,
+          188.37013593104643,
+          2.0028954552895047e-12,
+          -7.403431147527945e-12,
+          -5.905458704557266e-13,
+          2.64869650666248e-13,
+          2.4951551516878495e-14,
+          -5.326389795265975e-13,
+          -40.76286107994043,
+          -7.06380313078546e-13,
+          -21.816689095057807
+        ],
+        [
+          -139.0647799668087,
+          2.0028954552895047e-12,
+          3904.147150601966,
+          2.1978081056901317e-11,
+          -1.1267011036731628e-10,
+          -1.5417655854885792e-12,
+          29.002172916114457,
+          -1001.2768228191063,
+          -4.5135437134179136e-13,
+          -1359.2336083503526,
+          -1.107750725038143e-13
+        ],
+        [
+          -8.38277971114166e-13,
+          -7.403431147527945e-12,
+          2.1978081056901317e-11,
+          422.3410326546076,
+          -4.368185738914545e-13,
+          4.443931113301942,
+          2.629926363536633e-13,
+          -5.693072879207877e-12,
+          3.457385448023147e-12,
+          -7.767463766688256e-12,
+          -1.6564407996350573e-11
+        ],
+        [
+          5.7082339766455414e-12,
+          -5.905458704557266e-13,
+          -1.1267011036731628e-10,
+          -4.368185738914545e-13,
+          309.09404464167875,
+          8.093285170437138e-14,
+          -8.793367948487555e-13,
+          2.8598937938174735e-11,
+          1.3733359616246654e-13,
+          3.728924433717238e-11,
+          5.01138822749766e-14
+        ],
+        [
+          5.3014736477976716e-14,
+          2.64869650666248e-13,
+          -1.5417655854885792e-12,
+          4.443931113301942,
+          8.093285170437138e-14,
+          104.94301135205998,
+          -7.051463881688257e-17,
+          4.0785186278256744e-13,
+          1.7546868760146156e-13,
+          5.421802505120192e-13,
+          1.3873087548685017e-12
+        ],
+        [
+          -41.52705304707844,
+          2.4951551516878495e-14,
+          29.002172916114457,
+          2.629926363536633e-13,
+          -8.793367948487555e-13,
+          -7.051463881688257e-17,
+          144.9913793463548,
+          -3.1723390573056927,
+          -9.454141000131924e-15,
+          -11.503379562368831,
+          -1.5636354122300385e-15
+        ],
+        [
+          8.676329855072307,
+          -5.326389795265975e-13,
+          -1001.2768228191063,
+          -5.693072879207877e-12,
+          2.8598937938174735e-11,
+          4.0785186278256744e-13,
+          -3.1723390573056927,
+          343.89071513360295,
+          1.1500661795920564e-13,
+          348.48620763027645,
+          3.037315629000911e-14
+        ],
+        [
+          9.530601440997215e-15,
+          -40.76286107994043,
+          -4.5135437134179136e-13,
+          3.457385448023147e-12,
+          1.3733359616246654e-13,
+          1.7546868760146156e-13,
+          -9.454141000131924e-15,
+          1.1500661795920564e-13,
+          143.66382079378246,
+          1.5910676966681477e-13,
+          -0.9348113304050463
+        ],
+        [
+          21.255526549035096,
+          -7.06380313078546e-13,
+          -1359.2336083503526,
+          -7.767463766688256e-12,
+          3.728924433717238e-11,
+          5.421802505120192e-13,
+          -11.503379562368831,
+          348.48620763027645,
+          1.5910676966681477e-13,
+          499.92652106772346,
+          3.8744835964459766e-14
+        ],
+        [
+          6.621117246592197e-15,
+          -21.816689095057807,
+          -1.107750725038143e-13,
+          -1.6564407996350573e-11,
+          5.01138822749766e-14,
+          1.3873087548685017e-12,
+          -1.5636354122300385e-15,
+          3.037315629000911e-14,
+          -0.9348113304050463,
+          3.8744835964459766e-14,
+          24.986384998206493
+        ]
+      ],
+      "reference_only": true,
+      "reference_overlay": {
+        "base_production_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+        "expected_L20_density_entries": 22844160,
+        "files": [
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/tools/slurry_generate_basis.cpp",
+            "base_sha256": "0c282293cf2b24f3ae7c5a19bfa19dee60264a53114745c3450e2cd1d3538a80",
+            "bound_replacements": 2,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_generate_basis.cpp",
+            "copy_sha256": "95996dd0727b9d297368888355058cc64e8d2fc0ff5aad41617913d73f2d0b4c",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_math.h",
+            "base_sha256": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
+            "bound_replacements": 1,
+            "byte_identical": false,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_math.h",
+            "copy_sha256": "3d0770ae4983e0555b2a22ea8361e532521da4c3686df45e067416d114db207f",
+            "difference": "Only matrix-entry allocation guard16M\u219224M"
+          },
+          {
+            "base_path": "ar10_spd_trial/lammps_slurry/src/slurry_scattering_provider.h",
+            "base_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "bound_replacements": 0,
+            "byte_identical": true,
+            "copy_path": "source_spd_check/reference_L20/slurry_scattering_provider.h",
+            "copy_sha256": "629d437f6518350d9a1acf1060f696ab85ca96dbc7413febfc72424f05eb7d29",
+            "difference": "No changes"
+          }
+        ],
+        "generation_initial_overlay_identity": {
+          "base_production_fingerprint": "1979527f2d7ba11919fb1af226418aa88ecb617fbff6a129b7febdb2a6265c1a",
+          "overlay_fingerprint": "dd3fac02209cdddaf45d3e8d182247cbb4dcca3c2fc5d2cbe9645fd565927a1b"
+        },
+        "old_matrix_entry_limit": 16000000,
+        "overlay_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+        "overlay_fingerprint_derivation": "SHA256(json.dumps({base: base_production_fingerprint, files: {copy_path: copy_sha256}}, sort_keys=True).encode()) using standard Python JSON separators and stored relative paths.",
+        "physics_modified": false,
+        "production_files_modified": false,
+        "purpose": "Generate/load L20Nr128 reference at the single heldout gap h/c=.25 to qualify L16 reference convergence; product remains L12Nr96 and unchanged.",
+        "query_rebind_note": "Final production runtime-frame fix and unused residual-header removal changed aggregate fingerprint. All copied generator/math/provider bytes still exactly match their recorded production bases, with only specified capacity replacements; generation depends on no changed runtime-frame headers. Query will compile against this final base.",
+        "reference_matrix_entry_limit": 24000000,
+        "reference_only": true,
+        "schema": "reference_only_bound_override_v1"
+      },
+      "reference_overlay_manifest_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/reference_L20/provenance.json",
+      "reference_overlay_manifest_sha256": "804cfb15e74f2a417da43c36aaa248e2ee02994506f5af06754fa83a1eb4a7c8",
+      "schema_version": 1,
+      "source_degree": 20,
+      "source_fingerprint": "d088eba9406534d3fb2988df09b6937984313bec69d89d8b05748355753b37d3",
+      "source_nphi": 512,
+      "source_rings": 128,
+      "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+    }
+  },
+  "reference_limit": 0.005,
+  "reference_qualified": true,
+  "reproduction": {
+    "comparison_replay_command": "python3 validation_basis/compare_provider_queries.py --replay-report validation_basis/ar10_current_h150_qualification.json --output /tmp/replayed_ar10_current_h150_qualification.json",
+    "comparison_replay_scope": "Recomputes the same generalized-energy gates from embedded bound query matrices; no new physical calculation.",
+    "optional_offline_dependencies": "NumPy/SciPy for comparison only; overlay preparation and query wrapper use Python standard library.",
+    "reference_overlay_command": "python3 validation_basis/prepare_reference_overlay.py",
+    "reference_recalculation": "The overlay factory prints fingerprint-bound compiler commands and complete L16/L20 direct-basis generation commands. It changes only an audit allocation guard in copies. run_matched_query.py verifies the generated manifest for direct_basis queries. The production matched-provider query must use the unchanged production loader.",
+    "working_directory": "Extracted project root"
+  },
+  "schema_version": 1,
+  "scope": "One pose. Direct-source order and quadrature convergence, followed by actual matched-provider accuracy. Not an independent physical reference, interpolation test, or bulk validation."
+}

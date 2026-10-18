@@ -1,0 +1,125 @@
+{
+  "name": "eight_connected_stack",
+  "purpose": "Actual LAMMPS plugin integration/stability smoke only",
+  "note": "Eight aligned tilted spheroids with initial nearest surface gap6nm; range0.5*a gives a connected network with several neighbors per particle.",
+  "aspect_ratio": 10,
+  "semiaxes_m": [
+    1.5e-06,
+    1.5e-06,
+    1.5e-07
+  ],
+  "box_m": [
+    1e-05,
+    1e-05,
+    1e-05
+  ],
+  "particles": [
+    {
+      "position_m": [
+        -6.425999999999999e-07,
+        -3.2129999999999995e-07,
+        -7.942748579679453e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        -4.589999999999999e-07,
+        -2.2949999999999996e-07,
+        -5.673391842628181e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        -2.754e-07,
+        -1.377e-07,
+        -3.404035105576909e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        -9.179999999999999e-08,
+        -4.5899999999999994e-08,
+        -1.1346783685256363e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        9.179999999999999e-08,
+        4.5899999999999994e-08,
+        1.1346783685256363e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        2.754e-07,
+        1.377e-07,
+        3.404035105576909e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        4.589999999999999e-07,
+        2.2949999999999996e-07,
+        5.673391842628181e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    },
+    {
+      "position_m": [
+        6.425999999999999e-07,
+        3.2129999999999995e-07,
+        7.942748579679453e-07
+      ],
+      "director": [
+        0.6,
+        0.3,
+        0.7416198487095663
+      ]
+    }
+  ],
+  "shear_rate_per_s": 100.0,
+  "timestep_s": 1e-06,
+  "steps": 20,
+  "phi": 0.011309733552923253,
+  "mpi": false,
+  "not_validated": [
+    "steady-state viscosity",
+    "physical source accuracy",
+    "production table accuracy",
+    "MPI scaling"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "builds": [
+    {
+      "command": [
+        "g++",
+        "-O1",
+        "-std=c++17",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DSLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c\"",
+        "-I/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/src",
+        "-I/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/vendor/eigen3",
+        "lammps_slurry/tests/query_matched_source.cpp",
+        "-o",
+        "validation_basis/query_source_v3"
+      ],
+      "elapsed_seconds": 41.42914659900089,
+      "executable_sha256": "2a151b49c94ece5479f816f383522e8f7592547755d6c5d561db27565471c6f1",
+      "source_sha256": "ae1165056acc100ee674f5f3f99c7d232599a311ff5edc50910c498fa9add54f"
+    },
+    {
+      "command": [
+        "g++",
+        "-O1",
+        "-std=c++17",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DSLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c\"",
+        "-I/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/src",
+        "-I/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/vendor/eigen3",
+        "lammps_slurry/tests/test_basis_physical.cpp",
+        "-o",
+        "validation_basis/basis_physical_probe_v3"
+      ],
+      "elapsed_seconds": 61.30451436700059,
+      "executable_sha256": "169fc1407d07d5febcb6ab56db495899aea18d608a74cf258c7f3951b1f436ca",
+      "source_sha256": "d777cff7f9b799de173130e591f30a488488030ede1a9b2707be0bb6c607ab30"
+    }
+  ],
+  "source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c"
+}

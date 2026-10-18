@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "scope": "Synthetic table format and join interpolation only; no physical source validation",
+  "v2_binary_roundtrip": true,
+  "v1_stencils_unchanged": true,
+  "joins_checked": [
+    0.5,
+    1,
+    2.5
+  ],
+  "query_count": 19,
+  "max_piecewise_interpolation_error": 1.4432899320127035e-15,
+  "malformed_join_cases_rejected": 4,
+  "build_command": "g++ -O1 -std=c++17 -DEIGEN_DONT_PARALLELIZE -I lammps_slurry/src -I lammps_slurry/vendor/eigen3 validation_basis/test_spd_table_format.cpp -o /tmp/test_spd_table_format"
+}

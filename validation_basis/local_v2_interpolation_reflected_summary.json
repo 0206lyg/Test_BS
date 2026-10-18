@@ -1,0 +1,107 @@
+{
+  "source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+  "basis_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+  "harness_sha256": "368aab0a73c3d3d31ab9219e402d8640196863d050104bc19f7d25e159373504",
+  "pose": {
+    "theta_i": 0.073,
+    "theta_j": 0.137,
+    "phi": 0.79,
+    "h_over_c": 0.02,
+    "epsilon_over_c": 0.001
+  },
+  "grid": {
+    "theta": 34,
+    "phi": 48,
+    "gap": 30,
+    "joins": [
+      0.5,
+      1,
+      2.5
+    ]
+  },
+  "source_film_grid": 161,
+  "check_film_grid": 321,
+  "scope": "One original3nm pose; full34x48x30 resolution, populated complete required3072-node local stencil; actual Provider interpolation compared with same direct source. No full table generation, independent physics or bulk-rheology claim.",
+  "status": "passed",
+  "table_written": false,
+  "interpolation_gate": "passed",
+  "source_orientations": 400,
+  "lookup_orientation_rows": 768,
+  "populated_nodes": 3072,
+  "threads": 8,
+  "reflection": "Production-identical reflection of total matrix before target conditioning/log; direct mirrored-query check required at1e-8",
+  "particle_exchange_used": false,
+  "started_utc": "2026-10-17T23:31:36Z",
+  "binary_sha256": "991f620c9a400004ab7f9114ba99d4b66a63778cc2fbe3656b0b6af4cf2ea285",
+  "passed": true,
+  "exit_code": 0,
+  "completed_utc": "2026-10-17T23:43:51Z",
+  "compiled_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "current_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "inputs_unchanged": true,
+  "basis_packaged_path": "lammps_slurry/models/ar10_regenerated.ssb",
+  "harness_path": "validation_basis/local_v2_interpolation_reflected.cpp",
+  "source_query_convergence": {
+    "status": "PASS",
+    "film_grid": 161.0,
+    "check_grid": 321.0,
+    "all11_error": 0.0011589182148961097,
+    "free_strain_error": 8.964107163489388e-05,
+    "actual_h": 0.02,
+    "epsilon": 0.001
+  },
+  "reflection_check": {
+    "status": "PASS",
+    "all11_error": 4.188538405003328e-12,
+    "free_strain_error": 1.358624324154789e-11,
+    "limit": 1e-08
+  },
+  "interpolation": {
+    "status": "PASS",
+    "all11_error": 0.0005620056310633448,
+    "free_strain_error": 0.0002488604539874206,
+    "reciprocity": 0.0,
+    "min_normalized_source_eigenvalue": 0.5313909789243579,
+    "total_seconds": 675.151835965,
+    "film_grid": 161.0,
+    "reflection_source_jobs": 400.0,
+    "table_written": 0.0,
+    "populated_nodes": 3072.0,
+    "full_table_nodes": 1664640.0,
+    "independent_physics": "NOT_TESTED",
+    "other_poses": "NOT_RUN"
+  },
+  "limits": {
+    "interpolation_all11": 0.01,
+    "interpolation_force_free_strain": 0.01,
+    "reciprocity": 1e-12,
+    "reflection": 1e-08,
+    "source_film_convergence_used": 0.01
+  },
+  "independent_physics_tested": false,
+  "full_table_tested": false,
+  "other_poses_run": false,
+  "compile_argv": [
+    "g++",
+    "-std=c++17",
+    "-O1",
+    "-fopenmp",
+    "-DEIGEN_DONT_PARALLELIZE",
+    "-DSLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611\"",
+    "-I",
+    "lammps_slurry/src",
+    "-I",
+    "lammps_slurry/vendor/eigen3",
+    "validation_basis/local_v2_interpolation_reflected.cpp",
+    "-o",
+    "validation_basis/local_v2_interpolation_reflected"
+  ],
+  "run_argv": [
+    "validation_basis/local_v2_interpolation_reflected",
+    "lammps_slurry/models/ar10_regenerated.ssb",
+    "8",
+    "161",
+    "321"
+  ]
+}

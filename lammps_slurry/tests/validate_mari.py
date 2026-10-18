@@ -133,9 +133,7 @@ def run_case(root, case, args, ranks):
                 raise AssertionError(f"{case['name']}: missing/nonfinite {key} at {step}")
         rheology.assert_number(row["sigma_xy_Pa"], sum(row[k] for k in STRESS_COMPONENTS),
             f"{case['name']} stress sum", relative=1e-9, absolute=1e-12)
-        for key, value in row.items():
-            if "residual" in key and (not math.isfinite(value) or value>1.01e-10):
-                raise AssertionError(f"{case['name']}: {key}={value}")
+        rheology.check_force_residual(row, case["name"])
         if row["coulomb_violation_N"]>1e-18:
             raise AssertionError(f"{case['name']}: Coulomb bound violation")
         if case["shear"]:

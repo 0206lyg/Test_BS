@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "scope": "Actual Provider gap_stencil and grid identity only; no physical source solves",
+  "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "theta_nodes_identical": true,
+  "phi_nodes_identical": true,
+  "weights_bitwise_identical": true,
+  "theta_count": 34,
+  "phi_count": 48,
+  "v2_gap_count": 30,
+  "v3_gap_count": 29,
+  "actual_gap_over_c": 0.02,
+  "epsilon_over_c": 0.001,
+  "effective_gap_over_c": 0.021,
+  "indices": [
+    7,
+    8,
+    9,
+    10
+  ],
+  "gap_nodes": [
+    0.011313708498984762,
+    0.016,
+    0.022627416997969524,
+    0.032
+  ],
+  "weights": [
+    -0.03422934259977016,
+    0.23356167989456597,
+    0.8509298224526574,
+    -0.0502621597474532
+  ],
+  "source_fingerprint_after_compile": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "harness_sha256": "5b431632f4e97fea5df5110ae40f1dde3045b304843880da3675272ed013c288",
+  "executable_sha256": "7625c8485ca2d8aef42b4dead8a96271b019c88c50ac0ed7f3adbfdb1c5d767f",
+  "compile_seconds": 46.22772173700105,
+  "build_command": [
+    "g++",
+    "-O1",
+    "-std=c++17",
+    "-DEIGEN_DONT_PARALLELIZE",
+    "-fopenmp",
+    "-DSLURRY_NUMERICAL_SOURCE_FINGERPRINT=\"f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c\"",
+    "-I",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/src",
+    "-I",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/vendor/eigen3",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/precompute_v3_stencil_check.cpp",
+    "-o",
+    "/tmp/slurry_precompute_v3_checked"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "ar": 20.0,
+  "basis_sha256": "fd2eb5acb71460c0af702f99f0da06ebcb6fcc8176fc18cc8eab262c70bf2867",
+  "commands": [
+    [
+      "/home/lee6456/slurry/build/lammps-slurry/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "8",
+      "--source-rings",
+      "96",
+      "--source-phi",
+      "128",
+      "--fit-phi",
+      "4096",
+      "--check-phi",
+      "8192",
+      "--output",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-77gpg4na/far.ssb",
+      "--report",
+      "/home/lee6456/slurry/lammps_slurry/models/ar20_regenerated.ssb.far-generation.json"
+    ],
+    [
+      "/home/lee6456/slurry/build/lammps-slurry/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "12",
+      "--source-rings",
+      "96",
+      "--source-phi",
+      "128",
+      "--fit-phi",
+      "4096",
+      "--check-phi",
+      "8192",
+      "--output",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-77gpg4na/matched.ssb",
+      "--report",
+      "/home/lee6456/slurry/lammps_slurry/models/ar20_regenerated.ssb.near-generation.json",
+      "--far-basis",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-77gpg4na/far.ssb",
+      "--hybrid-version",
+      "3",
+      "--anchor-gaps",
+      "0.5,1"
+    ]
+  ],
+  "degrees": {
+    "far": 8,
+    "near": 12
+  },
+  "generation_reports": {
+    "far": "37b93189627dea0c44c3dbac69089158974f5fbc0bc6513b102fef200af7a24b",
+    "near": "ca85c3c4f86b7553f66b9381df392290296c305e5b1974848832535a0ddd132a"
+  },
+  "generator_sha256": "1d08f8d1d08c7299ab34340ca8f45989ea73d1a9825680b16bb538ced9aaf74e",
+  "geometry": "equal_size_oblate",
+  "schema": 1,
+  "source_anchors_over_c": [
+    0.5,
+    1.0
+  ],
+  "source_code_sha256": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "source_format": "SLURRY_HYBRID_V3",
+  "source_gate": {
+    "status": "not_run"
+  },
+  "source_phi": 128,
+  "source_policy": {
+    "active_basis_slot": "near",
+    "far_slot_used": false,
+    "finite_gap": "direct near basis at the actual effective gap for heff/c >= 0.5",
+    "near_contact": "same first residual segment as V2 below heff/c = 0.5"
+  },
+  "source_rings": 96
+}

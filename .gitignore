@@ -1,31 +1,45 @@
-
-/*
-
-!/.gitignore
-
-!/README.md
-
-!/release.json
-
-!/build_slurry_cpu.sbatch
-
-!/lammps_slurry/
-
+/lammps/
+/build/
+/runs/
 __pycache__/
-
 *.pyc
-
 *.o
-
 *.so
-
 *.so.*
-
+*.log
 *.out
 
-*.log
 
-/lammps_slurry/build/
 
-/lammps_slurry/tests/reports/
+# Current source and required validation helpers
+
+!/RESULT.json
+
+!/SOURCE_MANIFEST.json
+
+!/validation_basis/
+
+!/validation_finite_gap/
+
+
+
+# Generated bases, resistance tables and checkpoints
+
+.fast_cache/
+
+*.checkpoints/
+
+.basis-build-*/
+
+.fast-build-*/
+
+*.ssb
+
+!/lammps_slurry/models/ar10_matched.ssb
+
+*.sft
+
+*.spt
+
+*.a
 

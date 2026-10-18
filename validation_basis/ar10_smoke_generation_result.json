@@ -1,0 +1,32 @@
+{
+  "scope": "Complete coarse global table for engineering integration only; physical held-out qualification pending",
+  "physics_ready": false,
+  "command": [
+    "/tmp/slurry_precompute_checkpoint_v2",
+    "--basis",
+    "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+    "--output",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/ar10_smoke.spt",
+    "--ar",
+    "10",
+    "--epsilon-over-c",
+    ".001",
+    "--range",
+    ".5",
+    "--threads",
+    "4",
+    "--phi-nodes",
+    "8",
+    "--film-grid",
+    "161",
+    "--smoke",
+    "1",
+    "--checkpoint-dir",
+    "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/ar10_smoke.checkpoints",
+    "--source-fingerprint",
+    "1979527f2d7ba11919fb1af226418aa88ecb617fbff6a129b7febdb2a6265c1a"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 175.78476501399928,
+  "max_rss_kib": 714872
+}

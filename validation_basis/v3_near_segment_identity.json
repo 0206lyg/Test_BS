@@ -1,0 +1,519 @@
+{
+  "actual_query": {
+    "angles": [
+      0.073,
+      0.137,
+      0.79
+    ],
+    "epsilon_over_c": 0.001,
+    "exact_matrix_equality": true,
+    "film_grid": 161,
+    "h_over_c": 0.02,
+    "maximum_absolute_total11_difference": 0.0,
+    "queries": [
+      {
+        "data": {
+          "anchor_gaps": [
+            0.5,
+            1,
+            2.5
+          ],
+          "aspect_ratio": 10,
+          "axes": [
+            [
+              0.07293518110673816,
+              0,
+              0.9973366830498752
+            ],
+            [
+              0.09612545206380527,
+              0.09701425571450989,
+              0.9906301689599851
+            ]
+          ],
+          "basis_coefficients_sha256": "c5f363fdd66111b4ef0ed3b212afe247443a54158f1c151fce079ff6f6bc4d83",
+          "basis_path": "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+          "basis_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+          "command": [
+            "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_v3",
+            "/workspace/scratch/b72f2fb4bee2/source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+            "0.02",
+            "161",
+            "matched_provider",
+            "0.001",
+            "0.072999999999999995",
+            "0.13700000000000001",
+            "0.79000000000000004"
+          ],
+          "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+          "elapsed_seconds": 15.809114924999449,
+          "epsilon_over_c": 0.001,
+          "evaluated_path": "matched_provider",
+          "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_v3",
+          "executable_sha256": "2a151b49c94ece5479f816f383522e8f7592547755d6c5d561db27565471c6f1",
+          "exit_code": 0,
+          "film_grid": 161,
+          "h_over_c": 0.02,
+          "hybrid_version": 2,
+          "inputs_unchanged_during_run": true,
+          "matching_policy": "serialized_anchor_matching",
+          "physical_accuracy_tested": false,
+          "positive_total": true,
+          "query_completed": true,
+          "reduced11": [
+            [
+              571.6602452852708,
+              42.94264226253746,
+              -842.0088182713714,
+              -22.089357434288807,
+              17.707430480345735,
+              77.28084993334463,
+              -381.9554613046072,
+              -24.534664245872648,
+              -215.0761481352932,
+              746.0613218174523,
+              334.41936081603575
+            ],
+            [
+              42.94264226253746,
+              526.4711790868075,
+              18.322236936703792,
+              -127.1630854124642,
+              41.556188671062486,
+              2.498018833709423,
+              164.87624733631444,
+              -121.29100525395783,
+              -387.1628609988629,
+              -16.18099662275374,
+              65.1898061499707
+            ],
+            [
+              -842.0088182713714,
+              18.322236936703792,
+              340640.115934594,
+              -12016.96641607317,
+              2937.8740731881494,
+              -19.25926658629292,
+              675.5879544758717,
+              -81494.99536450158,
+              306.39137493027323,
+              -275131.492570994,
+              -135819.1074499554
+            ],
+            [
+              -22.089357434288807,
+              -127.1630854124642,
+              -12016.96641607317,
+              3540.393746637953,
+              815.6432154527669,
+              29.817265033496753,
+              -25.11183302736083,
+              2922.5485895158854,
+              114.23579691155248,
+              9690.432560569876,
+              4762.85527475812
+            ],
+            [
+              17.707430480345735,
+              41.556188671062486,
+              2937.8740731881494,
+              815.6432154527669,
+              1843.9605799506326,
+              12.97366735912366,
+              5.081135972009344,
+              -723.601140467176,
+              -36.33594359724342,
+              -2369.2205473095273,
+              -1163.0967115990768
+            ],
+            [
+              77.28084993334463,
+              2.498018833709423,
+              -19.25926658629292,
+              29.817265033496753,
+              12.97366735912366,
+              111.44787828660135,
+              -44.99271124752188,
+              -18.255618177771353,
+              -19.74495218420649,
+              12.373314070093404,
+              5.086110410013431
+            ],
+            [
+              -381.9554613046072,
+              164.87624733631444,
+              675.5879544758717,
+              -25.11183302736083,
+              5.081135972009344,
+              -44.99271124752188,
+              508.5394750657816,
+              -31.606325699900026,
+              20.82702434202265,
+              -619.8343623622674,
+              -234.68284654935533
+            ],
+            [
+              -24.534664245872648,
+              -121.29100525395783,
+              -81494.99536450158,
+              2922.5485895158854,
+              -723.601140467176,
+              -18.255618177771353,
+              -31.606325699900026,
+              19700.549782733513,
+              103.26934269492335,
+              65776.31887960258,
+              32468.95781148737
+            ],
+            [
+              -215.0761481352932,
+              -387.1628609988629,
+              306.39137493027323,
+              114.23579691155248,
+              -36.33594359724342,
+              -19.74495218420649,
+              20.82702434202265,
+              103.26934269492335,
+              533.6031443308384,
+              -288.6795076120404,
+              -198.35342094222113
+            ],
+            [
+              746.0613218174523,
+              -16.18099662275374,
+              -275131.492570994,
+              9690.432560569876,
+              -2369.2205473095273,
+              12.373314070093404,
+              -619.8343623622674,
+              65776.31887960258,
+              -288.6795076120404,
+              222262.27435953225,
+              109702.38872131055
+            ],
+            [
+              334.41936081603575,
+              65.1898061499707,
+              -135819.1074499554,
+              4762.85527475812,
+              -1163.0967115990768,
+              5.086110410013431,
+              -234.68284654935533,
+              32468.95781148737,
+              -198.35342094222113,
+              109702.38872131055,
+              54192.346804441935
+            ]
+          ],
+          "schema_version": 1,
+          "source_degree": 12,
+          "source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+          "source_nphi": 128,
+          "source_rings": 96,
+          "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+        },
+        "filename": "ar10_v3_source_old_policy_h002.json",
+        "sha256": "3735a60e0b1d6a3eaf460b2382a6c7b9e7f8638da56596f69be8c715457c4912"
+      },
+      {
+        "data": {
+          "anchor_gaps": [
+            0.5,
+            1
+          ],
+          "aspect_ratio": 10,
+          "axes": [
+            [
+              0.07293518110673816,
+              0,
+              0.9973366830498752
+            ],
+            [
+              0.09612545206380527,
+              0.09701425571450989,
+              0.9906301689599851
+            ]
+          ],
+          "basis_coefficients_sha256": "59de710c7da1e92ba1d75f79f3934c83297ccc736a416f531c41f51f6fd5359e",
+          "basis_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/models/ar10_regenerated.ssb",
+          "basis_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6",
+          "command": [
+            "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_v3",
+            "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/lammps_slurry/models/ar10_regenerated.ssb",
+            "0.02",
+            "161",
+            "matched_provider",
+            "0.001",
+            "0.072999999999999995",
+            "0.13700000000000001",
+            "0.79000000000000004"
+          ],
+          "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+          "elapsed_seconds": 14.749161247998927,
+          "epsilon_over_c": 0.001,
+          "evaluated_path": "matched_provider",
+          "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/query_source_v3",
+          "executable_sha256": "2a151b49c94ece5479f816f383522e8f7592547755d6c5d561db27565471c6f1",
+          "exit_code": 0,
+          "film_grid": 161,
+          "h_over_c": 0.02,
+          "hybrid_version": 3,
+          "inputs_unchanged_during_run": true,
+          "matching_policy": "direct_near_at_heff_ge_0.5; unchanged_first_film_segment_below_0.5",
+          "physical_accuracy_tested": false,
+          "positive_total": true,
+          "query_completed": true,
+          "reduced11": [
+            [
+              571.6602452852708,
+              42.94264226253746,
+              -842.0088182713714,
+              -22.089357434288807,
+              17.707430480345735,
+              77.28084993334463,
+              -381.9554613046072,
+              -24.534664245872648,
+              -215.0761481352932,
+              746.0613218174523,
+              334.41936081603575
+            ],
+            [
+              42.94264226253746,
+              526.4711790868075,
+              18.322236936703792,
+              -127.1630854124642,
+              41.556188671062486,
+              2.498018833709423,
+              164.87624733631444,
+              -121.29100525395783,
+              -387.1628609988629,
+              -16.18099662275374,
+              65.1898061499707
+            ],
+            [
+              -842.0088182713714,
+              18.322236936703792,
+              340640.115934594,
+              -12016.96641607317,
+              2937.8740731881494,
+              -19.25926658629292,
+              675.5879544758717,
+              -81494.99536450158,
+              306.39137493027323,
+              -275131.492570994,
+              -135819.1074499554
+            ],
+            [
+              -22.089357434288807,
+              -127.1630854124642,
+              -12016.96641607317,
+              3540.393746637953,
+              815.6432154527669,
+              29.817265033496753,
+              -25.11183302736083,
+              2922.5485895158854,
+              114.23579691155248,
+              9690.432560569876,
+              4762.85527475812
+            ],
+            [
+              17.707430480345735,
+              41.556188671062486,
+              2937.8740731881494,
+              815.6432154527669,
+              1843.9605799506326,
+              12.97366735912366,
+              5.081135972009344,
+              -723.601140467176,
+              -36.33594359724342,
+              -2369.2205473095273,
+              -1163.0967115990768
+            ],
+            [
+              77.28084993334463,
+              2.498018833709423,
+              -19.25926658629292,
+              29.817265033496753,
+              12.97366735912366,
+              111.44787828660135,
+              -44.99271124752188,
+              -18.255618177771353,
+              -19.74495218420649,
+              12.373314070093404,
+              5.086110410013431
+            ],
+            [
+              -381.9554613046072,
+              164.87624733631444,
+              675.5879544758717,
+              -25.11183302736083,
+              5.081135972009344,
+              -44.99271124752188,
+              508.5394750657816,
+              -31.606325699900026,
+              20.82702434202265,
+              -619.8343623622674,
+              -234.68284654935533
+            ],
+            [
+              -24.534664245872648,
+              -121.29100525395783,
+              -81494.99536450158,
+              2922.5485895158854,
+              -723.601140467176,
+              -18.255618177771353,
+              -31.606325699900026,
+              19700.549782733513,
+              103.26934269492335,
+              65776.31887960258,
+              32468.95781148737
+            ],
+            [
+              -215.0761481352932,
+              -387.1628609988629,
+              306.39137493027323,
+              114.23579691155248,
+              -36.33594359724342,
+              -19.74495218420649,
+              20.82702434202265,
+              103.26934269492335,
+              533.6031443308384,
+              -288.6795076120404,
+              -198.35342094222113
+            ],
+            [
+              746.0613218174523,
+              -16.18099662275374,
+              -275131.492570994,
+              9690.432560569876,
+              -2369.2205473095273,
+              12.373314070093404,
+              -619.8343623622674,
+              65776.31887960258,
+              -288.6795076120404,
+              222262.27435953225,
+              109702.38872131055
+            ],
+            [
+              334.41936081603575,
+              65.1898061499707,
+              -135819.1074499554,
+              4762.85527475812,
+              -1163.0967115990768,
+              5.086110410013431,
+              -234.68284654935533,
+              32468.95781148737,
+              -198.35342094222113,
+              109702.38872131055,
+              54192.346804441935
+            ]
+          ],
+          "schema_version": 1,
+          "source_degree": 12,
+          "source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+          "source_nphi": 128,
+          "source_rings": 96,
+          "units": "c=eta=1; input relative midpoint U,aOmega,aE; conjugate resistance"
+        },
+        "filename": "ar10_v3_source_new_policy_h002.json",
+        "sha256": "e6fc48610ec61295467297b9ffdcdcfc8b3275fc5a508e3fe1750a76c58aef4b"
+      }
+    ]
+  },
+  "algebraic_scope": "For 0 < h_eff/c < 0.5, every orientation uses identical near-basis residuals at 0.5 and 1, the identical film operator and log1p weighting. V2 chooses left=0 in this range; V3 also uses left=0. Its unused far anchor and changed cache identity do not enter the arithmetic. This establishes source-formula identity at all low-gap stencil nodes, not a rerun of their evaluations.",
+  "completed_v2_local_stencil": {
+    "filename": "local_v2_interpolation_reflected_summary.json",
+    "scope": "This completed reflected-stencil result, rather than the interrupted pre-frame-fix attempt, is the result eligible for narrow low-gap identity reuse.",
+    "sha256": "a72ad5c16d1a0025f4b3165182c2e23dbf73629be45c2f46595f316737b21e1a",
+    "source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611"
+  },
+  "dependency_baseline_record": {
+    "filename": "local_v2_compiled_dependencies.json",
+    "reconstruction": "numerical_files_at_compile updated by the explicitly recorded current_differences, yielding the final V2 production state after the already documented canonical-frame fix.",
+    "sha256": "f5f398ab80c3de2db00b11a578579a3b46fa69e4ce354bdb28e29045ef4de181"
+  },
+  "dependency_baseline_source_fingerprint": "228e970be9b2a68c55c4ea0dae25b0a7692368103738da606acc87efe0e6a611",
+  "function_blocks": {
+    "first_segment_formula": {
+      "current_sha256": "bbdb28a43fa496ed116bdad39167b78ca39d1ac4dce42287a1bf23c19ad2e839",
+      "historical_sha256": "bbdb28a43fa496ed116bdad39167b78ca39d1ac4dce42287a1bf23c19ad2e839",
+      "identical": true
+    },
+    "geometry_and_reduction": {
+      "current_sha256": "26774e3daab88080b893487ed4b8ffc83bf8032b36c7cdac64e4c5b88a551e2c",
+      "historical_sha256": "26774e3daab88080b893487ed4b8ffc83bf8032b36c7cdac64e4c5b88a551e2c",
+      "identical": true
+    },
+    "isolated_and_film": {
+      "current_sha256": "1232ec6ac76c2e93c91a006fa8325d5a81f523c2b908b0338cc189b2559bf1be",
+      "historical_sha256": "1232ec6ac76c2e93c91a006fa8325d5a81f523c2b908b0338cc189b2559bf1be",
+      "identical": true
+    }
+  },
+  "gate": "v3_near_segment_identity",
+  "not_recomputed": "Full 3072-node local stencil. Its reuse additionally requires the separately recorded exact stencil identity.",
+  "passed": true,
+  "schema_version": 1,
+  "serialized_basis_body_identical": true,
+  "serialized_basis_body_sha256": "2ee292332acc2d096fd356df8f080ffc3315ab9754d0611b739d59f7b610e7f4",
+  "source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "unchanged_dependencies": {
+    "src/slurry_anchor_cache.h": {
+      "current_sha256": "fb35ae47bee4881c1b0122dad7e51329e08dbab37c820c1152482a7c230f1ed7",
+      "historical_sha256": "fb35ae47bee4881c1b0122dad7e51329e08dbab37c820c1152482a7c230f1ed7",
+      "identical": true
+    },
+    "src/slurry_finite_gap_math.h": {
+      "current_sha256": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+      "historical_sha256": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+      "identical": true
+    },
+    "src/slurry_hydro_math.h": {
+      "current_sha256": "b2d8edd970e06339a06cb52fc16fde6fced55d9e926eafb736ce8d3775d352e1",
+      "historical_sha256": "b2d8edd970e06339a06cb52fc16fde6fced55d9e926eafb736ce8d3775d352e1",
+      "identical": true
+    },
+    "src/slurry_objective_film.h": {
+      "current_sha256": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
+      "historical_sha256": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
+      "identical": true
+    },
+    "src/slurry_scattering_math.h": {
+      "current_sha256": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
+      "historical_sha256": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
+      "identical": true
+    },
+    "src/slurry_stress_math.h": {
+      "current_sha256": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad",
+      "historical_sha256": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad",
+      "identical": true
+    },
+    "vendor/gr_re2/ellipsoidGap.h": {
+      "current_sha256": "ea49a44080d90858744dfffdc2228f1c3d4ffcbef3ab5d4734dcb665e43cc376",
+      "historical_sha256": "ea49a44080d90858744dfffdc2228f1c3d4ffcbef3ab5d4734dcb665e43cc376",
+      "identical": true
+    },
+    "vendor/gr_re2/nearFieldResistance.h": {
+      "current_sha256": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983",
+      "historical_sha256": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983",
+      "identical": true
+    },
+    "vendor/gr_re2/particleMath.h": {
+      "current_sha256": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62",
+      "historical_sha256": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62",
+      "identical": true
+    }
+  },
+  "v2_headers": [
+    "SLURRY_HYBRID_V2",
+    "10 12",
+    "ANCHORS 3 0.5 1 2.5"
+  ],
+  "v2_model_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+  "v3_headers": [
+    "SLURRY_HYBRID_V3",
+    "10 12",
+    "ANCHORS 2 0.5 1"
+  ],
+  "v3_model_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6"
+}

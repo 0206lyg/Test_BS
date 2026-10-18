@@ -27,7 +27,7 @@ ROOT = PROJECT.parent
 def run(command, *, capture=False):
     command = [str(item) for item in command]
     print("+ " + " ".join(shlex.quote(item) for item in command), flush=True)
-    return subprocess.run(command, check=True, text=True,
+    return subprocess.run(command, check=True, universal_newlines=True,
                           stdout=subprocess.PIPE if capture else None,
                           stderr=subprocess.STDOUT if capture else None)
 
@@ -142,6 +142,10 @@ def write_environment(build, executable, plugin, packer):
         "SLURRY_LAMMPS_EXECUTABLE": str(executable),
         "SLURRY_LAMMPS_PLUGIN": str(plugin),
         "SLURRY_PACKER_EXECUTABLE": str(packer),
+        "SLURRY_BASIS_GENERATOR_EXECUTABLE": str(packer.with_name("slurry_generate_basis")),
+        "SLURRY_FAST_GENERATOR_EXECUTABLE": str(packer.with_name("slurry_precompute_fast")),
+        "SLURRY_SOURCE_GATE_EXECUTABLE": str(packer.with_name("slurry_basis_physical_probe")),
+        "SLURRY_INTERPOLATION_GATE_EXECUTABLE": str(packer.with_name("slurry_table_interpolation_probe")),
         "SLURRY_BUILD_MANIFEST": str(build / "build-manifest.json"),
         "LAMMPS_EXECUTABLE": str(executable),
         "LAMMPS_PLUGIN": str(plugin),

@@ -1,0 +1,51 @@
+{
+  "description": "Deterministic packed spheres followed by zero-shear rough-contact relaxation. A common state for solver equivalence, not a steady sheared suspension. Tangential histories start fresh in each comparison.",
+  "units": "SI",
+  "lammps_version": "30 Sep 2026",
+  "baseline_plugin_sha256": "c61ee59e86ea0d57387929a258592b80cb2749b513f2b08ff36a5525851112c1",
+  "generator_sha256": "99fbd815645207cc3ad1c353f80fd35456a272f380218761865cbcd5a14ea5a7",
+  "fixtures": [
+    {
+      "file": "stage2_phi055_n64.data",
+      "sha256": "dfcd98331117a8274d972867b402ed35f84539397115f25c1e2fcf980c45b473",
+      "particle_count": 64,
+      "volume_fraction": 0.55,
+      "aspect_ratio": 1,
+      "full_thickness_m": 3e-07,
+      "seed": 1729,
+      "initial_packing_phi": 0.05,
+      "growth_fraction": 0.02,
+      "zero_shear_preparation_steps": 100,
+      "preparation_dt_s": 1e-06,
+      "preparation_contact_gap_m": 3e-09,
+      "preparation_mu": 0,
+      "preparation_kn_N_m": 1,
+      "preparation_kt_N_m": 80,
+      "preparation_eta_Pa_s": 0.01,
+      "preparation_lubrication_model": "mari",
+      "preparation_lubrication_epsilon_m": 1.5e-10,
+      "preparation_lubrication_cutoff_m": 7.5e-08
+    },
+    {
+      "file": "stage2_phi055_n300.data",
+      "sha256": "8bf24e621ea4c290700f65e0c29ced0170ad7d672ef34971464f9cecc09a3926",
+      "particle_count": 300,
+      "volume_fraction": 0.55,
+      "aspect_ratio": 1,
+      "full_thickness_m": 3e-07,
+      "seed": 1729,
+      "initial_packing_phi": 0.05,
+      "growth_fraction": 0.02,
+      "zero_shear_preparation_steps": 100,
+      "preparation_dt_s": 1e-06,
+      "preparation_contact_gap_m": 3e-09,
+      "preparation_mu": 0,
+      "preparation_kn_N_m": 1,
+      "preparation_kt_N_m": 80,
+      "preparation_eta_Pa_s": 0.01,
+      "preparation_lubrication_model": "mari",
+      "preparation_lubrication_epsilon_m": 1.5e-10,
+      "preparation_lubrication_cutoff_m": 7.5e-08
+    }
+  ]
+}

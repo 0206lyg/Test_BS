@@ -6,6 +6,12 @@
 #include "slurry_history_math.h"
 #include "slurry_pair_hydro_math.h"
 #include "slurry_spheroid_hydro_math.h"
+#include "slurry_finite_gap_math.h"
+#include "slurry_grand_system_check.h"
+#ifdef SLURRY_HAVE_EIGEN
+#include "slurry_scattering_provider.h"
+#include "slurry_spd_table.h"
+#endif
 #include "ellipsoidGap.h"
 #include "nearFieldResistance.h"
 #include "atom.h"
@@ -33,6 +39,8 @@ namespace gr = slurry::gr_re2::graphite;
 namespace si = SlurryImplicit;
 namespace ph = SlurryPairHydro;
 namespace sh = SlurrySpheroidHydro;
+namespace fg = SlurryFiniteGap;
+namespace gp = SlurryGrandPair;
 
 namespace {
 const char *profile_names[]={"geometry","communication","solver","diagnostics","total",
@@ -96,21 +104,34 @@ void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i,const gr::Vec3& om
 
 FixSlurryImplicit::FixSlurryImplicit(LAMMPS *lmp,int narg,char **arg):Fix(lmp,narg,arg)
 {
-  if(narg<8) error->all(FLERR,"Fix slurry/implicit requires eta shear_rate hcut hmin kn [lubrication legacy|mari|spheroid] [solver_preconditioner auto|sparse|nested|lu|ilu] [solver_layout root|replicated] [contact_gap hc] [friction mu kt] [history file interval average_start_strain]");
+  if(narg<8) error->all(FLERR,"Fix slurry/implicit requires eta shear_rate hcut hmin kn [lubrication legacy|mari|spheroid|finite_gap|finite_gap_fast] [finite_gap_table path] [finite_gap_fast_table path] [finite_gap_range lambda] [solver_preconditioner auto|sparse|nested|lu|ilu] [solver_layout root|replicated] [contact_gap hc] [friction mu kt] [history file interval average_start_strain]");
   viscosity_=utils::numeric(FLERR,arg[3],false,lmp);
   shear_=utils::numeric(FLERR,arg[4],false,lmp);
   cutoff_=utils::numeric(FLERR,arg[5],false,lmp);
   roughness_=utils::numeric(FLERR,arg[6],false,lmp);
   stiffness_=utils::numeric(FLERR,arg[7],false,lmp);
-  std::string history_path;
+  std::string history_path,finite_gap_table_path,finite_gap_basis_path,finite_gap_fast_table_path;
+  int finite_gap_film_grid=161;
   for(int i=8;i<narg;) {
     if(std::strcmp(arg[i],"lubrication")==0 && i+1<narg) {
-      mari_lubrication_=spheroid_lubrication_=false;
+      mari_lubrication_=spheroid_lubrication_=finite_gap_lubrication_=finite_gap_fast_=false;
       if(std::strcmp(arg[i+1],"mari")==0) mari_lubrication_=true;
       else if(std::strcmp(arg[i+1],"spheroid")==0) spheroid_lubrication_=true;
+      else if(std::strcmp(arg[i+1],"finite_gap")==0) finite_gap_lubrication_=true;
+      else if(std::strcmp(arg[i+1],"finite_gap_fast")==0) finite_gap_lubrication_=finite_gap_fast_=true;
       else if(std::strcmp(arg[i+1],"legacy")!=0)
-        error->all(FLERR,"slurry/implicit lubrication must be legacy, mari or spheroid");
+        error->all(FLERR,"slurry/implicit lubrication must be legacy, mari, spheroid, finite_gap or finite_gap_fast");
       i+=2;
+    } else if(std::strcmp(arg[i],"finite_gap_table")==0 && i+1<narg) {
+      finite_gap_table_path=arg[i+1];i+=2;
+    } else if(std::strcmp(arg[i],"finite_gap_basis")==0 && i+1<narg) {
+      finite_gap_basis_path=arg[i+1];i+=2;
+    } else if(std::strcmp(arg[i],"finite_gap_fast_table")==0 && i+1<narg) {
+      finite_gap_fast_table_path=arg[i+1];i+=2;
+    } else if(std::strcmp(arg[i],"finite_gap_film_grid")==0 && i+1<narg) {
+      finite_gap_film_grid=utils::inumeric(FLERR,arg[i+1],false,lmp);i+=2;
+    } else if(std::strcmp(arg[i],"finite_gap_range")==0 && i+1<narg) {
+      finite_gap_range_=utils::numeric(FLERR,arg[i+1],false,lmp);i+=2;
     } else if(std::strcmp(arg[i],"solver_preconditioner")==0 && i+1<narg) {
       if(std::strcmp(arg[i+1],"auto")==0) preconditioner_backend_=0;
       else if(std::strcmp(arg[i+1],"sparse")==0) preconditioner_backend_=1;
@@ -169,6 +190,37 @@ FixSlurryImplicit::FixSlurryImplicit(LAMMPS *lmp,int narg,char **arg):Fix(lmp,na
     error->all(FLERR,"Invalid slurry/implicit contact/history parameters");
   if(!mari_lubrication_ && (lubrication_delta_>0. || lubrication_range_>0.))
     error->all(FLERR,"Relative lubrication parameters require lubrication mari");
+  if(finite_gap_fast_) {
+    if(finite_gap_fast_table_path.empty() || !finite_gap_table_path.empty() || !finite_gap_basis_path.empty() ||
+       finite_gap_film_grid!=161 || !(finite_gap_range_>0.) || !std::isfinite(finite_gap_range_))
+      error->all(FLERR,"finite_gap_fast requires only finite_gap_fast_table and positive finite_gap_range; no runtime film grid or fallback");
+#ifdef SLURRY_HAVE_EIGEN
+    try {
+      finite_gap_fast_provider_=std::make_unique<SlurrySPDTable::Provider>();
+      finite_gap_fast_provider_->load(finite_gap_fast_table_path);
+      finite_gap_fast_provider_->epsilon_m=roughness_;
+    } catch(const std::exception&e){error->all(FLERR,"Cannot load precomputed finite-gap trial: {}",e.what());}
+#else
+    error->all(FLERR,"finite_gap_fast requires bundled Eigen enabled");
+#endif
+  } else if(!finite_gap_fast_table_path.empty()) {
+    error->all(FLERR,"finite_gap_fast_table requires lubrication finite_gap_fast; no implicit model change");
+  } else if(finite_gap_lubrication_) {
+    if(finite_gap_film_grid<21 || !(finite_gap_range_>0.)||!std::isfinite(finite_gap_range_)||
+       (finite_gap_table_path.empty()==finite_gap_basis_path.empty()))
+      error->all(FLERR,"Experimental finite_gap requires exactly one finite_gap_table or finite_gap_basis and positive finite_gap_range");
+    try {
+      if(!finite_gap_table_path.empty())finite_gap_catalogue_=std::make_unique<fg::Catalogue>(fg::read_catalogue(finite_gap_table_path));
+      else {
+#ifdef SLURRY_HAVE_EIGEN
+        finite_gap_provider_=std::make_unique<SlurryScattering::Provider>();finite_gap_provider_->load(finite_gap_basis_path);
+        finite_gap_provider_->epsilon_m=roughness_;finite_gap_provider_->film_grid=finite_gap_film_grid;
+#else
+        error->all(FLERR,"Experimental finite_gap_basis requires bundled Eigen enabled");
+#endif
+      }
+    } catch(const std::exception&e){error->all(FLERR,"Cannot load experimental finite-gap model: {}",e.what());}
+  } else if(!finite_gap_table_path.empty()||!finite_gap_basis_path.empty()) error->all(FLERR,"finite_gap_table/basis requires lubrication finite_gap");
   if(!history_path.empty() && comm->me==0) {
     history_file_.open(history_path,std::ios::out|std::ios::trunc);
     if(!history_file_) error->one(FLERR,"Cannot open slurry rheology history {}",history_path);
@@ -188,7 +240,7 @@ FixSlurryImplicit::FixSlurryImplicit(LAMMPS *lmp,int narg,char **arg):Fix(lmp,na
     history_file_<<",solver_cg_iterations,solver_gmres_iterations,sparse_factorizations,sparse_fallbacks,sparse_preconditioner_solves,sparse_factor_nonzeros,sparse_preconditioner_reuses";
     for(auto name:profile_names)history_file_<<",profile_"<<name<<"_s";
     for(auto name:profile_names)history_file_<<",interval_mean_profile_"<<name<<"_s";
-    history_file_<<",spheroid_max_gap_curvature_ratio,spheroid_completion_added_power_W,force_residual_N,force_tolerance_N,lu_factorizations,lu_solves,lu_fallbacks,forcing_retries\n";
+    history_file_<<",spheroid_max_gap_curvature_ratio,spheroid_completion_added_power_W,force_residual_N,force_tolerance_N,lu_factorizations,lu_solves,lu_fallbacks,forcing_retries,sigma_finite_gap_Pa,eta_finite_gap_Pa_s,finite_gap_correction_power_W,interval_mean_sigma_finite_gap_Pa,finite_gap_strain_bound_min\n";
   }
   time_integrate=1;
   vector_flag=1;size_vector=16;global_freq=1;extvector=0;nevery=1;
@@ -242,6 +294,7 @@ void FixSlurryImplicit::accumulate_step()
   interval_end_strain_=std::abs(shear_)*end;
   ++interval_steps_;interval_duration_+=dt;
   for(int c=0;c<9;++c)interval_stress_[c]+=static_cast<long double>(snapshot_.stress[c])*dt;
+  interval_finite_gap_stress_+=static_cast<long double>(snapshot_.finite_gap_stress)*dt;
   for(int c=0;c<8;++c)interval_profile_[c]+=snapshot_.profile[c];
   interval_max_overlap_=std::max(interval_max_overlap_,snapshot_.diagnostic[2]);
   interval_max_compression_=std::max(interval_max_compression_,snapshot_.diagnostic[9]);
@@ -293,12 +346,15 @@ void FixSlurryImplicit::write_history()
     out<<','<<snapshot_.maximum_gap_curvature_ratio<<','<<snapshot_.completion_added_power
        <<','<<snapshot_.force_residual_N<<','<<snapshot_.force_tolerance_N;
     for(double count:snapshot_.lu_counts)out<<','<<count;
+    out<<','<<snapshot_.finite_gap_stress<<','<<eta(snapshot_.finite_gap_stress)
+       <<','<<snapshot_.finite_gap_power<<','<<(interval_duration_>0.?static_cast<double>(interval_finite_gap_stress_/interval_duration_):nan)
+       <<','<<snapshot_.finite_gap_bound_min;
     out<<'\n';
     out.flush();
     if(!out)error->one(FLERR,"Failed writing slurry rheology history");
   }
   last_output_step_=update->ntimestep;
-  interval_steps_=0;interval_duration_=0.;interval_stress_.fill(0.);
+  interval_steps_=0;interval_duration_=0.;interval_stress_.fill(0.);interval_finite_gap_stress_=0.;
   interval_profile_.fill(0.);
   interval_start_strain_=interval_end_strain_=std::abs(shear_)*simulation_time();
   interval_max_overlap_=interval_max_compression_=interval_max_residual_=0.;
@@ -358,6 +414,7 @@ void FixSlurryImplicit::solve_velocities()
   if(static_cast<bigint>(records.size())!=atom->natoms)
     error->all(FLERR,"slurry/implicit particle count changed during integration");
   const size_t n=records.size();
+  const double volume=domain->xprd*domain->yprd*domain->zprd;
   std::vector<gr::Body> bodies; bodies.reserve(n);
   double length=0;
   for(const auto &r:records) {
@@ -368,8 +425,28 @@ void FixSlurryImplicit::solve_velocities()
     if(std::abs(b.axes[1]-b.axes[0])>1e-12*b.axes[0] ||
        std::abs(b.axes[2]-b.axes[0])>1e-12*b.axes[0])
       error->all(FLERR,"Mari lubrication requires spherical particles (AR=1); select spheroid or legacy for nonspherical particles");
+#ifdef SLURRY_HAVE_EIGEN
+  if(finite_gap_fast_provider_ || finite_gap_provider_)for(const auto &b:bodies) {
+    const double expected_ar=finite_gap_fast_provider_?finite_gap_fast_provider_->aspect_ratio():finite_gap_provider_->basis.aspect_ratio;
+    if(!(b.axes[2]>0.) || expected_ar<=1. ||
+       std::abs(b.axes[0]/b.axes[2]-expected_ar)>1e-10*expected_ar ||
+       std::abs(b.axes[1]/b.axes[2]-expected_ar)>1e-10*expected_ar)
+      error->all(FLERR,"finite-gap model requires oblate spheroids matching its basis/table AR; use Mari for AR=1");
+    for(int k=0;k<3;++k)if(std::abs(b.axes[k]-bodies.front().axes[k])>1e-10*length)
+      error->all(FLERR,"finite-gap basis/table requires equal-sized particles throughout the simulation; no fallback");
+  }
+  if(finite_gap_fast_provider_)for(const auto &b:bodies) {
+    const auto &model=*finite_gap_fast_provider_;
+    const double ar=b.axes[0]/b.axes[2],eps=roughness_/b.axes[2];
+    if(std::abs(ar-model.aspect_ratio())>1e-10*model.aspect_ratio() ||
+       std::abs(b.axes[1]/b.axes[2]-ar)>1e-10*ar || ar<=1.)
+      error->all(FLERR,"finite_gap_fast table does not match particle spheroid AR; no fallback");
+    if(eps<model.min_gap()*(1.-1e-10) || finite_gap_range_*ar+eps>model.max_gap()*(1.+1e-10))
+      error->all(FLERR,"finite_gap_fast table does not cover regularization and outer range; regenerate it");
+  }
+#endif
   const double maximum_cutoff=mari_lubrication_ && lubrication_range_>0. ?
-                              lubrication_range_*length : cutoff_;
+                              lubrication_range_*length : finite_gap_lubrication_?std::max(cutoff_,finite_gap_range_*length):cutoff_;
   const ph::Mat3 strain{0.,.5*shear_,0.,.5*shear_,0.,0.,0.,0.,0.};
   auto background=[&](size_t i,size_t j) {
     ph::Vec12 q{};
@@ -395,6 +472,19 @@ void FixSlurryImplicit::solve_velocities()
     gap.leverI=p.hydro_lever_i;gap.leverJ=p.hydro_lever_j;
     return sh::make_pair(bodies[p.i],bj,gap,viscosity_,roughness_,cutoff_);
   };
+#ifdef SLURRY_HAVE_EIGEN
+  if(finite_gap_provider_) {
+    finite_gap_provider_->anchor_cache.begin_step(static_cast<std::uint64_t>(update->ntimestep));
+    finite_gap_provider_->anchor_cache.prune(64);
+  }
+#endif
+  auto make_finite_gap=[&](const gr::Body&bi,const gr::Body&bj,const gr::GapResult&gap,size_t i,size_t j) {
+#ifdef SLURRY_HAVE_EIGEN
+    if(finite_gap_fast_provider_)return finite_gap_fast_provider_->make_pair(bi,bj,gap,viscosity_,length,finite_gap_range_,finite_gap_inner_ratio_,static_cast<std::uint64_t>(records[i].tag),static_cast<std::uint64_t>(records[j].tag));
+    if(finite_gap_provider_)return finite_gap_provider_->make_pair(bi,bj,gap,viscosity_,length,finite_gap_range_,finite_gap_inner_ratio_,static_cast<std::uint64_t>(records[i].tag),static_cast<std::uint64_t>(records[j].tag));
+#endif
+    return fg::make_pair(*finite_gap_catalogue_,bi,bj,gap,viscosity_,length,finite_gap_range_,finite_gap_inner_ratio_);
+  };
   std::vector<si::Particle> particles(n);
   for(size_t i=0;i<n;++i) {
     const auto &b=bodies[i];auto &p=particles[i];
@@ -414,6 +504,7 @@ void FixSlurryImplicit::solve_velocities()
     for(int k=0;k<3;++k)p.target[k+3]=length*w[k];
   }
   std::vector<si::Pair> local_pairs;
+  std::vector<SlurryGrandSystem::PairBlock> local_grand_blocks;
   gr::NearFieldSettings settings;
   settings.viscosity=viscosity_;settings.matchingGap=cutoff_;
   // The candidate padding also admits contacts approached within this step.
@@ -438,7 +529,7 @@ void FixSlurryImplicit::solve_velocities()
       if(gr::dot(dr,dr)>reach*reach)continue;
       bj.position=gr::add(bi.position,dr);
       gr::GapResult gap;
-      if(mari_lubrication_ || (spheroid_lubrication_ && is_sphere(bi) && is_sphere(bj))) {
+      if(mari_lubrication_ || ((spheroid_lubrication_||finite_gap_lubrication_) && is_sphere(bi) && is_sphere(bj))) {
         const double distance=gr::norm(dr);
         if(!(distance>0.))throw std::runtime_error("Coincident sphere centers in Mari lubrication");
         gap.normal=gr::scale(dr,1./distance);
@@ -474,12 +565,34 @@ void FixSlurryImplicit::solve_velocities()
         p.generalized_hydro=true;
         p.hydro_resistance=matrix.resistance;p.hydro_affine=matrix.affine;
         p.hydro_energy_constant=matrix.energy_constant;
-      } else if(spheroid_lubrication_) {
+      } else if(finite_gap_lubrication_ && !(is_sphere(bi)&&is_sphere(bj))) {
+        const auto hydro=make_finite_gap(bi,bj,gap,i,j);
+        gp::Inputs input;input.background=background(i,j);input.strain=strain;
+        const auto matrix=gp::assemble(hydro.model,hydro.frame,input);
+        p.generalized_hydro=true;p.hydro_resistance=matrix.resistance;p.hydro_affine=matrix.affine;
+        p.hydro_energy_constant=matrix.energy_constant;
+        const auto blocks=gp::strain_blocks(hydro.model,hydro.frame);
+        SlurryGrandSystem::PairBlock block;block.i=i;block.j=j;block.coupling=blocks.coupling;block.strain=blocks.strain;
+        block.has_finite_model=true;block.active=hydro.active;block.cutoff=hydro.cutoff;
+        block.frame=hydro.frame;block.resistance=hydro.model.resistance;
+        local_grand_blocks.push_back(block);
+      } else if(spheroid_lubrication_||finite_gap_lubrication_) {
         const auto hydro=sh::make_pair(bi,bj,gap,viscosity_,roughness_,cutoff_);
         const auto matrix=sh::assemble(hydro,background(i,j),ph::Vec3{},strain,length);
         p.generalized_hydro=true;
         p.hydro_resistance=matrix.resistance;p.hydro_affine=matrix.affine;
         p.hydro_energy_constant=matrix.energy_constant;
+        if(finite_gap_lubrication_) {
+          SlurryGrandSystem::PairBlock block;block.i=i;block.j=j;
+          for(int c=0;c<5;++c){
+            const auto assembly=sh::assemble(hydro,ph::Vec12{},ph::Vec3{},gp::strain_basis()[c],length);
+            const auto evaluated=sh::evaluate(hydro,ph::Vec12{},ph::Vec12{},ph::Vec3{},gp::strain_basis()[c],length);
+            const auto column=gp::strain_coordinates(evaluated.stress);
+            for(int r=0;r<12;++r)block.coupling[5*r+c]=assembly.affine[r];
+            for(int r=0;r<5;++r)block.strain[5*r+c]=column[r];
+          }
+          local_grand_blocks.push_back(block);
+        }
       } else {
         const auto hydro=gr::nearFieldResistance(bi,bj,std::max(gap.gap,roughness_),
                               gap.normal,gap.leverI,gap.leverJ,settings);
@@ -504,6 +617,42 @@ void FixSlurryImplicit::solve_velocities()
   profile[1]+=MPI_Wtime()-section_start;
   std::sort(pairs.begin(),pairs.end(),[](const si::Pair&a,const si::Pair&b){
     return a.i<b.i || (a.i==b.i && a.j<b.j);});
+  std::map<std::pair<std::size_t,std::size_t>,fg::Pair> finite_gap_cache;
+  double finite_gap_margin=std::numeric_limits<double>::quiet_NaN();
+  if(finite_gap_lubrication_) {
+    const auto grand_blocks=gather_records(local_grand_blocks,world,comm->nprocs);
+    for(const auto&block:grand_blocks)if(block.has_finite_model){fg::Pair cached;cached.active=block.active;cached.cutoff=block.cutoff;
+      cached.frame=block.frame;cached.model.resistance=block.resistance;finite_gap_cache.emplace(std::make_pair(block.i,block.j),cached);}
+    fg::Mat5 strain_resistance{};
+    for(int k=0;k<5;++k)strain_resistance[6*k]=2*viscosity_*volume;
+    std::vector<SlurryGrandSystem::Coupling6> body_coupling(n);
+    for(size_t i=0;i<n;++i) {
+      auto found=stress_cache_.find(bodies[i].axes);
+      if(found==stress_cache_.end())found=stress_cache_.emplace(bodies[i].axes,SlurryStress::unit_stresslet(bodies[i].axes)).first;
+      const auto& coefficients=found->second;
+      std::array<si::Vec6,5> targets{},weighted{};
+      for(int c=0;c<5;++c) {
+        const auto one=SlurryStress::stresslet(coefficients,bodies[i].rotation,viscosity_,gp::strain_basis()[c],gr::Vec3{},gr::Vec3{});
+        const auto free_column=gp::strain_coordinates(one.free);
+        for(int d=0;d<3;++d)targets[c][3+d]=length*one.jeffery_omega[d];
+        for(int r=0;r<6;++r)for(int d=0;d<6;++d)weighted[c][r]+=particles[i].resistance[6*r+d]*targets[c][d];
+        for(int r=0;r<6;++r)body_coupling[i][5*r+c]=-weighted[c][r];
+        for(int r=0;r<5;++r)strain_resistance[5*r+c]+=free_column[r];
+      }
+      for(int r=0;r<5;++r)for(int c=0;c<5;++c)for(int d=0;d<6;++d)strain_resistance[5*r+c]+=targets[r][d]*weighted[c][d];
+    }
+    failed=0;failure.clear();
+    if(comm->me==0){try {
+      const auto check=SlurryGrandSystem::verify(particles,pairs,body_coupling,strain_resistance,grand_blocks,viscosity_,length,volume);
+      finite_gap_margin=check.strain_margin;
+    }catch(const std::exception&e){failed=1;failure=e.what();}}
+    MPI_Bcast(&failed,1,MPI_INT,0,world);
+    if(failed){int count=static_cast<int>(failure.size());MPI_Bcast(&count,1,MPI_INT,0,world);failure.resize(count);MPI_Bcast(failure.data(),count,MPI_CHAR,0,world);
+      error->all(FLERR,"Finite-gap global passivity check failed: {}",failure);}
+    MPI_Bcast(&finite_gap_margin,1,MPI_DOUBLE,0,world);
+    // Only this successful global check authorizes an indefinite pair block.
+    for(auto&p:pairs)if(p.generalized_hydro)p.globally_verified_hydro=true;
+  }
   si::Result result;
   std::vector<si::Vec6> initial;
   if(have_solution_) {
@@ -601,6 +750,7 @@ void FixSlurryImplicit::solve_velocities()
   diagnostics_[3]=result.relative_residual;diagnostics_[4]=result.cg_iterations+result.gmres_iterations;
   diagnostics_[5]=result.newton_iterations;diagnostics_[6]=result.contacts;
   snapshot_=Snapshot{};
+  snapshot_.finite_gap_bound_min=finite_gap_margin;
   snapshot_.force_residual_N=result.residual_norm;
   snapshot_.force_tolerance_N=options.absolute_tolerance+options.relative_tolerance*result.residual_scale;
   snapshot_.solver_counts={static_cast<double>(result.cg_iterations),static_cast<double>(result.gmres_iterations),
@@ -612,7 +762,7 @@ void FixSlurryImplicit::solve_velocities()
                       static_cast<double>(result.lu_fallbacks),static_cast<double>(result.forcing_retries)};
   pending_history_.clear();
   std::array<gr::Mat3,9> stress{};
-  const double volume=domain->xprd*domain->yprd*domain->zprd;
+  gr::Mat3 finite_gap_stress{};
   stress[0][1]=stress[0][3]=viscosity_*shear_;
   double drag_power=0.,lubrication_power=0.,contact_power=0.;
   double old_normal_energy=0.,old_tangent_energy=0.;
@@ -636,9 +786,11 @@ void FixSlurryImplicit::solve_velocities()
   };
   for(size_t k=0;k<pairs.size();++k) {
     const auto &p=pairs[k];
-    sh::Pair nonsphere_hydro;
-    if(spheroid_lubrication_)nonsphere_hydro=spheroid_hydro(p);
-    const double pair_cutoff=spheroid_lubrication_?nonsphere_hydro.cutoff:
+    sh::Pair nonsphere_hydro;fg::Pair finite_hydro;
+    const bool use_finite=finite_gap_lubrication_&&!(is_sphere(bodies[p.i])&&is_sphere(bodies[p.j]));
+    if(use_finite)finite_hydro=finite_gap_cache.at(std::make_pair(p.i,p.j));
+    else if(spheroid_lubrication_||finite_gap_lubrication_)nonsphere_hydro=spheroid_hydro(p);
+    const double pair_cutoff=use_finite?finite_hydro.cutoff:(spheroid_lubrication_||finite_gap_lubrication_)?nonsphere_hydro.cutoff:
       mari_lubrication_ && lubrication_range_>0. ?
       lubrication_range_*.5*(bodies[p.i].axes[0]+bodies[p.j].axes[0]) : cutoff_;
     if(p.gap<pair_cutoff)++diagnostics_[0];
@@ -657,7 +809,15 @@ void FixSlurryImplicit::solve_velocities()
     const auto f_contact=gr::add(fn_contact,ft_contact);
     const auto f=gr::add(gr::add(fn_lub,ft_lub),f_contact);
     const auto dr=gr::sub(p.lever_i,p.lever_j);
-    if(mari_lubrication_ || spheroid_lubrication_) {
+    if(use_finite) {
+      gp::Inputs input;input.background=background(p.i,p.j);input.strain=strain;
+      for(int d=0;d<6;++d){input.velocity[d]=result.velocity[p.i][d];input.velocity[6+d]=result.velocity[p.j][d];}
+      const auto h=gp::evaluate(finite_hydro.model,finite_hydro.frame,input);
+      for(int d=0;d<9;++d)finite_gap_stress[d]+=h.stress[d]/volume;
+      snapshot_.finite_gap_power+=h.power;lubrication_power+=h.power;
+      for(int d=0;d<3;++d){net[p.i][d]+=h.force_i[d];net[p.j][d]+=h.force_j[d];
+        net[p.i][d+3]+=h.torque_i[d]/length;net[p.j][d+3]+=h.torque_j[d]/length;}
+    } else if(mari_lubrication_ || spheroid_lubrication_ || finite_gap_lubrication_) {
       ph::Vec12 q{};
       for(int d=0;d<6;++d) {q[d]=result.velocity[p.i][d];q[d+6]=result.velocity[p.j][d];}
       ph::Evaluation h;
@@ -715,6 +875,8 @@ void FixSlurryImplicit::solve_velocities()
     }
   }
   for(int c=0;c<8;++c)for(int k=0;k<9;++k)stress[8][k]+=stress[c][k];
+  for(int k=0;k<9;++k)stress[8][k]+=finite_gap_stress[k];
+  snapshot_.finite_gap_stress=finite_gap_stress[1];
   for(int c=0;c<9;++c)snapshot_.stress[c]=stress[c][1];
   diagnostics_[12]=snapshot_.stress[8];
   diagnostics_[13]=shear_!=0.?snapshot_.stress[8]/shear_:std::numeric_limits<double>::quiet_NaN();

@@ -54,6 +54,9 @@ struct Pair {
   // zero when this generalized channel is enabled). Contact geometry below is
   // always the actual common-point relative velocity, never the hydro offset.
   bool generalized_hydro = false;
+  // Set only by the experimental caller after checking the assembled GLOBAL
+  // velocity and strain Schur complements; legacy pair checks remain intact.
+  bool globally_verified_hydro = false;
   Mat12 hydro_resistance{};
   Vec12 hydro_affine{};
   double hydro_energy_constant = 0; // optional q-independent term; power units
@@ -292,6 +295,7 @@ inline void validate_pair_hydro(const Pair &pair)
         throw std::invalid_argument("Generalized pair resistance is not symmetric");
       residual[12*r+c] = pair.hydro_resistance[12*r+c];
     }
+  if (pair.globally_verified_hydro) return;
   for (int k = 0; k < 12; ++k) {
     int pivot = k;
     for (int r = k+1; r < 12; ++r)

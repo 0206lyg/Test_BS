@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "Checkpoint helper integrity only; no source-physics or interpolation certification",
+  "source": "lammps_slurry/tools/precompute_fast.cpp",
+  "passed": true,
+  "checks": [
+    "binary roundtrip",
+    "exact selected row preservation",
+    "unselected rows untouched",
+    "wrong identity rejected",
+    "wrong chunk rejected",
+    "wrong row order rejected",
+    "wrong stride rejected",
+    "payload corruption rejected",
+    "truncation rejected",
+    "trailing bytes rejected"
+  ],
+  "result": "PASS: checkpoint roundtrip; exact row coverage; wrong identity/chunk/order/stride, corrupt payload, truncation and trailing bytes rejected"
+}

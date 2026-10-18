@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "release_id": "20261018-ar-basis-pipeline-trial",
+  "release_report_finalized": true,
+  "status": "IMPLEMENTED; SELECTED_AR10_SOURCE_AND_SERIAL_INTEGRATION_GATES_PASSED; FULL_TABLE_AND_BULK_PENDING",
+  "geometry": "Equal-sized, equal-AR oblate spheroids; AR1 uses separate Mari route",
+  "numerical_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+  "selected_basis": {
+    "path": "lammps_slurry/models/ar10_regenerated.ssb",
+    "sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6",
+    "ar": 10,
+    "near_degree": 12,
+    "far_degree": 8,
+    "source_rings": 96,
+    "source_phi": 128,
+    "anchors_h_over_c": [
+      0.5,
+      1
+    ],
+    "format": "SLURRY_HYBRID_V3",
+    "finite_gap_policy": "direct_near_basis_at_query_gap",
+    "serialized_far_slot_used": false
+  },
+  "implemented": [
+    "AR-specific genuine Stokes basis generation",
+    "Resumable complete pair-table generation and cache identity checks",
+    "Explicit finite_gap_fast activation in implicit force, stress and viscosity calculation",
+    "V3 direct near-basis Stokes at each finite gap; unchanged near-film matching below h_eff/c=0.5",
+    "Nearly-parallel canonical-frame roundoff repair"
+  ],
+  "validation": {
+    "final_basis_direct": {
+      "status": "passed",
+      "model_stage": "V3",
+      "report": "validation_basis/ar10_v3_direct.json"
+    },
+    "independent_heldout_112_5nm": {
+      "status": "passed",
+      "model_stage": "V3",
+      "all11_error": 0.0008015600509331255,
+      "free_strain_error": 3.630063594894928e-05,
+      "report": "validation_basis/ar10_v3_independent_h075_qualification.json"
+    },
+    "runtime": {
+      "status": "passed",
+      "cases": 2,
+      "steps_per_case": 20,
+      "dt_s": 1e-06,
+      "shear_rate_s_inv": 100,
+      "particle_counts": [
+        2,
+        8
+      ],
+      "scope": "Actual serial LAMMPS integration with coarse smoke table; no equilibrium viscosity claim",
+      "selected_ctest_passed": 4,
+      "report": "validation_basis/runtime_integration_result.json",
+      "model_stage": "V3",
+      "selected_ctest_evidence": "Four previous passing core tests, unchanged dependencies; not rerun for V3"
+    },
+    "routing": {
+      "status": "passed",
+      "tests": 20,
+      "skipped": 0,
+      "scope": "Orchestration including real packer; not Stokes accuracy",
+      "report": "validation_finite_gap/pipeline_routing.log"
+    },
+    "python_compatibility": {
+      "status": "passed",
+      "scope": "Python3.6 syntax and absence of new runtime Python package dependencies; actual interpreter used for tests was newer"
+    },
+    "checkpoint_resume": {
+      "status": "passed",
+      "model_stage": "V3",
+      "report": "validation_basis/ar10_v3_smoke_resume_result.json"
+    },
+    "full_grid_local_interpolation_3nm": {
+      "status": "passed_by_exact_transfer",
+      "model_stage": "V3",
+      "report": "validation_basis/v3_local_interpolation_reuse.json",
+      "all11_error": 0.0005620056310633448,
+      "free_strain_error": 0.0002488604539874206,
+      "scope": "One historical complete V2 lookup stencil, transferred using exact formula/basis/grid/weight identity and current query equality; V3 3072 node values not recomputed. Same-source interpolation, not independent physical accuracy."
+    },
+    "reference_order_refinement_37_5nm": {
+      "status": "passed",
+      "model_stage": "V3",
+      "all11_error": 0.03248874291329962,
+      "free_strain_error": 0.023915171086293374,
+      "report": "validation_basis/ar10_v3_h025_qualification.json",
+      "scope": "Same-family order/quadrature refinement, not an independent physical reference"
+    },
+    "final_matched_source": {
+      "status": "passed",
+      "model_stage": "V3",
+      "report": "validation_basis/ar10_v3_matched.json",
+      "scope": "Two fixed AR10 reference poses"
+    },
+    "reference_order_refinement_225nm": {
+      "status": "passed",
+      "model_stage": "V3",
+      "all11_error": 0.00016177269737105426,
+      "free_strain_error": 1.6939378423175278e-05,
+      "report": "validation_basis/ar10_v3_h150_qualification.json",
+      "scope": "Same-family order/quadrature refinement, not an independent physical reference"
+    },
+    "complete_coarse_table": {
+      "status": "passed",
+      "model_stage": "V3",
+      "nodes": 640,
+      "independent_source_evaluations": 260,
+      "report": "validation_basis/ar10_v3_smoke_generation_result.json",
+      "scope": "Complete coarse smoke grid; no full-resolution table or bulk accuracy claim"
+    }
+  },
+  "not_completed": [
+    "Complete AR10 full-resolution table generation (34 x 34 x 48 x 29, 810.272 MiB) and its nine-pose activation gate",
+    "Independent accuracy checks for other ARs or all orientations and gaps",
+    "Independent full17 Stokes accuracy at the3nm contact scale",
+    "Steady-state bulk viscosity, shear-rate/time-step/cutoff convergence",
+    "MPI scaling or total wall-time speedup benchmark"
+  ],
+  "included_validation_files": [
+    "validation_basis/run_physical_gate.py",
+    "validation_basis/run_interpolation_gate.py",
+    "validation_basis/run_matched_query.py",
+    "validation_basis/run_runtime_smoke.py",
+    "validation_basis/full17_reference.py",
+    "validation_basis/analytic_ring_reference.py",
+    "validation_basis/ar10_independent_h075_qualification.json",
+    "validation_basis/runtime_integration_result.json",
+    "validation_basis/stokes_basis_generation.json",
+    "validation_basis/check_cylindrical_kernel.cpp",
+    "validation_basis/cylindrical_kernel_audit.json",
+    "validation_basis/check_generator_checkpoint.py",
+    "validation_basis/generator_checkpoint_result.json",
+    "validation_basis/test_spd_table_format.cpp",
+    "validation_basis/spd_table_format_result.json",
+    "validation_basis/ar10_smoke_generation_result.json",
+    "validation_basis/ar10_smoke_resume_result.json",
+    "validation_basis/ar10_smoke.spt.json",
+    "validation_basis/ar10_current_direct.json",
+    "validation_finite_gap/test_fast_plumbing.py",
+    "validation_finite_gap/pipeline_routing.log",
+    "validation_basis/runtime_fixtures/two_asymmetric_3nm/fixture.json",
+    "validation_basis/runtime_fixtures/two_asymmetric_3nm/particles.data",
+    "validation_basis/runtime_fixtures/eight_connected_stack/fixture.json",
+    "validation_basis/runtime_fixtures/eight_connected_stack/particles.data",
+    "validation_basis/ar10_current_matched.json",
+    "validation_basis/ar10_current_h025_qualification.json",
+    "validation_basis/local_v2_interpolation_reflected.cpp",
+    "validation_basis/local_v2_interpolation_reflected_summary.json",
+    "validation_basis/compare_provider_queries.py",
+    "validation_basis/prepare_reference_overlay.py",
+    "validation_basis/ar10_current_h150_qualification.json",
+    "validation_basis/test_v3_preservation.cpp",
+    "validation_basis/v3_near_gap_preservation.json",
+    "validation_basis/precompute_v3_stencil_check.cpp",
+    "validation_basis/v3_compiled_stencil_identity.json",
+    "validation_basis/v3_gap_stencil_identity.json",
+    "validation_basis/ar10_v3_direct.json",
+    "validation_basis/ar10_v3_matched.json",
+    "validation_basis/ar10_v3_h025_qualification.json",
+    "validation_basis/ar10_v3_independent_h075_qualification.json",
+    "validation_basis/ar10_v3_h150_qualification.json",
+    "validation_basis/v3_near_segment_identity.json",
+    "validation_basis/v3_local_interpolation_reuse.json",
+    "validation_basis/v3_probe_build.json",
+    "validation_basis/ar10_v3_smoke_generation_result.json",
+    "validation_basis/ar10_v3_smoke_resume_result.json",
+    "validation_basis/ar10_v3_smoke.spt.json",
+    "validation_basis/runtime_integration_v2_stage.json"
+  ],
+  "superseded_model_failure": {
+    "format": "SLURRY_HYBRID_V2",
+    "case": "AR10 parallel offset, h/c=1.5 (225nm)",
+    "all11_error": 0.06485120642,
+    "limit": 0.05,
+    "reference_qualified": true,
+    "report": "validation_basis/ar10_current_h150_qualification.json",
+    "action": "Replace finite-gap residual interpolation with direct Stokes precomputation; preserve near-film branch"
+  },
+  "offline_cost": {
+    "coarse_smoke_seconds": 279.4,
+    "coarse_smoke_threads": 4,
+    "full_table_measured": false,
+    "full_table_grid": [
+      34,
+      34,
+      48,
+      29
+    ],
+    "full_table_mib": 810.272,
+    "scope": "Operation-count extrapolation indicates several 8-thread day jobs may be needed; not a measured full-generation timing. Checkpoint resume is implemented and tested. Subsequent dynamics uses lookup."
+  }
+}

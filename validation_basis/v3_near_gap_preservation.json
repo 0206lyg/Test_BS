@@ -1,0 +1,61 @@
+{
+  "gate": "V3_near_gap_exact_preservation",
+  "gap_nm": 3,
+  "h_over_c": 0.02,
+  "epsilon_over_c": 0.001,
+  "film_grid": 161,
+  "maximum_absolute_matrix_difference": 0,
+  "relative_matrix_difference": 0,
+  "passed": true,
+  "command": [
+    "source_spd_check/test_v3_preservation",
+    "source_spd_check/ar10_L12_nr96_far8_hybrid_v2.ssb",
+    "source_spd_check/ar10_L12_nr96_far8_hybrid_v3.ssb"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 20.19921839900053,
+  "provider_sha256": "bfd3a7b2518f0bd8e2e9c3938b8317a803d64b46734c9e9b5952543a37acfe16",
+  "provider_unchanged_during_run": true,
+  "binary_sha256": "d06711a6c4b786af9fa075fa436d2e4bc30e0f3f6d607292a417dcce4c5c78f0",
+  "test_source_sha256": "f8a4e3ae003d7720e7c331a505b9d1122653f5e7ad9e996e719aa5ee8f4d224e",
+  "v2_sha256": "ef26fac0c1484a3a043aa709d6f2a3407a576f836e0a64c235e5fb847cacd6d0",
+  "v3_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6",
+  "axes": [
+    [
+      0.03489949670250097,
+      0,
+      0.9993908270190958
+    ],
+    [
+      0.38898972193607634,
+      0.2245833206717913,
+      0.8934479997762184
+    ]
+  ],
+  "angles_radians": {
+    "theta_i": 0.03490658503988659,
+    "theta_j": 0.4658323756745015,
+    "phi": 0.5235987755982988
+  },
+  "reproduction": {
+    "working_directory": "repository root",
+    "test_source": "validation_basis/test_v3_preservation.cpp",
+    "compile": [
+      "c++",
+      "-O1",
+      "-std=c++17",
+      "-DEIGEN_DONT_PARALLELIZE",
+      "-Ilammps_slurry/src",
+      "-Ilammps_slurry/vendor/eigen3",
+      "validation_basis/test_v3_preservation.cpp",
+      "-o",
+      "/tmp/test_v3_preservation"
+    ],
+    "prepare_v2": "Stream a copy of lammps_slurry/models/ar10_regenerated.ssb to /tmp/ar10_v2.ssb, replacing only first line SLURRY_HYBRID_V3 with SLURRY_HYBRID_V2 and third line ANCHORS 2 0.5 1 with ANCHORS 3 0.5 1 2.5; all remaining bytes unchanged.",
+    "run": [
+      "/tmp/test_v3_preservation",
+      "/tmp/ar10_v2.ssb",
+      "lammps_slurry/models/ar10_regenerated.ssb"
+    ]
+  }
+}
