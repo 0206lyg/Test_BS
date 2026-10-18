@@ -1,5 +1,6 @@
 // Independent source gate. The two reference fixtures are never regenerated or
 // fitted here. Direct basis accuracy and matched-provider accuracy are distinct.
+// The separate pair_numerical mode supplies generic numerical checks only.
 #include "slurry_scattering_provider.h"
 #include <Eigen/Eigenvalues>
 #include <fstream>
@@ -81,9 +82,69 @@ static bool print_raw_gate(const CheckedGrand &r,const std::string &name,const c
     <<",\"linear_residual\":"<<r.linear_residual<<",\"min_eigenvalue\":"<<r.min_eigenvalue<<"}\n"<<std::flush;
   return r.pass;
 }
+// These are numerical consistency checks at selected generic poses. They do
+// not compare with an independent Stokes reference or certify physical accuracy.
+static bool pair_numerical_check(sc::Provider &provider,std::ostream *matrix_output) {
+  if(provider.hybrid_version!=3)
+    throw std::runtime_error("pair_numerical requires a V3 hybrid bundle");
+  const double pi=std::acos(-1.),ar=provider.basis.aspect_ratio;
+  struct Pose {const char *name;double theta_i,theta_j,phi;};
+  const std::array<Pose,5> poses{{
+    {"failed_orientation",std::atan(std::tan(pi/32.)/ar),std::atan(std::tan(7*pi/32.)/ar),13*pi/24.},
+    {"face_face",0.,0.,0.},
+    {"face_edge",0.,pi/2.,0.},
+    {"tilted",.4,.8,1.1},
+    {"edge_edge",pi/2.,pi/2.,pi/2.}
+  }};
+  for(const auto &pose:poses) {
+    const Axes axes{sc::Vec3(std::sin(pose.theta_i),0.,std::cos(pose.theta_i)),
+      sc::Vec3(std::sin(pose.theta_j)*std::cos(pose.phi),std::sin(pose.theta_j)*std::sin(pose.phi),std::cos(pose.theta_j))};
+    provider.anchor_cache.clear();
+    for(const char *component:{"raw_full17","matched_total11"}) {
+      const bool raw_component=std::string(component)=="raw_full17";
+      const std::array<double,2> gaps=raw_component?std::array<double,2>{{.5,1.}}:std::array<double,2>{{.001,.02}};
+      for(double h:gaps) {
+        const std::string prefix="{\"stage\":\"pair_numerical\",\"category\":\"numerical\",\"component\":"+
+          quote(component)+",\"name\":"+quote(pose.name);
+        try {
+          double reciprocity=0.,residual=0.,minimum=0.;bool pass=false;
+          if(raw_component) {
+            const auto checked=raw_check(provider.near_basis,axes,h);
+            reciprocity=checked.reciprocity;residual=checked.linear_residual;
+            minimum=checked.min_eigenvalue;pass=checked.pass;
+          } else {
+            const auto bodies=sc::geometry(axes,h,ar);
+            const Mat11 self=sc::reduced(provider.isolated(bodies),sc::midpoint_map(bodies,h,ar));
+            const Mat11 total=self+provider.correction(axes,h,0.,0,1);
+            if(!total.allFinite())throw std::runtime_error("Nonfinite matched total11");
+            const Mat11 symmetric=.5*(total+total.transpose()).eval();
+            Eigen::SelfAdjointEigenSolver<Mat11> spectrum(symmetric);
+            if(spectrum.info()!=Eigen::Success)throw std::runtime_error("Matched total11 eigensolve failed");
+            minimum=spectrum.eigenvalues().minCoeff();
+            Eigen::LLT<Mat11> factor(symmetric);
+            pass=minimum>0.&&factor.info()==Eigen::Success;
+            if(matrix_output)*matrix_output<<pose.name<<" matched_total11 h="<<h<<"\n"<<symmetric<<"\n"<<std::flush;
+          }
+          std::cout<<prefix<<",\"h_over_c\":"<<h<<",\"theta_i\":"<<pose.theta_i
+            <<",\"theta_j\":"<<pose.theta_j<<",\"phi\":"<<pose.phi
+            <<",\"passed\":"<<(pass?"true":"false")<<",\"positive_total\":"<<(minimum>0.?"true":"false")
+            <<",\"min_eigenvalue\":"<<minimum;
+          if(raw_component)std::cout<<",\"raw_reciprocity\":"<<reciprocity<<",\"reciprocity_limit\":"<<reciprocity_limit
+            <<",\"linear_residual\":"<<residual<<",\"residual_limit\":1e-8";
+          std::cout<<"}\n"<<std::flush;
+          if(!pass)return false;
+        } catch(const std::exception &e) {
+          std::cout<<prefix<<",\"h_over_c\":"<<h<<",\"passed\":false,\"error\":"<<quote(e.what())<<"}\n"<<std::flush;
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
 int main(int argc,char **argv) {
   try {
-    if(argc!=5&&argc!=6)throw std::runtime_error("Usage: basis_physical_probe basis.ssb reference.txt direct_basis|matched_provider|isolated_only film_grid [matrix_output]");
+    if(argc!=5&&argc!=6)throw std::runtime_error("Usage: basis_physical_probe basis.ssb reference.txt direct_basis|matched_provider|isolated_only|pair_numerical film_grid [matrix_output]");
     std::ofstream matrix_output;
     if(argc==6) {
       matrix_output.open(argv[5]);
@@ -91,7 +152,7 @@ int main(int argc,char **argv) {
       matrix_output<<std::setprecision(17);
     }
     const std::string mode=argv[3];
-    if(mode!="direct_basis"&&mode!="matched_provider"&&mode!="isolated_only")throw std::runtime_error("Invalid evaluation mode");
+    if(mode!="direct_basis"&&mode!="matched_provider"&&mode!="isolated_only"&&mode!="pair_numerical")throw std::runtime_error("Invalid evaluation mode");
     std::cout<<std::setprecision(17);
     sc::Provider provider;provider.load(argv[1]);provider.film_grid=std::stoi(argv[4]);
     if(provider.film_grid<21||provider.film_grid%2==0)throw std::runtime_error("Film grid must be odd and at least21");
@@ -99,6 +160,7 @@ int main(int argc,char **argv) {
     const sc::Basis &direct_basis=provider.hybrid?provider.near_basis:provider.basis;
     const char *direct_slot=provider.hybrid?"near":"primary";
     std::cout<<"{\"stage\":\"metadata\",\"evaluated_path\":"<<quote(mode)
+      <<",\"gate_category\":"<<quote(mode=="isolated_only"||mode=="pair_numerical"?"numerical":"physical")
       <<",\"compiled_source_fingerprint\":"<<quote(SLURRY_NUMERICAL_SOURCE_FINGERPRINT)
       <<",\"aspect_ratio\":"<<provider.basis.aspect_ratio<<",\"film_grid\":"<<provider.film_grid
       <<",\"hybrid\":"<<(provider.hybrid?"true":"false")
@@ -109,6 +171,7 @@ int main(int argc,char **argv) {
     if(provider.hybrid_version!=3&&!isolated_check(provider.basis,provider.isolated_local,"primary"))return 2;
     if(provider.hybrid&&!isolated_check(provider.near_basis,provider.isolated_local,"near"))return 2;
     if(mode=="isolated_only")return 0;
+    if(mode=="pair_numerical")return pair_numerical_check(provider,matrix_output.is_open()?&matrix_output:nullptr)?0:2;
     if(std::abs(provider.basis.aspect_ratio-10.)>1e-12)
       throw std::runtime_error("The frozen independent pair fixtures cover AR10 only; no substitution allowed");
     std::ifstream input(argv[2]);std::string magic;int count=0;

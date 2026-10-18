@@ -53,6 +53,25 @@ def arguments(table=None, **overrides):
     return SimpleNamespace(**values)
 
 
+def synthetic_numerical_report(source, fingerprint):
+    """Explicitly synthetic status-routing fixture, never a physical benchmark."""
+    records = [{"stage": "isolated_units", "passed": True, "limit": .001,
+                "all11_error": .0001, "raw_reciprocity": .0001, "routing_only": True}]
+    for name in ("failed_orientation", "face_face", "face_edge", "tilted", "edge_edge"):
+        for component, gaps in (("raw_full17", (.5, 1.0)), ("matched_total11", (.001, .02))):
+            for gap in gaps:
+                records.append({"stage": "pair_numerical", "category": "numerical",
+                    "name": name, "component": component, "h_over_c": gap,
+                    "passed": True, "positive_total": True, "min_eigenvalue": 1.0,
+                    "raw_reciprocity": .0001, "linear_residual": 1e-12,
+                    "reciprocity_limit": .01, "residual_limit": 1e-8, "routing_only": True})
+    return {"gate": "source_numerical", "evaluated_path": "pair_numerical",
+            "aspect_ratio": 2.0, "basis_sha256": prepare_case.file_sha256(source),
+            "source_fingerprint": fingerprint, "compiled_source_fingerprint": fingerprint,
+            "film_grid": 161, "passed": True, "records": records,
+            "routing_only": True, "physical_accuracy": "NOT_TESTED"}
+
+
 class FastPlumbing(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="slurry-fast-routing-")
@@ -73,6 +92,27 @@ class FastPlumbing(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "require --lubrication-model finite_gap_fast"):
             prepare_case.resolve_lubrication(arguments(self.table, lubrication_model="auto"), 1.5e-6)
         self.assertEqual(prepare_case.resolve_lubrication(arguments(lubrication_model="auto"), 1.5e-6)[0], "spheroid")
+
+    def test_cli_nonfast_modes_accept_actual_parser_defaults(self):
+        # The real CLI parses None for automatic source resolution. Copying an
+        # already final dilute seed is a routing fixture, not a packer benchmark.
+        packer = self.directory / "copy_final_seed.py"
+        packer.write_text("#!" + sys.executable + "\n" +
+            "import shutil,sys\na=sys.argv\n" +
+            "shutil.copyfile(a[a.index('--input')+1],a[a.index('--output')+1])\n")
+        packer.chmod(0o755)
+        for requested, ar, expected in (("mari", 1, "mari"), ("auto", 1, "mari"),
+                                        ("auto", 2, "spheroid"), ("spheroid", 2, "spheroid")):
+            with self.subTest(requested=requested, ar=ar):
+                output = self.directory / (requested + "_" + str(ar))
+                result = subprocess.run([sys.executable, str(ROOT / "lammps_slurry/tools/prepare_case.py"),
+                    "--lubrication-model", requested, "--ar", str(ar), "--phi", "0.0001",
+                    "--initial-phi", "0.0001", "--count", "2", "--steps", "0", "--prep-steps", "0",
+                    "--packer", str(packer), "--output", str(output)],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("lubrication_model_resolved = " + expected, (output / "parameters.txt").read_text())
+                self.assertTrue((output / "in.slurry").is_file())
 
     def test_wrong_table_ar_rejected_without_another_ar_run(self):
         synthetic_table(self.table, ar=11.0)
@@ -213,6 +253,11 @@ class FastPlumbing(unittest.TestCase):
         self.assertEqual(record["source_rings"], 96)
         self.assertEqual(record["fit_phi"], 4096)
         self.assertEqual(record["check_phi"], 8192)
+        self.assertEqual(record["target_factor"], 3)
+        self.assertEqual(len(record["commands"]), 2)
+        near_command = record["commands"][1]
+        self.assertEqual(near_command[near_command.index("--target-rings") + 1], "45")
+        self.assertEqual(near_command[near_command.index("--target-phi") + 1], "87")
         self.assertEqual(record["source_format"], "SLURRY_HYBRID_V3")
         self.assertFalse(record["source_policy"]["far_slot_used"])
         self.assertEqual(record["basis_sha256"], prepare_case.file_sha256(source))
@@ -223,10 +268,13 @@ class FastPlumbing(unittest.TestCase):
         self.assertEqual(settings["source_phi"], 256)
         self.assertEqual(settings["fit_phi"], 16384)
         self.assertEqual(settings["check_phi"], 32768)
+        self.assertEqual(settings["target_factor"], 3)
         selected = arguments(ar=20.0, finite_gap_fast_basis_source_rings=224,
-                             finite_gap_fast_basis_source_phi=320, finite_gap_fast_basis_fit_phi=20000)
+                             finite_gap_fast_basis_source_phi=320, finite_gap_fast_basis_fit_phi=20000,
+                             finite_gap_fast_basis_target_factor=2)
         settings = prepare_case.basis_generation_settings(selected)
         self.assertEqual((settings["source_rings"], settings["source_phi"], settings["fit_phi"]), (224, 320, 20000))
+        self.assertEqual(settings["target_factor"], 2)
 
     def test_failed_ar20_basis_is_not_installed(self):
         # Replay the user's actual failed numerical report. Dummy basis bodies
@@ -266,22 +314,64 @@ class FastPlumbing(unittest.TestCase):
                 "near": prepare_case.file_sha256(near_report), "far": prepare_case.file_sha256(far_report)}}))
         fingerprint = prepare_case.fast_source_fingerprint()
         report = self.directory / "synthetic_numerical_gate.json"
-        record = {"evaluated_path": "isolated_only", "aspect_ratio": 2.0,
-                  "basis_sha256": prepare_case.file_sha256(source), "source_fingerprint": fingerprint,
-                  "compiled_source_fingerprint": fingerprint, "film_grid": 161, "passed": True,
-                  "records": [{"stage": "isolated_units", "passed": True,
-                               "all11_error": .0001, "raw_reciprocity": .0001}]}
+        record = synthetic_numerical_report(source, fingerprint)
         report.write_text(json.dumps(record))
         selected = arguments(ar=2.0, finite_gap_fast_source_gate=report)
         physical = prepare_case.resolve_source_gate(selected, source, fingerprint, 161, report)
         self.assertEqual(physical["status"], "not_run")
         self.assertEqual(selected.finite_gap_fast_source_numerical_gate["status"], "passed")
+        self.assertEqual(len(selected.finite_gap_fast_source_numerical_gate["pair_checks"]), 20)
         self.assertEqual([r["basis"] for r in selected.finite_gap_fast_source_numerical_gate["boundary_checks"]], ["near"])
         self.assertFalse(selected.finite_gap_fast_source_numerical_gate["active_source_policy"]["far_slot_used"])
         record["compiled_source_fingerprint"] = "stale"
         report.write_text(json.dumps(record))
         with self.assertRaisesRegex(ValueError, "compiled_source_fingerprint identity mismatch"):
             prepare_case.resolve_source_gate(selected, source, fingerprint, 161, report)
+
+    def test_old_target_quadrature_is_not_reused_as_oversampled_basis(self):
+        source = self.directory / "old_generated.ssb"
+        source.write_text("SLURRY_HYBRID_V3\n2 12\nANCHORS 2 0.5 1\n")
+        selected = arguments(ar=2.0, finite_gap_fast_source=source)
+        record = dict(prepare_case.basis_generation_settings(selected))
+        record["basis_sha256"] = prepare_case.file_sha256(source)
+        for old_factor in (1, None):
+            with self.subTest(old_factor=old_factor):
+                if old_factor is None:
+                    record.pop("target_factor", None)  # Legacy files implied factor 1.
+                else:
+                    record["target_factor"] = old_factor
+                Path(str(source) + ".pipeline.json").write_text(json.dumps(record))
+                with self.assertRaisesRegex(ValueError, "target_factor does not match requested 3"):
+                    prepare_case.resolve_fast_basis(selected)
+                self.assertEqual(prepare_case.file_sha256(source), record["basis_sha256"])
+
+    def test_generic_source_rejects_isolated_only_report(self):
+        source = self.directory / "ar2_identity_only.ssb"
+        source.write_text("SLURRY_HYBRID_V3\n2 12\nANCHORS 2 0.5 1\n")
+        fingerprint = prepare_case.fast_source_fingerprint()
+        record = synthetic_numerical_report(source, fingerprint)
+        record["evaluated_path"] = "isolated_only"
+        record["records"] = record["records"][:1]
+        report = self.directory / "isolated_only_routing_fixture.json"
+        report.write_text(json.dumps(record))
+        selected = arguments(ar=2.0, finite_gap_fast_source_gate=report)
+        with self.assertRaisesRegex(ValueError, "evaluated_path identity mismatch"):
+            prepare_case.resolve_source_gate(selected, source, fingerprint, 161, report)
+
+    def test_generic_source_rejects_incomplete_pair_records(self):
+        source = self.directory / "ar2_identity_only.ssb"
+        source.write_text("SLURRY_HYBRID_V3\n2 12\nANCHORS 2 0.5 1\n")
+        fingerprint = prepare_case.fast_source_fingerprint()
+        report = self.directory / "incomplete_routing_fixture.json"
+        selected = arguments(ar=2.0, finite_gap_fast_source_gate=report)
+        # Retaining passed=True at the top must not conceal missing checks.
+        for missing in ("all_pairs", "one_pair"):
+            with self.subTest(missing=missing):
+                record = synthetic_numerical_report(source, fingerprint)
+                record["records"] = record["records"][:1] if missing == "all_pairs" else record["records"][:-1]
+                report.write_text(json.dumps(record))
+                with self.assertRaisesRegex(ValueError, "lacks the complete passing pair checks"):
+                    prepare_case.resolve_source_gate(selected, source, fingerprint, 161, report)
 
     def test_full_generation_stops_at_failed_source_gate(self):
         source = self.directory / "identity_only.ssb"
@@ -304,6 +394,37 @@ class FastPlumbing(unittest.TestCase):
         Path(str(self.table) + ".manifest.json").write_text(json.dumps(manifest))
         with self.assertRaisesRegex(ValueError, "manifest SHA mismatch"):
             prepare_case.resolve_lubrication(arguments(self.table), 1.5e-6)
+
+    def test_cached_numerical_gate_revalidates_complete_pair_records(self):
+        source = self.directory / "routing_only.ssb"
+        source.write_text("SLURRY_HYBRID_V3\n2 12\nANCHORS 2 0.5 1\n")
+        fingerprint = prepare_case.fast_source_fingerprint()
+        raw = synthetic_numerical_report(source, fingerprint)
+        numerical = {"status": "passed", "category": "numerical", "evaluated_path": "pair_numerical",
+            "compiled_source_fingerprint": fingerprint, "routing_only": True,
+            "isolated_checks": raw["records"][:1], "pair_checks": raw["records"][1:]}
+        manifest = {"schema": 1, "ar": 2, "geometry": "equal_size_oblate",
+            "source_code_sha256": fingerprint, "table": {"sha256": prepare_case.file_sha256(self.table), "settings": {}},
+            "source_gate": {"status": "not_run"}, "interpolation_gate": {"status": "unverified"},
+            "source_numerical_gate": numerical}
+        path = Path(str(self.table) + ".manifest.json")
+        path.write_text(json.dumps(manifest))
+        result = prepare_case.read_fast_manifest(self.table, arguments(ar=2), fingerprint=fingerprint)
+        self.assertEqual(result["source_numerical_gate"]["status"], "passed")
+        self.assertEqual(result["source_gate"]["status"], "not_run")
+        for defect in ("missing_path", "wrong_category", "missing_pair", "failed_pair", "excess_residual", "duplicate_pair"):
+            with self.subTest(defect=defect):
+                changed = json.loads(json.dumps(manifest))
+                gate = changed["source_numerical_gate"]
+                if defect == "missing_path": gate.pop("evaluated_path")
+                elif defect == "wrong_category": gate["category"] = "physical"
+                elif defect == "missing_pair": gate["pair_checks"].pop()
+                elif defect == "failed_pair": gate["pair_checks"][0]["passed"] = False
+                elif defect == "excess_residual": gate["pair_checks"][0]["linear_residual"] = 1e-4
+                elif defect == "duplicate_pair": gate["pair_checks"][-1] = dict(gate["pair_checks"][0])
+                path.write_text(json.dumps(changed))
+                with self.assertRaisesRegex(ValueError, "Cached numerical gate"):
+                    prepare_case.read_fast_manifest(self.table, arguments(ar=2), fingerprint=fingerprint)
 
     def test_launcher_preserves_environment_and_accepts_explicit_flags(self):
         launcher = ROOT / "lammps_slurry/run_slurry_cpu.sbatch"

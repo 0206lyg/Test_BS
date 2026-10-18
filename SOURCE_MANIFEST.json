@@ -1,5 +1,5 @@
 {
-  "sha256": "1c40d0d7a7f05bab2317929a0c4fc83af83a9ff8d5bf03b48988d640c42a3e6e",
+  "sha256": "2667ac09710feb64179decac296c90588d07b954d9f44835546f160b8b8fa976",
   "files": {
     "lammps_slurry/CMakeLists.txt": "8c9482bbb5de6270ae284c7834de0172e2e6e0cec290b052dfeeae44ad647d4d",
     "lammps_slurry/lammps-version.json": "4cfe43fb4a7f45f3c713e9b2f1b5e3cd54d625827ee846c513db0f5e248d4f2e",
@@ -23,8 +23,8 @@
     "lammps_slurry/src/slurry_implicit_math.h": "49f86f6179620cde908e9a2207e0134176a8cae53d06d9f52ae39405998902cb",
     "lammps_slurry/src/slurry_objective_film.h": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
     "lammps_slurry/src/slurry_pair_hydro_math.h": "7765ac59f3265f69629f54e73c50590044a2387e56afd7b50d27b588d4fa468a",
-    "lammps_slurry/src/slurry_scattering_math.h": "65af2c29e9ecb2c3a306a3a6664f16cec7cfb62d25f54f7f2db8797afed643f9",
-    "lammps_slurry/src/slurry_scattering_provider.h": "bfd3a7b2518f0bd8e2e9c3938b8317a803d64b46734c9e9b5952543a37acfe16",
+    "lammps_slurry/src/slurry_scattering_math.h": "1efdb2112ba90b82511e218c13843ed070e3356ebce41d35aeb45889e7c11d8c",
+    "lammps_slurry/src/slurry_scattering_provider.h": "3661ae6fdb75c61be9c1d44a4ef8bce2ffecb9deb286109803e036ed32dab01d",
     "lammps_slurry/src/slurry_singular_pair.h": "9bbbd0d50043a87ee7e2b98876a05ea1c892b9fa8a4376f5a20d885b0922395e",
     "lammps_slurry/src/slurry_solver_workspace.h": "128b9beb396fc6cfca965d9d33a8c07f2ebe5f417f6dc3fcfe0c8f02f51ceb34",
     "lammps_slurry/src/slurry_sparse_math.h": "0e5b2ffd030161dca343d502c0ce8bb8432489aca643843c7c12e0c142f36324",
@@ -32,14 +32,15 @@
     "lammps_slurry/src/slurry_spd_table.h": "61425c6d3c2b8a756800c353fcb1c4d566d76b49907391abc6d93fb4c97edc38",
     "lammps_slurry/src/slurry_spheroid_hydro_math.h": "645930243114a39f966f0ad77e73c0b7b7022460f0f36a7a83e6f4e72ee08954",
     "lammps_slurry/src/slurry_stress_math.h": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad",
-    "lammps_slurry/tests/test_basis_physical.cpp": "d777cff7f9b799de173130e591f30a488488030ede1a9b2707be0bb6c607ab30",
+    "lammps_slurry/tests/test_basis_physical.cpp": "3409209fc60dd75932c1e0a956f8baa4f3ec06c95bfbdf743a78506e41b54144",
     "lammps_slurry/tests/test_table_interpolation.cpp": "fe799c84d35a8ac4236296a8689fd53bd33e29f438f2520b80bcfad43881081d",
     "lammps_slurry/tools/basis_cylindrical_kernel.h": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
     "lammps_slurry/tools/build.py": "90049bd7e4708377af14fd922904348c6b7f94fa6dea7c5342e45f9555d97205",
-    "lammps_slurry/tools/bundle_guard.py": "1c587860882f899e7c3a9304eb52cb3345ad02b1d415abee12825f8f66ca549b",
+    "lammps_slurry/tools/bundle_guard.py": "2b3ce4422a252146475cac536ad8fd0dde71cf08f4cbc826ed3718a708ea988d",
     "lammps_slurry/tools/precompute_fast.cpp": "9606dc8c215e18cf7eb9a40f17c2c942109ebb0fd2b3d40ac5bab78e83d946f3",
-    "lammps_slurry/tools/prepare_case.py": "0467fab364749f4de4f18632959935b8238d6beb71face04f16004eb4aaf3777",
-    "lammps_slurry/tools/slurry_generate_basis.cpp": "11ec83c248d27fd29fc009ee8240b3ef8c9401a0e2a63e4df09fa33a83b8a33a",
+    "lammps_slurry/tools/prepare_case.py": "b39c1f5cdea804eba14f655399ed46b1eeeb9bba840d1610d2fd45c512611d62",
+    "lammps_slurry/tools/runtime_snapshot.py": "0bf4fd0c6042f36559399643df7640eaff25eb122d0943dafea988b3e8c64303",
+    "lammps_slurry/tools/slurry_generate_basis.cpp": "20a84f336c5aeda885a6d621bb15d4a2fab05e754708759710abe6fba69e65cc",
     "lammps_slurry/vendor/eigen3/COPYING.APACHE": "03379001a7b12a2ec997a25554247d985270b353c10d5bafee9ac8d6519820b7",
     "lammps_slurry/vendor/eigen3/COPYING.BSD": "51928dce36213c5333ba3172e847d735d4c6e9b7ff2722a326c49067155b82eb",
     "lammps_slurry/vendor/eigen3/COPYING.GPL": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
@@ -393,8 +394,8 @@
     "lammps_slurry/vendor/gr_re2/nearFieldResistance.h": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983",
     "lammps_slurry/vendor/gr_re2/particleMath.h": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62",
     "lammps_slurry/vendor/gr_re2/provenance.json": "6f850991a19701e0f5cb723290de10adba00fab93dbc45f89940161bc9fec6c1",
-    "release.json": "230d28507a48a8522f4f13d466f21f689d2fae6f2bbae17cff4e0e230b865a12",
+    "release.json": "9187bcbd4b646faff548e2ea0e2883ae61a6216fd426e22c953a61f2f1c32719",
     "validation_basis/run_interpolation_gate.py": "b7a52314fb85594f0debbeb6684498f289e34da1066fdfb98aeeec26662abe66",
-    "validation_basis/run_physical_gate.py": "e4007e7e47730e900cac8853df531b33e19bb6f06228368396781b3c3c27d84a"
+    "validation_basis/run_physical_gate.py": "4fa7b73381ad156d496da697fda5aa0035e83073ce81642cf4c93be95a04e6eb"
   }
 }

@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261018-ar-basis-resolution-fix"
+RELEASE_ID = "20261018-pair-quadrature-runtime-fix"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -45,6 +45,7 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/slurry_spd_coordinates.h",
         "lammps_slurry/src/slurry_objective_film.h",
         "lammps_slurry/tools/prepare_case.py", "lammps_slurry/tools/build.py",
+        "lammps_slurry/tools/runtime_snapshot.py",
         "lammps_slurry/tools/precompute_fast.cpp",
         "lammps_slurry/tools/slurry_generate_basis.cpp",
         "lammps_slurry/tools/basis_cylindrical_kernel.h",
@@ -77,6 +78,7 @@ def source_snapshot(root):
         root / "release.json", project / "CMakeLists.txt",
         project / "lammps-version.json", project / "tools/prepare_case.py",
         project / "tools/build.py", project / "tools/bundle_guard.py",
+        project / "tools/runtime_snapshot.py",
         project / "tools/precompute_fast.cpp",
         project / "tools/slurry_generate_basis.cpp", project / "tools/basis_cylindrical_kernel.h",
         project / "tests/test_basis_physical.cpp", root / "validation_basis/run_physical_gate.py",

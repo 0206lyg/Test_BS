@@ -112,7 +112,13 @@ class Provider {
   }
   Mat17 checked_grand(const Basis& source,const std::array<Body,2>& bodies) const {
     const auto raw=source.evaluate(bodies);
-    if(raw.reciprocity>reciprocity_tolerance)throw std::runtime_error("Scattering approximation exceeds its raw reciprocity tolerance");
+    if(raw.reciprocity>reciprocity_tolerance) {
+      std::ostringstream error;error<<std::setprecision(17)
+        <<"Scattering raw reciprocity="<<raw.reciprocity<<" exceeds limit="<<reciprocity_tolerance
+        <<"; degree="<<source.degree<<" source_phi="<<source.fourier_nphi
+        <<" target_nodes="<<source.targets.rows()<<" linear_residual="<<raw.linear_residual;
+      throw std::runtime_error(error.str());
+    }
     // Numerical symmetrization defines the approximate Rayleigh model; its
     // measured discretization error must not be described as roundoff.
     return .5*(raw.grand+raw.grand.transpose()).eval();
@@ -137,7 +143,12 @@ class Provider {
     for(int k=0;k<anchor_count;++k) {
       const double h=anchor_gaps[k];const auto b=geometry(axes,h,a);const Map6 B=midpoint_map(b,h,a);
       const Basis& source=(hybrid_version!=3&&k+1==anchor_count)?basis:near_basis;
-      const Mat11 R=reduced(checked_grand(source,b),B)-reduced(isolated(b),B)-film11(axes,h);
+      Mat11 R;
+      try { R=reduced(checked_grand(source,b),B)-reduced(isolated(b),B)-film11(axes,h); }
+      catch(const std::exception& error) {
+        std::ostringstream message;message<<std::setprecision(17)<<"hybrid anchor h_over_c="<<h<<": "<<error.what();
+        throw std::runtime_error(message.str());
+      }
       auto& values=out.values[k];
       for(int i=0;i<11;++i)for(int j=0;j<11;++j)values[11*i+j]=.5*(R(i,j)+R(j,i));
     }return out;
