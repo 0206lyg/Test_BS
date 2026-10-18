@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "release_id": "20261018-ar-basis-pipeline-trial",
+  "release_id": "20261018-ar-basis-resolution-fix",
   "release_report_finalized": true,
-  "status": "IMPLEMENTED; SELECTED_AR10_SOURCE_AND_SERIAL_INTEGRATION_GATES_PASSED; FULL_TABLE_AND_BULK_PENDING",
+  "status": "AR20_BASIS_NUMERICAL_GATE_FIXED_AND_VERIFIED; FULL_TABLE_AND_BULK_PENDING",
   "geometry": "Equal-sized, equal-AR oblate spheroids; AR1 uses separate Mari route",
   "numerical_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
   "selected_basis": {
@@ -26,7 +26,9 @@
     "Resumable complete pair-table generation and cache identity checks",
     "Explicit finite_gap_fast activation in implicit force, stress and viscosity calculation",
     "V3 direct near-basis Stokes at each finite gap; unchanged near-film matching below h_eff/c=0.5",
-    "Nearly-parallel canonical-frame roundoff repair"
+    "Nearly-parallel canonical-frame roundoff repair",
+    "AR-scaled missing-basis meridional and angular quadrature",
+    "Reject failed generated near bases before publication; retain numerical failure report"
   ],
   "validation": {
     "final_basis_direct": {
@@ -110,6 +112,11 @@
       "independent_source_evaluations": 260,
       "report": "validation_basis/ar10_v3_smoke_generation_result.json",
       "scope": "Complete coarse smoke grid; no full-resolution table or bulk accuracy claim"
+    },
+    "ar20_basis_resolution_fix": {
+      "status": "passed",
+      "report": "validation_basis/ar20_resolution_fix.json",
+      "scope": "Actual AR20 near basis generated from the backed-up C++ source; analytic isolated and off-grid boundary gates, plus two pair quadrature checks. No independent AR20 pair reference and no complete resistance table."
     }
   },
   "not_completed": [
@@ -168,7 +175,9 @@
     "validation_basis/ar10_v3_smoke_generation_result.json",
     "validation_basis/ar10_v3_smoke_resume_result.json",
     "validation_basis/ar10_v3_smoke.spt.json",
-    "validation_basis/runtime_integration_v2_stage.json"
+    "validation_basis/runtime_integration_v2_stage.json",
+    "validation_basis/ar20_resolution_fix.json",
+    "validation_basis/check_ar20_pair_quadrature.cpp"
   ],
   "superseded_model_failure": {
     "format": "SLURRY_HYBRID_V2",
@@ -191,5 +200,6 @@
     ],
     "full_table_mib": 810.272,
     "scope": "Operation-count extrapolation indicates several 8-thread day jobs may be needed; not a measured full-generation timing. Checkpoint resume is implemented and tested. Subsequent dynamics uses lookup."
-  }
+  },
+  "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9"
 }

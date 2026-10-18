@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261018-ar-basis-pipeline-trial"
+RELEASE_ID = "20261018-ar-basis-resolution-fix"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 

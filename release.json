@@ -1,11 +1,13 @@
 {
-  "release_id": "20261018-ar-basis-pipeline-trial",
+  "release_id": "20261018-ar-basis-resolution-fix",
   "status": "EXPERIMENTAL_AR_PARAMETRIC_PIPELINE",
-  "prepare_case_sha256": "6be7b352f409f3843f03013ce6fbfe132ccbda5c8aa0120b6e05b7c508d47ce4",
+  "prepare_case_sha256": "0467fab364749f4de4f18632959935b8238d6beb71face04f16004eb4aaf3777",
   "plugin_build_and_bulk_validation": "V3_SERIAL_BUILD_AND_2_8_PARTICLE_INTEGRATION_PASSED; EQUILIBRIUM_BULK_NOT_RUN",
   "full_orientation_table": "V3_COARSE_SMOKE_COMPLETE_AND_RESUME_PASSED; FULL_RESOLUTION_TABLE_NOT_GENERATED",
   "details": "RESULT.json",
   "model_stage": "HYBRID_V3",
   "numerical_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
-  "selected_model_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6"
+  "selected_model_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6",
+  "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+  "basis_resolution_policy": "confocal_geometry_scaled_v1"
 }

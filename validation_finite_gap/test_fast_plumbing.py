@@ -200,7 +200,9 @@ class FastPlumbing(unittest.TestCase):
             "c.write_text((c.read_text() if c.exists() else '')+get('--degree')+'\\n')\n" +
             "assert not hybrid or (get('--hybrid-version')=='3' and get('--anchor-gaps')=='0.5,1')\n" +
             "pathlib.Path(get('--output')).write_text(('SLURRY_HYBRID_V3' if hybrid else 'SLURRY_SCATTERING_V2')+'\\n'+get('--ar')+' '+get('--degree')+'\\n'+('ANCHORS 2 0.5 1\\n' if hybrid else ''))\n" +
-            "pathlib.Path(get('--report')).write_text(json.dumps({'routing_only':True,'aspect_ratio':float(get('--ar'))}))\n")
+            "pathlib.Path(get('--report')).write_text(json.dumps({'routing_only':True,'aspect_ratio':float(get('--ar')),"
+            "'isolated_all11_energy_error':0.,'isolated_reciprocity':0.,'offgrid_physical11_weighted_relative':0.,"
+            "'offgrid_basis_weighted_relative':0.,'loader_roundtrip_pass':True}))\n")
         generator.chmod(0o755)
         selected = arguments(finite_gap_fast_source=source, finite_gap_fast_basis_generator=generator)
         self.assertEqual(prepare_case.resolve_fast_basis(selected), source)
@@ -209,9 +211,45 @@ class FastPlumbing(unittest.TestCase):
         record = json.loads(Path(str(source) + ".pipeline.json").read_text())
         self.assertEqual(record["source_gate"]["status"], "not_run")
         self.assertEqual(record["source_rings"], 96)
+        self.assertEqual(record["fit_phi"], 4096)
+        self.assertEqual(record["check_phi"], 8192)
         self.assertEqual(record["source_format"], "SLURRY_HYBRID_V3")
         self.assertFalse(record["source_policy"]["far_slot_used"])
         self.assertEqual(record["basis_sha256"], prepare_case.file_sha256(source))
+
+    def test_ar20_default_resolution_and_explicit_override(self):
+        settings = prepare_case.basis_generation_settings(arguments(ar=20.0))
+        self.assertEqual(settings["source_rings"], 192)
+        self.assertEqual(settings["source_phi"], 256)
+        self.assertEqual(settings["fit_phi"], 16384)
+        self.assertEqual(settings["check_phi"], 32768)
+        selected = arguments(ar=20.0, finite_gap_fast_basis_source_rings=224,
+                             finite_gap_fast_basis_source_phi=320, finite_gap_fast_basis_fit_phi=20000)
+        settings = prepare_case.basis_generation_settings(selected)
+        self.assertEqual((settings["source_rings"], settings["source_phi"], settings["fit_phi"]), (224, 320, 20000))
+
+    def test_failed_ar20_basis_is_not_installed(self):
+        # Replay the user's actual failed numerical report. Dummy basis bodies
+        # test publication only; this is not a new physical computation.
+        failed = json.loads((ROOT / "lammps_slurry/models/ar20_regenerated.ssb.near-generation.json").read_text())
+        source = self.directory / "failed.ssb"
+        generator = self.directory / "generator"
+        generator.write_text("#!/bin/sh\nexit 99\n")
+        generator.chmod(0o755)
+        def simulated_generation(command, **kwargs):
+            target = Path(command[command.index("--output") + 1])
+            report = Path(command[command.index("--report") + 1])
+            hybrid = "--far-basis" in command
+            target.write_text("SLURRY_HYBRID_V3\n20 12\nANCHORS 2 0.5 1\n" if hybrid else "SLURRY_SCATTERING_V2\n20 8\n")
+            report.write_text(json.dumps(failed))
+        selected = arguments(ar=20.0, finite_gap_fast_source=source, finite_gap_fast_basis_generator=generator)
+        with mock.patch.object(prepare_case.subprocess, "run", side_effect=simulated_generation):
+            with self.assertRaisesRegex(ValueError, "offgrid_basis_weighted_relative=.*limit 0.01"):
+                prepare_case.resolve_fast_basis(selected)
+        self.assertFalse(source.exists())
+        self.assertFalse(Path(str(source) + ".far.ssb").exists())
+        self.assertFalse(Path(str(source) + ".pipeline.json").exists())
+        self.assertTrue(Path(str(source) + ".near-generation.json").exists())
 
     def test_other_ar_numerical_gate_does_not_claim_pair_physics(self):
         # Synthetic probe report tests status routing, not AR2 model accuracy.

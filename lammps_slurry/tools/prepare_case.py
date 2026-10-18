@@ -289,35 +289,89 @@ def read_basis_header(path, requested_ar):
             "payload_validation": "C++ provider checks all matrices when loaded"}
 
 
+def basis_generation_settings(args):
+    """Initial geometric resolution, followed by the unchanged numerical gates.
+
+    Confocal source depth stays at c/2. Its smallest surface separation is
+    a-sqrt(a*a-3*c*c/4), asymptotically 3*c*c/(8*a). Thus meridional ring
+    resolution grows with AR and isolated-kernel azimuth resolution with AR^2.
+    Runtime pair quadrature resolves the fixed h/c matching gaps, hence AR.
+    These are starting resolutions, not an accuracy certificate for every AR.
+    """
+    scale = max(1.0, float(args.ar) / 10.0)
+    automatic = {
+        "source_rings": int(math.ceil(96 * scale / 16)) * 16,
+        "source_phi": int(math.ceil(128 * scale / 32)) * 32,
+        "fit_phi": int(math.ceil(4096 * scale * scale / 128)) * 128,
+    }
+    settings = {}
+    for key, default in automatic.items():
+        value = getattr(args, "finite_gap_fast_basis_" + key, None)
+        settings[key] = default if value is None else value
+        integer(settings[key], "finite-gap-fast-basis-" + key.replace("_", "-"), minimum=4)
+    settings["check_phi"] = 2 * settings["fit_phi"]
+    near = getattr(args, "finite_gap_fast_basis_degree", 12)
+    far = getattr(args, "finite_gap_fast_far_degree", 8)
+    for degree in (near, far):
+        integer(degree, "finite-gap basis degree")
+        if degree > 30:
+            raise ValueError("Finite-gap basis degree must not exceed 30")
+        coefficients = 3 * (degree + 1) ** 2 - 1
+        if settings["source_rings"] * (2 * (degree + 2) + 1) * 3 * coefficients > 16000000:
+            raise ValueError("Requested AR/basis resolution exceeds the generator coefficient storage limit")
+    if (settings["source_rings"] > 512 or settings["source_phi"] > 1024 or
+            settings["source_rings"] * settings["source_phi"] > 100000 or
+            settings["check_phi"] > 1048576):
+        raise ValueError("Requested AR/basis resolution exceeds the generator dimensions; no generation started")
+    settings["degrees"] = {"near": near, "far": far}
+    return settings
+
+
+def check_generated_basis_report(path, ar):
+    """Do not install a generated source that already fails its own diagnostics."""
+    record = load_json_object(path)
+    failures = []
+    if not math.isclose(float(record.get("aspect_ratio", 0)), ar, rel_tol=1e-10):
+        failures.append("AR mismatch")
+    for field, limit in (("isolated_all11_energy_error", .001), ("isolated_reciprocity", .001),
+                         ("offgrid_physical11_weighted_relative", .001),
+                         ("offgrid_basis_weighted_relative", .01)):
+        value = record.get(field)
+        if (not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= limit):
+            failures.append("{}={} (limit {})".format(field, value, limit))
+    if record.get("loader_roundtrip_pass") is not True:
+        failures.append("serialized loader roundtrip did not pass")
+    if failures:
+        raise ValueError("AR={} generated near basis failed: {}. Report: {}. "
+                         "No basis was installed and no table was generated".format(ar, "; ".join(failures), path))
+    return record
+
+
 def resolve_fast_basis(args):
     source = args.finite_gap_fast_source
     if source is None:
         return None
     source = source.expanduser().resolve()
+    settings = (basis_generation_settings(args) if not source.exists() or
+                Path(str(source) + ".pipeline.json").is_file() else None)
     if not source.exists():
         generator = (getattr(args, "finite_gap_fast_basis_generator", None) or offline_executable(args, "slurry_generate_basis")).expanduser().resolve()
         if not generator.is_file() or not os.access(str(generator), os.X_OK):
             raise ValueError("Missing basis {} and executable AR-basis generator {}; build slurry_generate_basis or supply a matching basis".format(source, generator))
-        near_degree = getattr(args, "finite_gap_fast_basis_degree", 12)
-        far_degree = getattr(args, "finite_gap_fast_far_degree", 8)
-        source_rings = getattr(args, "finite_gap_fast_basis_source_rings", 96)
-        source_phi = getattr(args, "finite_gap_fast_basis_source_phi", 128)
-        integer(source_rings, "finite-gap-fast-basis-source-rings", minimum=4)
-        integer(source_phi, "finite-gap-fast-basis-source-phi", minimum=8)
-        for degree in (near_degree, far_degree):
-            integer(degree, "finite-gap basis degree")
-            if degree > 30:
-                raise ValueError("Finite-gap basis degree must not exceed 30")
+        near_degree, far_degree = settings["degrees"]["near"], settings["degrees"]["far"]
+        source_rings, source_phi = settings["source_rings"], settings["source_phi"]
         source.parent.mkdir(parents=True, exist_ok=True)
-        print("Generating actual AR={} scattering bases (far degree {}, near degree {}); physical gate follows separately".format(
-              args.ar, far_degree, near_degree), flush=True)
+        print("Generating actual AR={} scattering bases (far degree {}, near degree {}, source rings {}, "
+              "runtime phi {}, fit/check phi {}/{}); physical gate follows separately".format(
+              args.ar, far_degree, near_degree, source_rings, source_phi,
+              settings["fit_phi"], settings["check_phi"]), flush=True)
         with tempfile.TemporaryDirectory(prefix=".basis-build-", dir=str(source.parent)) as temporary:
             far, hybrid = Path(temporary) / "far.ssb", Path(temporary) / "matched.ssb"
             commands = []
             for degree, output, label in ((far_degree, far, "far"), (near_degree, hybrid, "near")):
                 command = [str(generator), "--ar", format_float(args.ar), "--degree", str(degree),
                            "--source-rings", str(source_rings), "--source-phi", str(source_phi),
-                           "--fit-phi", "4096", "--check-phi", "8192",
+                           "--fit-phi", str(settings["fit_phi"]), "--check-phi", str(settings["check_phi"]),
                            "--output", str(output), "--report", str(source) + "." + label + "-generation.json"]
                 if label == "near":
                     command += ["--far-basis", str(far), "--hybrid-version", "3", "--anchor-gaps", "0.5,1"]
@@ -329,6 +383,8 @@ def resolve_fast_basis(args):
             header = read_basis_header(hybrid, args.ar)
             if header["format"] != "SLURRY_HYBRID_V3":
                 raise ValueError("Basis generator did not produce the requested V3 source; rebuild the offline generator")
+            # V3 uses only the near slot; do not reject its inactive far slot.
+            check_generated_basis_report(Path(str(source) + ".near-generation.json"), args.ar)
             os.replace(str(far), str(source) + ".far.ssb")
             os.replace(str(hybrid), str(source))
             write_json_atomic(Path(str(source) + ".pipeline.json"), {
@@ -338,6 +394,8 @@ def resolve_fast_basis(args):
                 "source_format": header["format"], "source_policy": header["source_policy"],
                 "source_anchors_over_c": header["anchors_over_c"],
                 "source_rings": source_rings, "source_phi": source_phi,
+                "fit_phi": settings["fit_phi"], "check_phi": settings["check_phi"],
+                "resolution_policy": "confocal_geometry_scaled_v1",
                 "generation_reports": {label: file_sha256(Path(str(source) + "." + label + "-generation.json")) for label in ("far", "near")},
                 "source_gate": {"status": "not_run"}})
     if not source.is_file():
@@ -345,10 +403,10 @@ def resolve_fast_basis(args):
     pipeline = Path(str(source) + ".pipeline.json")
     if pipeline.is_file():
         record = load_json_object(pipeline)
-        expected = {"degrees": {"near": getattr(args, "finite_gap_fast_basis_degree", 12),
-                                 "far": getattr(args, "finite_gap_fast_far_degree", 8)},
-                    "source_rings": getattr(args, "finite_gap_fast_basis_source_rings", 96),
-                    "source_phi": getattr(args, "finite_gap_fast_basis_source_phi", 128)}
+        # Old pipeline records used fixed quadrature, but did not store these keys.
+        record.setdefault("fit_phi", 4096)
+        record.setdefault("check_phi", 8192)
+        expected = settings
         if record.get("basis_sha256") != file_sha256(source):
             raise ValueError("Generated basis changed without matching provenance; select a coherent basis file")
         for key, value in expected.items():
@@ -1149,10 +1207,12 @@ def main():
                         help="near basis order for missing-basis generation; candidate setting, not accuracy certification")
     parser.add_argument("--finite-gap-fast-far-degree", type=int, default=8,
                         help="far basis order for missing-basis generation; actual source solve for the requested AR")
-    parser.add_argument("--finite-gap-fast-basis-source-rings", type=int, default=96,
-                        help="meridional source resolution for actual missing-basis generation")
-    parser.add_argument("--finite-gap-fast-basis-source-phi", type=int, default=128,
-                        help="runtime source azimuth resolution for missing-basis generation; refine if its checks fail")
+    parser.add_argument("--finite-gap-fast-basis-source-rings", type=int, default=None,
+                        help="override AR-scaled source rings; automatic: 96 at AR<=10, 192 at AR20")
+    parser.add_argument("--finite-gap-fast-basis-source-phi", type=int, default=None,
+                        help="override AR-scaled runtime quadrature; automatic: 128 at AR<=10, 256 at AR20")
+    parser.add_argument("--finite-gap-fast-basis-fit-phi", type=int, default=None,
+                        help="override AR^2-scaled kernel quadrature; automatic: 4096 at AR<=10, 16384 at AR20; check uses twice this")
     parser.add_argument("--finite-gap-fast-generator", type=Path, default=None,
                         help="offline generator executable; default build/lammps-slurry/slurry_precompute_fast")
     parser.add_argument("--finite-gap-fast-film-grid", type=int, default=DEFAULT_FAST_FILM_GRID,

@@ -1,0 +1,631 @@
+{
+  "ar2_ar5_compatibility": "Existing backed-up near-generation reports pass the unchanged pre-install limits; no new AR2/AR5 computation was run.",
+  "baseline_near_generation": {
+    "anchor_gaps": [
+      0.5,
+      1
+    ],
+    "aspect_ratio": 20,
+    "check_phi_kernel": 8192,
+    "check_rings": 199,
+    "coefficient_count": 506,
+    "degree": 12,
+    "finite_gap_policy": "direct_near_basis_at_query_gap",
+    "fit_phi_kernel": 4096,
+    "fit_rings": 192,
+    "format": "slurry_stokes_basis_generation_v1",
+    "hybrid_version": 3,
+    "isolated_all11_energy_error": 0.0012254036524319556,
+    "isolated_min_relative_eigenvalue": 0.9999635558060996,
+    "isolated_reciprocity": 5.999337829503326e-07,
+    "loader_roundtrip_pass": true,
+    "max_modal_fit_relative": 0.23839399044780263,
+    "max_modal_offgrid_relative": 0.24281226418810176,
+    "method": "confocal interior Stokeslets, cylindrical Fourier least squares; no pair data fit",
+    "modes": [
+      {
+        "fit": 0.20707154990823246,
+        "m": 0,
+        "offgrid": 0.2377658880551705,
+        "rank": 288
+      },
+      {
+        "fit": 0.23839399044780263,
+        "m": 1,
+        "offgrid": 0.21635538346915528,
+        "rank": 288
+      },
+      {
+        "fit": 0.21881150247872053,
+        "m": 2,
+        "offgrid": 0.21630893113716262,
+        "rank": 288
+      },
+      {
+        "fit": 0.2068177038283352,
+        "m": 3,
+        "offgrid": 0.21470461975556815,
+        "rank": 288
+      },
+      {
+        "fit": 0.1944352231275257,
+        "m": 4,
+        "offgrid": 0.20890008414469138,
+        "rank": 288
+      },
+      {
+        "fit": 0.18988810039981024,
+        "m": 5,
+        "offgrid": 0.20858374746762118,
+        "rank": 288
+      },
+      {
+        "fit": 0.18224278913028077,
+        "m": 6,
+        "offgrid": 0.20346060312327333,
+        "rank": 288
+      },
+      {
+        "fit": 0.1850630343549142,
+        "m": 7,
+        "offgrid": 0.2069953792913395,
+        "rank": 288
+      },
+      {
+        "fit": 0.18095016104410594,
+        "m": 8,
+        "offgrid": 0.20318051212799024,
+        "rank": 288
+      },
+      {
+        "fit": 0.1951305287801932,
+        "m": 9,
+        "offgrid": 0.21482029484390805,
+        "rank": 288
+      },
+      {
+        "fit": 0.19074445831740186,
+        "m": 10,
+        "offgrid": 0.2089678787736772,
+        "rank": 288
+      },
+      {
+        "fit": 0.23485269981581036,
+        "m": 11,
+        "offgrid": 0.24281226418810176,
+        "rank": 288
+      },
+      {
+        "fit": 0.007011959052480653,
+        "m": 12,
+        "offgrid": 0.008231592483294251,
+        "rank": 288
+      },
+      {
+        "fit": 0.012449209002931458,
+        "m": 13,
+        "offgrid": 0.013662318034736234,
+        "rank": 288
+      }
+    ],
+    "offgrid_basis_weighted_relative": 0.21358799700665843,
+    "offgrid_physical11_weighted_relative": 0.0015364429568235228,
+    "physical_pair_gate_run": false,
+    "projection_identity_relative": 5.683369242675273e-16,
+    "rcond": 1e-11,
+    "runtime_source_phi_convergence_checked": false,
+    "seconds": 54.290669603,
+    "serialized_far_slot_active": false,
+    "source_depth": 0.5,
+    "source_order": 14,
+    "source_phi_runtime": 128,
+    "source_rings": 96,
+    "status": "candidate_unqualified",
+    "target_phi": 29,
+    "target_rings": 15
+  },
+  "basis_resolution_policy": {
+    "check_phi": 32768,
+    "degrees": {
+      "far": 8,
+      "near": 12
+    },
+    "fit_phi": 16384,
+    "source_phi": 256,
+    "source_rings": 192
+  },
+  "final_basis_sha256": "cd345fc94f0693f4105ab79f6c0f8f4279b7f85cf8cb8612159dedf18be0bbb5",
+  "final_generation_run": {
+    "baseline_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+    "command": [
+      "ar20_source_fix/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "12",
+      "--source-rings",
+      "192",
+      "--source-phi",
+      "256",
+      "--fit-phi",
+      "16384",
+      "--check-phi",
+      "32768",
+      "--output",
+      "ar20_source_fix/ar20_L12_nr192_q16384.ssb",
+      "--report",
+      "ar20_source_fix/ar20_L12_nr192_q16384.json"
+    ],
+    "exit_code": 0,
+    "max_rss_kib": 1410932,
+    "seconds": 691.4788326179987
+  },
+  "final_isolated_probe": {
+    "aspect_ratio": 20,
+    "basis_path": "/workspace/scratch/b72f2fb4bee2/ar20_source_fix/ar20_L12_nr192_q16384.ssb",
+    "basis_sha256": "cd345fc94f0693f4105ab79f6c0f8f4279b7f85cf8cb8612159dedf18be0bbb5",
+    "basis_slot": "matched",
+    "cases": [],
+    "command": [
+      "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/basis_physical_probe_v3",
+      "/workspace/scratch/b72f2fb4bee2/ar20_source_fix/ar20_L12_nr192_q16384.ssb",
+      "/workspace/scratch/b72f2fb4bee2/Test_BS_current/lammps_slurry/tests/data/independent_pair_reference.txt",
+      "isolated_only",
+      "161"
+    ],
+    "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+    "coverage": "Exact isolated spheroid grand resistance only; no pair or bulk validation.",
+    "elapsed_seconds": 3.136221389999264,
+    "evaluated_path": "isolated_only",
+    "executable_path": "/workspace/scratch/b72f2fb4bee2/ar10_spd_trial/validation_basis/basis_physical_probe_v3",
+    "executable_sha256": "169fc1407d07d5febcb6ab56db495899aea18d608a74cf258c7f3951b1f436ca",
+    "exit_code": 0,
+    "film_grid": 161,
+    "fixture_path": "/workspace/scratch/b72f2fb4bee2/Test_BS_current/lammps_slurry/tests/data/independent_pair_reference.txt",
+    "fixture_sha256": "8e36e8be1753623c8e3460a76a13ee130444fa3bcbb71472dd9614f9881f8038",
+    "gate": "source_physical",
+    "inputs_unchanged_during_run": true,
+    "limit": 0.05,
+    "log_path": "/workspace/scratch/b72f2fb4bee2/ar20_source_fix/isolated_nr192_q16384.log",
+    "max_all11_error": null,
+    "max_error": null,
+    "max_free_strain_error": null,
+    "maximum_gap_over_c": null,
+    "minimum_gap_over_c": null,
+    "not_run": [],
+    "passed": true,
+    "records": [
+      {
+        "aspect_ratio": 20,
+        "basis_slot": "matched",
+        "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+        "evaluated_path": "isolated_only",
+        "film_grid": 161,
+        "hybrid": false,
+        "hybrid_version": 0,
+        "matching_policy": "serialized_anchor_matching",
+        "physical_limit": 0.05,
+        "stage": "metadata"
+      },
+      {
+        "all11_error": 3.7061537061511274e-07,
+        "aspect_ratio": 20,
+        "limit": 0.001,
+        "passed": true,
+        "raw_reciprocity": 2.0146552518555777e-12,
+        "slot": "primary",
+        "stage": "isolated_units",
+        "strain_block_error": 2.442260823952992e-07,
+        "units": "c=eta=1; input U,aOmega,aE; output F,T/a,S/a"
+      }
+    ],
+    "schema_version": 1,
+    "source_code_sha256": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+    "source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c"
+  },
+  "final_near_generation": {
+    "anchor_gaps": [],
+    "aspect_ratio": 20,
+    "check_phi_kernel": 32768,
+    "check_rings": 391,
+    "coefficient_count": 506,
+    "degree": 12,
+    "finite_gap_policy": "plain_stokes",
+    "fit_phi_kernel": 16384,
+    "fit_rings": 384,
+    "format": "slurry_stokes_basis_generation_v1",
+    "hybrid_version": 0,
+    "isolated_all11_energy_error": 3.706153692828451e-07,
+    "isolated_min_relative_eigenvalue": 0.9999999900410468,
+    "isolated_reciprocity": 2.0146552518555777e-12,
+    "loader_roundtrip_pass": true,
+    "max_modal_fit_relative": 0.00926499863576967,
+    "max_modal_offgrid_relative": 0.0076805354234252676,
+    "method": "confocal interior Stokeslets, cylindrical Fourier least squares; no pair data fit",
+    "modes": [
+      {
+        "fit": 0.003082505739456439,
+        "m": 0,
+        "offgrid": 0.0033879914647389734,
+        "rank": 576
+      },
+      {
+        "fit": 0.00926499863576967,
+        "m": 1,
+        "offgrid": 0.0076805354234252676,
+        "rank": 576
+      },
+      {
+        "fit": 0.0047910516047949886,
+        "m": 2,
+        "offgrid": 0.004470503871412507,
+        "rank": 576
+      },
+      {
+        "fit": 0.00336742988176684,
+        "m": 3,
+        "offgrid": 0.0033311813850077456,
+        "rank": 576
+      },
+      {
+        "fit": 0.0026795482872869814,
+        "m": 4,
+        "offgrid": 0.0027489309980185035,
+        "rank": 576
+      },
+      {
+        "fit": 0.0023177944706371492,
+        "m": 5,
+        "offgrid": 0.002430992477969025,
+        "rank": 576
+      },
+      {
+        "fit": 0.002078297602581899,
+        "m": 6,
+        "offgrid": 0.0022073350396306333,
+        "rank": 576
+      },
+      {
+        "fit": 0.0019820399470844127,
+        "m": 7,
+        "offgrid": 0.0021060345475553224,
+        "rank": 576
+      },
+      {
+        "fit": 0.0018907871051057055,
+        "m": 8,
+        "offgrid": 0.0020032381793060414,
+        "rank": 576
+      },
+      {
+        "fit": 0.00196356942939471,
+        "m": 9,
+        "offgrid": 0.002036324672708635,
+        "rank": 576
+      },
+      {
+        "fit": 0.0019353125982502694,
+        "m": 10,
+        "offgrid": 0.0019735194869521747,
+        "rank": 576
+      },
+      {
+        "fit": 0.002318775274161005,
+        "m": 11,
+        "offgrid": 0.0022308078198865072,
+        "rank": 576
+      },
+      {
+        "fit": 6.94893639464815e-05,
+        "m": 12,
+        "offgrid": 8.093590598864116e-05,
+        "rank": 576
+      },
+      {
+        "fit": 0.00012018728357715574,
+        "m": 13,
+        "offgrid": 0.00011593429804888851,
+        "rank": 576
+      }
+    ],
+    "offgrid_basis_weighted_relative": 0.004985138494375426,
+    "offgrid_physical11_weighted_relative": 5.2126961730617685e-05,
+    "physical_pair_gate_run": false,
+    "projection_identity_relative": 7.094353341057308e-16,
+    "rcond": 1e-11,
+    "runtime_source_phi_convergence_checked": false,
+    "seconds": 691.394367639,
+    "serialized_far_slot_active": false,
+    "source_depth": 0.5,
+    "source_order": 14,
+    "source_phi_runtime": 256,
+    "source_rings": 192,
+    "status": "candidate_unqualified",
+    "target_phi": 29,
+    "target_rings": 15
+  },
+  "independent_pair_gate": {
+    "reason": "Fixed independent pair references cover AR10 only",
+    "scope": "AR=20.0 basis passed available numerical checks; independent pair accuracy remains unverified",
+    "status": "not_run"
+  },
+  "intermediate_generation_run": {
+    "baseline_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+    "command": [
+      "ar20_source_fix/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "12",
+      "--source-rings",
+      "192",
+      "--source-phi",
+      "128",
+      "--fit-phi",
+      "8192",
+      "--check-phi",
+      "16384",
+      "--output",
+      "ar20_source_fix/ar20_L12_nr192.ssb",
+      "--report",
+      "ar20_source_fix/ar20_L12_nr192.json"
+    ],
+    "exit_code": 0,
+    "max_rss_kib": 1411068,
+    "seconds": 382.1934868999997
+  },
+  "intermediate_near_generation": {
+    "anchor_gaps": [],
+    "aspect_ratio": 20,
+    "check_phi_kernel": 16384,
+    "check_rings": 391,
+    "coefficient_count": 506,
+    "degree": 12,
+    "finite_gap_policy": "plain_stokes",
+    "fit_phi_kernel": 8192,
+    "fit_rings": 384,
+    "format": "slurry_stokes_basis_generation_v1",
+    "hybrid_version": 0,
+    "isolated_all11_energy_error": 7.529050357168998e-06,
+    "isolated_min_relative_eigenvalue": 0.9999997267671517,
+    "isolated_reciprocity": 4.474346747127695e-09,
+    "loader_roundtrip_pass": true,
+    "max_modal_fit_relative": 0.009264388343452295,
+    "max_modal_offgrid_relative": 0.0076944389860022595,
+    "method": "confocal interior Stokeslets, cylindrical Fourier least squares; no pair data fit",
+    "modes": [
+      {
+        "fit": 0.0030824394882700973,
+        "m": 0,
+        "offgrid": 0.0033963616703931725,
+        "rank": 576
+      },
+      {
+        "fit": 0.009264388343452295,
+        "m": 1,
+        "offgrid": 0.0076944389860022595,
+        "rank": 576
+      },
+      {
+        "fit": 0.0047908122123612,
+        "m": 2,
+        "offgrid": 0.004485708663327145,
+        "rank": 576
+      },
+      {
+        "fit": 0.003367285899154683,
+        "m": 3,
+        "offgrid": 0.003349594349546104,
+        "rank": 576
+      },
+      {
+        "fit": 0.002679443893483915,
+        "m": 4,
+        "offgrid": 0.002769945965901239,
+        "rank": 576
+      },
+      {
+        "fit": 0.002317717425253695,
+        "m": 5,
+        "offgrid": 0.002456134464671458,
+        "rank": 576
+      },
+      {
+        "fit": 0.0020782308743077797,
+        "m": 6,
+        "offgrid": 0.0022348855536924906,
+        "rank": 576
+      },
+      {
+        "fit": 0.0019819883203369974,
+        "m": 7,
+        "offgrid": 0.002138755422978145,
+        "rank": 576
+      },
+      {
+        "fit": 0.001890731368969423,
+        "m": 8,
+        "offgrid": 0.002037878413288083,
+        "rank": 576
+      },
+      {
+        "fit": 0.0019635227488591384,
+        "m": 9,
+        "offgrid": 0.002078135553269267,
+        "rank": 576
+      },
+      {
+        "fit": 0.0019352389033530464,
+        "m": 10,
+        "offgrid": 0.002015318446617524,
+        "rank": 576
+      },
+      {
+        "fit": 0.0023186967312147635,
+        "m": 11,
+        "offgrid": 0.0022853118778897266,
+        "rank": 576
+      },
+      {
+        "fit": 6.971990492751418e-05,
+        "m": 12,
+        "offgrid": 9.375886961070902e-05,
+        "rank": 576
+      },
+      {
+        "fit": 0.00012042934131525295,
+        "m": 13,
+        "offgrid": 0.0001441752627945697,
+        "rank": 576
+      }
+    ],
+    "offgrid_basis_weighted_relative": 0.004987137820510555,
+    "offgrid_physical11_weighted_relative": 5.225487266444e-05,
+    "physical_pair_gate_run": false,
+    "projection_identity_relative": 7.094353341057308e-16,
+    "rcond": 1e-11,
+    "runtime_source_phi_convergence_checked": false,
+    "seconds": 382.122905914,
+    "serialized_far_slot_active": false,
+    "source_depth": 0.5,
+    "source_order": 14,
+    "source_phi_runtime": 128,
+    "source_rings": 192,
+    "status": "candidate_unqualified",
+    "target_phi": 29,
+    "target_rings": 15
+  },
+  "model_equations_changed": false,
+  "not_run": [
+    "Complete AR20 table generation and its nine-pose interpolation gate",
+    "AR20 independent two-body reference validation",
+    "New bulk integration/equilibrium viscosity",
+    "New AR25 numerical computation",
+    "Full repeated LAMMPS build (C++ sources unchanged)"
+  ],
+  "orchestration_tests": {
+    "log": "..s.Generating actual AR=20.0 scattering bases (far degree 8, near degree 12, source rings 192, runtime phi 256, fit/check phi 16384/32768); physical gate follows separately\n...Generating finite_gap_fast cache for AR=10.0 at /tmp/slurry-fast-routing-gquur4hx/.fast_cache/ar10_43573ff16d0864cfa94ff222.sft\nGenerating finite_gap_fast cache for AR=10.0 at /tmp/slurry-fast-routing-gquur4hx/.fast_cache/ar10_06a880d4bcf8a081f14202eb.sft\nGenerating finite_gap_fast cache for AR=10.0 at /tmp/slurry-fast-routing-gquur4hx/.fast_cache/ar10_cfe2c828bf7dfd25704512fe.sft\n.....Generating actual AR=10.0 scattering bases (far degree 8, near degree 12, source rings 96, runtime phi 128, fit/check phi 4096/8192); physical gate follows separately\n.....s....\n----------------------------------------------------------------------\nRan 22 tests in 0.339s\n\nOK (skipped=2)\n",
+    "passed": 20,
+    "run": 22,
+    "skipped": 2,
+    "skipped_reason": "Optional real-packer CLI cases; no packer provided."
+  },
+  "pair_check_scope": "Direct near-basis pair at h/c=0.5 (75 nm for c=150 nm); all11 energy change under source quadrature refinement. Same-model convergence, not an independent physical reference.",
+  "pair_probe_binary_sha256": "071f9652108896f10ceeb325a226f2f5643ae8908965945e6c26183cc09fdb66",
+  "pair_probe_source": "validation_basis/check_ar20_pair_quadrature.cpp",
+  "pair_probe_source_sha256": "cab3b8688374222e6f1a7b144d0f0882eeac796f9689665cc02e4a886a0813df",
+  "pair_quadrature_checks": {
+    "face_edge": [
+      {
+        "ar": 20,
+        "linear_residual": 1.5983283023271752e-15,
+        "pose": "face_edge_h0.5",
+        "raw_reciprocity": 0.0023196210967887086,
+        "runtime_phi": 128,
+        "spd": true
+      },
+      {
+        "ar": 20,
+        "linear_residual": 1.5214979515913343e-15,
+        "pose": "face_edge_h0.5",
+        "previous_to_current_all11_change": 0.006668193355886309,
+        "raw_reciprocity": 0.0028316129216604717,
+        "runtime_phi": 256,
+        "spd": true
+      },
+      {
+        "ar": 20,
+        "linear_residual": 1.5347247912329454e-15,
+        "pose": "face_edge_h0.5",
+        "previous_to_current_all11_change": 3.4778805161783666e-05,
+        "raw_reciprocity": 0.002829300573135893,
+        "runtime_phi": 512,
+        "spd": true
+      }
+    ],
+    "face_face": [
+      {
+        "ar": 20,
+        "linear_residual": 2.574157137326124e-13,
+        "pose": "face_face_h0.5",
+        "raw_reciprocity": 5.80032847134566e-07,
+        "runtime_phi": 128,
+        "spd": true
+      },
+      {
+        "ar": 20,
+        "linear_residual": 2.519253778083956e-13,
+        "pose": "face_face_h0.5",
+        "previous_to_current_all11_change": 3.987342300781904e-08,
+        "raw_reciprocity": 5.800916791465433e-07,
+        "runtime_phi": 256,
+        "spd": true
+      },
+      {
+        "ar": 20,
+        "linear_residual": 2.7471358226861986e-13,
+        "pose": "face_face_h0.5",
+        "previous_to_current_all11_change": 1.7346124536743446e-12,
+        "raw_reciprocity": 5.800916774585672e-07,
+        "runtime_phi": 512,
+        "spd": true
+      }
+    ]
+  },
+  "provenance": {
+    "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+    "compile_command": [
+      "g++",
+      "-O2",
+      "-std=c++17",
+      "-I",
+      "lammps_slurry/src",
+      "-I",
+      "lammps_slurry/vendor/eigen3",
+      "lammps_slurry/tools/slurry_generate_basis.cpp",
+      "-o",
+      "slurry_generate_basis"
+    ],
+    "core_physics_changed": false,
+    "generator_cpp_sha256": "11ec83c248d27fd29fc009ee8240b3ef8c9401a0e2a63e4df09fa33a83b8a33a",
+    "generator_sha256": "d660a00151f55a53a4b554019b3d1b1a89c658952d52d420805a4ff16a35bb77",
+    "kernel_header_sha256": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
+    "numerical_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+    "thresholds_changed": false
+  },
+  "python_generic_numerical_gate": {
+    "boundary_checks": [],
+    "compiled_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
+    "isolated_checks": [
+      {
+        "all11_error": 3.7061537061511274e-07,
+        "aspect_ratio": 20,
+        "limit": 0.001,
+        "passed": true,
+        "raw_reciprocity": 2.0146552518555777e-12,
+        "slot": "primary",
+        "stage": "isolated_units",
+        "strain_block_error": 2.442260823952992e-07,
+        "units": "c=eta=1; input U,aOmega,aE; output F,T/a,S/a"
+      }
+    ],
+    "report": "/workspace/scratch/b72f2fb4bee2/ar20_source_fix/isolated_nr192_q16384.json",
+    "report_sha256": "7a06ccd207839d134cc370dd2d911e342e7a1d12e5d0e2d3b1ad63fd2c5681ce",
+    "scope": "Analytic isolated response and available basis boundary diagnostics; no independent pair comparison",
+    "status": "passed"
+  },
+  "schema": 1,
+  "scope": "Actual AR20 near basis generated from the backed-up C++ source; analytic isolated and off-grid boundary gates, plus two pair quadrature checks. No independent AR20 pair reference and no complete resistance table.",
+  "status": "AR20_BASIS_NUMERICAL_FAILURE_FIXED",
+  "syntax_checks": {
+    "bash_build_and_run_syntax": true,
+    "python_3_6_grammar": true
+  },
+  "thresholds_loosened": false,
+  "unchanged_limits": {
+    "isolated_all11_energy_error": 0.001,
+    "isolated_reciprocity": 0.001,
+    "offgrid_basis_weighted_relative": 0.01,
+    "offgrid_physical11_weighted_relative": 0.001
+  }
+}

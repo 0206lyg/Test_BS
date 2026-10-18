@@ -85,7 +85,7 @@ while (($#)); do
         --finite-gap-fast-smoke)
             SLURRY_PREPARE_OVERRIDES+=("$1")
             shift ;;
-        --ar|--phi|--shear-rate|--thickness-nm|--density|--roughness-nm|--contact-gap-nm|--friction|--tangential-stiffness|--count|--viscosity|--normal-stiffness|--lubrication-model|--lubrication-epsilon-relative|--lubrication-epsilon-nm|--lubrication-cutoff-relative|--lubrication-cutoff-nm|--finite-gap-basis|--finite-gap-table|--finite-gap-fast-table|--finite-gap-fast-source|--finite-gap-fast-generator|--finite-gap-fast-film-grid|--finite-gap-fast-nphi|--finite-gap-fast-threads|--finite-gap-fast-source-gate|--finite-gap-fast-gate-executable|--finite-gap-fast-interpolation-executable|--finite-gap-fast-basis-generator|--finite-gap-fast-basis-degree|--finite-gap-fast-far-degree|--finite-gap-fast-basis-source-rings|--finite-gap-fast-basis-source-phi|--finite-gap-range|--finite-gap-film-grid|--solver-preconditioner|--solver-layout|--solver-forcing|--solver-cache|--solver-ilu-drop|--solver-ilu-fill|--solver-ilu-refresh|--timestep|--steps|--output-interval|--prep-steps|--seed|--initial-phi|--growth-fraction|--overlap-tolerance|--max-relax)
+        --ar|--phi|--shear-rate|--thickness-nm|--density|--roughness-nm|--contact-gap-nm|--friction|--tangential-stiffness|--count|--viscosity|--normal-stiffness|--lubrication-model|--lubrication-epsilon-relative|--lubrication-epsilon-nm|--lubrication-cutoff-relative|--lubrication-cutoff-nm|--finite-gap-basis|--finite-gap-table|--finite-gap-fast-table|--finite-gap-fast-source|--finite-gap-fast-generator|--finite-gap-fast-film-grid|--finite-gap-fast-nphi|--finite-gap-fast-threads|--finite-gap-fast-source-gate|--finite-gap-fast-gate-executable|--finite-gap-fast-interpolation-executable|--finite-gap-fast-basis-generator|--finite-gap-fast-basis-degree|--finite-gap-fast-far-degree|--finite-gap-fast-basis-source-rings|--finite-gap-fast-basis-source-phi|--finite-gap-fast-basis-fit-phi|--finite-gap-range|--finite-gap-film-grid|--solver-preconditioner|--solver-layout|--solver-forcing|--solver-cache|--solver-ilu-drop|--solver-ilu-fill|--solver-ilu-refresh|--timestep|--steps|--output-interval|--prep-steps|--seed|--initial-phi|--growth-fraction|--overlap-tolerance|--max-relax)
             [[ $# -ge 2 ]] || { printf 'Missing value for %s\n' "$1" >&2; exit 2; }
             SLURRY_PREPARE_OVERRIDES+=("$1" "$2")
             shift 2 ;;
@@ -104,8 +104,9 @@ Edit the variables at the top of this script or override them with:
   --finite-gap-fast-table FILE.sft
   --finite-gap-fast-source FILE.ssb --finite-gap-fast-generator EXECUTABLE
   --finite-gap-fast-basis-generator EXECUTABLE --finite-gap-fast-basis-degree 12
-  --finite-gap-fast-far-degree 8 --finite-gap-fast-basis-source-rings 96
-  --finite-gap-fast-basis-source-phi 128
+  --finite-gap-fast-far-degree 8
+  --finite-gap-fast-basis-source-rings N --finite-gap-fast-basis-source-phi N
+  --finite-gap-fast-basis-fit-phi N (check uses 2*N; defaults scale with AR)
   --finite-gap-fast-film-grid 161 --finite-gap-fast-nphi 48
   --finite-gap-fast-threads N [--finite-gap-fast-smoke]
   --finite-gap-fast-source-gate REPORT.json --finite-gap-fast-gate-executable EXECUTABLE
@@ -159,7 +160,7 @@ USAGE
     esac
 done
 
-readonly SLURRY_LAUNCHER_RELEASE=20261018-ar-basis-pipeline-trial
+readonly SLURRY_LAUNCHER_RELEASE=20261018-ar-basis-resolution-fix
 # Slurm executes a spool copy; an explicit root or submission directory takes
 # precedence. Direct bash execution without Slurm uses this script's parent.
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}}"
