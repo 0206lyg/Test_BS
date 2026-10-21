@@ -1,0 +1,34 @@
+{
+  "command": [
+    "/workspace/scratch/581ed100c5ad/ar20_validation/slurry_generate_basis_stream",
+    "--ar",
+    "20",
+    "--degree",
+    "22",
+    "--source-rings",
+    "192",
+    "--source-phi",
+    "256",
+    "--fit-phi",
+    "16384",
+    "--check-phi",
+    "32768",
+    "--target-rings",
+    "75",
+    "--target-phi",
+    "147",
+    "--output",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22.ssb",
+    "--report",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22_generation.json"
+  ],
+  "executable_sha256": "77ef880df5526037caf7055b736a637f0b1641586b62679c38a505238fa1c4f6",
+  "sources_sha256": {
+    "lammps_slurry/tools/slurry_generate_basis.cpp": "9a74c1db892509bd519562be38b4cf6c20eabfdb35de7634a538a8667a1dc762",
+    "lammps_slurry/tools/basis_cylindrical_kernel.h": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
+    "lammps_slurry/src/slurry_scattering_math.h": "6ca1e66b91cb73c294012e0389300abaf6e1fb959296bd5467f194e59ef8dec8"
+  },
+  "returncode": 0,
+  "wall_seconds": 396.66820788383484,
+  "maxrss_kib": 2204576
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "observed_idle_resource_state_v1",
+  "observations": [
+    {
+      "utc": "2026-10-19T00:01:48.061570+00:00",
+      "disk_free_bytes": 9763897344,
+      "memory_current_bytes": 8589926400,
+      "physical_solver_running": false
+    }
+  ],
+  "scope": "Read-only resource observations after the failed p8/159 solve; no physical accuracy claim."
+}

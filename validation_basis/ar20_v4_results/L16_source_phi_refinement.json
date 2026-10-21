@@ -1,0 +1,30 @@
+{
+  "schema": "ar20_direct_refinement_v1",
+  "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_t3_p256.json",
+  "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_p512_split.json",
+  "h_over_c": 0.5,
+  "relative_energy_changes": {
+    "full17": 3.0665553462094763e-06,
+    "velocity12": 2.8683797931305932e-06,
+    "clamped_strain5": 1.6182035303957676e-06,
+    "force_torque_free_strain5": 1.5278565135279365e-07,
+    "reduced11": 3.058329146710115e-06
+  },
+  "raw_moment_response_changes": {
+    "force": {
+      "relative_frobenius": 5.36569995851182e-07,
+      "max_column_change_over_largest_reference_column": 5.079862216923838e-07
+    },
+    "torque_over_a": {
+      "relative_frobenius": 1.2149823109172655e-06,
+      "max_column_change_over_largest_reference_column": 1.1894714858940024e-06
+    },
+    "stresslet_over_a": {
+      "relative_frobenius": 5.383553702025636e-07,
+      "max_column_change_over_largest_reference_column": 5.100554152994132e-07
+    }
+  },
+  "limit": 0.01,
+  "all_energy_changes_below_one_percent": true,
+  "scope": "One refinement in the same MFS family; not independent accuracy certification"
+}

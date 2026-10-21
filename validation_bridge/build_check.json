@@ -1,0 +1,29 @@
+{
+  "completed_utc": "2026-10-21T02:11:11.821710+00:00",
+  "lammps_tag": "stable_30Sep2026",
+  "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+  "mpi": false,
+  "cmake_version": "cmake version 4.4.4",
+  "packages": [
+    "ASPHERE",
+    "PLUGIN"
+  ],
+  "validation": "CTest suite and loading slurry/spheroid, slurry/drag, slurry/implicit, slurry/bridge styles",
+  "bundle_integrity_schema": 1,
+  "bundle_release": "20261020-compact-bridge-integration",
+  "source_fingerprint": "64761248e677e920f556f21f7980e5f7541db92154aa0498b96c16e0e5d0e173",
+  "binary_sha256": {
+    "executable": "0beba38a668b876b6edfdf09635725e81482bc10c23699559a434ce333057d1c",
+    "plugin": "533d0b3ad58c3654ed4e6aa98d84bf23b32b8f882151c1c1499ab9aa2ef7af92",
+    "packer": "f5eae8d0bd85dade2406eaed07717872f998c64c4133ebaa7704ace17419ecc2"
+  },
+  "passed": true,
+  "ctest_passed": 30,
+  "ctest_total": 30,
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python_version": "3.12.14",
+  "build_manifest_sha256": "cf1f171dc4398b9373d0639302092ab264b2064c2dc9b3981102a26c84480c8b",
+  "test_log_sha256": "445e23c1de84949e5b722bfa4a3a12537e154d796e1bbe2896c7d5a9a1293bdf",
+  "mpi_multirank_tested": false,
+  "source_manifest": "../SOURCE_MANIFEST.json"
+}

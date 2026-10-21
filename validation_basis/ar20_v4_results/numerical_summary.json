@@ -1,0 +1,309 @@
+{
+  "schema": "ar20_recorded_pose_validation_summary_v1",
+  "status": "failed_physical_qualification",
+  "physical_pair_gate_passed": false,
+  "scope": {
+    "aspect_ratio": 20,
+    "h_over_c": 0.5,
+    "h_nm": 75,
+    "theta_i": 0.004924530359211356,
+    "theta_j": 0.041010932014513654,
+    "phi": 1.7016960206944713,
+    "other_AR_or_gap_run": false,
+    "full_table_generated": false
+  },
+  "basis_restriction_full17_energy_error": 2.143174526736402e-12,
+  "source_phi_256_to_512": {
+    "full17": 3.0665553462094763e-06,
+    "velocity12": 2.8683797931305932e-06,
+    "clamped_strain5": 1.6182035303957676e-06,
+    "force_torque_free_strain5": 1.5278565135279365e-07,
+    "reduced11": 3.058329146710115e-06
+  },
+  "source_depth_050_to_025": {
+    "full17": 0.00037206389694910413,
+    "velocity12": 0.0003715946442146567,
+    "clamped_strain5": 0.00017131537552428355,
+    "force_torque_free_strain5": 9.761334333058258e-07,
+    "reduced11": 0.00037206192617444955
+  },
+  "degree_refinement": {
+    "L16_L18_refinement": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_self16384.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L18_h050_t3_p256.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.013957167741698862,
+        "velocity12": 0.013911000006442409,
+        "clamped_strain5": 0.009345203184093154,
+        "force_torque_free_strain5": 8.774766176866677e-05,
+        "reduced11": 0.013952031338332116
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.008384563477581486,
+          "max_column_change_over_largest_reference_column": 0.008261724251509818
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.010084400098783801,
+          "max_column_change_over_largest_reference_column": 0.010006269735834801
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.008400988539575601,
+          "max_column_change_over_largest_reference_column": 0.008283947894927224
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": false,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    },
+    "L18_L20_refinement": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L18_h050_t3_p256.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L20_h050_t3_p256.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.007752813530505387,
+        "velocity12": 0.007686814497309236,
+        "clamped_strain5": 0.0067320347038517525,
+        "force_torque_free_strain5": 6.477375615121517e-05,
+        "reduced11": 0.007747138042659252
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.005174834113174302,
+          "max_column_change_over_largest_reference_column": 0.0051598287485527675
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.0053473573321804095,
+          "max_column_change_over_largest_reference_column": 0.005407727019879901
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.005181379781882893,
+          "max_column_change_over_largest_reference_column": 0.0051702195580055526
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": true,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    },
+    "L20_L22_refinement": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L20_h050_t3_p256.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_t3_p256.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.0021459013414288908,
+        "velocity12": 0.002141982135102305,
+        "clamped_strain5": 0.0005104915563525214,
+        "force_torque_free_strain5": 3.756955622080671e-05,
+        "reduced11": 0.002145761423594794
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.0005435780309401029,
+          "max_column_change_over_largest_reference_column": 0.0005075095149693581
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.0008730282366926515,
+          "max_column_change_over_largest_reference_column": 0.0008148174611314965
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.0005456662609128007,
+          "max_column_change_over_largest_reference_column": 0.000509854098318151
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": true,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    }
+  },
+  "boundary_checks": {
+    "L16_h050_boundary": {
+      "global": {
+        "max_scaled_error": 1.4026768929389837,
+        "rms_scaled_error": 0.08284253664748845
+      },
+      "gap_patch": {
+        "max_scaled_error": 1.02664231902649,
+        "rms_scaled_error": 0.10666751990842788
+      }
+    },
+    "L16_h050_self16384_boundary": {
+      "global": {
+        "max_scaled_error": 1.4016221047467778,
+        "rms_scaled_error": 0.08278279822627689
+      },
+      "gap_patch": {
+        "max_scaled_error": 1.0264573142052733,
+        "rms_scaled_error": 0.10661615701240428
+      }
+    },
+    "L16_d025_h050_t3_p512_boundary": {
+      "global": {
+        "max_scaled_error": 1.393125723672356,
+        "rms_scaled_error": 0.0825749342838047
+      },
+      "gap_patch": {
+        "max_scaled_error": 1.0295612952994893,
+        "rms_scaled_error": 0.10624528116409514
+      }
+    },
+    "L20_h050_t3_p256_boundary": {
+      "global": {
+        "max_scaled_error": 0.7857966427564006,
+        "rms_scaled_error": 0.04435407771771783
+      },
+      "gap_patch": {
+        "max_scaled_error": 0.7129681208995204,
+        "rms_scaled_error": 0.05627956366082427
+      }
+    },
+    "L22_h050_t3_p256_boundary": {
+      "global": {
+        "max_scaled_error": 0.6684773545395645,
+        "rms_scaled_error": 0.0378879876205373
+      },
+      "gap_patch": {
+        "max_scaled_error": 0.5816246942156795,
+        "rms_scaled_error": 0.0474927280913061
+      }
+    },
+    "L16_h050_collocation_t2_p512_boundary": {
+      "global": {
+        "max_scaled_error": 0.42119106320268007,
+        "rms_scaled_error": 0.0457338638891995
+      },
+      "gap_patch": {
+        "max_scaled_error": 0.43128789652470484,
+        "rms_scaled_error": 0.07640598811279521
+      }
+    },
+    "L22_h050_collocation_t2_p512_boundary": {
+      "global": {
+        "max_scaled_error": 0.3479295781749973,
+        "rms_scaled_error": 0.026689107970356965
+      },
+      "gap_patch": {
+        "max_scaled_error": 0.3151416424492396,
+        "rms_scaled_error": 0.039755614586176796
+      }
+    }
+  },
+  "collocation_comparisons": {
+    "L16_galerkin_collocation_difference": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_self16384.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_collocation_t2_p512.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.3834306823587985,
+        "velocity12": 0.3833016488365064,
+        "clamped_strain5": 0.12185173934757731,
+        "force_torque_free_strain5": 0.0006095674423343134,
+        "reduced11": 0.3834123300186285
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.12514152224479544,
+          "max_column_change_over_largest_reference_column": 0.1190436944422755
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.17702883066144384,
+          "max_column_change_over_largest_reference_column": 0.17083220434179705
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.12530297834374723,
+          "max_column_change_over_largest_reference_column": 0.11929250376371461
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": false,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    },
+    "L22_galerkin_collocation_difference": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_t3_p256.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_collocation_t2_p512.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.11658801438247135,
+        "velocity12": 0.11651297133827176,
+        "clamped_strain5": 0.048670990334914066,
+        "force_torque_free_strain5": 4.0291822876570293e-05,
+        "reduced11": 0.11658268722274223
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.05129580396146791,
+          "max_column_change_over_largest_reference_column": 0.04846031936644178
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.06353199478494541,
+          "max_column_change_over_largest_reference_column": 0.06107142122752285
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.05135396613046414,
+          "max_column_change_over_largest_reference_column": 0.048551980417250465
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": false,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    },
+    "L16_L22_collocation_refinement": {
+      "schema": "ar20_direct_refinement_v1",
+      "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_collocation_t2_p512.json",
+      "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_collocation_t2_p512.json",
+      "h_over_c": 0.5,
+      "relative_energy_changes": {
+        "full17": 0.20606203696024272,
+        "velocity12": 0.20596926144360939,
+        "clamped_strain5": 0.06931729789988206,
+        "force_torque_free_strain5": 0.0007634821214864695,
+        "reduced11": 0.20605496175307125
+      },
+      "raw_moment_response_changes": {
+        "force": {
+          "relative_frobenius": 0.06949065992884948,
+          "max_column_change_over_largest_reference_column": 0.06649601333817368
+        },
+        "torque_over_a": {
+          "relative_frobenius": 0.10529273288017713,
+          "max_column_change_over_largest_reference_column": 0.10201594816335616
+        },
+        "stresslet_over_a": {
+          "relative_frobenius": 0.06958448341123752,
+          "max_column_change_over_largest_reference_column": 0.066635446364509
+        }
+      },
+      "limit": 0.01,
+      "all_energy_changes_below_one_percent": false,
+      "scope": "One refinement in the same MFS family; not independent accuracy certification"
+    }
+  },
+  "why_rejected": [
+    "Two successive sub-1% moment changes do not certify no-slip; L22 Galerkin still has66.85% global and58.16% gap-patch maximum boundary-velocity error.",
+    "The actual self-map correction and improved source-depth fitting do not remove the dominant cross-field boundary-space truncation.",
+    "Oversampled actual-field least squares improves the field but still has34.79% global and31.51% gap errors atL22, with20.61% L16-to-L22 full17energy change.",
+    "No independently converged Stokes formulation has certified these full17matrices. They cannot calibrate the finite-gap matching or supply a production table."
+  ],
+  "next_required_repair": "Local or anisotropic boundary-space enrichment around the projection of the other disk rim, with zero-flux compatibility and actual no-slip checks, or an independently convergent adaptive boundary-integral reference. Preserve exact recorded pose,75nm anchor, original tolerance, and all17RHS.",
+  "collocation_comparison_scope": "Galerkin targetfactor3/sourcephi256 versus collocation targetfactor2/sourcephi512. This is a repair-trial comparison, not isolated convergence in one discretization parameter.",
+  "resources": {
+    "memory_limit_gib": 8,
+    "L16_original_generator": {
+      "wall_seconds": 283.013590496,
+      "peak_rss_kib": 5034444
+    },
+    "L22_streamed_generator": {
+      "wall_seconds": 396.66820788383484,
+      "peak_rss_kib": 2204576
+    },
+    "L22_collocation": {
+      "wall_seconds": 305.460127815,
+      "peak_rss_kib": 2150628
+    }
+  }
+}

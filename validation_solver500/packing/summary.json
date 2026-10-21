@@ -1,0 +1,38 @@
+[
+  {
+    "ar": 2,
+    "uploaded_log": "/workspace/scratch/0520ed9b6708/upload/slurry_bridge_44537846.out",
+    "uploaded_stages_including_retries": 80,
+    "reproduced_stages_including_retries": 80,
+    "all_stage_lines_identical": true,
+    "particle_sha256": "a949ed807d20fde232bfd06e68b3cf326a775b810ff8434282f4d2a156c1bf60",
+    "limitation": "Coordinate file identity not established: uploaded artifact is log only."
+  },
+  {
+    "ar": 5,
+    "uploaded_log": "/workspace/scratch/0520ed9b6708/upload/slurry_bridge_44537867.out",
+    "uploaded_stages_including_retries": 80,
+    "reproduced_stages_including_retries": 80,
+    "all_stage_lines_identical": true,
+    "particle_sha256": "b6c949c4e20647acdaeb0982e5c5e981c91a1c144505581c4739dc3873ead674",
+    "limitation": "Coordinate file identity not established: uploaded artifact is log only."
+  },
+  {
+    "ar": 10,
+    "uploaded_log": "/workspace/scratch/0520ed9b6708/upload/slurry_bridge_44537869.out",
+    "uploaded_stages_including_retries": 80,
+    "reproduced_stages_including_retries": 80,
+    "all_stage_lines_identical": true,
+    "particle_sha256": "fb1a2d75f06e20519b3a1d363f3b6c0af0ed056a8836621ba6c4d399541c90d3",
+    "limitation": "Coordinate file identity not established: uploaded artifact is log only."
+  },
+  {
+    "ar": 20,
+    "uploaded_log": "/workspace/scratch/0520ed9b6708/upload/slurry_bridge_44537870.out",
+    "uploaded_stages_including_retries": 87,
+    "reproduced_stages_including_retries": 87,
+    "all_stage_lines_identical": true,
+    "particle_sha256": "efdb200f7fb2fb6e348f8ca88591e711f5e719eb9a43063e74afc60ba05a26a7",
+    "limitation": "Coordinate file identity not established: uploaded artifact is log only."
+  }
+]

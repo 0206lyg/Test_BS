@@ -1,0 +1,3390 @@
+{
+  "schema": "ar20_h150_saved_refinement_diagnostics_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Exact recorded AR20 pose at h=150nm only; read-only saved-output diagnostics",
+  "runs": [
+    {
+      "name": "pair_h150_p6_l1",
+      "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_l1.json",
+      "sha256": "3dfde437852147f1e24088c8ade1dc8d87d5365e3e0d1fb7fea9605c1a8d1b08",
+      "order": 6,
+      "node_count": 2352,
+      "patch_count": 48,
+      "boundary_evaluation_valid": null,
+      "boundary_max_scaled_error": 0.5553414365256324,
+      "boundary_rms_scaled_error": 0.03150350571340211,
+      "gap_patch_max_scaled_error": 0.5553414365256324,
+      "boundary_sample_count": 466,
+      "patches_above_point1_percent": 48,
+      "patches_above_one_percent": 35,
+      "raw_reciprocity": 0.00047026140968323165,
+      "energy_scaled_raw_reciprocity": 0.0036564619896734796,
+      "exact_surface_position_max_error_over_gap": 0.0006809933640330936,
+      "max_scaled_flux_error": 0.00021132577588994198,
+      "dominant_boundary_modes": [
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "max_scaled_error": 0.5553414365256324
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "max_scaled_error": 0.5553131096317655
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "max_scaled_error": 0.38601286733588513
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "max_scaled_error": 0.3470432106892374
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "max_scaled_error": 0.19230059747910908
+        },
+        {
+          "index": 10,
+          "name": "aOmega_j_y",
+          "max_scaled_error": 0.12617863308516003
+        },
+        {
+          "index": 4,
+          "name": "aOmega_i_y",
+          "max_scaled_error": 0.11926527131298949
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "max_scaled_error": 0.09239465992963183
+        },
+        {
+          "index": 11,
+          "name": "aOmega_j_z",
+          "max_scaled_error": 0.025111935980691818
+        },
+        {
+          "index": 6,
+          "name": "Uj_x",
+          "max_scaled_error": 0.02254336631887387
+        },
+        {
+          "index": 0,
+          "name": "Ui_x",
+          "max_scaled_error": 0.020986934757815327
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "max_scaled_error": 0.019659078567935948
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "max_scaled_error": 0.019217476267722394
+        },
+        {
+          "index": 14,
+          "name": "aE_xy",
+          "max_scaled_error": 0.01629736611811104
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "max_scaled_error": 0.01296623374048737
+        },
+        {
+          "index": 5,
+          "name": "aOmega_i_z",
+          "max_scaled_error": 0.009807427904529683
+        },
+        {
+          "index": 15,
+          "name": "aE_xz",
+          "max_scaled_error": 0.008584824625257262
+        }
+      ],
+      "ranked_panels_top20": [
+        {
+          "patch": 22,
+          "body": 0,
+          "max_scaled_error": 0.5553414365256324,
+          "exact_center_c": [
+            -6.205427720326024,
+            8.16496580927726,
+            -0.14813124821905532
+          ],
+          "exact_normal": [
+            -0.02006265116707675,
+            0.024984389633195395,
+            0.9994865033119782
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 16,
+          "body": 0,
+          "max_scaled_error": 0.5106216851861164,
+          "exact_center_c": [
+            10.124305890048866,
+            8.16496580927726,
+            -0.22854816720577908
+          ],
+          "exact_normal": [
+            0.029905522204124037,
+            0.024984389633195395,
+            0.9992404315360519
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 4,
+          "body": 0,
+          "max_scaled_error": 0.2512882630822167,
+          "exact_center_c": [
+            -6.205427720326024,
+            -8.16496580927726,
+            -0.14813124821905532
+          ],
+          "exact_normal": [
+            -0.02006265116707675,
+            -0.024984389633195395,
+            0.9994865033119782
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 11,
+          "body": 0,
+          "max_scaled_error": 0.1923335633639008,
+          "exact_center_c": [
+            10.116264198150194,
+            8.16496580927726,
+            -1.8615215282432684
+          ],
+          "exact_normal": [
+            0.02006265116707675,
+            0.024984389633195395,
+            -0.9994865033119782
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 5,
+          "body": 0,
+          "max_scaled_error": 0.1587399481078179,
+          "exact_center_c": [
+            -6.213469412224696,
+            8.16496580927726,
+            -1.7811046092565448
+          ],
+          "exact_normal": [
+            -0.029905522204124037,
+            0.024984389633195395,
+            -0.9992404315360519
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 47,
+          "body": 1,
+          "max_scaled_error": 0.13424683605912413,
+          "exact_center_c": [
+            -6.5099098791917855,
+            -20.730503253487853,
+            1.7649869270500187
+          ],
+          "exact_normal": [
+            -0.01963587303839419,
+            -0.06559247388916893,
+            -0.9976532763736702
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 29,
+          "body": 1,
+          "max_scaled_error": 0.11713160036105519,
+          "exact_center_c": [
+            -6.5099098791917855,
+            -4.414068696846597,
+            1.10118723926011
+          ],
+          "exact_normal": [
+            -0.01963587303839419,
+            -0.0156649949615207,
+            -0.9996844704319837
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 41,
+          "body": 1,
+          "max_scaled_error": 0.11506306321257119,
+          "exact_center_c": [
+            9.8197879048546,
+            -20.726950929200306,
+            1.8523043329298319
+          ],
+          "exact_normal": [
+            0.030332190706021667,
+            -0.06558160395337537,
+            -0.9973860894507584
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 35,
+          "body": 1,
+          "max_scaled_error": 0.05174509334062203,
+          "exact_center_c": [
+            9.8197879048546,
+            -4.410516372559053,
+            1.1885046451399233
+          ],
+          "exact_normal": [
+            0.030332190706021674,
+            -0.01565412502572715,
+            -0.9994172835090719
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 19,
+          "body": 0,
+          "max_scaled_error": 0.04583120938606558,
+          "exact_center_c": [
+            -14.37230494848814,
+            8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 38,
+          "body": 1,
+          "max_scaled_error": 0.043989604516271534,
+          "exact_center_c": [
+            -6.516464101847679,
+            3.793932845168241,
+            1.9930024640203567
+          ],
+          "exact_normal": [
+            -0.055008051809495924,
+            0.1396848331689381,
+            0.9886669113602872
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 32,
+          "body": 1,
+          "max_scaled_error": 0.04221189533686101,
+          "exact_center_c": [
+            -6.512094620077083,
+            3.76074333603877,
+            1.1771924182502227
+          ],
+          "exact_normal": [
+            -0.04437132411899659,
+            0.05889086506789033,
+            -0.9972778206735987
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 44,
+          "body": 1,
+          "max_scaled_error": 0.041075321599416924,
+          "exact_center_c": [
+            9.813233682198707,
+            3.797485169455781,
+            2.08031986990017
+          ],
+          "exact_normal": [
+            0.04437132411899659,
+            0.13970645192609207,
+            0.9891983081698783
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 26,
+          "body": 1,
+          "max_scaled_error": 0.035120068020001435,
+          "exact_center_c": [
+            9.817603163969302,
+            3.76429566032631,
+            1.2645098241300359
+          ],
+          "exact_normal": [
+            0.055008051809495924,
+            0.058912483825044326,
+            -0.9967464238640075
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 13,
+          "body": 0,
+          "max_scaled_error": 0.03141532178227114,
+          "exact_center_c": [
+            -14.37230494848814,
+            -8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            -0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 34,
+          "body": 1,
+          "max_scaled_error": 0.029820470539927174,
+          "exact_center_c": [
+            9.811048941313409,
+            -20.660571910941364,
+            3.4839244244701
+          ],
+          "exact_normal": [
+            0.01963587303839419,
+            0.0156649949615207,
+            0.9996844704319837
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 25,
+          "body": 1,
+          "max_scaled_error": 0.029242982289710506,
+          "exact_center_c": [
+            -14.676943512100276,
+            -4.399250104425629,
+            1.4654335592052705
+          ],
+          "exact_normal": [
+            -0.09406101208324279,
+            0.00923072644081774,
+            -0.9955236409524643
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 7,
+          "body": 0,
+          "max_scaled_error": 0.02708434357027927,
+          "exact_center_c": [
+            -14.376325794437474,
+            -8.16496580927726,
+            -1.3326528095038104
+          ],
+          "exact_normal": [
+            -0.10427361179770606,
+            -0.04969039949999534,
+            -0.9933065378221329
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 9,
+          "body": 0,
+          "max_scaled_error": 0.026918407249606716,
+          "exact_center_c": [
+            10.118274621124861,
+            -16.32993161855452,
+            -1.453278187983896
+          ],
+          "exact_normal": [
+            0.044795779143170684,
+            -0.09938079899999058,
+            -0.9940406404977009
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 36,
+          "body": 1,
+          "max_scaled_error": 0.025882579351847453,
+          "exact_center_c": [
+            17.978082574221897,
+            -4.358955946721075,
+            2.4558784167350307
+          ],
+          "exact_normal": [
+            0.09406101208324279,
+            0.09006793205617353,
+            0.9914838847006039
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        }
+      ],
+      "candidate_refine_top8": [
+        22,
+        16,
+        4,
+        11,
+        5,
+        47,
+        29,
+        41
+      ],
+      "top8_fourway_resulting_panels": 72,
+      "top8_fourway_resulting_nodes": 3528,
+      "candidate_refine_top13": [
+        22,
+        16,
+        4,
+        11,
+        5,
+        47,
+        29,
+        41,
+        35,
+        19,
+        38,
+        32,
+        44
+      ],
+      "top13_fourway_resulting_panels": 87,
+      "top13_fourway_resulting_nodes": 4263
+    },
+    {
+      "name": "pair_h150_p8_l1",
+      "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_l1.json",
+      "sha256": "1965a22ecb35172bc6f9d8055791aa2f9af8c29cd4ddab87cb81266d84c82379",
+      "order": 8,
+      "node_count": 3888,
+      "patch_count": 48,
+      "boundary_evaluation_valid": true,
+      "boundary_max_scaled_error": 0.25243939373951807,
+      "boundary_rms_scaled_error": 0.014614655217828955,
+      "gap_patch_max_scaled_error": 0.2185963940594406,
+      "boundary_sample_count": 466,
+      "patches_above_point1_percent": 40,
+      "patches_above_one_percent": 16,
+      "raw_reciprocity": 3.167521919200106e-05,
+      "energy_scaled_raw_reciprocity": 0.0003440700103044127,
+      "exact_surface_position_max_error_over_gap": 2.7938070517200212e-05,
+      "max_scaled_flux_error": 7.793922524790244e-05,
+      "dominant_boundary_modes": [
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "max_scaled_error": 0.25243939373951807
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "max_scaled_error": 0.2523762581124469
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "max_scaled_error": 0.18802342694040014
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "max_scaled_error": 0.15897385433647993
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "max_scaled_error": 0.08378402182000728
+        },
+        {
+          "index": 4,
+          "name": "aOmega_i_y",
+          "max_scaled_error": 0.058827322249321655
+        },
+        {
+          "index": 10,
+          "name": "aOmega_j_y",
+          "max_scaled_error": 0.05548772343395926
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "max_scaled_error": 0.04182441929486203
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "max_scaled_error": 0.012922873250421203
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "max_scaled_error": 0.012514262796122866
+        },
+        {
+          "index": 11,
+          "name": "aOmega_j_z",
+          "max_scaled_error": 0.009967119932175748
+        },
+        {
+          "index": 6,
+          "name": "Uj_x",
+          "max_scaled_error": 0.009074568008469161
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "max_scaled_error": 0.008488165409416165
+        },
+        {
+          "index": 0,
+          "name": "Ui_x",
+          "max_scaled_error": 0.00845737429227712
+        },
+        {
+          "index": 14,
+          "name": "aE_xy",
+          "max_scaled_error": 0.006554327002997124
+        },
+        {
+          "index": 15,
+          "name": "aE_xz",
+          "max_scaled_error": 0.004176923117027601
+        },
+        {
+          "index": 5,
+          "name": "aOmega_i_z",
+          "max_scaled_error": 0.003817275371849323
+        }
+      ],
+      "ranked_panels_top20": [
+        {
+          "patch": 16,
+          "body": 0,
+          "max_scaled_error": 0.25243939373951807,
+          "exact_center_c": [
+            10.124305890048866,
+            8.16496580927726,
+            -0.22854816720577908
+          ],
+          "exact_normal": [
+            0.029905522204124037,
+            0.024984389633195395,
+            0.9992404315360519
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 22,
+          "body": 0,
+          "max_scaled_error": 0.2185963940594406,
+          "exact_center_c": [
+            -6.205427720326024,
+            8.16496580927726,
+            -0.14813124821905532
+          ],
+          "exact_normal": [
+            -0.02006265116707675,
+            0.024984389633195395,
+            0.9994865033119782
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 11,
+          "body": 0,
+          "max_scaled_error": 0.07381988386150785,
+          "exact_center_c": [
+            10.116264198150194,
+            8.16496580927726,
+            -1.8615215282432684
+          ],
+          "exact_normal": [
+            0.02006265116707675,
+            0.024984389633195395,
+            -0.9994865033119782
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 5,
+          "body": 0,
+          "max_scaled_error": 0.05770066178951338,
+          "exact_center_c": [
+            -6.213469412224696,
+            8.16496580927726,
+            -1.7811046092565448
+          ],
+          "exact_normal": [
+            -0.029905522204124037,
+            0.024984389633195395,
+            -0.9992404315360519
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 41,
+          "body": 1,
+          "max_scaled_error": 0.05296253304930299,
+          "exact_center_c": [
+            9.8197879048546,
+            -20.726950929200306,
+            1.8523043329298319
+          ],
+          "exact_normal": [
+            0.030332190706021667,
+            -0.06558160395337537,
+            -0.9973860894507584
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 47,
+          "body": 1,
+          "max_scaled_error": 0.05192741700518102,
+          "exact_center_c": [
+            -6.5099098791917855,
+            -20.730503253487853,
+            1.7649869270500187
+          ],
+          "exact_normal": [
+            -0.01963587303839419,
+            -0.06559247388916893,
+            -0.9976532763736702
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 4,
+          "body": 0,
+          "max_scaled_error": 0.026505896971532984,
+          "exact_center_c": [
+            -6.205427720326024,
+            -8.16496580927726,
+            -0.14813124821905532
+          ],
+          "exact_normal": [
+            -0.02006265116707675,
+            -0.024984389633195395,
+            0.9994865033119782
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 26,
+          "body": 1,
+          "max_scaled_error": 0.01780832739191572,
+          "exact_center_c": [
+            9.817603163969302,
+            3.76429566032631,
+            1.2645098241300359
+          ],
+          "exact_normal": [
+            0.055008051809495924,
+            0.058912483825044326,
+            -0.9967464238640075
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 29,
+          "body": 1,
+          "max_scaled_error": 0.01721882723974389,
+          "exact_center_c": [
+            -6.5099098791917855,
+            -4.414068696846597,
+            1.10118723926011
+          ],
+          "exact_normal": [
+            -0.01963587303839419,
+            -0.0156649949615207,
+            -0.9996844704319837
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 32,
+          "body": 1,
+          "max_scaled_error": 0.012323030262912624,
+          "exact_center_c": [
+            -6.512094620077083,
+            3.76074333603877,
+            1.1771924182502227
+          ],
+          "exact_normal": [
+            -0.04437132411899659,
+            0.05889086506789033,
+            -0.9972778206735987
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 38,
+          "body": 1,
+          "max_scaled_error": 0.012194844593720102,
+          "exact_center_c": [
+            -6.516464101847679,
+            3.793932845168241,
+            1.9930024640203567
+          ],
+          "exact_normal": [
+            -0.055008051809495924,
+            0.1396848331689381,
+            0.9886669113602872
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 44,
+          "body": 1,
+          "max_scaled_error": 0.011400952111107636,
+          "exact_center_c": [
+            9.813233682198707,
+            3.797485169455781,
+            2.08031986990017
+          ],
+          "exact_normal": [
+            0.04437132411899659,
+            0.13970645192609207,
+            0.9891983081698783
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 34,
+          "body": 1,
+          "max_scaled_error": 0.011288104352115661,
+          "exact_center_c": [
+            9.811048941313409,
+            -20.660571910941364,
+            3.4839244244701
+          ],
+          "exact_normal": [
+            0.01963587303839419,
+            0.0156649949615207,
+            0.9996844704319837
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 3,
+          "body": 0,
+          "max_scaled_error": 0.01043960724941355,
+          "exact_center_c": [
+            -6.211458989250029,
+            -16.32993161855452,
+            -1.3728612689971724
+          ],
+          "exact_normal": [
+            -0.05458381481741382,
+            -0.09938079899999058,
+            -0.9935512387139889
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 43,
+          "body": 1,
+          "max_scaled_error": 0.010435958298935035,
+          "exact_center_c": [
+            -14.681312993870872,
+            -4.366060595296158,
+            2.2812436049754043
+          ],
+          "exact_normal": [
+            -0.10469773977374212,
+            0.09002469454186553,
+            0.9904210910814216
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 21,
+          "body": 0,
+          "max_scaled_error": 0.010215857158957701,
+          "exact_center_c": [
+            -6.207438143300691,
+            -16.32993161855452,
+            -0.5563745884784277
+          ],
+          "exact_normal": [
+            -0.044795779143170684,
+            -0.09938079899999058,
+            0.9940406404977009
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 35,
+          "body": 1,
+          "max_scaled_error": 0.009581392798409248,
+          "exact_center_c": [
+            9.8197879048546,
+            -4.410516372559053,
+            1.1885046451399233
+          ],
+          "exact_normal": [
+            0.030332190706021674,
+            -0.01565412502572715,
+            -0.9994172835090719
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 25,
+          "body": 1,
+          "max_scaled_error": 0.00939456469279406,
+          "exact_center_c": [
+            -14.676943512100276,
+            -4.399250104425629,
+            1.4654335592052705
+          ],
+          "exact_normal": [
+            -0.09406101208324279,
+            0.00923072644081774,
+            -0.9955236409524643
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 19,
+          "body": 0,
+          "max_scaled_error": 0.00906901246668412,
+          "exact_center_c": [
+            -14.37230494848814,
+            8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 13,
+          "body": 0,
+          "max_scaled_error": 0.00901150267217996,
+          "exact_center_c": [
+            -14.37230494848814,
+            -8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            -0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        }
+      ],
+      "candidate_refine_top8": [
+        16,
+        22,
+        11,
+        5,
+        41,
+        47,
+        4,
+        26
+      ],
+      "top8_fourway_resulting_panels": 72,
+      "top8_fourway_resulting_nodes": 5832,
+      "candidate_refine_top13": [
+        16,
+        22,
+        11,
+        5,
+        41,
+        47,
+        4,
+        26,
+        29,
+        32,
+        38,
+        44,
+        34
+      ],
+      "top13_fourway_resulting_panels": 87,
+      "top13_fourway_resulting_nodes": 7047
+    },
+    {
+      "name": "pair_h150_p6_adapt1",
+      "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_adapt1.json",
+      "sha256": "f602c1b5c34f99c57b5ee6c6a864706084d3ed1effb4c8cf36a446d68cfe4a85",
+      "order": 6,
+      "node_count": 3528,
+      "patch_count": 72,
+      "boundary_evaluation_valid": null,
+      "boundary_max_scaled_error": 0.04512670191773178,
+      "boundary_rms_scaled_error": 0.004239805553169279,
+      "gap_patch_max_scaled_error": 0.03185439570552712,
+      "boundary_sample_count": 682,
+      "patches_above_point1_percent": 56,
+      "patches_above_one_percent": 31,
+      "raw_reciprocity": 2.076820581787119e-05,
+      "energy_scaled_raw_reciprocity": 0.00018653422973188158,
+      "exact_surface_position_max_error_over_gap": 0.00025234627781048797,
+      "max_scaled_flux_error": 4.153348386130786e-06,
+      "dominant_boundary_modes": [
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "max_scaled_error": 0.04512670191773178
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "max_scaled_error": 0.04462978600791392
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "max_scaled_error": 0.03225587987960472
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "max_scaled_error": 0.03169688148086811
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "max_scaled_error": 0.028097432586931516
+        },
+        {
+          "index": 4,
+          "name": "aOmega_i_y",
+          "max_scaled_error": 0.024582884800576982
+        },
+        {
+          "index": 10,
+          "name": "aOmega_j_y",
+          "max_scaled_error": 0.022757909284289553
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "max_scaled_error": 0.0160539333702822
+        },
+        {
+          "index": 0,
+          "name": "Ui_x",
+          "max_scaled_error": 0.003612935963865473
+        },
+        {
+          "index": 6,
+          "name": "Uj_x",
+          "max_scaled_error": 0.0035307593095762666
+        },
+        {
+          "index": 14,
+          "name": "aE_xy",
+          "max_scaled_error": 0.003210359346747719
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "max_scaled_error": 0.0028820640971994366
+        },
+        {
+          "index": 15,
+          "name": "aE_xz",
+          "max_scaled_error": 0.00285177519413762
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "max_scaled_error": 0.0027653354535344837
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "max_scaled_error": 0.0024730885944501085
+        },
+        {
+          "index": 11,
+          "name": "aOmega_j_z",
+          "max_scaled_error": 0.0019176131700523364
+        },
+        {
+          "index": 5,
+          "name": "aOmega_i_z",
+          "max_scaled_error": 0.0013985870261081566
+        }
+      ],
+      "ranked_panels_top20": [
+        {
+          "patch": 31,
+          "body": 0,
+          "max_scaled_error": 0.04512670191773178,
+          "exact_center_c": [
+            -14.37230494848814,
+            8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 65,
+          "body": 1,
+          "max_scaled_error": 0.044620770732689226,
+          "exact_center_c": [
+            9.813233682198707,
+            3.797485169455781,
+            2.08031986990017
+          ],
+          "exact_normal": [
+            0.04437132411899659,
+            0.13970645192609207,
+            0.9891983081698783
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 52,
+          "body": 1,
+          "max_scaled_error": 0.044376665873020894,
+          "exact_center_c": [
+            9.811048941313409,
+            -20.660571910941364,
+            3.4839244244701
+          ],
+          "exact_normal": [
+            0.01963587303839419,
+            0.0156649949615207,
+            0.9996844704319837
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 35,
+          "body": 0,
+          "max_scaled_error": 0.04248779084385641,
+          "exact_center_c": [
+            -2.753926935977886,
+            4.714045207910317,
+            -0.03881441374448691
+          ],
+          "exact_normal": [
+            -0.007574154607241919,
+            0.012498047332644499,
+            0.9998932097953543
+          ],
+          "local_sphere_center": [
+            -0.23570226039551587,
+            0.23570226039551587,
+            0.9428090415820635
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 34,
+          "body": 0,
+          "max_scaled_error": 0.03351004898144844,
+          "exact_center_c": [
+            -9.807544085468255,
+            3.922322702763681,
+            -0.16242480220953037
+          ],
+          "exact_normal": [
+            -0.03254961537816494,
+            0.012490245804210981,
+            0.9993920733618432
+          ],
+          "local_sphere_center": [
+            -0.5883484054145521,
+            0.19611613513818404,
+            0.7844645405527362
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 25,
+          "body": 0,
+          "max_scaled_error": 0.03290900886220421,
+          "exact_center_c": [
+            6.674049159766935,
+            4.714045207910317,
+            -0.08524314356887219
+          ],
+          "exact_normal": [
+            0.017421636968523,
+            0.012498047332644499,
+            0.9997701162658384
+          ],
+          "local_sphere_center": [
+            0.23570226039551587,
+            0.23570226039551587,
+            0.9428090415820635
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 56,
+          "body": 1,
+          "max_scaled_error": 0.032342445118465526,
+          "exact_center_c": [
+            -6.516464101847679,
+            3.793932845168241,
+            1.9930024640203567
+          ],
+          "exact_normal": [
+            -0.055008051809495924,
+            0.1396848331689381,
+            0.9886669113602872
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 50,
+          "body": 1,
+          "max_scaled_error": 0.03185439570552712,
+          "exact_center_c": [
+            -6.512094620077083,
+            3.76074333603877,
+            1.1771924182502227
+          ],
+          "exact_normal": [
+            -0.04437132411899659,
+            0.05889086506789033,
+            -0.9972778206735987
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 22,
+          "body": 0,
+          "max_scaled_error": 0.031358346295128736,
+          "exact_center_c": [
+            -14.37230494848814,
+            -8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            -0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 43,
+          "body": 1,
+          "max_scaled_error": 0.030463171181060525,
+          "exact_center_c": [
+            -6.5186488427329765,
+            -20.664124235228904,
+            3.3966070185902866
+          ],
+          "exact_normal": [
+            -0.030332190706021674,
+            0.01565412502572715,
+            0.9994172835090719
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 40,
+          "body": 1,
+          "max_scaled_error": 0.029288460201787592,
+          "exact_center_c": [
+            -14.676943512100276,
+            -4.399250104425629,
+            1.4654335592052705
+          ],
+          "exact_normal": [
+            -0.09406101208324279,
+            0.00923072644081774,
+            -0.9955236409524643
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 26,
+          "body": 0,
+          "max_scaled_error": 0.028038209699611235,
+          "exact_center_c": [
+            13.726106770955646,
+            3.922322702763681,
+            -0.27831791715786647
+          ],
+          "exact_normal": [
+            0.04239095074611216,
+            0.012490245804210983,
+            0.9990230232855453
+          ],
+          "local_sphere_center": [
+            0.5883484054145521,
+            0.19611613513818404,
+            0.7844645405527362
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 41,
+          "body": 1,
+          "max_scaled_error": 0.02789554403416242,
+          "exact_center_c": [
+            9.817603163969302,
+            3.76429566032631,
+            1.2645098241300359
+          ],
+          "exact_normal": [
+            0.055008051809495924,
+            0.058912483825044326,
+            -0.9967464238640075
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 13,
+          "body": 0,
+          "max_scaled_error": 0.02708873633802555,
+          "exact_center_c": [
+            -14.376325794437474,
+            -8.16496580927726,
+            -1.3326528095038104
+          ],
+          "exact_normal": [
+            -0.10427361179770606,
+            -0.04969039949999534,
+            -0.9933065378221329
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 15,
+          "body": 0,
+          "max_scaled_error": 0.02686617737772741,
+          "exact_center_c": [
+            10.118274621124861,
+            -16.32993161855452,
+            -1.453278187983896
+          ],
+          "exact_normal": [
+            0.044795779143170684,
+            -0.09938079899999058,
+            -0.9940406404977009
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 33,
+          "body": 0,
+          "max_scaled_error": 0.026180222266545167,
+          "exact_center_c": [
+            -6.207438143300691,
+            -16.32993161855452,
+            -0.5563745884784277
+          ],
+          "exact_normal": [
+            -0.044795779143170684,
+            -0.09938079899999058,
+            0.9940406404977009
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 54,
+          "body": 1,
+          "max_scaled_error": 0.02582486784013153,
+          "exact_center_c": [
+            17.978082574221897,
+            -4.358955946721075,
+            2.4558784167350307
+          ],
+          "exact_normal": [
+            0.09406101208324279,
+            0.09006793205617353,
+            0.9914838847006039
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 3,
+          "body": 0,
+          "max_scaled_error": 0.024885188338335897,
+          "exact_center_c": [
+            -6.211458989250029,
+            -16.32993161855452,
+            -1.3728612689971724
+          ],
+          "exact_normal": [
+            -0.05458381481741382,
+            -0.09938079899999058,
+            -0.9935512387139889
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 67,
+          "body": 1,
+          "max_scaled_error": 0.02340231646315378,
+          "exact_center_c": [
+            -6.5186488427329765,
+            -4.347689678587651,
+            2.732807330800378
+          ],
+          "exact_normal": [
+            -0.030332190706021667,
+            0.06558160395337537,
+            0.9973860894507584
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 53,
+          "body": 1,
+          "max_scaled_error": 0.023089074567049707,
+          "exact_center_c": [
+            9.8197879048546,
+            -4.410516372559053,
+            1.1885046451399233
+          ],
+          "exact_normal": [
+            0.030332190706021674,
+            -0.01565412502572715,
+            -0.9994172835090719
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        }
+      ],
+      "candidate_refine_top8": [
+        31,
+        65,
+        52,
+        35,
+        34,
+        25,
+        56,
+        50
+      ],
+      "top8_fourway_resulting_panels": 96,
+      "top8_fourway_resulting_nodes": 4704,
+      "candidate_refine_top13": [
+        31,
+        65,
+        52,
+        35,
+        34,
+        25,
+        56,
+        50,
+        22,
+        43,
+        40,
+        26,
+        41
+      ],
+      "top13_fourway_resulting_panels": 111,
+      "top13_fourway_resulting_nodes": 5439
+    },
+    {
+      "name": "pair_h150_p6_adapt2",
+      "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_adapt2.json",
+      "sha256": "82fee307e725bc4e8b2251a11c492f037cfb055d560159d7bcad71da3fa2a9fa",
+      "order": 6,
+      "node_count": 4704,
+      "patch_count": 96,
+      "boundary_evaluation_valid": true,
+      "boundary_max_scaled_error": 0.034002315696901535,
+      "boundary_rms_scaled_error": 0.002826866241076333,
+      "gap_patch_max_scaled_error": 0.034002315696901535,
+      "boundary_sample_count": 898,
+      "patches_above_point1_percent": 63,
+      "patches_above_one_percent": 25,
+      "raw_reciprocity": 4.4229012377101114e-05,
+      "energy_scaled_raw_reciprocity": 0.0001871394933020716,
+      "exact_surface_position_max_error_over_gap": 0.00025234627781048797,
+      "max_scaled_flux_error": 2.2101024621900455e-06,
+      "dominant_boundary_modes": [
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "max_scaled_error": 0.034002315696901535
+        },
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "max_scaled_error": 0.03398617122191349
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "max_scaled_error": 0.026899940823434026
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "max_scaled_error": 0.021999372029057048
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "max_scaled_error": 0.021453618656646637
+        },
+        {
+          "index": 4,
+          "name": "aOmega_i_y",
+          "max_scaled_error": 0.021114081685653572
+        },
+        {
+          "index": 10,
+          "name": "aOmega_j_y",
+          "max_scaled_error": 0.020461943097774743
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "max_scaled_error": 0.011232473149363206
+        },
+        {
+          "index": 0,
+          "name": "Ui_x",
+          "max_scaled_error": 0.0036189991750091247
+        },
+        {
+          "index": 6,
+          "name": "Uj_x",
+          "max_scaled_error": 0.003530403138187424
+        },
+        {
+          "index": 14,
+          "name": "aE_xy",
+          "max_scaled_error": 0.003209004415412269
+        },
+        {
+          "index": 15,
+          "name": "aE_xz",
+          "max_scaled_error": 0.002846326833586086
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "max_scaled_error": 0.002469889550746588
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "max_scaled_error": 0.0022034060589617853
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "max_scaled_error": 0.0020912761339542145
+        },
+        {
+          "index": 11,
+          "name": "aOmega_j_z",
+          "max_scaled_error": 0.0015827844601152346
+        },
+        {
+          "index": 5,
+          "name": "aOmega_i_z",
+          "max_scaled_error": 0.0013991274622259368
+        }
+      ],
+      "ranked_panels_top20": [
+        {
+          "patch": 53,
+          "body": 1,
+          "max_scaled_error": 0.034002315696901535,
+          "exact_center_c": [
+            9.817603163969302,
+            3.76429566032631,
+            1.2645098241300359
+          ],
+          "exact_normal": [
+            0.055008051809495924,
+            0.058912483825044326,
+            -0.9967464238640075
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 22,
+          "body": 0,
+          "max_scaled_error": 0.03137752274221167,
+          "exact_center_c": [
+            -14.37230494848814,
+            -8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            -0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 55,
+          "body": 1,
+          "max_scaled_error": 0.03039143064938354,
+          "exact_center_c": [
+            -6.5186488427329765,
+            -20.664124235228904,
+            3.3966070185902866
+          ],
+          "exact_normal": [
+            -0.030332190706021674,
+            0.01565412502572715,
+            0.9994172835090719
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 52,
+          "body": 1,
+          "max_scaled_error": 0.02924373783218984,
+          "exact_center_c": [
+            -14.676943512100276,
+            -4.399250104425629,
+            1.4654335592052705
+          ],
+          "exact_normal": [
+            -0.09406101208324279,
+            0.00923072644081774,
+            -0.9955236409524643
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 29,
+          "body": 0,
+          "max_scaled_error": 0.02776813197260952,
+          "exact_center_c": [
+            13.726106770955646,
+            3.922322702763681,
+            -0.27831791715786647
+          ],
+          "exact_normal": [
+            0.04239095074611216,
+            0.012490245804210983,
+            0.9990230232855453
+          ],
+          "local_sphere_center": [
+            0.5883484054145521,
+            0.19611613513818404,
+            0.7844645405527362
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 13,
+          "body": 0,
+          "max_scaled_error": 0.026887636188167356,
+          "exact_center_c": [
+            -14.376325794437474,
+            -8.16496580927726,
+            -1.3326528095038104
+          ],
+          "exact_normal": [
+            -0.10427361179770606,
+            -0.04969039949999534,
+            -0.9933065378221329
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 15,
+          "body": 0,
+          "max_scaled_error": 0.026867948543819884,
+          "exact_center_c": [
+            10.118274621124861,
+            -16.32993161855452,
+            -1.453278187983896
+          ],
+          "exact_normal": [
+            0.044795779143170684,
+            -0.09938079899999058,
+            -0.9940406404977009
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 39,
+          "body": 0,
+          "max_scaled_error": 0.02618108429177464,
+          "exact_center_c": [
+            -6.207438143300691,
+            -16.32993161855452,
+            -0.5563745884784277
+          ],
+          "exact_normal": [
+            -0.044795779143170684,
+            -0.09938079899999058,
+            0.9940406404977009
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 72,
+          "body": 1,
+          "max_scaled_error": 0.025817916109191624,
+          "exact_center_c": [
+            17.978082574221897,
+            -4.358955946721075,
+            2.4558784167350307
+          ],
+          "exact_normal": [
+            0.09406101208324279,
+            0.09006793205617353,
+            0.9914838847006039
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 3,
+          "body": 0,
+          "max_scaled_error": 0.02488537475267575,
+          "exact_center_c": [
+            -6.211458989250029,
+            -16.32993161855452,
+            -1.3728612689971724
+          ],
+          "exact_normal": [
+            -0.05458381481741382,
+            -0.09938079899999058,
+            -0.9935512387139889
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 91,
+          "body": 1,
+          "max_scaled_error": 0.023396893796605422,
+          "exact_center_c": [
+            -6.5186488427329765,
+            -4.347689678587651,
+            2.732807330800378
+          ],
+          "exact_normal": [
+            -0.030332190706021667,
+            0.06558160395337537,
+            0.9973860894507584
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 71,
+          "body": 1,
+          "max_scaled_error": 0.023110174235429336,
+          "exact_center_c": [
+            9.8197879048546,
+            -4.410516372559053,
+            1.1885046451399233
+          ],
+          "exact_normal": [
+            0.030332190706021674,
+            -0.01565412502572715,
+            -0.9994172835090719
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 24,
+          "body": 0,
+          "max_scaled_error": 0.020684728730239958,
+          "exact_center_c": [
+            10.1222954670742,
+            -16.32993161855452,
+            -0.6367915074651515
+          ],
+          "exact_normal": [
+            0.05458381481741382,
+            -0.09938079899999058,
+            0.9935512387139889
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 50,
+          "body": 0,
+          "max_scaled_error": 0.019336968403491386,
+          "exact_center_c": [
+            -6.213469412224696,
+            -8.16496580927726,
+            -1.7811046092565448
+          ],
+          "exact_normal": [
+            -0.029905522204124037,
+            -0.024984389633195395,
+            -0.9992404315360519
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 33,
+          "body": 0,
+          "max_scaled_error": 0.018962749552733995,
+          "exact_center_c": [
+            18.287162272261643,
+            -8.16496580927726,
+            -0.6769999669585134
+          ],
+          "exact_normal": [
+            0.10427361179770606,
+            -0.04969039949999534,
+            0.9933065378221329
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 60,
+          "body": 1,
+          "max_scaled_error": 0.018642397534842023,
+          "exact_center_c": [
+            17.982452055992493,
+            -4.392145455850546,
+            1.6400683709648969
+          ],
+          "exact_normal": [
+            0.10469773977374214,
+            0.009273963955125749,
+            -0.9944608473332818
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 16,
+          "body": 0,
+          "max_scaled_error": 0.01740128650252001,
+          "exact_center_c": [
+            10.124305890048866,
+            -8.16496580927726,
+            -0.22854816720577908
+          ],
+          "exact_normal": [
+            0.029905522204124037,
+            -0.024984389633195395,
+            0.9992404315360519
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 1,
+          "body": 0,
+          "max_scaled_error": 0.01452435656860818,
+          "exact_center_c": [
+            -14.376325794437474,
+            8.16496580927726,
+            -1.3326528095038104
+          ],
+          "exact_normal": [
+            -0.10427361179770606,
+            0.04969039949999534,
+            -0.9933065378221329
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 85,
+          "body": 1,
+          "max_scaled_error": 0.012974094360142564,
+          "exact_center_c": [
+            -14.681312993870872,
+            -4.366060595296158,
+            2.2812436049754043
+          ],
+          "exact_normal": [
+            -0.10469773977374212,
+            0.09002469454186553,
+            0.9904210910814216
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 32,
+          "body": 0,
+          "max_scaled_error": 0.012626620541305601,
+          "exact_center_c": [
+            10.116264198150194,
+            -8.16496580927726,
+            -1.8615215282432684
+          ],
+          "exact_normal": [
+            0.02006265116707675,
+            -0.024984389633195395,
+            -0.9994865033119782
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            -0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        }
+      ],
+      "candidate_refine_top8": [
+        53,
+        22,
+        55,
+        52,
+        29,
+        13,
+        15,
+        39
+      ],
+      "top8_fourway_resulting_panels": 120,
+      "top8_fourway_resulting_nodes": 5880,
+      "candidate_refine_top13": [
+        53,
+        22,
+        55,
+        52,
+        29,
+        13,
+        15,
+        39,
+        72,
+        3,
+        91,
+        71,
+        24
+      ],
+      "top13_fourway_resulting_panels": 135,
+      "top13_fourway_resulting_nodes": 6615
+    },
+    {
+      "name": "pair_h150_p8_adapt1",
+      "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+      "sha256": "5d569664bbc1b82d41cac86ab7dc4cc8de053dc17413f149e1183532ac2066fc",
+      "order": 8,
+      "node_count": 5832,
+      "patch_count": 72,
+      "boundary_evaluation_valid": true,
+      "boundary_max_scaled_error": 0.02589861230597417,
+      "boundary_rms_scaled_error": 0.0014900788479173654,
+      "gap_patch_max_scaled_error": 0.011198097569395484,
+      "boundary_sample_count": 682,
+      "patches_above_point1_percent": 42,
+      "patches_above_one_percent": 13,
+      "raw_reciprocity": 2.915861440907998e-06,
+      "energy_scaled_raw_reciprocity": 5.207926355703671e-05,
+      "exact_surface_position_max_error_over_gap": 9.660881511385277e-06,
+      "max_scaled_flux_error": 9.032023479033685e-07,
+      "dominant_boundary_modes": [
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "max_scaled_error": 0.02589861230597417
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "max_scaled_error": 0.025890146354855013
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "max_scaled_error": 0.019509342568884966
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "max_scaled_error": 0.016292129429099463
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "max_scaled_error": 0.01192018097080236
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "max_scaled_error": 0.00892110947367693
+        },
+        {
+          "index": 4,
+          "name": "aOmega_i_y",
+          "max_scaled_error": 0.0073164565171301025
+        },
+        {
+          "index": 10,
+          "name": "aOmega_j_y",
+          "max_scaled_error": 0.007153119923525246
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "max_scaled_error": 0.0018048192140152817
+        },
+        {
+          "index": 15,
+          "name": "aE_xz",
+          "max_scaled_error": 0.0017338077091731106
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "max_scaled_error": 0.001733587348711955
+        },
+        {
+          "index": 0,
+          "name": "Ui_x",
+          "max_scaled_error": 0.0013212019633775838
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "max_scaled_error": 0.0012261511944252936
+        },
+        {
+          "index": 6,
+          "name": "Uj_x",
+          "max_scaled_error": 0.0011439188843770033
+        },
+        {
+          "index": 14,
+          "name": "aE_xy",
+          "max_scaled_error": 0.001135969553107356
+        },
+        {
+          "index": 11,
+          "name": "aOmega_j_z",
+          "max_scaled_error": 0.0007059622001932801
+        },
+        {
+          "index": 5,
+          "name": "aOmega_i_z",
+          "max_scaled_error": 0.00048535149735634905
+        }
+      ],
+      "ranked_panels_top20": [
+        {
+          "patch": 35,
+          "body": 0,
+          "max_scaled_error": 0.02589861230597417,
+          "exact_center_c": [
+            -2.753926935977886,
+            4.714045207910317,
+            -0.03881441374448691
+          ],
+          "exact_normal": [
+            -0.007574154607241919,
+            0.012498047332644499,
+            0.9998932097953543
+          ],
+          "local_sphere_center": [
+            -0.23570226039551587,
+            0.23570226039551587,
+            0.9428090415820635
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 25,
+          "body": 0,
+          "max_scaled_error": 0.02546203199432334,
+          "exact_center_c": [
+            6.674049159766935,
+            4.714045207910317,
+            -0.08524314356887219
+          ],
+          "exact_normal": [
+            0.017421636968523,
+            0.012498047332644499,
+            0.9997701162658384
+          ],
+          "local_sphere_center": [
+            0.23570226039551587,
+            0.23570226039551587,
+            0.9428090415820635
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 52,
+          "body": 1,
+          "max_scaled_error": 0.017780810422630747,
+          "exact_center_c": [
+            9.811048941313409,
+            -20.660571910941364,
+            3.4839244244701
+          ],
+          "exact_normal": [
+            0.01963587303839419,
+            0.0156649949615207,
+            0.9996844704319837
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 41,
+          "body": 1,
+          "max_scaled_error": 0.015590826032618068,
+          "exact_center_c": [
+            9.817603163969302,
+            3.76429566032631,
+            1.2645098241300359
+          ],
+          "exact_normal": [
+            0.055008051809495924,
+            0.058912483825044326,
+            -0.9967464238640075
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 50,
+          "body": 1,
+          "max_scaled_error": 0.01377565931477582,
+          "exact_center_c": [
+            -6.512094620077083,
+            3.76074333603877,
+            1.1771924182502227
+          ],
+          "exact_normal": [
+            -0.04437132411899659,
+            0.05889086506789033,
+            -0.9972778206735987
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 26,
+          "body": 0,
+          "max_scaled_error": 0.01362461690229807,
+          "exact_center_c": [
+            13.726106770955646,
+            3.922322702763681,
+            -0.27831791715786647
+          ],
+          "exact_normal": [
+            0.04239095074611216,
+            0.012490245804210983,
+            0.9990230232855453
+          ],
+          "local_sphere_center": [
+            0.5883484054145521,
+            0.19611613513818404,
+            0.7844645405527362
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 34,
+          "body": 0,
+          "max_scaled_error": 0.012222498672685725,
+          "exact_center_c": [
+            -9.807544085468255,
+            3.922322702763681,
+            -0.16242480220953037
+          ],
+          "exact_normal": [
+            -0.03254961537816494,
+            0.012490245804210981,
+            0.9993920733618432
+          ],
+          "local_sphere_center": [
+            -0.5883484054145521,
+            0.19611613513818404,
+            0.7844645405527362
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 56,
+          "body": 1,
+          "max_scaled_error": 0.011445527193445807,
+          "exact_center_c": [
+            -6.516464101847679,
+            3.793932845168241,
+            1.9930024640203567
+          ],
+          "exact_normal": [
+            -0.055008051809495924,
+            0.1396848331689381,
+            0.9886669113602872
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 43,
+          "body": 1,
+          "max_scaled_error": 0.01141798225977259,
+          "exact_center_c": [
+            -6.5186488427329765,
+            -20.664124235228904,
+            3.3966070185902866
+          ],
+          "exact_normal": [
+            -0.030332190706021674,
+            0.01565412502572715,
+            0.9994172835090719
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.4082482904638631,
+            0.8164965809277261
+          ],
+          "touches_equatorial_parameter_rim": false,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 65,
+          "body": 1,
+          "max_scaled_error": 0.01130008618198007,
+          "exact_center_c": [
+            9.813233682198707,
+            3.797485169455781,
+            2.08031986990017
+          ],
+          "exact_normal": [
+            0.04437132411899659,
+            0.13970645192609207,
+            0.9891983081698783
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 3,
+          "body": 0,
+          "max_scaled_error": 0.010414991341673625,
+          "exact_center_c": [
+            -6.211458989250029,
+            -16.32993161855452,
+            -1.3728612689971724
+          ],
+          "exact_normal": [
+            -0.05458381481741382,
+            -0.09938079899999058,
+            -0.9935512387139889
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 64,
+          "body": 1,
+          "max_scaled_error": 0.010407880067010397,
+          "exact_center_c": [
+            -14.681312993870872,
+            -4.366060595296158,
+            2.2812436049754043
+          ],
+          "exact_normal": [
+            -0.10469773977374212,
+            0.09002469454186553,
+            0.9904210910814216
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 33,
+          "body": 0,
+          "max_scaled_error": 0.010300249697281966,
+          "exact_center_c": [
+            -6.207438143300691,
+            -16.32993161855452,
+            -0.5563745884784277
+          ],
+          "exact_normal": [
+            -0.044795779143170684,
+            -0.09938079899999058,
+            0.9940406404977009
+          ],
+          "local_sphere_center": [
+            -0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 40,
+          "body": 1,
+          "max_scaled_error": 0.009373068204844393,
+          "exact_center_c": [
+            -14.676943512100276,
+            -4.399250104425629,
+            1.4654335592052705
+          ],
+          "exact_normal": [
+            -0.09406101208324279,
+            0.00923072644081774,
+            -0.9955236409524643
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 22,
+          "body": 0,
+          "max_scaled_error": 0.009012740814323933,
+          "exact_center_c": [
+            -14.37230494848814,
+            -8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            -0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 30,
+          "body": 0,
+          "max_scaled_error": 0.008973963680212855,
+          "exact_center_c": [
+            18.287162272261643,
+            -8.16496580927726,
+            -0.6769999669585134
+          ],
+          "exact_normal": [
+            0.10427361179770606,
+            -0.04969039949999534,
+            0.9933065378221329
+          ],
+          "local_sphere_center": [
+            0.8164965809277261,
+            -0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 31,
+          "body": 0,
+          "max_scaled_error": 0.008876812140780621,
+          "exact_center_c": [
+            -14.37230494848814,
+            8.16496580927726,
+            -0.5161661289850658
+          ],
+          "exact_normal": [
+            -0.0944855761234629,
+            0.04969039949999533,
+            0.9942853413895572
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            0.4082482904638631,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 24,
+          "body": 0,
+          "max_scaled_error": 0.00832653374864124,
+          "exact_center_c": [
+            10.1222954670742,
+            -16.32993161855452,
+            -0.6367915074651515
+          ],
+          "exact_normal": [
+            0.05458381481741382,
+            -0.09938079899999058,
+            0.9935512387139889
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": true
+        },
+        {
+          "patch": 15,
+          "body": 0,
+          "max_scaled_error": 0.007853265847746342,
+          "exact_center_c": [
+            10.118274621124861,
+            -16.32993161855452,
+            -1.453278187983896
+          ],
+          "exact_normal": [
+            0.044795779143170684,
+            -0.09938079899999058,
+            -0.9940406404977009
+          ],
+          "local_sphere_center": [
+            0.4082482904638631,
+            -0.8164965809277261,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        },
+        {
+          "patch": 13,
+          "body": 0,
+          "max_scaled_error": 0.0067278871152823905,
+          "exact_center_c": [
+            -14.376325794437474,
+            -8.16496580927726,
+            -1.3326528095038104
+          ],
+          "exact_normal": [
+            -0.10427361179770606,
+            -0.04969039949999534,
+            -0.9933065378221329
+          ],
+          "local_sphere_center": [
+            -0.8164965809277261,
+            -0.4082482904638631,
+            -0.4082482904638631
+          ],
+          "touches_equatorial_parameter_rim": true,
+          "normal_faces_contact_plane": false
+        }
+      ],
+      "candidate_refine_top8": [
+        35,
+        25,
+        52,
+        41,
+        50,
+        26,
+        34,
+        56
+      ],
+      "top8_fourway_resulting_panels": 96,
+      "top8_fourway_resulting_nodes": 7776,
+      "candidate_refine_top13": [
+        35,
+        25,
+        52,
+        41,
+        50,
+        26,
+        34,
+        56,
+        43,
+        65,
+        3,
+        64,
+        33
+      ],
+      "top13_fourway_resulting_panels": 111,
+      "top13_fourway_resulting_nodes": 8991
+    }
+  ],
+  "observed_matrix_changes": [
+    {
+      "full17_max_relative_energy_error": 0.003601880353031092,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.003165986468278394,
+          "energy_input_scaled_operator_relative": 0.0021809607079266266,
+          "unweighted_relative_frobenius": 0.0011155312906292092
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0033134715643873495,
+          "energy_input_scaled_operator_relative": 0.0023268139100852212,
+          "unweighted_relative_frobenius": 0.0018677734118149121
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0031967643519753824,
+          "energy_input_scaled_operator_relative": 0.0022411639694725803,
+          "unweighted_relative_frobenius": 0.001115456524944796
+        }
+      },
+      "common_motion_max_relative_energy_error": 2.1375766471516618e-05,
+      "fixed_body_total_dipole_max_relative_energy_error": 3.503267345342562e-05,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 0.0003964039971709577,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 0.00018214716790607047,
+      "force_torque_free_velocity_relative_frobenius_error": 8.466581912528112e-05,
+      "previous": "pair_h150_p6_l1",
+      "current": "pair_h150_p8_l1",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": -0.0036018803530310883,
+      "worst_energy_input_euclidean_normalized": [
+        0.00404450002677223,
+        0.013005015481813483,
+        -0.013298124048599355,
+        -0.1474252625069608,
+        0.010913244037353519,
+        0.008410312015687517,
+        0.005050132326003774,
+        -0.04928336802212528,
+        -0.059329925610662235,
+        -0.7136078661206968,
+        0.000254639479628907,
+        -0.012967500406188819,
+        -0.004645657477551142,
+        0.17526760117008833,
+        0.0025809011313382355,
+        -0.00021220915936400893,
+        -0.6569534300181524
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": -0.7136078661206968
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "value": -0.6569534300181524
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "value": 0.17526760117008833
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": -0.1474252625069608
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "value": -0.059329925610662235
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "value": -0.04928336802212528
+        }
+      ]
+    },
+    {
+      "full17_max_relative_energy_error": 0.0029748688625053925,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.0027213113197430364,
+          "energy_input_scaled_operator_relative": 0.0018746362695677915,
+          "unweighted_relative_frobenius": 0.0009678454051787213
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0027306576475134544,
+          "energy_input_scaled_operator_relative": 0.0019175454125527336,
+          "unweighted_relative_frobenius": 0.0015340649563513904
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.002589892784667725,
+          "energy_input_scaled_operator_relative": 0.0018157029279332417,
+          "unweighted_relative_frobenius": 0.000958484693464117
+        }
+      },
+      "common_motion_max_relative_energy_error": 9.344981953629232e-06,
+      "fixed_body_total_dipole_max_relative_energy_error": 4.04046069873119e-05,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 0.0008200684399821074,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 0.00020444352388907774,
+      "force_torque_free_velocity_relative_frobenius_error": 9.444376537829907e-05,
+      "previous": "pair_h150_p6_l1",
+      "current": "pair_h150_p6_adapt1",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": -0.002974868862505392,
+      "worst_energy_input_euclidean_normalized": [
+        0.008666869524365333,
+        -0.0543694135926514,
+        0.05029204646961822,
+        0.7211958236124011,
+        0.041832379211263086,
+        0.014078918981575697,
+        0.009822420715062407,
+        0.2934119014683286,
+        -0.12028411264711109,
+        -0.5037805084604267,
+        0.01676470479625918,
+        -0.02765305187321644,
+        0.3250679746922058,
+        0.09732678755149662,
+        0.00793593929211541,
+        -0.01810520683005763,
+        -0.03660155823031277
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": 0.7211958236124011
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": -0.5037805084604267
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "value": 0.3250679746922058
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "value": 0.2934119014683286
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "value": -0.12028411264711109
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "value": 0.09732678755149662
+        }
+      ]
+    },
+    {
+      "full17_max_relative_energy_error": 0.0004473042639952776,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.0003801432498504984,
+          "energy_input_scaled_operator_relative": 0.0002619219100766607,
+          "unweighted_relative_frobenius": 0.0001608144759905897
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.00040738284746373436,
+          "energy_input_scaled_operator_relative": 0.00028607815357555824,
+          "unweighted_relative_frobenius": 0.00023654621917029543
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0003729488610442087,
+          "energy_input_scaled_operator_relative": 0.00026147442057612437,
+          "unweighted_relative_frobenius": 0.00016149308673937165
+        }
+      },
+      "common_motion_max_relative_energy_error": 3.0390402035631662e-06,
+      "fixed_body_total_dipole_max_relative_energy_error": 1.7227566085124591e-06,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 2.296914853447712e-05,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 3.972126293735676e-06,
+      "force_torque_free_velocity_relative_frobenius_error": 2.168177324454529e-06,
+      "previous": "pair_h150_p6_adapt1",
+      "current": "pair_h150_p6_adapt2",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": 0.00044730426399527766,
+      "worst_energy_input_euclidean_normalized": [
+        -0.011084462868438451,
+        -0.1434145579895113,
+        -0.21410001213855304,
+        0.5515410478577331,
+        -0.029423264057363417,
+        0.01128344954958073,
+        -0.0057858652706624025,
+        -0.10397206118292963,
+        -0.2671493336928934,
+        -0.7297730350813979,
+        -0.0014295994631414479,
+        -0.025819336465697174,
+        0.0286608340939647,
+        -0.10412740485330792,
+        0.016865141387936936,
+        0.029529401049871357,
+        0.003136341387712421
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": -0.7297730350813979
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": 0.5515410478577331
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "value": -0.2671493336928934
+        },
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "value": -0.21410001213855304
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "value": -0.1434145579895113
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "value": -0.10412740485330792
+        }
+      ]
+    },
+    {
+      "full17_max_relative_energy_error": 0.0004307171441368168,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.0005731161177011002,
+          "energy_input_scaled_operator_relative": 0.0003948818459962868,
+          "unweighted_relative_frobenius": 0.00039627113196249135
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.00048091784730485966,
+          "energy_input_scaled_operator_relative": 0.00033771694276046817,
+          "unweighted_relative_frobenius": 0.0004036303314638913
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.00056279641756255,
+          "energy_input_scaled_operator_relative": 0.0003945765292658786,
+          "unweighted_relative_frobenius": 0.0003982230000937995
+        }
+      },
+      "common_motion_max_relative_energy_error": 1.625797594525965e-05,
+      "fixed_body_total_dipole_max_relative_energy_error": 2.0834318800819945e-05,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 3.2433611099234766e-05,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 2.281386159379198e-05,
+      "force_torque_free_velocity_relative_frobenius_error": 3.6447656383446178e-06,
+      "previous": "pair_h150_p6_adapt1",
+      "current": "pair_h150_p8_adapt1",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": 0.0004307171441368163,
+      "worst_energy_input_euclidean_normalized": [
+        -0.02169079012892057,
+        0.15806833444534255,
+        0.18456381193216054,
+        -0.5872420343247359,
+        -0.01230324737872534,
+        -0.006857568130695133,
+        -0.028268223341758304,
+        0.06895096842825427,
+        0.35424321811247983,
+        0.26176191511606495,
+        0.14630758198184576,
+        0.013671858329636813,
+        -0.07465886604405755,
+        -0.0420092306744841,
+        -0.008463548658920895,
+        -0.07106313044706491,
+        -0.6015101587974141
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "value": -0.6015101587974141
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": -0.5872420343247359
+        },
+        {
+          "index": 8,
+          "name": "Uj_z",
+          "value": 0.35424321811247983
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": 0.26176191511606495
+        },
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "value": 0.18456381193216054
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "value": 0.15806833444534255
+        }
+      ]
+    },
+    {
+      "full17_max_relative_energy_error": 0.00030325950754553436,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.0003999457880700043,
+          "energy_input_scaled_operator_relative": 0.000275562700952363,
+          "unweighted_relative_frobenius": 0.00024217266216856688
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0003446242787634103,
+          "energy_input_scaled_operator_relative": 0.00024200730097123405,
+          "unweighted_relative_frobenius": 0.00023369314662115997
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.00039828957714642556,
+          "energy_input_scaled_operator_relative": 0.00027923929573770107,
+          "unweighted_relative_frobenius": 0.00024349253598761355
+        }
+      },
+      "common_motion_max_relative_energy_error": 1.6583533255174776e-05,
+      "fixed_body_total_dipole_max_relative_energy_error": 2.0609409967689796e-05,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 1.713914652729886e-05,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 2.243295423075327e-05,
+      "force_torque_free_velocity_relative_frobenius_error": 3.6116220178883813e-06,
+      "previous": "pair_h150_p6_adapt2",
+      "current": "pair_h150_p8_adapt1",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": 0.00030325950754553436,
+      "worst_energy_input_euclidean_normalized": [
+        -0.011957483738432254,
+        0.15668138385242913,
+        0.30390195540235554,
+        -0.31945697462381495,
+        -0.07178418931573735,
+        0.009228057886890677,
+        -0.007928908314192006,
+        0.07644917874894203,
+        0.08050982450304758,
+        0.46522546014606136,
+        -0.03190340904057844,
+        0.008731293582427836,
+        -0.012691843809466396,
+        0.5694279468517424,
+        -0.030953621373207712,
+        0.06371489884905969,
+        0.4650975444192728
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "value": 0.5694279468517424
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": 0.46522546014606136
+        },
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "value": 0.4650975444192728
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": -0.31945697462381495
+        },
+        {
+          "index": 2,
+          "name": "Ui_z",
+          "value": 0.30390195540235554
+        },
+        {
+          "index": 1,
+          "name": "Ui_y",
+          "value": 0.15668138385242913
+        }
+      ]
+    },
+    {
+      "full17_max_relative_energy_error": 0.0017528656299397906,
+      "blocks": {
+        "force": {
+          "energy_input_scaled_operator_absolute": 0.0017252484809885302,
+          "energy_input_scaled_operator_relative": 0.001188416899263843,
+          "unweighted_relative_frobenius": 0.0005425317661138885
+        },
+        "torque_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0014350648880729654,
+          "energy_input_scaled_operator_relative": 0.001007749888533182,
+          "unweighted_relative_frobenius": 0.0007008725080445398
+        },
+        "intrinsic_stresslet_over_a": {
+          "energy_input_scaled_operator_absolute": 0.0015901429000991906,
+          "energy_input_scaled_operator_relative": 0.0011148509766736024,
+          "unweighted_relative_frobenius": 0.0005562154681195373
+        }
+      },
+      "common_motion_max_relative_energy_error": 6.82112076278659e-07,
+      "fixed_body_total_dipole_max_relative_energy_error": 3.5932208016375716e-06,
+      "fixed_body_intrinsic_stress_relative_frobenius_error": 0.0006045448808981665,
+      "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+      "force_torque_free_strain_max_relative_energy_error": 2.4218268236520463e-05,
+      "force_torque_free_velocity_relative_frobenius_error": 4.28685792644184e-05,
+      "previous": "pair_h150_p8_l1",
+      "current": "pair_h150_p8_adapt1",
+      "scope": "Observed numerical change only, not an error bound or physical qualification",
+      "worst_energy_signed_relative_change": 0.0017528656299397964,
+      "worst_energy_input_euclidean_normalized": [
+        0.0018062957545400906,
+        0.03133499669489048,
+        -0.05347969956418872,
+        -0.37548472412595235,
+        -0.00649449461015783,
+        0.004345312184172035,
+        0.0028435959801864806,
+        -0.1787722241886836,
+        -0.04162662010346263,
+        -0.5912647670036463,
+        -0.01320450452883511,
+        -0.004624957413747084,
+        -0.1412237523033856,
+        0.16884961341602583,
+        0.0006284361446090305,
+        0.012169739612412613,
+        -0.6503936942737197
+      ],
+      "worst_energy_input_largest_components": [
+        {
+          "index": 16,
+          "name": "aE_yz",
+          "value": -0.6503936942737197
+        },
+        {
+          "index": 9,
+          "name": "aOmega_j_x",
+          "value": -0.5912647670036463
+        },
+        {
+          "index": 3,
+          "name": "aOmega_i_x",
+          "value": -0.37548472412595235
+        },
+        {
+          "index": 7,
+          "name": "Uj_y",
+          "value": -0.1787722241886836
+        },
+        {
+          "index": 13,
+          "name": "aE_xx_yy_minus_2zz",
+          "value": 0.16884961341602583
+        },
+        {
+          "index": 12,
+          "name": "aE_xx_minus_yy",
+          "value": -0.1412237523033856
+        }
+      ]
+    }
+  ],
+  "interpretation": [
+    "At72 panels, increasing p6 to p8 changes integrated full17 energy by about0.043%, but maximum boundary error remains2.59%.",
+    "At p6, adapt1 to adapt2 changes energy by about0.045%, but maximum boundary error remains3.40%. Small integral changes do not establish no-slip convergence.",
+    "Boundary maxima across different meshes use different sample sets; their ratios are diagnostic, not rigorous convergence orders.",
+    "Ui_z and Uj_z dominate sampled no-slip errors, followed by x rotations and yz strain. Per-panel worst mode is not stored, so no panel-specific mode attribution is inferred.",
+    "p8 adapt1 top panels35 and25 face the gap, but significant residuals also occur on outer-facing panels. Refining only the closest point will not address all observed errors.",
+    "Candidate top8 and top13 lists refer to each named source mesh; do not transfer numeric panel IDs between adaptive generations.",
+    "Use existing matrix-free work before launching the indicated larger candidates; this script neither solves nor recommends a dense allocation.",
+    "All current runs remain physically unqualified. Raw matrices, clean boundary execution, isolated moments, independent spatial and quadrature refinement must all pass before matching."
+  ]
+}

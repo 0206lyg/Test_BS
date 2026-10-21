@@ -1,0 +1,66 @@
+function [novers,varargout] = get_oversampling_parameters(S,Q,eps)
+%
+%  get_oversampling_parameters
+%     subroutine to estimate the oversampling paramters for a given
+%     surface, and set of quadrature corrections stored in Q
+%  
+%  Syntax
+%    novers = get_oversampling_parameters(S,Q,eps)
+%    [novers,ixyzso] = get_oversampling_parameters(S,Q,eps)
+%
+%  Input arguments
+%    * S: surfer object, see README.md in matlab for details
+%    * Q: quadrature correction struct, necessary components are
+%            Q.targinfo, Q.rfac, Q.wavenumber, Q.row_ptr, Q.col_ind
+%    * eps: tolerance
+%
+%  Output arguments
+%    * novers: (npatches,1) oversampling order for each patch
+%    * ixyzso: (npatches+1,1) pointer to start of each patch in the
+%        oversampled discretization
+%
+    
+%
+%  extract arrays
+%
+    [srcvals,srccoefs,norders,ixyzs,iptype,wts] = extract_arrays(S);
+    [n12,npts] = size(srcvals);
+    [n9,~] = size(srccoefs);
+    [npatches,~] = size(norders);
+    npatp1 = npatches+1;
+
+    n3 = 3;
+
+    cms = S.cms;
+    rads = S.rads;
+
+    novers = zeros(npatches,1);
+    ixyzso = zeros(npatp1,1);
+
+    targinfo = Q.targinfo;
+
+    targs = extract_targ_array(targinfo);
+    [ndtarg,ntarg] = size(targs);
+
+    ntp1 = ntarg + 1;
+    zk = complex(Q.wavenumber);
+    ikerorder = Q.kernel_order;
+    row_ptr = Q.row_ptr;
+    col_ind = Q.col_ind;
+    nnz = length(col_ind);
+    rfac = Q.rfac;
+
+
+    mex_id_ = 'get_far_order(c i double[x], c i int64_t[x], c i int64_t[x], c i int64_t[x], c i int64_t[x], c i double[xx], c i double[x], c i int64_t[x], c i double[xx], c i int64_t[x], c i int64_t[x], c i double[xx], c i int64_t[x], c i dcomplex[x], c i int64_t[x], c i int64_t[x], c i int64_t[x], c i double[x], c io int64_t[x], c io int64_t[x])';
+[novers, ixyzso] = fmm3dbie_routs(mex_id_, eps, npatches, norders, ixyzs, iptype, cms, rads, npts, srccoefs, ndtarg, ntarg, targs, ikerorder, zk, nnz, row_ptr, col_ind, rfac, novers, ixyzso, 1, 1, npatches, npatp1, npatches, 3, npatches, npatches, 1, n9, npts, 1, 1, ndtarg, ntarg, 1, 1, 1, ntp1, nnz, 1, npatches, npatp1);
+    varargout{1} = ixyzso;
+
+end
+
+
+%
+%
+%
+%
+%
+%-------------------------------------------------

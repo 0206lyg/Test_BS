@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "scope": "structural regression; not all-configuration or viscosity certification",
+  "geometry": "27 aligned oblates, open 3x3x3 nearest-neighbor lattice",
+  "center_spacings_over_c": "(2*AR+0.1, 2*AR+0.1, 2.1)",
+  "gap_over_c": 0.1,
+  "edges": 54,
+  "solvent_in_strain_check": false,
+  "pair_evaluation": "adaptive general model at default tolerance 0.005",
+  "eigenvalue_clipping": false,
+  "cases": [
+    {
+      "ar": 2,
+      "minimum_pair_eigenvalue": 16.313160128480707,
+      "naive_full_pair_velocity_minimum": -9.372451164376423,
+      "naive_common_translation_over_isolated": -0.22873317610608657,
+      "relative_velocity_minimum": 29.88436597380785,
+      "relative_free_strain_minimum": 624.1210669729466,
+      "two_body_reduced_relative_error": 1.488579509695968e-16,
+      "two_body_free_strain_relative_error": 5.480553822505203e-16,
+      "maximum_radial_order": 8,
+      "elapsed_seconds": 0.02685603
+    },
+    {
+      "ar": 20,
+      "minimum_pair_eigenvalue": 9.132762960832023,
+      "naive_full_pair_velocity_minimum": -121.01664312545502,
+      "naive_common_translation_over_isolated": -0.3188180431421309,
+      "relative_velocity_minimum": 170.00369782851368,
+      "relative_free_strain_minimum": 362.4716021568679,
+      "two_body_reduced_relative_error": 1.544873793696476e-16,
+      "two_body_free_strain_relative_error": 3.008413818625502e-13,
+      "maximum_radial_order": 64,
+      "elapsed_seconds": 5.356146486
+    }
+  ],
+  "model_defaults": {
+    "tolerance": 0.005,
+    "max_level": 6,
+    "cutoff_factor": 1.0,
+    "normal_log": "leading",
+    "energy_completion": true
+  },
+  "energy_completion_scope": "Enabled in the compiled default. The aligned face/edge cases have zero normal-cross coefficients; the nonzero completion and actual AR20 failure are covered by test_general_near_energy.cpp.",
+  "test_executable": "slurry_general_manybody_test",
+  "test_executable_sha256": "d44c067f6c08d7d48cbff5543e9dc28ea2616da0e7f097af5fe50366e4f72587"
+}

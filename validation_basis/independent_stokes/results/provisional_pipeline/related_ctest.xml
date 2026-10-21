@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="5"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="ddf375874bd1"
+	time="0"
+	timestamp="2026-10-19T02:56:35"
+	>
+	<testcase name="slurry_reference_table17_contract" classname="slurry_reference_table17_contract" time="0.0246712" status="run">
+		<properties/>
+		<system-out>PASS sparse reference scope, parsing, exact poses, generic AR, rotation/director covariance, hardfloor and runtime mapping
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_table_contract" classname="slurry_hardfloor_table_contract" time="0.0129362" status="run">
+		<properties/>
+		<system-out>PASS hardfloor table serialization, lookup, old-model rejection, checkpoint identity
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_preparation_contract" classname="slurry_hardfloor_preparation_contract" time="0.0479388" status="run">
+		<properties/>
+		<system-out>..
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_imported_reference_preparation_contract" classname="slurry_imported_reference_preparation_contract" time="0.416303" status="run">
+		<properties/>
+		<system-out>.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.351s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_explicit_anchor_contract" classname="slurry_explicit_anchor_contract" time="0.308441" status="run">
+		<properties/>
+		<system-out>..Generating actual AR=20.0 scattering bases (far degree 8, near degree 12, source rings 192, runtime phi 256, fit/check phi 16384/32768, target oversampling 3); pair checks follow separately
+........
+----------------------------------------------------------------------
+Ran 10 tests in 0.242s
+
+OK
+</system-out>
+	</testcase>
+</testsuite>

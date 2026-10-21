@@ -1,60 +1,145 @@
 {
-  "schema_version": 2,
-  "release_id": "20261018-pair-quadrature-runtime-fix",
-  "release_report_finalized": true,
-  "status": "TABLE_FAILURE_REPAIR_TESTED_ON_COMPLETE_COARSE_AR2_AR5_AR20_TABLES; PRODUCTION_TABLES_AND_PHYSICAL_CONVERGENCE_PENDING",
-  "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
-  "numerical_source_fingerprint": "4c89a605178ab6ca694dd88ee875d0239a5af5b46139625fa0e9fa4b5612cfab",
-  "validation_report": "validation_basis/table_failure_fix.json",
-  "actual_pair_preflight": {
-    "2": {
-      "passed": true,
-      "checks": 20
-    },
-    "5": {
-      "passed": true,
-      "checks": 20
-    },
-    "20": {
-      "passed": true,
-      "checks": 20
-    }
-  },
-  "actual_complete_coarse_tables": {
-    "2": {
-      "passed": true,
-      "stored_nodes": 640,
-      "source_poses": 52,
-      "loader_and_positive_total_passed": true,
-      "resume_byte_identical": true
-    },
-    "5": {
-      "passed": true,
-      "stored_nodes": 640,
-      "source_poses": 52,
-      "loader_and_positive_total_passed": true,
-      "resume_byte_identical": true
-    },
-    "20": {
-      "passed": true,
-      "stored_nodes": 640,
-      "source_poses": 52,
-      "loader_and_positive_total_passed": true,
-      "resume_byte_identical": true
-    }
-  },
-  "physical_accuracy_converged": false,
-  "ar20_failed_pose_degree12_to14_relative_energy_change": 0.0662476672472202,
-  "ar20_failed_pose_degree14_to16_relative_energy_change": 0.02372155588820768,
-  "not_completed_or_not_claimed": [
-    "Complete full-resolution production tables and their interpolation gates were not run locally.",
-    "Coarse global tables test generation, storage, resume and lookup; they do not qualify rheology accuracy.",
-    "AR20 L12 is not degree converged at the failed pose; degree refinements are diagnostics, not independent accuracy references.",
-    "For h_eff/c < 0.5 the unchanged Hybrid V3 film plus two-anchor residual closure is retained; this is not a direct narrow-gap Stokes replacement.",
-    "AR2/5 original SIGBUS cause is unconfirmed. Private runtime copies and bounded recovery address tested failure modes; production-node remediation is not proven.",
-    "No full-table cluster run, MPI scaling, or new equilibrium bulk-viscosity measurement was performed.",
-    "AR20 uses an existing genuine L12 source fit retargeted to factor3; its unused far slot is the original near basis. AR2/5 target3 sources were generated with the modified generator.",
-    "Earlier O2 smoke/gate runs were explicitly interrupted to use the benchmarked native Release binary; they were not numerical failures."
+  "schema_version": 4,
+  "release_id": "20261020-compact-bridge-integration",
+  "status": "N500_SOLVER_AND_APPROVED_RUNTIME_VERIFIED",
+  "numerical_source_fingerprint": "5a7aef4d0bb182875c3fab444da796faff1d60ebe0424409feb4b9f5e8f1bd44",
+  "validation_report": "validation_solver500/summary.json",
+  "solver_report": "docs/SOLVER_FIX.md",
+  "ctest_passed": 31,
+  "fixed_initial_case_ars": [
+    2,
+    5,
+    10,
+    20
   ],
-  "historical_reports": "Existing older reports remain historical; they are not evidence of rerunning their tests for this release."
+  "particles_per_case": 500,
+  "moving_steps_per_case": 2,
+  "approved_runner": {
+    "status": "approved_runner_completed_10_steps",
+    "steps": 10,
+    "particle_count": 500,
+    "ar": 10,
+    "source_fingerprint": "5a7aef4d0bb182875c3fab444da796faff1d60ebe0424409feb4b9f5e8f1bd44",
+    "original_binary_sha256": {
+      "executable": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+      "plugin": "6ca16a0b254c6ce498ecb7c1365f3c326a3cddd0a1417c2fc2ce680bc05638e2",
+      "packer": "42f5a216c85ede8ecba8d43eaf3f0f028fb989a95bc9d09ee5a708072b071cb0"
+    },
+    "private_runtime_records_verified": 10,
+    "fixed_particle_sha256": "fb1a2d75f06e20519b3a1d363f3b6c0af0ed056a8836621ba6c4d399541c90d3",
+    "motion": {
+      "all_trajectory_numeric_fields_finite": true,
+      "frames": 11,
+      "first_step": 0,
+      "last_step": 10,
+      "particle_count": 500,
+      "maximum_quaternion_norm_error": 2.220446049250313e-16,
+      "maximum_position_displacement_m": 1.7835615766195155e-08,
+      "rms_position_displacement_m": 9.123837428374226e-09,
+      "maximum_raw_wrapped_displacement_m": 1.7835615766195155e-08,
+      "particles_position_changed_above_1e_18_m": 500,
+      "maximum_orientation_change_rad": 0.008387342117337071,
+      "rms_orientation_change_rad": 0.002458878077807392,
+      "particles_orientation_changed_above_1e_12_rad": 500,
+      "positions_changed": true,
+      "orientations_changed": true,
+      "position_difference_convention": "minimum image in final reduced triclinic cell",
+      "orientation_difference_convention": "quaternion sign-invariant rotation angle"
+    },
+    "maximum_solver_relative_residual": 8.850131991131758e-07,
+    "maximum_relative_power_balance_error": 3.878960796917101e-09,
+    "profiles": [
+      {
+        "step": 0,
+        "newton": 11,
+        "krylov": 74,
+        "solve_seconds": 8.463287830352783,
+        "total_seconds": 9.135761022567749
+      },
+      {
+        "step": 1,
+        "newton": 9,
+        "krylov": 69,
+        "solve_seconds": 6.6517510414123535,
+        "total_seconds": 7.184788942337036
+      },
+      {
+        "step": 2,
+        "newton": 7,
+        "krylov": 62,
+        "solve_seconds": 5.716804027557373,
+        "total_seconds": 6.256554126739502
+      },
+      {
+        "step": 3,
+        "newton": 6,
+        "krylov": 48,
+        "solve_seconds": 4.741760015487671,
+        "total_seconds": 5.2761218547821045
+      },
+      {
+        "step": 4,
+        "newton": 6,
+        "krylov": 52,
+        "solve_seconds": 4.815460920333862,
+        "total_seconds": 5.33831000328064
+      },
+      {
+        "step": 5,
+        "newton": 7,
+        "krylov": 56,
+        "solve_seconds": 5.231887102127075,
+        "total_seconds": 5.776124000549316
+      },
+      {
+        "step": 6,
+        "newton": 6,
+        "krylov": 59,
+        "solve_seconds": 5.020004987716675,
+        "total_seconds": 5.541851043701172
+      },
+      {
+        "step": 7,
+        "newton": 5,
+        "krylov": 36,
+        "solve_seconds": 3.6681790351867676,
+        "total_seconds": 4.216442108154297
+      },
+      {
+        "step": 8,
+        "newton": 5,
+        "krylov": 48,
+        "solve_seconds": 4.121232986450195,
+        "total_seconds": 4.66603684425354
+      },
+      {
+        "step": 9,
+        "newton": 4,
+        "krylov": 31,
+        "solve_seconds": 3.2005279064178467,
+        "total_seconds": 3.7238388061523438
+      },
+      {
+        "step": 10,
+        "newton": 4,
+        "krylov": 35,
+        "solve_seconds": 3.503335952758789,
+        "total_seconds": 4.036051988601685
+      }
+    ],
+    "undefined_zero_duration_step0_averages": [
+      "mean_eta_Pa_s",
+      "interval_mean_sigma_solvent_Pa",
+      "interval_mean_sigma_hydro_Pa",
+      "interval_mean_sigma_contact_Pa",
+      "interval_mean_sigma_xz_Pa",
+      "interval_mean_eta_Pa_s",
+      "interval_mean_eta_relative"
+    ],
+    "steady_state_claim": false,
+    "mpi_multirank_tested": false
+  },
+  "equilibrium_bulk_viscosity_tested": false,
+  "mpi_multirank_tested": false,
+  "previous_integration_report": "validation_bridge/ROOT_RESULT_20261020.json"
 }

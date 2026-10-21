@@ -1,0 +1,41 @@
+{
+  "same_recorded_AR20_pose": true,
+  "h_nm": 150.0,
+  "order": 4,
+  "level": 0,
+  "relative_matvec_difference": 0.0006258209068203791,
+  "max_relative_patch_self_difference": 0.0,
+  "context": {
+    "operator": "fmm3dbie_exterior_combined_matrix_free_v1",
+    "node_count": 300,
+    "patch_count": 12,
+    "near_patch_interactions": 2637,
+    "near_node_interactions": 65925,
+    "oversampled_nodes": 1396,
+    "oversampling_orders": [
+      10,
+      10,
+      12,
+      12,
+      8,
+      8,
+      10,
+      10,
+      12,
+      8,
+      8,
+      8
+    ],
+    "quadrature_tolerance": 1e-07,
+    "alpha": 1.0,
+    "beta": 1.0,
+    "exterior_jump": 0.5,
+    "normal_rank_correction": 0.0,
+    "preparation_seconds": 4.305782104000173,
+    "retained_array_bytes": 3958720,
+    "matvec_calls": 1,
+    "matvec_seconds": 0.13416554600007657,
+    "physical_accuracy_qualified": false
+  },
+  "physical_accuracy_qualified": false
+}

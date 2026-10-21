@@ -1,0 +1,90 @@
+{
+  "ar": 20.0,
+  "basis_sha256": "1948f9889048d0018e82980908ea4ae2a96dbba5f9d7158ff0946dce74b694c1",
+  "check_phi": 32768,
+  "commands": [
+    [
+      "/home/lee6456/slurry/build/lammps-slurry/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "8",
+      "--source-rings",
+      "192",
+      "--source-phi",
+      "256",
+      "--fit-phi",
+      "16384",
+      "--check-phi",
+      "32768",
+      "--target-rings",
+      "33",
+      "--target-phi",
+      "63",
+      "--output",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-26scs0t8/far.ssb",
+      "--report",
+      "/home/lee6456/slurry/lammps_slurry/models/ar20_targets3.ssb.far-generation.json"
+    ],
+    [
+      "/home/lee6456/slurry/build/lammps-slurry/slurry_generate_basis",
+      "--ar",
+      "20",
+      "--degree",
+      "12",
+      "--source-rings",
+      "192",
+      "--source-phi",
+      "256",
+      "--fit-phi",
+      "16384",
+      "--check-phi",
+      "32768",
+      "--target-rings",
+      "45",
+      "--target-phi",
+      "87",
+      "--output",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-26scs0t8/matched.ssb",
+      "--report",
+      "/home/lee6456/slurry/lammps_slurry/models/ar20_targets3.ssb.near-generation.json",
+      "--far-basis",
+      "/home/lee6456/slurry/lammps_slurry/models/.basis-build-26scs0t8/far.ssb",
+      "--hybrid-version",
+      "3",
+      "--anchor-gaps",
+      "0.5,1"
+    ]
+  ],
+  "degrees": {
+    "far": 8,
+    "near": 12
+  },
+  "fit_phi": 16384,
+  "generation_reports": {
+    "far": "134032eed46122b221d3091ed5c59531ac6a93543783c78e5898fb1bc6b3fda3",
+    "near": "d67218453fe0d6383f21c833e3c2f7efe36ad4d43a92473d73577c55b620f44a"
+  },
+  "generator_sha256": "3a60507379771a8e142ebfe03072f6372f46d7822419093f49c5aef8e0d4dacd",
+  "geometry": "equal_size_oblate",
+  "resolution_policy": "confocal_geometry_scaled_target_oversampled_v2",
+  "schema": 1,
+  "source_anchors_over_c": [
+    0.5,
+    1.0
+  ],
+  "source_code_sha256": "4c89a605178ab6ca694dd88ee875d0239a5af5b46139625fa0e9fa4b5612cfab",
+  "source_format": "SLURRY_HYBRID_V3",
+  "source_gate": {
+    "status": "not_run"
+  },
+  "source_phi": 256,
+  "source_policy": {
+    "active_basis_slot": "near",
+    "far_slot_used": false,
+    "finite_gap": "direct near basis at the actual effective gap for heff/c >= 0.5",
+    "near_contact": "same first residual segment as V2 below heff/c = 0.5"
+  },
+  "source_rings": 192,
+  "target_factor": 3
+}

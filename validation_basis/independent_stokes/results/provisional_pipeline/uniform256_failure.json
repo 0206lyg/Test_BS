@@ -1,0 +1,11 @@
+{
+  "schema": "uniform_gap_grid_failure_v1",
+  "matched_model": "dissipative-increment",
+  "gap_nodes": 256,
+  "interpolation_tolerance": 0.001,
+  "observed_maximum_relative_energy_interpolation_error": 0.029231423317742252,
+  "returncode": 1,
+  "table_written": false,
+  "physical_accuracy_qualified": false,
+  "diagnostic": "Uniform256 failed model-transport tolerance; adaptive gap refinement is the next implementation change."
+}

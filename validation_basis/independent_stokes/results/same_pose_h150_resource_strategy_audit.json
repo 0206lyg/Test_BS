@@ -1,0 +1,856 @@
+{
+  "schema": "same_ar20_h150_readonly_retry_strategy_audit_v1",
+  "scope": "Recorded AR20 pose at 150 nm only; saved density and matrix diagnostics only",
+  "contains_new_stokes_solve": false,
+  "physical_accuracy_qualified": false,
+  "same_pose_and_gap_preserved": true,
+  "selected_next_method_by_root": "Exact tiled out-of-core LU on unchanged p8,159-panel,12879-node refinement; not executed by this audit",
+  "source_files": {
+    "pair_h150_p8_anisotropic_chunked.json": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a",
+    "pair_h150_p7_159_cow_outcome.json": "1069fa3d120c28f3934cd2987c1a813c36d29d9fe79c4ac404b13bf3277cf059",
+    "pair_h150_p6_fresh_retry_minimax_proposal.json": "77432da0eacd0f5890db4ff3e8b2bab55cccaf71ca36061fee326a386d6d3328",
+    "pair_h150_p7_fresh_retry_proposal.json": "2df3a13f9aec6c73077bf66d358197d6df4237b4bd53f231e677c5d113679165",
+    "pair_h150_p7_159_retry_proposal.json": "23d5438472e36d42fc3a1cede9afb752105ec902c68c3bca851c164f5ffcfa54",
+    "pair_h150_p8_hpc_refinement_proposal.json": "c31dee4a5cee8f08b2d83ad3a10fb3c1cca9cfcc41aeab7969bc98105d9fa5e1",
+    "matrix_free_operator_check.json": "c3f71a7ecf06d2afe7accee3191555b0f9a97ff008bffb028bb868f08b2c04f6",
+    "matrix_free_far_refinement.json": "bb91b7f215e4372423fa00f77d78ab8aa512f58a76ec422aff94720287e1a252",
+    "matrix_free_allnear_p6l1_check.json": "b1f1bbfca44047f7a6ef008041415fd540e303f2bca5639b20bd30ff63c7c0a1",
+    "matrix_free_body_lu_check.json": "d0a3aaf264eddf1501e642c695770195447888ba8dbe43e145a9fb8c12489b3f",
+    "matrix_free_helper_check.json": "287889f9dffee8ba22b3c41f6ebc33e7e76ed28e81b1ad80305ac4f622dde40c"
+  },
+  "completed_reference": {
+    "path": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+    "node_count": 9963,
+    "patch_count": 123,
+    "order": 8,
+    "boundary_max_scaled_error": 0.007532226462396109,
+    "gap_patch_max_scaled_error": 0.002299961231907888,
+    "boundary_worst_patch": 1,
+    "boundary_worst_mode": 8
+  },
+  "conditioning_of_unqualified_moments": {
+    "full17": {
+      "minimum_eigenvalue": 9.935695453691098,
+      "maximum_eigenvalue": 186063.80287885928,
+      "spectral_condition_number": 18726.80213942516
+    },
+    "rigid12": {
+      "minimum_eigenvalue": 132.29458549517116,
+      "maximum_eigenvalue": 169748.18974268207,
+      "spectral_condition_number": 1283.1076125097952
+    },
+    "strain_nonaffine_fixed_rigid": {
+      "minimum_eigenvalue": 141.7813388217309,
+      "maximum_eigenvalue": 16500.98065986452,
+      "spectral_condition_number": 116.38330401585546
+    },
+    "force_torque_free_strain": {
+      "minimum_eigenvalue": 20.260131568316712,
+      "maximum_eigenvalue": 260.50513538106264,
+      "spectral_condition_number": 12.8580179503102
+    },
+    "common_motion6": {
+      "minimum_eigenvalue": 232.39177802887767,
+      "maximum_eigenvalue": 555.7225591599654,
+      "spectral_condition_number": 2.3913176441677284
+    },
+    "fixed_physical_strain5": {
+      "minimum_eigenvalue": 142.12243624458037,
+      "maximum_eigenvalue": 293.60408240025924,
+      "spectral_condition_number": 2.0658531485837472
+    },
+    "isolated_whitened_full17": {
+      "minimum_eigenvalue": 0.5804671531444351,
+      "maximum_eigenvalue": 561.3345729322087,
+      "spectral_condition_number": 967.03934045435
+    }
+  },
+  "conditioning_interpretation": [
+    "The full17 matrix condition number is about1.87e4 even after T/a,S/a scaling; Frobenius and raw reciprocity alone can hide weak modes.",
+    "Energy whitening and separate F/T/S block checks already used by compare_reference.py are necessary; they do not certify the unresolved boundary condition.",
+    "Small old-to-new moment changes are diagnostic only: old libraries differ, and the latest boundary failure blocks physical qualification.",
+    "Do not interpret isolated-whitened enhancement extrema as bulk viscosity or qualified physical predictions."
+  ],
+  "mixed_order_diagnostic": {
+    "implemented_or_executed": false,
+    "topology": "159 panels; same fresh residual/tail-directed splits as p8 HPC proposal, including parents16 and85",
+    "node_budget": 9000,
+    "node_count": 8999,
+    "matrix_bytes": 5830704072,
+    "max_saved_density_jump_change_scaled": 0.0037426612190051326,
+    "rms_parent_jump_change_scaled": 0.0014950680018770161,
+    "patch_counts_by_order": {
+      "6": 100,
+      "7": 40,
+      "8": 19
+    },
+    "limitations": [
+      "Jump term beta/2 times saved-density interpolation difference only; not a full operator error or physical error bound.",
+      "The maximum projection proxy exceeds the0.1% boundary target. This allocation cannot be claimed likely to pass.",
+      "Geometry/driver currently assume uniform order; backend norders supports mixed degree but implementation and source-compatible revalidation would be needed."
+    ],
+    "parent_choices": [
+      {
+        "parent_patch": 0,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0012922292075848306
+      },
+      {
+        "parent_patch": 1,
+        "action": "u",
+        "order": 7,
+        "jump_projection_proxy": 0.0013087214231011135
+      },
+      {
+        "parent_patch": 2,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0018633662997338772
+      },
+      {
+        "parent_patch": 3,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0023931068507540756
+      },
+      {
+        "parent_patch": 4,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 1.8308698903243718e-05
+      },
+      {
+        "parent_patch": 5,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0020996368355157002
+      },
+      {
+        "parent_patch": 6,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0010691149114972552
+      },
+      {
+        "parent_patch": 7,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 8,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00010588164123506826
+      },
+      {
+        "parent_patch": 9,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0009726627477607379
+      },
+      {
+        "parent_patch": 10,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.001734814506799671
+      },
+      {
+        "parent_patch": 11,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0012559706733664513
+      },
+      {
+        "parent_patch": 12,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0010855087925264557
+      },
+      {
+        "parent_patch": 13,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0008688059103045964
+      },
+      {
+        "parent_patch": 14,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0027765509724855925
+      },
+      {
+        "parent_patch": 15,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 16,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0007186817769269871
+      },
+      {
+        "parent_patch": 17,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0009584959868090473
+      },
+      {
+        "parent_patch": 18,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0017082129512400659
+      },
+      {
+        "parent_patch": 19,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 7.864280306815745e-05
+      },
+      {
+        "parent_patch": 20,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0015796011559333707
+      },
+      {
+        "parent_patch": 21,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 22,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 2.262428277630396e-05
+      },
+      {
+        "parent_patch": 23,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.002099582207479185
+      },
+      {
+        "parent_patch": 24,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0008129799485305454
+      },
+      {
+        "parent_patch": 25,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 26,
+        "action": "both",
+        "order": 7,
+        "jump_projection_proxy": 0.00019127810714924737
+      },
+      {
+        "parent_patch": 27,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0008722877890397784
+      },
+      {
+        "parent_patch": 28,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.000679836334487555
+      },
+      {
+        "parent_patch": 29,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 30,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0012376438451351308
+      },
+      {
+        "parent_patch": 31,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0008360031496859203
+      },
+      {
+        "parent_patch": 32,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0018095996497331753
+      },
+      {
+        "parent_patch": 33,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 34,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0016976887514547781
+      },
+      {
+        "parent_patch": 35,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 8.76724233177122e-05
+      },
+      {
+        "parent_patch": 36,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 37,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.002089255352037297
+      },
+      {
+        "parent_patch": 38,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 2.295338871810124e-05
+      },
+      {
+        "parent_patch": 39,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 40,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0008346696865824838
+      },
+      {
+        "parent_patch": 41,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0015409188379003002
+      },
+      {
+        "parent_patch": 42,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0010403276801406118
+      },
+      {
+        "parent_patch": 43,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0010905664262910004
+      },
+      {
+        "parent_patch": 44,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.001615068993765386
+      },
+      {
+        "parent_patch": 45,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0010166749913037034
+      },
+      {
+        "parent_patch": 46,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0012871560202325197
+      },
+      {
+        "parent_patch": 47,
+        "action": "both",
+        "order": 6,
+        "jump_projection_proxy": 0.0034265290518879126
+      },
+      {
+        "parent_patch": 48,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0014505690907445031
+      },
+      {
+        "parent_patch": 49,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0032491993112423894
+      },
+      {
+        "parent_patch": 50,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0021284936801938036
+      },
+      {
+        "parent_patch": 51,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00040437349133083054
+      },
+      {
+        "parent_patch": 52,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0012979774718758826
+      },
+      {
+        "parent_patch": 53,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0007601636193221373
+      },
+      {
+        "parent_patch": 54,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.002264851883324455
+      },
+      {
+        "parent_patch": 55,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00019063714374514148
+      },
+      {
+        "parent_patch": 56,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0020893827240275687
+      },
+      {
+        "parent_patch": 57,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 1.8807843975660796e-05
+      },
+      {
+        "parent_patch": 58,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 59,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.001115443717825932
+      },
+      {
+        "parent_patch": 60,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0013408835672956254
+      },
+      {
+        "parent_patch": 61,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0035343213304080442
+      },
+      {
+        "parent_patch": 62,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.000598942975086357
+      },
+      {
+        "parent_patch": 63,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0019504261859020892
+      },
+      {
+        "parent_patch": 64,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0013115254880097448
+      },
+      {
+        "parent_patch": 65,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0017925472688412013
+      },
+      {
+        "parent_patch": 66,
+        "action": "both",
+        "order": 6,
+        "jump_projection_proxy": 0.00248431259192915
+      },
+      {
+        "parent_patch": 67,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0007982648215432926
+      },
+      {
+        "parent_patch": 68,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0008551424691089055
+      },
+      {
+        "parent_patch": 69,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00010450199503230873
+      },
+      {
+        "parent_patch": 70,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.00283210275694746
+      },
+      {
+        "parent_patch": 71,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 72,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.001678075857375911
+      },
+      {
+        "parent_patch": 73,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.002070742905114703
+      },
+      {
+        "parent_patch": 74,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 75,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 9.52262348821405e-06
+      },
+      {
+        "parent_patch": 76,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.002091198112299515
+      },
+      {
+        "parent_patch": 77,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0011633028142071459
+      },
+      {
+        "parent_patch": 78,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 79,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00015774364217072034
+      },
+      {
+        "parent_patch": 80,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0021743877297664828
+      },
+      {
+        "parent_patch": 81,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.003095548421463027
+      },
+      {
+        "parent_patch": 82,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0005190347397394565
+      },
+      {
+        "parent_patch": 83,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.0012594659297803404
+      },
+      {
+        "parent_patch": 84,
+        "action": "u",
+        "order": 7,
+        "jump_projection_proxy": 0.0016038867169090375
+      },
+      {
+        "parent_patch": 85,
+        "action": "u",
+        "order": 6,
+        "jump_projection_proxy": 0.001202200698362793
+      },
+      {
+        "parent_patch": 86,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0011974452494235056
+      },
+      {
+        "parent_patch": 87,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 88,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 89,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 9.519798084867436e-06
+      },
+      {
+        "parent_patch": 90,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.002091252699761749
+      },
+      {
+        "parent_patch": 91,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0010008286007593384
+      },
+      {
+        "parent_patch": 92,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0037426612190051326
+      },
+      {
+        "parent_patch": 93,
+        "action": "both",
+        "order": 6,
+        "jump_projection_proxy": 0.0012412430858555652
+      },
+      {
+        "parent_patch": 94,
+        "action": "u",
+        "order": 7,
+        "jump_projection_proxy": 0.0014852245095413035
+      },
+      {
+        "parent_patch": 95,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 96,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.003382294347658589
+      },
+      {
+        "parent_patch": 97,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 98,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 99,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0036674963948658064
+      },
+      {
+        "parent_patch": 100,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.002090987793222249
+      },
+      {
+        "parent_patch": 101,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 9.61854245178783e-06
+      },
+      {
+        "parent_patch": 102,
+        "action": "both",
+        "order": 6,
+        "jump_projection_proxy": 0.0010294086936524706
+      },
+      {
+        "parent_patch": 103,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.00043978652891793094
+      },
+      {
+        "parent_patch": 104,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0019472947815669902
+      },
+      {
+        "parent_patch": 105,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0005900492493761313
+      },
+      {
+        "parent_patch": 106,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0002767558676358521
+      },
+      {
+        "parent_patch": 107,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0012698878787135214
+      },
+      {
+        "parent_patch": 108,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0009368055465846687
+      },
+      {
+        "parent_patch": 109,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 110,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.001553390071534532
+      },
+      {
+        "parent_patch": 111,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.00360405413738414
+      },
+      {
+        "parent_patch": 112,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0009237457186556727
+      },
+      {
+        "parent_patch": 113,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 7.759998333496024e-05
+      },
+      {
+        "parent_patch": 114,
+        "action": "none",
+        "order": 8,
+        "jump_projection_proxy": 0.0
+      },
+      {
+        "parent_patch": 115,
+        "action": "none",
+        "order": 7,
+        "jump_projection_proxy": 0.0018593708894426868
+      },
+      {
+        "parent_patch": 116,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0020913480926866485
+      },
+      {
+        "parent_patch": 117,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 9.61219806923758e-06
+      },
+      {
+        "parent_patch": 118,
+        "action": "both",
+        "order": 6,
+        "jump_projection_proxy": 0.0009834479559145525
+      },
+      {
+        "parent_patch": 119,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.0008736332780082125
+      },
+      {
+        "parent_patch": 120,
+        "action": "v",
+        "order": 6,
+        "jump_projection_proxy": 0.001246141649418801
+      },
+      {
+        "parent_patch": 121,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0012752314442407405
+      },
+      {
+        "parent_patch": 122,
+        "action": "none",
+        "order": 6,
+        "jump_projection_proxy": 0.0003270230323694318
+      }
+    ]
+  },
+  "matrix_free_existing_evidence": {
+    "allnear_storage_bytes_at_n10176": 4970446848,
+    "allnear_storage_bytes_at_n12879": 7961694768,
+    "dense_storage_bytes_at_n12879": 11942542152,
+    "allnear_n2352_matvec_vs_dense": 2.21218e-15,
+    "allnear_n2352_solution_vs_dense": 5.82e-09,
+    "allnear_n2352_patch_preconditioner_rhs0_iterations": 331,
+    "allnear_n2352_body_lu_rhs0_iterations": 300,
+    "default_fmm_n300_matvec_relative_error": 0.0006258209,
+    "far_increment48_n300_matvec_relative_error": 9.6417e-08,
+    "limitations": [
+      "Existing exact all-near native preparation has additional temporary memory, not only48N\u00b2 retained weights.",
+      "All-near12879 retained kernel weights alone are7.962GB; this is unsuitable for unchanged in-memory preparation under8GiB.",
+      "Default FMM far quadrature was not sufficiently accurate on flattened patches; eps by itself is not an operator-error bound.",
+      "Any iterative alternative must pass actual residuals for all17 RHS and direct operator comparisons; it does not improve surface representation.",
+      "Patch preconditioning is cheaper; bodyLU adds substantial quadratic storage and had only modest iteration improvement in the one recorded2352-node RHS test."
+    ]
+  },
+  "next_validation_advice": [
+    "Preserve p8 density space on the159-panel refinement and evaluate its true off-grid boundary error after a completed solve.",
+    "No tolerance changes, gap changes, or other AR. Source-compatible three-mesh evidence remains required before reference qualification.",
+    "If residual remains, inspect fresh per-panel boundary errors and density tails; do not assume the old split directions remain the limiting ones."
+  ]
+}

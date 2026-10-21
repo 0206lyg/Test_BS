@@ -1,0 +1,24 @@
+# Table-free periodic ellipsoid mobility + compact bridge v4
+plugin load ${slurry_plugin}
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+comm_modify vel yes
+pair_style zero 1.5000000000000002e-07
+pair_coeff * *
+neighbor 3.0000000000000004e-08 bin
+neigh_modify every 1 delay 0 check yes
+timestep 9.9999999999999995e-07
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge 0.01 100 1.0000000000000001e-09 1 contact 3.0000000000000004e-09 0.10000000000000001 80 spectral 2 spectral_tolerance 1e-08 tolerance 9.9999999999999995e-07 iterations 1000 history history.csv 1 0
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
+dump trajectory all custom 1 trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
+dump_modify trajectory sort id format float %.17g
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 2
+write_data final.data nocoeff

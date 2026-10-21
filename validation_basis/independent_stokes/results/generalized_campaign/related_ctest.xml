@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="6"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="ddf375874bd1"
+	time="1"
+	timestamp="2026-10-19T03:28:45"
+	>
+	<testcase name="slurry_reference_table17_contract" classname="slurry_reference_table17_contract" time="0.0289035" status="run">
+		<properties/>
+		<system-out>PASS sparse reference scope, parsing, exact poses, generic AR, rotation/director covariance, hardfloor and runtime mapping
+</system-out>
+	</testcase>
+	<testcase name="slurry_reference_query_contract" classname="slurry_reference_query_contract" time="0.0428173" status="run">
+		<properties/>
+		<system-out>PASS synthetic AR2/5/10/20 serialized-table TOTAL queries, heldout interpolation, Cartesian F/T/S covariance, hard floor and input guards; physical_accuracy_qualified=false
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_table_contract" classname="slurry_hardfloor_table_contract" time="0.0163563" status="run">
+		<properties/>
+		<system-out>PASS hardfloor table serialization, lookup, old-model rejection, checkpoint identity
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_preparation_contract" classname="slurry_hardfloor_preparation_contract" time="0.0708592" status="run">
+		<properties/>
+		<system-out>..
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_imported_reference_preparation_contract" classname="slurry_imported_reference_preparation_contract" time="0.51063" status="run">
+		<properties/>
+		<system-out>.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.431s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_explicit_anchor_contract" classname="slurry_explicit_anchor_contract" time="0.348009" status="run">
+		<properties/>
+		<system-out>..Generating actual AR=20.0 scattering bases (far degree 8, near degree 12, source rings 192, runtime phi 256, fit/check phi 16384/32768, target oversampling 3); pair checks follow separately
+........
+----------------------------------------------------------------------
+Ran 10 tests in 0.267s
+
+OK
+</system-out>
+	</testcase>
+</testsuite>

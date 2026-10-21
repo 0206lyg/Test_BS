@@ -1,0 +1,39 @@
+# Generated directly from run_slurry_cpu.sbatch / prepare_case.py CLI.
+# Athermal overdamped dynamics; geometry packing finished before this physical run.
+# Coupled resistance, rough-surface normal contact and Coulomb sliding; zero inertia.
+# Stress decomposition and interval means are recorded in history.csv.
+# AR=20 phi=0.040000000000000001 t=300 nm rho=2400 kg/m3
+# Lubrication requested=general, resolved=general; epsilon/floor=1.5e-10 m; cutoff=1.5000000000000002e-06 m
+# Solver preconditioner=ilu; MPI layout=root
+# Solver forcing=fixed; cache=on; ILUT drop/fill/refresh=0.001/4/40
+plugin load ${slurry_plugin}
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+newton on
+read_data particles.data
+comm_modify vel yes
+pair_style zero 7.500000000000001e-06
+pair_coeff * *
+neighbor 3.0000000000000004e-08 bin
+neigh_modify every 1 delay 0 check yes
+timestep 9.9999999999999995e-07
+# Production starts at step/time/strain zero, with a fresh tangential contact history.
+fix shear all deform 0 xy erate 100 remap v units box
+fix integrate all slurry/implicit 0.01 100 1.5000000000000002e-06 1.5e-10 1 lubrication general finite_gap_range 0.5 general_tolerance 0.0050000000000000001 general_max_level 6 general_cutoff 1 general_normal_log leading general_closure relative general_near_completion energy solver_preconditioner ilu solver_layout root solver_forcing fixed solver_cache on solver_ilu 0.001 4 40 contact_gap 3.0000000000000004e-09 friction 0.10000000000000001 80 history history.csv 1 0
+variable strain equal 100*time
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz tqx tqy tqz
+dump trajectory all custom 1 trajectory.lammpstrj id type x y z vx vy vz fx fy fz c_shape[*]
+dump_modify trajectory sort id format float %.17g
+thermo 1
+thermo_style custom step time atoms v_strain f_integrate[1] f_integrate[2] f_integrate[3] f_integrate[4] f_integrate[5] f_integrate[6] f_integrate[7] f_integrate[8]
+thermo_modify flush yes lost error
+fix diagnostics all ave/time 1 1 1 f_integrate[1] f_integrate[2] f_integrate[3] f_integrate[4] f_integrate[5] f_integrate[6] f_integrate[7] f_integrate[8] file diagnostics.dat ave one title1 "# Instantaneous overdamped solver diagnostics; overlaps/gaps in m" title2 "# step lubrication_pairs overlapping_pairs max_overlap_m scaled_relative_residual linear_iterations newton_iterations predicted_contacts min_candidate_gap_m"
+print "Integrator: slurry/implicit; dt=9.9999999999999995e-07 s; steps=3; duration=3.0000000000000001e-06 s; total strain=0.00029999999999999997"
+print "Lubrication: general; epsilon/floor=1.5e-10 m; cutoff=1.5000000000000002e-06 m; mechanical contact gap=3.0000000000000004e-09 m"
+print "Solver preconditioner: ilu; MPI layout: root"
+print "Solver forcing: fixed; cache: on; ILUT drop/fill/refresh: 0.001/4/40"
+run 3
+write_data final.data nocoeff

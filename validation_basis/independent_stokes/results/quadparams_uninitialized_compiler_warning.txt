@@ -1,0 +1,10 @@
+/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/src/quadratures/near_field_routs.f:927:9:
+
+  927 |       if(norder.ge.4) then
+      |         ^
+Warning: ‘norder’ is used uninitialized [-Wuninitialized]
+/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/src/quadratures/near_field_routs.f:911:23:
+
+  911 |       integer *8 norder,nqorder,i,iprec
+      |                       ^
+note: ‘norder’ was declared here

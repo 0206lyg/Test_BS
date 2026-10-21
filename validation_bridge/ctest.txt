@@ -1,0 +1,500 @@
+Start testing: Oct 21 11:11 KST
+----------------------------------------------------------
+1/30 Testing: slurry_matched_hybrid_golden
+1/30 Test: slurry_matched_hybrid_golden
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_matched_hybrid_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/models/ar10_matched.ssb" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/matched_hybrid_golden.txt"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_matched_hybrid_golden" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS hybrid golden maximum error 2.673159796671079e-14
+<end of output>
+Test time =   2.11 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_matched_hybrid_golden" end time: Oct 21 11:11 KST
+"slurry_matched_hybrid_golden" time elapsed: 00:00:02
+----------------------------------------------------------
+
+2/30 Testing: slurry_independent_stokes_reference
+2/30 Test: slurry_independent_stokes_reference
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_independent_pair_reference_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/models/ar10_matched.ssb" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/independent_pair_reference.txt"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_independent_stokes_reference" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+offset75_boundary_checked all11_error=0.072151173215 limit=0.073 free_strain_error=0.040111582054 limit=0.042 normal_error=-0.0283562748677 isolated_error=1.24797310921e-14
+tilted150_full17_qualified all11_error=0.0787120434826 limit=0.081 free_strain_error=0.000995889407036 limit=0.0012 normal_error=-0.0281070495997 isolated_error=1.33796463305e-15
+PASS: two independent Stokes comparisons; this is not a universal accuracy bound.
+<end of output>
+Test time =   1.49 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_independent_stokes_reference" end time: Oct 21 11:11 KST
+"slurry_independent_stokes_reference" time elapsed: 00:00:01
+----------------------------------------------------------
+
+3/30 Testing: slurry_grand_pair_math
+3/30 Test: slurry_grand_pair_math
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_grand_pair_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_grand_pair_math" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: 17 conjugate finite differences, work balance, assembly, frame covariance, unit scaling, rate scaling, window and guards. Maximum normalized error=2.34100860919e-09
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_pair_math" end time: Oct 21 11:11 KST
+"slurry_grand_pair_math" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/30 Testing: slurry_grand_pair_lookup
+4/30 Test: slurry_grand_pair_lookup
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_grand_pair_lookup_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_grand_pair_lookup" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: explicit geometry coverage, no extrapolation, interpolation gate, provenance, axis-director equivalence.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_pair_lookup" end time: Oct 21 11:11 KST
+"slurry_grand_pair_lookup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/30 Testing: slurry_grand_reduced
+5/30 Test: slurry_grand_reduced
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_grand_reduced_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_grand_reduced" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: reduced midpoint common rotation, affine coordinate congruence, same stress and power.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_reduced" end time: Oct 21 11:11 KST
+"slurry_grand_reduced" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/30 Testing: slurry_grand_system_passivity
+6/30 Test: slurry_grand_system_passivity
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_grand_system_check_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_grand_system_passivity" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: signed pair accepted only with global velocity+strain passivity; negative total velocity/strain rejected.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_system_passivity" end time: Oct 21 11:11 KST
+"slurry_grand_system_passivity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/30 Testing: slurry_exact_sparse_lu
+7/30 Test: slurry_exact_sparse_lu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_eigen_lu_solver_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_exact_sparse_lu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_exact_sparse_lu" end time: Oct 21 11:11 KST
+"slurry_exact_sparse_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/30 Testing: slurry_exact_jacobian_ilu
+8/30 Test: slurry_exact_jacobian_ilu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_eigen_lu_solver_test" "ilu"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_exact_jacobian_ilu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_exact_jacobian_ilu" end time: Oct 21 11:11 KST
+"slurry_exact_jacobian_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/30 Testing: slurry_adaptive_forcing_ilu
+9/30 Test: slurry_adaptive_forcing_ilu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_eigen_lu_solver_test" "ilu" "adaptive"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_adaptive_forcing_ilu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_adaptive_forcing_ilu" end time: Oct 21 11:11 KST
+"slurry_adaptive_forcing_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/30 Testing: slurry_cached_ilu_equivalence
+10/30 Test: slurry_cached_ilu_equivalence
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_eigen_lu_solver_test" "ilu" "cache"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_cached_ilu_equivalence" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_cached_ilu_equivalence" end time: Oct 21 11:11 KST
+"slurry_cached_ilu_equivalence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/30 Testing: slurry_incomplete_sparse_lu
+11/30 Test: slurry_incomplete_sparse_lu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_eigen_ilu_solver_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_incomplete_sparse_lu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: approximate nonsymmetric ILUT, scaling, actual factor fill, symbolic reuse, tuning, and invalid-factor protection
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_incomplete_sparse_lu" end time: Oct 21 11:11 KST
+"slurry_incomplete_sparse_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/30 Testing: slurry_sparse_preconditioner
+12/30 Test: slurry_sparse_preconditioner
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_sparse_solver_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_sparse_preconditioner" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+{"particles":27,"pairs":81,"nested_seconds":0.112995806,"sparse_seconds":0.010347225,"speedup":10.9203971113,"nested_cg_iterations":7365,"nested_gmres_iterations":101,"sparse_gmres_iterations":162,"sparse_factorizations":2,"sparse_factor_nonzeros":7055,"sparse_setup_seconds":0.000985779,"sparse_solve_seconds":0.003508044,"nested_residual":3.92980199865e-15,"sparse_residual":2.91308533446e-15,"maximum_velocity_difference":1.45266150454e-19}
+PASS: sparse SPD factor, equilibration/permutation, assembly, explicit fallback, and unchanged coupled friction solutions
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_sparse_preconditioner" end time: Oct 21 11:11 KST
+"slurry_sparse_preconditioner" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/30 Testing: slurry_spheroid_lubrication_algebra
+13/30 Test: slurry_spheroid_lubrication_algebra
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_spheroid_hydro_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_spheroid_lubrication_algebra" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+Spheroid lubrication implementation checks passed: exact/near-sphere Mari limit, anisotropic curvature coefficients, finite regularization, reciprocity, modal dissipation, affine force/stress energy identities, rotation covariance and particle exchange.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_spheroid_lubrication_algebra" end time: Oct 21 11:11 KST
+"slurry_spheroid_lubrication_algebra" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/30 Testing: slurry_mari_pair_lubrication
+14/30 Test: slurry_mari_pair_lubrication
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_pair_hydro_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_mari_pair_lubrication" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+Mari sphere lubrication checks passed: independent unequal-sphere A/B/C/G/H/M coefficients, regularization, pump/twist, reciprocity, PSD, strain-stress derivative, periodic-image power and force-free pair.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_mari_pair_lubrication" end time: Oct 21 11:11 KST
+"slurry_mari_pair_lubrication" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/30 Testing: slurry_hydro_analytic_limits
+15/30 Test: slurry_hydro_analytic_limits
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_hydro_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_hydro_analytic_limits" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: sphere and thin-disk resistance, oblate/prolate anisotropy, Jeffery rotation
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_hydro_analytic_limits" end time: Oct 21 11:11 KST
+"slurry_hydro_analytic_limits" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/30 Testing: slurry_packing_gradients
+16/30 Test: slurry_packing_gradients
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_pack" "--self-test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_packing_gradients" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PW periodic sphere/oblate tests: maximum gradient residual=7.56775e-11, contact optimum residual=4.16334e-17
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_packing_gradients" end time: Oct 21 11:11 KST
+"slurry_packing_gradients" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/30 Testing: slurry_implicit_resistance_contact
+17/30 Test: slurry_implicit_resistance_contact
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_implicit_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_implicit_resistance_contact" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: implicit anisotropic drag, lubrication/image velocities, 1 us unilateral contact, coupled rotational/contact equilibrium, angular balance, rough contact onset, Coulomb stick/slip/reversal/release, energy balance, frame covariance, exact load-dependent Jacobian, coupled friction network, full pair hydro/affine modes, 6x6 block preconditioning, Mari pair force/power balance and rate scaling, and failure reporting
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_implicit_resistance_contact" end time: Oct 21 11:11 KST
+"slurry_implicit_resistance_contact" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/30 Testing: slurry_stress_analytic_limits
+18/30 Test: slurry_stress_analytic_limits
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_stress_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_stress_analytic_limits" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS: exact spheroid stresslet, Einstein limit, rotation coupling, objectivity, power, reciprocity
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_stress_analytic_limits" end time: Oct 21 11:11 KST
+"slurry_stress_analytic_limits" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/30 Testing: slurry_history_objectivity
+19/30 Test: slurry_history_objectivity
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_history_math_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_history_objectivity" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+Objective contact history, common spin and antiparallel transport passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_history_objectivity" end time: Oct 21 11:11 KST
+"slurry_history_objectivity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/30 Testing: slurry_dense_friction_kink
+20/30 Test: slurry_dense_friction_kink
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_kink.dat"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_kink" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=5.78811e-11, Newton=3, directional reselections=1, LU factors=0, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink" end time: Oct 21 11:11 KST
+"slurry_dense_friction_kink" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/30 Testing: slurry_dense_friction_stall
+21/30 Test: slurry_dense_friction_stall
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_stall.dat"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_stall" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=1.23457e-13, Newton=3, directional reselections=1, LU factors=0, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall" end time: Oct 21 11:11 KST
+"slurry_dense_friction_stall" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/30 Testing: slurry_dense_friction_kink_lu
+22/30 Test: slurry_dense_friction_kink_lu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_kink.dat" "lu"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_kink_lu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.82428e-11, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink_lu" end time: Oct 21 11:11 KST
+"slurry_dense_friction_kink_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/30 Testing: slurry_dense_friction_stall_lu
+23/30 Test: slurry_dense_friction_stall_lu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_stall.dat" "lu"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_stall_lu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.76974e-13, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall_lu" end time: Oct 21 11:11 KST
+"slurry_dense_friction_stall_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/30 Testing: slurry_dense_friction_kink_ilu
+24/30 Test: slurry_dense_friction_kink_ilu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_kink.dat" "ilu"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_kink_ilu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=4.51603e-12, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink_ilu" end time: Oct 21 11:11 KST
+"slurry_dense_friction_kink_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/30 Testing: slurry_dense_friction_stall_ilu
+25/30 Test: slurry_dense_friction_stall_ilu
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_friction_regression_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/dense_friction_stall.dat" "ilu"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_dense_friction_stall_ilu" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.2121e-14, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall_ilu" end time: Oct 21 11:11 KST
+"slurry_dense_friction_stall_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/30 Testing: slurry_compact_bridge
+26/30 Test: slurry_compact_bridge
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_compact_bridge_test" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/data/compact_bridge_v4.dat"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_compact_bridge" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+central_ar20_1nm matrix=3.52789812711e-15 geometry=2.22044604925e-16 min_scaled=-9.9734234814e-17 w=1
+tilt_ar20_1nm matrix=4.20335378135e-14 geometry=3.77475828373e-15 min_scaled=-2.1789510308e-16 w=1
+slide_ar20_problem matrix=1.80596848816e-14 geometry=4.10782519111e-15 min_scaled=-1.03210763718e-16 w=1
+slide_ar20_window matrix=1.26042481645e-13 geometry=2.13162820728e-14 min_scaled=-9.26841882765e-17 w=0.967461707486
+slide_ar20_off matrix=0 geometry=3.53883589099e-16 min_scaled=0 w=0
+floor_ar10_point2nm matrix=7.40250124913e-13 geometry=1.99758603394e-13 min_scaled=-4.41696714314e-17 w=1
+overlap_ar20_minus_point2nm matrix=6.79239401695e-17 geometry=1.30537941567e-16 min_scaled=-6.8673034712e-17 w=1
+physical_tilt_ar20 matrix=4.86359964906e-14 geometry=7.39637331058e-15 min_scaled=-3.11399735694e-17 w=1
+ar2_normal matrix=1.05231687251e-15 geometry=4.99600361081e-16 min_scaled=-1.45376415695e-16 w=0.682133974953
+PASS 9 fixtures, max_matrix_relative=7.40250124913e-13 max_geometry_scaled=1.99758603394e-13
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_compact_bridge" end time: Oct 21 11:11 KST
+"slurry_compact_bridge" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/30 Testing: slurry_bridge_images
+27/30 Test: slurry_bridge_images
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_bridge_images_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_bridge_images" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+bridge images: enumeration, wrapping, basis flip and self history passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_bridge_images" end time: Oct 21 11:11 KST
+"slurry_bridge_images" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/30 Testing: slurry_bridge_solver
+28/30 Test: slurry_bridge_solver
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_bridge_solver_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_bridge_solver" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+bridge mixed solve: dense reference, warm start, implicit contact, stick/slip, Jacobian, self images, failure gate PASS
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_bridge_solver" end time: Oct 21 11:11 KST
+"slurry_bridge_solver" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/30 Testing: slurry_periodic_mobility
+29/30 Test: slurry_periodic_mobility
+Command: "/workspace/scratch/0520ed9b6708/bridge-build/slurry_periodic_mobility_test"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_periodic_mobility" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+symmetry 7.420496714627406e-17 min_eigenvalue 0.003724139131819252 image 2.258470149158527e-16 basis 1.712721102803194e-16 rotation 3.859990914510863e-15 parallel 2.1411838757179e-15 sphere_self 3.326895596345349e-15 modes 6655
+<end of output>
+Test time =   0.07 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_periodic_mobility" end time: Oct 21 11:11 KST
+"slurry_periodic_mobility" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/30 Testing: slurry_bridge_tools
+30/30 Test: slurry_bridge_tools
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/0520ed9b6708/Test_BS/lammps_slurry/tests/test_bridge_tools.py"
+Directory: /workspace/scratch/0520ed9b6708/bridge-build
+"slurry_bridge_tools" start time: Oct 21 11:11 KST
+Output:
+----------------------------------------------------------
+.Prepared /tmp/tmps47awh_s/case: N=108, AR=20.0, phi=0.24, L/a=4.55083; no table generation
+....
+----------------------------------------------------------------------
+Ran 5 tests in 0.235s
+
+OK
+<end of output>
+Test time =   0.31 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_bridge_tools" end time: Oct 21 11:11 KST
+"slurry_bridge_tools" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 21 11:11 KST

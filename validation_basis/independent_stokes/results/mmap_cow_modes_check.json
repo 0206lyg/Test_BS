@@ -1,0 +1,455 @@
+{
+  "schema": "mmap_cow_modes_synthetic_check_v2",
+  "synthetic": true,
+  "physical_accuracy_qualified": false,
+  "scope": "Storage/linear algebra only; assembly is replaced by an identical deterministic SPD matrix in both modes.",
+  "equivalent_node_count": 1000,
+  "matrix_dimension": 3000,
+  "rhs_count": 17,
+  "cow_vs_shared_solution_relative_error": 0.0,
+  "modes": {
+    "shared": {
+      "known_solution_relative_error": 7.071987358659574e-16,
+      "solver": {
+        "schema": "independent_stokes_mmap_dense_v3",
+        "status": "completed",
+        "node_count": 1000,
+        "dof_count": 3000,
+        "rhs_count": 17,
+        "alpha": 1.0,
+        "beta": 1.0,
+        "quadrature_tolerance": 1e-07,
+        "operator_path": "/tmp/tmpagofsw5k/mmap_dense_4vwx1b7m/operator.f64",
+        "lu_path": "/tmp/tmpagofsw5k/mmap_dense_4vwx1b7m/lu.f64",
+        "factor_mode": "shared",
+        "factor_memory_kind": "shared_file_backed",
+        "private_lu_persisted": false,
+        "matrix_dtype": "float64",
+        "matrix_order": "F",
+        "backend_library": "synthetic",
+        "numpy_version": "2.3.5",
+        "scipy_version": "1.17.0",
+        "diagnostics_path": "/tmp/tmpagofsw5k/mmap_dense_4vwx1b7m/diagnostics.json",
+        "matrix_bytes_each": 72000000,
+        "estimated_assembly_heap_bytes": 301205504,
+        "assembly_method": "target_chunked_exact_near_quadrature",
+        "assembly_target_chunk": 128,
+        "assembly_completed_targets": 1000,
+        "estimated_factor_working_bytes": 349843456,
+        "memory_budget_bytes": 2000000000,
+        "cgroup_preflight": {
+          "path": "/sys/fs/cgroup",
+          "limit_bytes": 8589934592,
+          "current_bytes": 1012109312,
+          "memory_stat": {
+            "anon": 215343104,
+            "file": 701210624,
+            "kernel": 92151808,
+            "inactive_file": 17481728,
+            "active_file": 683728896,
+            "file_dirty": 933888,
+            "file_writeback": 0,
+            "shmem": 0
+          },
+          "reclaimable_clean_inactive_file_bytes": 16547840,
+          "effective_current_bytes": 995561472,
+          "reserve_bytes": 250000000,
+          "required_additional_bytes": 349843456,
+          "available_after_reserve_bytes": 7344373120
+        },
+        "cgroup_reserve_bytes": 250000000,
+        "disk_free_at_start_bytes": 16385122304,
+        "disk_needed_bytes": 644000000,
+        "chunk_columns": 256,
+        "keep_matrices": true,
+        "lu_aliases_memmap": true,
+        "physical_accuracy_qualified": false,
+        "timings_seconds": {
+          "assembly": 0.1268605650002428,
+          "copy_and_finite_check": 0.19375497900000482,
+          "factorization": 0.18245743100123946,
+          "solve": 0.013502392999725998,
+          "residual": 0.10280024999883608
+        },
+        "elapsed_seconds": 0.7927966790011851,
+        "madvise_dontneed_supported": true,
+        "posix_fadvise_dontneed_supported": true,
+        "assembly_rfac0": 1.25,
+        "heap_release_after_assembly": {
+          "cgroup_before": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1012502528,
+            "memory_stat": {
+              "anon": 215347200,
+              "file": 701349888,
+              "kernel": 92360704,
+              "inactive_file": 17485824,
+              "active_file": 683864064,
+              "file_dirty": 937984,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 16547840,
+            "effective_current_bytes": 995954688
+          },
+          "cgroup_after": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1009356800,
+            "memory_stat": {
+              "anon": 212254720,
+              "file": 701349888,
+              "kernel": 92295168,
+              "inactive_file": 17485824,
+              "active_file": 683864064,
+              "file_dirty": 937984,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 16547840,
+            "effective_current_bytes": 992808960
+          },
+          "gc_collected_objects": 66,
+          "glibc_malloc_trim_result": 1
+        },
+        "heap_release_before_factorization": {
+          "cgroup_before": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1010761728,
+            "memory_stat": {
+              "anon": 213581824,
+              "file": 701349888,
+              "kernel": 92508160,
+              "inactive_file": 17485824,
+              "active_file": 683864064,
+              "file_dirty": 937984,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 16547840,
+            "effective_current_bytes": 994213888
+          },
+          "cgroup_after": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1009430528,
+            "memory_stat": {
+              "anon": 212254720,
+              "file": 701349888,
+              "kernel": 92475392,
+              "inactive_file": 17485824,
+              "active_file": 683864064,
+              "file_dirty": 937984,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 16547840,
+            "effective_current_bytes": 992882688
+          },
+          "gc_collected_objects": 45,
+          "glibc_malloc_trim_result": 1
+        },
+        "cgroup_before_factorization": {
+          "path": "/sys/fs/cgroup",
+          "limit_bytes": 8589934592,
+          "current_bytes": 1009430528,
+          "memory_stat": {
+            "anon": 212254720,
+            "file": 701349888,
+            "kernel": 92475392,
+            "inactive_file": 17485824,
+            "active_file": 683864064,
+            "file_dirty": 937984,
+            "file_writeback": 0,
+            "shmem": 0
+          },
+          "reclaimable_clean_inactive_file_bytes": 16547840,
+          "effective_current_bytes": 992882688,
+          "reserve_bytes": 250000000,
+          "required_additional_bytes": 349843456,
+          "available_after_reserve_bytes": 7347051904
+        },
+        "factorization_io_delta": {
+          "rchar": 122,
+          "write_bytes": 72003584,
+          "syscw": 0,
+          "wchar": 0,
+          "cancelled_write_bytes": 0,
+          "syscr": 2,
+          "read_bytes": 72003584
+        },
+        "absolute_residual_by_rhs": [
+          5.679411737864185e-11,
+          5.711826690059165e-11,
+          5.7693845708683584e-11,
+          5.530059742143683e-11,
+          5.579602516829316e-11,
+          5.6646010300932595e-11,
+          5.7623747395929776e-11,
+          5.448111396174077e-11,
+          5.582134451152967e-11,
+          5.593717065971555e-11,
+          5.5912038985507115e-11,
+          5.5705143772199896e-11,
+          5.529804953835491e-11,
+          5.840434690894695e-11,
+          5.352422592406001e-11,
+          5.6445346548818166e-11,
+          5.549043368597287e-11
+        ],
+        "relative_residual_by_rhs": [
+          6.004988749078267e-16,
+          6.082989077270997e-16,
+          6.174823802264352e-16,
+          5.977116833415077e-16,
+          5.966616544849583e-16,
+          5.979992231525807e-16,
+          6.158849323659952e-16,
+          5.908191045180378e-16,
+          6.021629185102331e-16,
+          5.979898758391285e-16,
+          6.000971647433949e-16,
+          5.881416354964603e-16,
+          5.980126209923632e-16,
+          6.250514291783764e-16,
+          5.899383785355321e-16,
+          6.125613293568713e-16,
+          5.938169217904395e-16
+        ],
+        "relative_residual_max": 6.250514291783764e-16,
+        "matrix_files_retained": {
+          "/tmp/tmpagofsw5k/mmap_dense_4vwx1b7m/operator.f64": true,
+          "/tmp/tmpagofsw5k/mmap_dense_4vwx1b7m/lu.f64": true
+        }
+      }
+    },
+    "cow": {
+      "known_solution_relative_error": 7.071987358659574e-16,
+      "solver": {
+        "schema": "independent_stokes_mmap_dense_v3",
+        "status": "completed",
+        "node_count": 1000,
+        "dof_count": 3000,
+        "rhs_count": 17,
+        "alpha": 1.0,
+        "beta": 1.0,
+        "quadrature_tolerance": 1e-07,
+        "operator_path": "/tmp/tmpagofsw5k/mmap_dense_nde68kzg/operator.f64",
+        "lu_path": null,
+        "factor_mode": "cow",
+        "factor_memory_kind": "private_anonymous",
+        "private_lu_persisted": false,
+        "matrix_dtype": "float64",
+        "matrix_order": "F",
+        "backend_library": "synthetic",
+        "numpy_version": "2.3.5",
+        "scipy_version": "1.17.0",
+        "diagnostics_path": "/tmp/tmpagofsw5k/mmap_dense_nde68kzg/diagnostics.json",
+        "matrix_bytes_each": 72000000,
+        "estimated_assembly_heap_bytes": 301205504,
+        "assembly_method": "target_chunked_exact_near_quadrature",
+        "assembly_target_chunk": 128,
+        "assembly_completed_targets": 1000,
+        "estimated_factor_working_bytes": 349843456,
+        "memory_budget_bytes": 2000000000,
+        "cgroup_preflight": {
+          "path": "/sys/fs/cgroup",
+          "limit_bytes": 8589934592,
+          "current_bytes": 1094836224,
+          "memory_stat": {
+            "anon": 225132544,
+            "file": 773357568,
+            "kernel": 92651520,
+            "inactive_file": 53915648,
+            "active_file": 719441920,
+            "file_dirty": 937984,
+            "file_writeback": 0,
+            "shmem": 0
+          },
+          "reclaimable_clean_inactive_file_bytes": 52977664,
+          "effective_current_bytes": 1041858560,
+          "reserve_bytes": 250000000,
+          "required_additional_bytes": 349843456,
+          "available_after_reserve_bytes": 7298076032
+        },
+        "cgroup_reserve_bytes": 250000000,
+        "disk_free_at_start_bytes": 16241102848,
+        "disk_needed_bytes": 572000000,
+        "chunk_columns": 256,
+        "keep_matrices": true,
+        "lu_aliases_memmap": true,
+        "physical_accuracy_qualified": false,
+        "timings_seconds": {
+          "assembly": 0.13192780199824483,
+          "cow_input_verification": 0.05998749199898157,
+          "factorization": 0.4817079570002534,
+          "solve": 0.013950512999144848,
+          "cow_original_verification": 0.04853433599964774,
+          "residual": 0.09571941900139791
+        },
+        "elapsed_seconds": 0.8649946440000349,
+        "madvise_dontneed_supported": true,
+        "posix_fadvise_dontneed_supported": true,
+        "assembly_rfac0": 1.25,
+        "heap_release_after_assembly": {
+          "cgroup_before": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1094610944,
+            "memory_stat": {
+              "anon": 225132544,
+              "file": 773361664,
+              "kernel": 92549120,
+              "inactive_file": 53919744,
+              "active_file": 719441920,
+              "file_dirty": 942080,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 52977664,
+            "effective_current_bytes": 1041633280
+          },
+          "cgroup_after": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1093689344,
+            "memory_stat": {
+              "anon": 224215040,
+              "file": 773361664,
+              "kernel": 92549120,
+              "inactive_file": 53919744,
+              "active_file": 719441920,
+              "file_dirty": 942080,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 52977664,
+            "effective_current_bytes": 1040711680
+          },
+          "gc_collected_objects": 576,
+          "glibc_malloc_trim_result": 1
+        },
+        "operator_sha256_before_factorization": "5c81ce7a9b951353ddc9b6d6aacef88c3bce91bd739f537b7b04907ca0ad4a42",
+        "heap_release_before_factorization": {
+          "cgroup_before": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1095868416,
+            "memory_stat": {
+              "anon": 226320384,
+              "file": 773361664,
+              "kernel": 92520448,
+              "inactive_file": 53919744,
+              "active_file": 719441920,
+              "file_dirty": 942080,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 52977664,
+            "effective_current_bytes": 1042890752
+          },
+          "cgroup_after": {
+            "path": "/sys/fs/cgroup",
+            "limit_bytes": 8589934592,
+            "current_bytes": 1093767168,
+            "memory_stat": {
+              "anon": 224219136,
+              "file": 773361664,
+              "kernel": 92520448,
+              "inactive_file": 53919744,
+              "active_file": 719441920,
+              "file_dirty": 942080,
+              "file_writeback": 0,
+              "shmem": 0
+            },
+            "reclaimable_clean_inactive_file_bytes": 52977664,
+            "effective_current_bytes": 1040789504
+          },
+          "gc_collected_objects": 45,
+          "glibc_malloc_trim_result": 1
+        },
+        "cgroup_before_factorization": {
+          "path": "/sys/fs/cgroup",
+          "limit_bytes": 8589934592,
+          "current_bytes": 1093767168,
+          "memory_stat": {
+            "anon": 224219136,
+            "file": 773361664,
+            "kernel": 92520448,
+            "inactive_file": 53919744,
+            "active_file": 719441920,
+            "file_dirty": 942080,
+            "file_writeback": 0,
+            "shmem": 0
+          },
+          "reclaimable_clean_inactive_file_bytes": 52977664,
+          "effective_current_bytes": 1040789504,
+          "reserve_bytes": 250000000,
+          "required_additional_bytes": 349843456,
+          "available_after_reserve_bytes": 7299145088
+        },
+        "factorization_io_delta": {
+          "rchar": 125,
+          "write_bytes": 0,
+          "syscw": 0,
+          "wchar": 0,
+          "cancelled_write_bytes": 0,
+          "syscr": 2,
+          "read_bytes": 72003584
+        },
+        "operator_sha256_after_solve": "5c81ce7a9b951353ddc9b6d6aacef88c3bce91bd739f537b7b04907ca0ad4a42",
+        "original_operator_unchanged": true,
+        "absolute_residual_by_rhs": [
+          5.679411737864185e-11,
+          5.711826690059165e-11,
+          5.7693845708683584e-11,
+          5.530059742143683e-11,
+          5.579602516829316e-11,
+          5.6646010300932595e-11,
+          5.7623747395929776e-11,
+          5.448111396174077e-11,
+          5.582134451152967e-11,
+          5.593717065971555e-11,
+          5.5912038985507115e-11,
+          5.5705143772199896e-11,
+          5.529804953835491e-11,
+          5.840434690894695e-11,
+          5.352422592406001e-11,
+          5.6445346548818166e-11,
+          5.549043368597287e-11
+        ],
+        "relative_residual_by_rhs": [
+          6.004988749078267e-16,
+          6.082989077270997e-16,
+          6.174823802264352e-16,
+          5.977116833415077e-16,
+          5.966616544849583e-16,
+          5.979992231525807e-16,
+          6.158849323659952e-16,
+          5.908191045180378e-16,
+          6.021629185102331e-16,
+          5.979898758391285e-16,
+          6.000971647433949e-16,
+          5.881416354964603e-16,
+          5.980126209923632e-16,
+          6.250514291783764e-16,
+          5.899383785355321e-16,
+          6.125613293568713e-16,
+          5.938169217904395e-16
+        ],
+        "relative_residual_max": 6.250514291783764e-16,
+        "matrix_files_retained": {
+          "/tmp/tmpagofsw5k/mmap_dense_nde68kzg/operator.f64": true,
+          "/tmp/tmpagofsw5k/mmap_dense_nde68kzg/lu.f64": false
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "memory_bounded_dense.py": "660307fc46c3466b4e7c372855661ef0c8ab2c3f9a49edfcd5de77ce84b11aac",
+    "test_memory_bounded_dense.py": "8ca192cf2511358b24edfc60e17ccb4fea8b1893fc59c40d870cd1921039bc93"
+  },
+  "performance_scope": "Small matrix fits RAM; timings do not predict N9963 performance under memory pressure."
+}

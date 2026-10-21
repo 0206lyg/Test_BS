@@ -1,0 +1,28 @@
+{
+  "schema_version": 3,
+  "release_id": "20261020-compact-bridge-integration",
+  "release_report_finalized": true,
+  "status": "MOVING_LAMMPS_INTEGRATION_VERIFIED",
+  "baseline_git_commit": "b8f78900f8c180d6c37e97f1a2682ff40d6bbd0b",
+  "numerical_source_fingerprint": "64761248e677e920f556f21f7980e5f7541db92154aa0498b96c16e0e5d0e173",
+  "validation_report": "validation_bridge/RESULT.json",
+  "ctest_passed": 30,
+  "moving_bulk": {
+    "ar": 20,
+    "particles": 108,
+    "phi": 0.23999999999999957,
+    "shear_rate_per_s": 100,
+    "steps": 20,
+    "timestep_s": 1e-06,
+    "final_strain": 0.002,
+    "window_average_eta_Pa_s": 0.0674399366679432,
+    "maximum_relative_power_balance_error_both_timestep_runs": 1.8828501174266375e-07,
+    "maximum_solver_relative_residual_both_timestep_runs": 8.806028275686e-07
+  },
+  "timestep_endpoint_eta_relative_difference": 0.0012043047443309825,
+  "timestep_average_eta_relative_difference": 0.0006389886774297929,
+  "middle_initial_eta_relative_difference": 0.07637667390001293,
+  "equilibrium_bulk_viscosity_tested": false,
+  "mpi_multirank_tested": false,
+  "historical_reports": "validation_basis and validation_finite_gap remain historical records for the older model; they do not describe this integration."
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "mmap_stage_guard_check_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Synthetic storage/error-path/resource-admission tests only. No Stokes solve or large allocation.",
+  "tests_run": 4,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "admission_policy": "nominal_factor_capacity_and_actual_assembly_then_actual_factor_headroom",
+  "strict_factor_guard_preserved": true,
+  "active_file_cache_credit": false,
+  "source_hashes": {
+    "memory_bounded_dense.py": "833520ebe201391cb978c95a747f3359fc74342ec2517d088f77effd92f1f228",
+    "test_memory_bounded_dense.py": "7ae0f8f9c026121569d297b3744b1a10b5b410aa905f16c32ccd6be47fb81573"
+  }
+}

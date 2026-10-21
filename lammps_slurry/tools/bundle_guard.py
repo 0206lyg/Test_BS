@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261018-pair-quadrature-runtime-fix"
+RELEASE_ID = "20261020-compact-bridge-integration"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -38,6 +38,14 @@ def check_source(root, expected_release=RELEASE_ID):
     required = (
         "lammps_slurry/CMakeLists.txt", "lammps_slurry/lammps-version.json",
         "lammps_slurry/src/fix_slurry_implicit.cpp",
+        "lammps_slurry/src/fix_slurry_bridge.cpp",
+        "lammps_slurry/src/slurry_compact_bridge.h",
+        "lammps_slurry/src/slurry_periodic_mobility.h",
+        "lammps_slurry/src/slurry_bridge_solver.h",
+        "lammps_slurry/src/slurry_bridge_images.h",
+        "lammps_slurry/tools/prepare_bridge.py",
+        "lammps_slurry/tools/run_bridge.py",
+        "lammps_slurry/tools/summarize_bridge.py",
         "lammps_slurry/src/slurry_spheroid_hydro_math.h",
         "lammps_slurry/src/slurry_solver_workspace.h",
         "lammps_slurry/src/slurry_eigen_ilu_math.h",
@@ -79,6 +87,8 @@ def source_snapshot(root):
         project / "lammps-version.json", project / "tools/prepare_case.py",
         project / "tools/build.py", project / "tools/bundle_guard.py",
         project / "tools/runtime_snapshot.py",
+        project / "tools/prepare_bridge.py", project / "tools/run_bridge.py",
+        project / "tools/summarize_bridge.py",
         project / "tools/precompute_fast.cpp",
         project / "tools/slurry_generate_basis.cpp", project / "tools/basis_cylindrical_kernel.h",
         project / "tests/test_basis_physical.cpp", root / "validation_basis/run_physical_gate.py",

@@ -1,0 +1,20 @@
+{
+"method":"ar20_saved_anchor_v4_matching_audit",
+"physical_accuracy_qualified":false,
+"note":"Algebra, passivity, response derivatives and one-node66-entry encoding only; Stokes anchor convergence, missing singular terms, held-out model accuracy and interpolation remain separate gates",
+"anchor_gap_over_c":0.5,
+"queries":[
+{"h_over_c":0.5,"gap_nm":75,"runtime_branch":"direct_stokes","matching_evaluation":"near_formula","minimum_total11_eigenvalue":17.422857938696939,"total11_spd":true,"constant_residual_relative_error":0,"force_mapping_scaled_error":0,"torque_mapping_scaled_error":0,"stresslet_mapping_scaled_error":8.921383906560342e-18,"runtime_energy_derivative_scaled_error":2.1255582379364011e-11,"anchor_reconstruction_relative_error":3.7095352943457704e-16,"encoded_values":66,"log66_roundtrip_worst_energy_error":2.5598745345689622e-11},
+{"h_over_c":0.25,"gap_nm":37.5,"runtime_branch":"matched_near","matching_evaluation":"near_formula","minimum_total11_eigenvalue":17.505105403956261,"total11_spd":true,"constant_residual_relative_error":3.3456511201813447e-17,"force_mapping_scaled_error":0,"torque_mapping_scaled_error":1.6501482162855922e-20,"stresslet_mapping_scaled_error":4.224379433691116e-18,"runtime_energy_derivative_scaled_error":2.6589573072538361e-11,"encoded_values":66,"log66_roundtrip_worst_energy_error":3.1937341660182028e-11},
+{"h_over_c":0.02,"gap_nm":3,"runtime_branch":"matched_near","matching_evaluation":"near_formula","minimum_total11_eigenvalue":20.660859839992295,"total11_spd":true,"constant_residual_relative_error":5.1053820658758527e-16,"force_mapping_scaled_error":0,"torque_mapping_scaled_error":1.9408266662934406e-18,"stresslet_mapping_scaled_error":7.7633066651737625e-18,"runtime_energy_derivative_scaled_error":1.2454275756020648e-11,"encoded_values":66,"log66_roundtrip_worst_energy_error":8.5196738552895113e-11},
+{"h_over_c":0.0066666666666666671,"gap_nm":1,"runtime_branch":"matched_near","matching_evaluation":"near_formula","minimum_total11_eigenvalue":20.823168477396518,"total11_spd":true,"constant_residual_relative_error":8.8002302782766501e-16,"force_mapping_scaled_error":0,"torque_mapping_scaled_error":1.0185893525640181e-17,"stresslet_mapping_scaled_error":1.2732366907050226e-18,"runtime_energy_derivative_scaled_error":2.0390783328575016e-11,"encoded_values":66,"log66_roundtrip_worst_energy_error":1.5118040153083712e-10}
+],
+"actual_geometry_hardfloor_checks":[
+{"actual_gap_nm":0,"effective_gap_nm":1,"scope":"actual_vs_virtual_geometry_lift","minimum_full17_eigenvalue":11.222714973722136,"minimum_velocity12_eigenvalue":214.13810042931314,"full17_spd":true,"runtime_energy_derivative_scaled_error":1.8096611377132879e-11},
+{"actual_gap_nm":0.5,"effective_gap_nm":1,"scope":"actual_vs_virtual_geometry_lift","minimum_full17_eigenvalue":11.223875759968195,"minimum_velocity12_eigenvalue":214.13816559487833,"full17_spd":true,"runtime_energy_derivative_scaled_error":1.5530785956864391e-11},
+{"actual_gap_nm":-0.14999999999999999,"effective_gap_nm":1,"scope":"overlap_robustness_only_no_overlapping_fluid_BVP","minimum_full17_eigenvalue":11.222366977501508,"minimum_velocity12_eigenvalue":214.13808090079283,"full17_spd":true,"runtime_energy_derivative_scaled_error":2.2409981851292099e-11}
+],
+"algebra_passivity_encoding_gate_passed":true,
+"heldout_gap_count":0,
+"physical_overlap_error_gate_passed":null
+}

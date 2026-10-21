@@ -1,0 +1,28 @@
+{
+  "schema": "mmap_resource_accounting_check_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Resource accounting only; no physical solve or allocation of the estimated LU matrix.",
+  "synthetic_effective_headroom_guard_passed": true,
+  "observed_cgroup_snapshot": {
+    "path": "/sys/fs/cgroup",
+    "limit_bytes": 8589934592,
+    "current_bytes": 4004421632,
+    "memory_stat": {
+      "anon": 265474048,
+      "file": 3593400320,
+      "kernel": 140378112,
+      "inactive_file": 3489157120,
+      "active_file": 104370176,
+      "file_dirty": 2097152,
+      "file_writeback": 8192,
+      "shmem": 0
+    },
+    "reclaimable_clean_inactive_file_bytes": 3489157120,
+    "effective_current_bytes": 515264512,
+    "reserve_bytes": 250000000,
+    "required_additional_bytes": 7508985928,
+    "available_after_reserve_bytes": 7824670080
+  },
+  "node_count_for_estimate": 9963,
+  "module_sha256": "6d4597d5233f62bf90b3397157a9474ff6c6fa9c9db4ca6ef58e064f94f56fb8"
+}

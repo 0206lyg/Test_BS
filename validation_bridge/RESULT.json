@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "release_id": "20261020-compact-bridge-integration",
+  "status": "MOVING_LAMMPS_INTEGRATION_VERIFIED",
+  "passed": true,
+  "baseline_git_commit": "b8f78900f8c180d6c37e97f1a2682ff40d6bbd0b",
+  "source_fingerprint": "64761248e677e920f556f21f7980e5f7541db92154aa0498b96c16e0e5d0e173",
+  "accepted_near_model": "compact bridge v4, actual geometry, scalar gap floor 1 nm",
+  "periodic_middle": "Gaussian periodic ellipsoid Galerkin low modes plus isolated analytic high-frequency self tail; high-frequency cross/image terms omitted",
+  "compiled_source_and_all_run_binary_identities_match": true,
+  "build_report": "build_check.json",
+  "ctest_passed": 30,
+  "ctest_total": 30,
+  "guarded_launcher_report": "guarded_runtime_check/result.json",
+  "periodic_report": "periodic_check/result.json",
+  "bulk_report": "bulk_check/result.json",
+  "moving_bulk": {
+    "ar": 20,
+    "particles": 108,
+    "phi": 0.23999999999999957,
+    "shear_rate_per_s": 100,
+    "steps": 20,
+    "timestep_s": 1e-06,
+    "final_strain": 0.002,
+    "window_average_eta_Pa_s": 0.0674399366679432,
+    "maximum_relative_power_balance_error_both_timestep_runs": 1.8828501174266375e-07,
+    "maximum_solver_relative_residual_both_timestep_runs": 8.806028275686e-07
+  },
+  "timestep_comparison": {
+    "contact_force_relative_L2_difference": 0.011156963653001305,
+    "contact_torque_relative_L2_difference": 0.012129423679146078,
+    "endpoint_eta_relative_difference": 0.0012043047443309825,
+    "hydro_force_relative_L2_difference": 0.011156963629294758,
+    "hydro_torque_relative_L2_difference": 0.012129423656304626,
+    "orientation_max_difference_rad": 1.865998971375842e-05,
+    "orientation_rms_difference_rad": 4.503384231950709e-06,
+    "position_max_difference_m": 5.215246372525027e-11,
+    "position_rms_difference_m": 1.4441706691544032e-11,
+    "stresslet_relative_L2_difference": 0.01197839821991037,
+    "window_average_eta_relative_difference": 0.0006389886774297929
+  },
+  "middle_resolution_comparison": {
+    "contact_force_relative_L2_difference": 0.02784760789990328,
+    "contact_torque_relative_L2_difference": 0.018698458226000983,
+    "hydro_force_relative_L2_difference": 0.027847607733394012,
+    "hydro_torque_relative_L2_difference": 0.018698458363529517,
+    "initial_eta_relative_difference": 0.07637667390001293,
+    "orientation_max_difference_rad": 0.0,
+    "orientation_rms_difference_rad": 0.0,
+    "position_max_difference_m": 0.0,
+    "position_rms_difference_m": 0.0,
+    "stresslet_relative_L2_difference": 0.03982865938738923
+  },
+  "cost": {
+    "openmp_threads": 8,
+    "mpi_ranks": 1,
+    "default_initial_solve_seconds": 10.024563074111938,
+    "default_post_step_mean_seconds": 1.8941340088844298,
+    "default_last_10_post_step_mean_seconds": 1.2820878267288207,
+    "spectral4_initial_solve_seconds": 116.6566948890686,
+    "scope": "geometry + middle construction + simultaneous hydrodynamic/contact solve; measured host, not packing or output I/O; short auxiliary checks overlapped the beginning of the default run"
+  },
+  "equilibrium_bulk_viscosity_tested": false,
+  "mpi_multirank_tested": false,
+  "history_preserving_restart_supported": false,
+  "limitations": [
+    "The 20 microsecond run reaches strain 0.002; its mean is transient, not steady-state viscosity.",
+    "Changing spectral 2 to 4 changes this initial state viscosity by 7.64%; this is model-resolution sensitivity, not a Stokes-error estimate.",
+    "Short moving execution does not establish large-N scaling or long-time timestep convergence."
+  ],
+  "cleanup_guide": "../docs/LEGACY_CLEANUP.md"
+}

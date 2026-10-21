@@ -1,0 +1,48 @@
+{
+  "schema": "provisional_reference_development_summary_v1",
+  "created_at_utc": "2026-10-19T00:58:42.208087+00:00",
+  "release_id": "20261019-reference-table-provisional",
+  "physical_accuracy_qualified": false,
+  "new_stokes_solve_performed": false,
+  "actual_other_AR_solutions": false,
+  "actual_full_angular_table": false,
+  "lammps_dynamics_run": false,
+  "pipeline": "validation_basis/independent_stokes/results/provisional_pipeline/actual_candidate_003/pipeline.json",
+  "workflow_completed": true,
+  "source_boundary_max_scaled_error": 0.007532226462396109,
+  "gap_nodes": 222,
+  "gap_min_nm": 1.0,
+  "gap_max_nm": 150.00000000000003,
+  "roundtrip_relative_energy_max": 2.0632277905217232e-10,
+  "gap_interpolation_relative_energy_max": 8.519969659906474e-07,
+  "runtime_query_count": 21,
+  "runtime_max_errors": {
+    "full17_energy_error": 9.901013231505829e-08,
+    "force_operator_relative_error": 1.7376983740487355e-08,
+    "torque_operator_relative_error": 4.964210284549982e-08,
+    "intrinsic_stress_operator_relative_error": 1.73281796339482e-08,
+    "runtime_quadratic_derivative_scaled_error": 7.199923890927544e-13
+  },
+  "new_closure_is_physical_accuracy_qualified": false,
+  "closure_change_is_physical_error_bound": false,
+  "maximum_closure_change_in_candidate_energy_metric": 1.8831164594458294,
+  "verification": {
+    "independent_python_discovered": 66,
+    "independent_python_passed": 65,
+    "independent_python_optional_skipped": 1,
+    "ctest_contract_groups_passed": 5,
+    "ctest_contract_groups_failed": 0,
+    "python_preparation_cases_inside_ctest": 11,
+    "fullgrid_contract_is_synthetic": true,
+    "fullgrid_synthetic_poses": 64,
+    "fullgrid_synthetic_queries": 1344
+  },
+  "current_compiled_numerical_source_fingerprint": "b9cc0d6f5e144f609ce1ec2713c965908fee2b2c17dc2c8cbc7065943a363e04",
+  "prior_successes_001_002": "Historical same numerical result before final compiled-fingerprint report binding; retained unchanged",
+  "limitations": [
+    "Single approximate independent150nm anchor at one relative orientation",
+    "Dissipative increment is a candidate finite-gap closure with substantial difference from constant residual",
+    "No independent1nm comparison or rheology accuracy",
+    "Full-grid data and angular interpolation validation are future work"
+  ]
+}

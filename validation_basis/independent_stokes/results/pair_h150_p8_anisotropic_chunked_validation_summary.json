@@ -1,0 +1,118 @@
+{
+  "physical_accuracy_qualified": false,
+  "reference_group_qualified": false,
+  "scope": "Recorded AR20 pose at150nm; actual completed fine source plus storage and sampled collocation diagnostics",
+  "files": {
+    "reference": {
+      "path": "pair_h150_p8_anisotropic_chunked.json",
+      "sha256": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a"
+    },
+    "encoding": {
+      "path": "pair_h150_p8_anisotropic_chunked_encoding_algebra.json",
+      "sha256": "ba3686e2e331a11faf7e5223190b32b38dd3c2a7e54e13103f7833b45f3be5c5"
+    },
+    "collocation": {
+      "path": "pair_h150_p8_anisotropic_chunked_collocation_probe.json",
+      "sha256": "7d083134fd2235f821b40fb83bfe48f12d4974869dbce5f5c038af1af9dca976"
+    },
+    "refinement_gate": {
+      "path": "h150_latest_three_reference_gate.json",
+      "sha256": "1811b0860c24c30287b4321e7beaf7b0e25b4c1761ad1d0c5ed66548190146d1"
+    },
+    "density_tail": {
+      "path": "pair_h150_p8_anisotropic_chunked_density_tail_diagnostic.json",
+      "sha256": "28a9798033ce41315a4589b7981c03eee3cd79c600fe4993907466a1054dce97"
+    }
+  },
+  "node_count": 9963,
+  "patch_count": 123,
+  "boundary_max": 0.007532226462396109,
+  "boundary_rms": 0.00026166794214130604,
+  "gap_patch_max": 0.002299961231907888,
+  "boundary_tolerance": 0.001,
+  "linear_residual": 1.4437629331682206e-13,
+  "energy_scaled_raw_reciprocity": 7.1828325465092635e-06,
+  "observed_energy_changes": [
+    0.00030325950754553436,
+    6.228157598114479e-05
+  ],
+  "same_library_across_refinements": false,
+  "encoding": {
+    "algebra_gate_passed": true,
+    "stored_values": 153,
+    "energy_error": 2.6574623897927536e-12,
+    "blocks": {
+      "force": {
+        "energy_input_scaled_operator_absolute": 1.0400545767986009e-13,
+        "energy_input_scaled_operator_relative": 7.16596707757695e-14,
+        "unweighted_relative_frobenius": 6.500819139830635e-15
+      },
+      "torque_over_a": {
+        "energy_input_scaled_operator_absolute": 1.707188251756385e-12,
+        "energy_input_scaled_operator_relative": 1.198835192084224e-12,
+        "unweighted_relative_frobenius": 1.610358560236812e-13
+      },
+      "intrinsic_stresslet_over_a": {
+        "energy_input_scaled_operator_absolute": 7.548754919588099e-14,
+        "energy_input_scaled_operator_relative": 5.292353556732605e-14,
+        "unweighted_relative_frobenius": 6.182722001426515e-15
+      }
+    }
+  },
+  "collocation": {
+    "panels": [
+      1,
+      84,
+      66,
+      94
+    ],
+    "target_count": 36,
+    "results": [
+      {
+        "eps": 1e-07,
+        "max_residual": 3.75963093687511e-10
+      },
+      {
+        "eps": 1e-11,
+        "max_residual": 2.157688007654049e-09
+      }
+    ],
+    "quadrature_change": [
+      {
+        "first_eps": 1e-07,
+        "other_eps": 1e-11,
+        "max_scaled_change": 2.15779358548564e-09,
+        "per_mode_max_scaled_change": [
+          1.7017287276670303e-10,
+          1.1110317721382307e-10,
+          2.1402335773883534e-09,
+          8.197224247768308e-10,
+          1.0497964500424242e-09,
+          8.417969328462138e-11,
+          1.8442080159861227e-10,
+          1.294133260727275e-10,
+          2.15779358548564e-09,
+          8.702407692989061e-10,
+          1.1271408071023807e-09,
+          1.3597657829386468e-10,
+          6.38057729405288e-11,
+          6.45664494984844e-10,
+          1.193677053488767e-10,
+          6.940053599341492e-11,
+          1.343199543747517e-09
+        ],
+        "per_panel_max_scaled_change": {
+          "1": 7.621349955718051e-10,
+          "84": 1.603986940674524e-09,
+          "66": 2.0058630705197728e-09,
+          "94": 2.15779358548564e-09
+        }
+      }
+    ]
+  },
+  "assessment": "All three source meshes fail the unchanged0.1% maximum no-slip criterion, although both integrated-matrix changes are below0.2%. Small collocation residuals, tight-quadrature sensitivity and strong saved-density high-degree tails support unresolved between-node representation as a plausible next refinement target. These observations do not bound global error or qualify physical matching.",
+  "operator_identity_gate_passed": false,
+  "operator_identity_gate_failures": [
+    "latest_three_operator_identities_differ"
+  ]
+}

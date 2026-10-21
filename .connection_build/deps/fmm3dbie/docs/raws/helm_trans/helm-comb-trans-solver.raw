@@ -1,0 +1,74 @@
+This subroutine solves the transmission boundary value
+problem using the combined field integral representation
+
+
+.. math::
+
+   u_{1} &= \frac{1}{\beta_{1}} \left( ik_{1} \mathcal{S}_{k_{1}}[\lambda] + \mathcal{D}_{k_{1}}[\rho] \right) \,, \\
+   u_{0} &= \frac{1}{\beta_{0}} \left( ik_{0} \mathcal{S}_{k_{0}}[\lambda] + \mathcal{D}_{k_{0}}[\rho] \right) \,.
+
+The integral equation on the boundary is given by
+
+.. math::
+   
+   z f &=  -\frac{i}{2}(k_{0} + k_{1}) \rho + 
+   z \left( \frac{\alpha_{0}}{\beta_{0}} \mathcal{D}_{k_{0}} -
+   \frac{\alpha_{1}}{\beta_{1}} \mathcal{D}_{k_{1}} \right) [\rho] + 
+   z \left(ik_{0} \frac{\alpha_{0}}{\beta_{0}} \mathcal{S}_{k_{0}} -
+   \frac{\alpha_{1}}{\beta_{1}} \mathcal{S}_{k_{1}} \right) [\lambda] \\ 
+   g &=  -\frac{i}{2}(k_{0} + k_{1})  + 
+   (\mathcal{D}_{k_{0}}' - \mathcal{D}_{k_{1}}')[\rho] + 
+   (ik_{0} \mathcal{S}_{k_{0}}' - ik_{1} 
+   \mathcal{S}_{k_{1}}')[\lambda] \, , \\ 
+
+where f,g are the boundary data, $k_{0}, k_{1}$,
+are the interior and exterior wavenumbers, and 
+
+.. math::
+  
+  z = -i\frac{(k_{0} + k_{1}) \beta_{0} \beta_{1}}{\alpha_{0} \beta_{1} + \beta_{0} \alpha_{1}}
+
+Input arguments:
+
+    - npatches: integer
+        number of patches
+    - norders: integer(npatches)
+        order of discretization on each patch
+    - ixyzs: integer(npatches+1)
+        ixyzs(i) denotes the starting location in srccoefs, and
+        srcvals array where information for patch i begins
+    - iptype: integer(npatches)
+        type of patch
+    - npts: integer
+        total number of points on the boundary
+    - srccoefs: double precision (9,npts)
+        koornwinder exapansion coefficients for x, $\partial_{u} x$, and
+        $\partial_{v} x$
+    - srcvals: double precision (12,npts)
+        x,$\partial_{u} x$, $\partial_{v} x$, and $n$ sampled at
+        discretization nodes
+    - eps: double precision
+         precision requested for computing quadrature and fmm tolerance
+    - zpars: double complex(6)
+         kernel parameters, zpars(1)=$k_{0}$, zpars(2)=$\alpha_{0}$,
+         zpars(3)=$\beta_{0}$, zpars(4)=$k_{1}$, zpars(5) = $\alpha_{1}$,
+         zpars(6)=$\beta_{1}$
+    - rhs: double complex(2, npts)
+         rhs(1,:) is boundary data f, and rhs(2,:)
+         is boundary data g
+    - eps_gmres: double precision
+         gmres tolerance requested
+    - numit: integer
+         max number of gmres iterations
+    
+Output arguments:
+    - niter: integer
+         number of gmres iterations required for relative residual
+    - errs: double precision(1:niter)
+         relative residual as a function of iteration number
+    - rres: double precision
+         relative residual of the computed solution
+    - sigma: double complex(2, npts)
+         sigma(1,:) = density of single layer potential ($\lambda$ above) ,
+         sigma(2,:) = density of double layer potential ($\rho$ above) 
+    

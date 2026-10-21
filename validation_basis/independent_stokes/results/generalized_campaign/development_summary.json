@@ -1,0 +1,88 @@
+{
+  "schema": "multi_ar_reference_campaign_development_summary_v1",
+  "created_at_utc": "2026-10-19T01:33:27.361637+00:00",
+  "release_id": "20261019-multi-ar-reference-campaign",
+  "implemented": true,
+  "aspect_ratios": [
+    2,
+    5,
+    10,
+    20
+  ],
+  "gap_rule": "max(actual smooth-surface gap, 1 nm); mechanical roughness separate",
+  "full_angular_tables_generated_here": false,
+  "physical_accuracy_qualified": false,
+  "default_campaign": {
+    "training_directions_per_AR": 128,
+    "heldout_cases_per_AR": 24,
+    "reference_resolutions_per_heldout_case": 2,
+    "pair_tasks_total": 704,
+    "concurrency": 4,
+    "CPUs_per_task": 8,
+    "allocated_memory_GiB_per_task": 32,
+    "model_screening_tolerance": 0.05,
+    "reference_refinement_screening_tolerance": 0.01,
+    "sampled_boundary_development_limit": 0.01
+  },
+  "verification": {
+    "python": {
+      "run": 104,
+      "passed": 103,
+      "optional_skipped": 1,
+      "failures": 0,
+      "report": "python_verification.json"
+    },
+    "latest_campaign_input_guard_regression": {
+      "passed": 13,
+      "log": "campaign_final_tests.log",
+      "campaign_source_sha256": "6b1f3501cb3375164ddc7658fef6951c027a90a526b55eb6d1d0cef2477574f3"
+    },
+    "ctest": {
+      "passed_groups": 6,
+      "failures": 0,
+      "report": "related_ctest.xml"
+    },
+    "launcher": {
+      "synthetic_checks_passed": 14,
+      "report": "launcher_verification.json",
+      "actual_HPC_submission": false,
+      "actual_server_dependency_build": false
+    },
+    "actual_Stokes_routing": {
+      "driver_completions": 12,
+      "aspect_ratios": [
+        2,
+        5,
+        10,
+        20
+      ],
+      "resolution": "p4/l0; intentionally underresolved",
+      "all_worker_statuses": "completed_unaccepted",
+      "report": "backend_routing/p4_supported/summary.json",
+      "scope": "Execution routing only; not physical accuracy"
+    },
+    "actual_existing_AR20_table_transport": {
+      "workflow_completed": true,
+      "new_Stokes_solve_performed": false,
+      "full_angular_grid": false,
+      "physical_accuracy_qualified": false,
+      "report": "ar20_current_transport/pipeline.json"
+    },
+    "missing_reference_reporting": {
+      "rows": 96,
+      "all_statuses": "UNRESOLVED",
+      "report": "missing_reference_reporting/accuracy.json"
+    }
+  },
+  "guide": "validation_basis/independent_stokes/AR_TABLE_CAMPAIGN.md",
+  "numerical_source_fingerprint": "953422d83a3ca2a731fe5134e9423128481a7dcd608ed9e912a2eae3f579ad95",
+  "evidence_sha256": {
+    "python_verification.json": "3b8ac39a5d7a508c16817bf38e9414bc6fa8597a13a0cd33def6fa5355b0ef1c",
+    "campaign_final_tests.log": "e484e4008febb3c338897c8a69dc07b7cfcc96c186cd2622cbeed1528271793f",
+    "related_ctest.xml": "2776dd78c202b7986ecd42a0ac20a234715db981076dace37685617c1cfafc3f",
+    "launcher_verification.json": "a90691307f3435170db1bcff694de5a8b29fe8b75334647550f4765eaa29effa",
+    "backend_routing/p4_supported/summary.json": "58f74f59e07b7208ab6c311eec1b342c1693669f0f76806dad677dea17dbc64a",
+    "ar20_current_transport/pipeline.json": "525b4c526a211071dacd48997ffbf06a20746ed412e8b7990ab6036cffff4d0a",
+    "missing_reference_reporting/accuracy.json": "27dfc6bea3bf90611fd0b2f9f81c9d325b8fb0e625352fbe02d3c60c0bd6ec00"
+  }
+}

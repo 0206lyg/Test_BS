@@ -1,0 +1,14 @@
+{
+  "schema": "exact_buffered_assembly_native_check_v1",
+  "scope": "Recorded AR20 pose150nm,N300,17RHS; storage equivalence only",
+  "physical_accuracy_qualified": false,
+  "original_operator_bitwise_identical": true,
+  "original_operator_sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0",
+  "density_relative_difference": 0.0,
+  "true_linear_residual": 3.727830446427381e-14,
+  "references": {
+    "ooc_driver_smoke_h150_p4_l0.json": "a521de9f66bc2fcfb76f2b77f6a20ce2c0c3d15da0e11f562a1e279188cfa825",
+    "ooc_buffered_smoke_h150_p4_l0.json": "697018dc6feb0585bb411c4305fd502632c2d8042fedd850f31daa6f099e9758"
+  },
+  "passed": true
+}

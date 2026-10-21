@@ -1,0 +1,9 @@
+{
+  "ar": 20,
+  "uploaded_log": "/workspace/scratch/0520ed9b6708/upload/slurry_bridge_44537870.out",
+  "uploaded_stages_including_retries": 87,
+  "reproduced_stages_including_retries": 87,
+  "all_stage_lines_identical": true,
+  "particle_sha256": "efdb200f7fb2fb6e348f8ca88591e711f5e719eb9a43063e74afc60ba05a26a7",
+  "limitation": "Coordinate file identity not established: uploaded artifact is log only."
+}

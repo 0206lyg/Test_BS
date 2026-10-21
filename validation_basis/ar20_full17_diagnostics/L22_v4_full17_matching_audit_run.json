@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/workspace/scratch/581ed100c5ad/check_ar20_full17_matching",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_t3_p256.json"
+  ],
+  "returncode": 0,
+  "wall_seconds": 0.011585221000132151,
+  "stderr": "",
+  "physical_accuracy_qualified": false
+}

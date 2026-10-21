@@ -1,0 +1,56 @@
+[1792526816.814512] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814527] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814529] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814530] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814531] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814531] [683e1ee14bb0:10   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814512] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814527] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814529] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814530] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814531] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814531] [683e1ee14bb0:11   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814514] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814529] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814531] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814532] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814534] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814535] [683e1ee14bb0:12   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814707] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814726] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814729] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814730] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814731] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814733] [683e1ee14bb0:13   :0]            sock.c:114  UCX  WARN  getifaddrs error: Operation not permitted
+[1792526816.814985] [683e1ee14bb0:11   :0]        mm_iface.c:689  UCX  ERROR Failed to create unix domain socket for signal: Operation not permitted
+[1792526816.815074] [683e1ee14bb0:11   :0]      ucp_worker.c:1415 UCX  ERROR uct_iface_open(sysv/memory) failed: Input/output error
+[1792526816.815074] [683e1ee14bb0:12   :0]        mm_iface.c:689  UCX  ERROR Failed to create unix domain socket for signal: Operation not permitted
+[1792526816.815124] [683e1ee14bb0:10   :0]        mm_iface.c:689  UCX  ERROR Failed to create unix domain socket for signal: Operation not permitted
+[1792526816.815140] [683e1ee14bb0:12   :0]      ucp_worker.c:1415 UCX  ERROR uct_iface_open(sysv/memory) failed: Input/output error
+[1792526816.815190] [683e1ee14bb0:10   :0]      ucp_worker.c:1415 UCX  ERROR uct_iface_open(sysv/memory) failed: Input/output error
+[1792526816.815186] [683e1ee14bb0:13   :0]        mm_iface.c:689  UCX  ERROR Failed to create unix domain socket for signal: Operation not permitted
+[1792526816.815307] [683e1ee14bb0:13   :0]      ucp_worker.c:1415 UCX  ERROR uct_iface_open(sysv/memory) failed: Input/output error
+Abort(1008878735): Fatal error in internal_Init: Other MPI error, error stack:
+internal_Init(70)........: MPI_Init(argc=0x7ffe4bdf238c, argv=0x7ffe4bdf2380) failed
+MPII_Init_thread(289)....: 
+MPID_Init(549)...........: 
+MPIDI_UCX_init_local(245): 
+MPIDI_UCX_init_worker(86):  ucx function returned with failed status(ucx_init.c 86 MPIDI_UCX_init_worker Input/output error)
+Abort(740443279): Fatal error in internal_Init: Other MPI error, error stack:
+internal_Init(70)........: MPI_Init(argc=0x7fff98ce801c, argv=0x7fff98ce8010) failed
+MPII_Init_thread(289)....: 
+MPID_Init(549)...........: 
+MPIDI_UCX_init_local(245): 
+MPIDI_UCX_init_worker(86):  ucx function returned with failed status(ucx_init.c 86 MPIDI_UCX_init_worker Input/output error)
+Abort(69354639): Fatal error in internal_Init: Other MPI error, error stack:
+internal_Init(70)........: MPI_Init(argc=0x7ffc19c24dac, argv=0x7ffc19c24da0) failed
+MPII_Init_thread(289)....: 
+MPID_Init(549)...........: 
+MPIDI_UCX_init_local(245): 
+MPIDI_UCX_init_worker(86):  ucx function returned with failed status(ucx_init.c 86 MPIDI_UCX_init_worker Input/output error)
+Abort(1008878735): Fatal error in internal_Init: Other MPI error, error stack:
+internal_Init(70)........: MPI_Init(argc=0x7fffb21a49ac, argv=0x7fffb21a49a0) failed
+MPII_Init_thread(289)....: 
+MPID_Init(549)...........: 
+MPIDI_UCX_init_local(245): 
+MPIDI_UCX_init_worker(86):  ucx function returned with failed status(ucx_init.c 86 MPIDI_UCX_init_worker Input/output error)

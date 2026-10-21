@@ -1,0 +1,87 @@
+{
+  "schema": "legacy_ar20_library_preservation_attempt_v1",
+  "recorded_at_utc": "2026-10-18T23:57:16.501668+00:00",
+  "status": "prepared_upload_helper_failed",
+  "helper_exit_code": 1,
+  "error": "library upload failed: prepare_uploads failed",
+  "confirmed_saved_file_count": 0,
+  "results": [
+    {
+      "request_index": 0,
+      "local_path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22.ssb.gz",
+      "file_name": "ar20_L22.ssb.gz",
+      "purpose": "create_library_file",
+      "library_artifact_type": "other",
+      "status": "not_confirmed_saved",
+      "library_file_id": null,
+      "file_id": null,
+      "version_id": null,
+      "observed_size_bytes": 893075941,
+      "expected_compressed_size_bytes": 893075941,
+      "expected_compressed_sha256": "e1dfaf099b7a0c8fac0c84507c2ee284d6ba5a3b13953a51ed1b822c7308b032",
+      "original_sha256": "10ef161cb7467560903d32d98cad932355740f2a19f2fea96a3548690d61048b",
+      "compression_evidence": {
+        "path": "legacy_ar20_L22_lossless_compression.json",
+        "sha256": "362afacd0477e6d844b5bdda44916f93f02949b593cf23af1f862ba89ddba18e"
+      },
+      "local_file_exists": true,
+      "local_file_is_symlink": false,
+      "gzip_magic_hex": "1f8b",
+      "bytes_unchanged_by_this_upload_task": true
+    },
+    {
+      "request_index": 1,
+      "local_path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16.ssb.gz",
+      "file_name": "ar20_L16.ssb.gz",
+      "purpose": "create_library_file",
+      "library_artifact_type": "other",
+      "status": "not_confirmed_saved",
+      "library_file_id": null,
+      "file_id": null,
+      "version_id": null,
+      "observed_size_bytes": 326907219,
+      "expected_compressed_size_bytes": 326907219,
+      "expected_compressed_sha256": "1a2c66e59c63542c55a40e24aaf32d71942f2b1e5bf1bd185d57ba234c32a2a1",
+      "original_sha256": "10dcc8e4d09a36606759251b4d80d04abc37544be69b1f11b3e7123a2b4e9fc2",
+      "compression_evidence": {
+        "path": "legacy_ar20_L16_lossless_compression.json",
+        "sha256": "7a4d12de48a9766e8fe59a0f82da3d46413b500d9f4c07e0d1a317cc06b6e1b8"
+      },
+      "local_file_exists": true,
+      "local_file_is_symlink": false,
+      "gzip_magic_hex": "1f8b",
+      "bytes_unchanged_by_this_upload_task": true
+    },
+    {
+      "request_index": 2,
+      "local_path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025.ssb.gz",
+      "file_name": "ar20_L16_d025.ssb.gz",
+      "purpose": "create_library_file",
+      "library_artifact_type": "other",
+      "status": "not_confirmed_saved",
+      "library_file_id": null,
+      "file_id": null,
+      "version_id": null,
+      "observed_size_bytes": 326939289,
+      "expected_compressed_size_bytes": 326939289,
+      "expected_compressed_sha256": "bcd33c922a377068dd77f193315acba3a0e1f2a38eebcadc2fd631cb1ffa1084",
+      "original_sha256": "c9cdf85bceeec0bf363a680b76ee02adc2dbd0a4215b360f8f186233b3b1e61d",
+      "compression_evidence": {
+        "path": "legacy_ar20_L16_d025_lossless_compression.json",
+        "sha256": "8d10a06b5e493b756528a579aab89e5a9db1afd96f5d8b25de25ac2d83c7f1e7"
+      },
+      "local_file_exists": true,
+      "local_file_is_symlink": false,
+      "gzip_magic_hex": "1f8b",
+      "bytes_unchanged_by_this_upload_task": true
+    }
+  ],
+  "single_ordered_batch": true,
+  "retry_performed": false,
+  "direct_upload_fallback_performed": false,
+  "local_files_deleted_or_replaced": false,
+  "physical_accuracy_qualified": false,
+  "scope": "Failed preservation attempt only; no Library file identity or version was returned. Keep all local gzip bytes.",
+  "stdout_size_bytes": 0,
+  "stderr_size_bytes": 46
+}

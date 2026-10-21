@@ -1,0 +1,33 @@
+LAMMPS (30 Sep 2026)
+plugin load "/workspace/scratch/0520ed9b6708/bridge-build/libslurry.so"
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+units si
+atom_style ellipsoid
+boundary p p p
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (3e-06 3e-06 3e-06) with tilt (0 1.4997e-06 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  2 ellipsoids
+  read_data CPU = 0.000 seconds
+comm_modify vel yes
+pair_style zero 8.9999999999999996e-07
+pair_coeff * *
+neighbor 2.9999999999999997e-08 bin
+neigh_modify every 1 delay 0 check yes
+fix shear all deform 0 xz erate 100 remap x units box flip yes
+fix hydro all slurry/bridge 0.01 100 1e-9 1 contact 3e-9 0.1 80 spectral 2 spectral_tolerance 1e-8 tolerance 1e-8 iterations 2000 history history.csv 1 0
+timestep 9.9999999999999995e-07
+thermo 1
+thermo_style custom step time xz f_hydro[1] f_hydro[4] f_hydro[7] f_hydro[14]
+dump state all custom 1 trajectory.lammpstrj id x y z ix iy iz vx vy vz f_hydro[*]
+dump_modify state sort id format float %.17g
+run 4
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+ERROR: slurry/bridge requires fix deform on all atoms with remap v (src/fix_slurry_bridge.cpp:185)
+Last input line: run 4

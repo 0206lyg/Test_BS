@@ -1,0 +1,15 @@
+{
+  "sources_sha256": {
+    "validation_basis/ar20_pair_probe.cpp": "6fe274860b3b453dd504e4a73a49e410814786a3db25944744ffbff38dc44e66",
+    "validation_basis/ar20_collocation_probe.cpp": "6ba1a1639f516fec5d006e7f23d0f1fbfe0a414557aaba3640b489070c2e2436",
+    "validation_basis/ar20_boundary_check.py": "ff197fe665a27a1b12bb80c7e3511f8eb0ec305721fe9cd80e62436119f54f9f",
+    "validation_basis/ar20_boundary_kernel_check.py": "ccee27700541b0c954343cdc3e648842e12fa9744075ec23429ea8cf0b64ae74",
+    "lammps_slurry/src/slurry_scattering_math.h": "6ca1e66b91cb73c294012e0389300abaf6e1fb959296bd5467f194e59ef8dec8",
+    "lammps_slurry/tools/basis_cylindrical_kernel.h": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a"
+  },
+  "executables_sha256": {
+    "ar20_pair_probe_split_depth": "6f41f10d28b707219efbe9790cd2e493438a7d60ab4cecc8af2dfbad362829fb",
+    "ar20_collocation_probe": "93361f96c2cda2f7dc7e0a4570bf5c3b5fd4fa36994213eb92c38266a247d6da"
+  },
+  "compiler_flags": "g++ -O3 -DNDEBUG -march=native -std=c++17 -I lammps_slurry/src -I lammps_slurry/vendor/eigen3"
+}

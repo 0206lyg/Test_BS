@@ -1,0 +1,24 @@
+.EF.
+======================================================================
+ERROR: test_full_snapshot_preserves_identity_and_shared_models (__main__.RuntimeSnapshotTests.test_full_snapshot_preserves_identity_and_shared_models)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/581ed100c5ad/Test_BS_general/validation_finite_gap/test_runtime_snapshot.py", line 136, in test_full_snapshot_preserves_identity_and_shared_models
+    record = runtime.create_runtime(source_root, destination, runtime.bundle_guard.RELEASE_ID, {})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tools/runtime_snapshot.py", line 152, in create_runtime
+    raise RuntimeError("Runtime dependency escaped private snapshot: {} -> {}".format(soname, resolved))
+RuntimeError: Runtime dependency escaped private snapshot: libsnapshot_probe.so -> /tmp/slurry-runtime-test-vhru9s3s/libsnapshot_probe.so
+
+======================================================================
+FAIL: test_mapped_library_truncation_and_private_copy (__main__.RuntimeSnapshotTests.test_mapped_library_truncation_and_private_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/581ed100c5ad/Test_BS_general/validation_finite_gap/test_runtime_snapshot.py", line 69, in test_mapped_library_truncation_and_private_copy
+    self.assertEqual(private.returncode, 0, stderr)
+AssertionError: -7 != 0 : 
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.405s
+
+FAILED (failures=1, errors=1)

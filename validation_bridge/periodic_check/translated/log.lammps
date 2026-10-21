@@ -1,0 +1,76 @@
+LAMMPS (30 Sep 2026)
+plugin load "/workspace/scratch/0520ed9b6708/bridge-build/libslurry.so"
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+units si
+atom_style ellipsoid
+boundary p p p
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (3e-06 3e-06 3e-06) with tilt (0 1.4997e-06 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  2 ellipsoids
+  read_data CPU = 0.001 seconds
+comm_modify vel yes
+pair_style zero 8.9999999999999996e-07
+pair_coeff * *
+neighbor 2.9999999999999997e-08 bin
+neigh_modify every 1 delay 0 check yes
+fix shear all deform 0 xz erate 100 remap v units box flip yes
+fix hydro all slurry/bridge 0.01 100 1e-9 1 contact 3e-9 0.1 80 spectral 2 spectral_tolerance 1e-8 tolerance 1e-8 iterations 2000 history history.csv 1 0
+timestep 9.9999999999999995e-07
+thermo 1
+thermo_style custom step time xz f_hydro[1] f_hydro[4] f_hydro[7] f_hydro[14]
+dump state all custom 1 trajectory.lammpstrj id x y z ix iy iz vx vy vz f_hydro[*]
+dump_modify state sort id format float %.17g
+run 4
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 9.3e-07
+  ghost atom cutoff = 9.3e-07
+  binsize = 4.65e-07, bins = 10 7 7
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.77 | 4.77 | 4.77 Mbytes
+   Step          Time            Xz         f_hydro[1]     f_hydro[4]     f_hydro[7]    f_hydro[14]  
+         0   0              1.4997e-06     1.0123188      1              2.8532825e-10  1.2621774e-29
+         1   1e-06          1.5e-06        1.0123165      1              1.0829043e-08 -2.5243549e-29
+         2   2e-06         -1.4997e-06     1.0123131      1              2.8843676e-10 -3.7865323e-29
+         3   3e-06         -1.4994e-06     1.0123106      1              4.1817914e-08 -1.8932662e-29
+         4   4e-06         -1.4991e-06     1.012309       1              2.8594123e-10 -6.3108872e-30
+Loop time of 0.379575 on 1 procs for 4 steps with 2 atoms
+
+88.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 8.374e-06  | 8.374e-06  | 8.374e-06  |   0.0 |  0.00
+Neigh   | 8.623e-06  | 8.623e-06  | 8.623e-06  |   0.0 |  0.00
+Comm    | 2.5698e-05 | 2.5698e-05 | 2.5698e-05 |   0.0 |  0.01
+Output  | 0.00029266 | 0.00029266 | 0.00029266 |   0.0 |  0.08
+Modify  | 0.37919    | 0.37919    | 0.37919    |   0.0 | 99.90
+Other   |            | 4.45e-05   |            |       |  0.01
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              1 ave           1 max           1 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1
+Ave neighs/atom = 0.5
+Neighbor list builds = 1
+Dangerous builds = 0
+Total wall time: 0:00:00

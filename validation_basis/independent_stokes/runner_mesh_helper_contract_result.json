@@ -1,0 +1,22 @@
+{
+  "schema": "independent_reference_runner_mesh_helper_contract_v1",
+  "passed": true,
+  "physical_accuracy_qualified": false,
+  "scope": "Synthetic subprocess routing and relocation-only helper ABI load; no Stokes solve or helper matvec",
+  "runner_sha256": "cf3d31008eb1be487bc79f561a0be93f896823636d605cf332134f8cd151c647",
+  "checks": {
+    "mesh_snapshot_rebound": true,
+    "near_helper_and_adjacent_manifest_preserved": true,
+    "relocated_wrapper_validates_abi_and_source": true,
+    "backend_manifest_autodetected_and_rebound": true,
+    "recursive_patch_source_and_matrix_free_snapshotted": true,
+    "clean_native_logs_retained": true,
+    "explicit_backend_manifest_rebound": true,
+    "missing_helper_manifest_rejected": true,
+    "stale_helper_source_rejected": true,
+    "helper_hash_mismatch_rejected": true,
+    "backend_hash_mismatch_rejected": true,
+    "mesh_and_adapt_conflict_rejected": true
+  },
+  "recorded_at_utc": "2026-10-18T19:09:37.263537+00:00"
+}

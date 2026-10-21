@@ -1,13 +1,11 @@
 {
-  "release_id": "20261018-pair-quadrature-runtime-fix",
-  "status": "EXPERIMENTAL_HYBRID_V3_TABLE_FAILURE_REPAIR",
-  "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+  "release_id": "20261020-compact-bridge-integration",
+  "status": "COMPACT_BRIDGE_INTEGRATION",
+  "baseline_git_commit": "b8f78900f8c180d6c37e97f1a2682ff40d6bbd0b",
   "prepare_case_sha256": "b39c1f5cdea804eba14f655399ed46b1eeeb9bba840d1610d2fd45c512611d62",
-  "numerical_source_fingerprint": "4c89a605178ab6ca694dd88ee875d0239a5af5b46139625fa0e9fa4b5612cfab",
-  "model_stage": "HYBRID_V3",
-  "basis_resolution_policy": "confocal_geometry_scaled_target_oversampled_v2",
-  "details": "RESULT.json",
-  "full_resolution_table_completed_here": false,
-  "independent_narrow_gap_stokes_qualified": false,
+  "model_stage": "COMPACT_BRIDGE_V4_PERIODIC_LOCAL_TAIL",
+  "details": "validation_bridge/RESULT.json",
+  "legacy_release": "20261018-pair-quadrature-runtime-fix",
+  "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
   "equilibrium_bulk_viscosity_tested": false
 }

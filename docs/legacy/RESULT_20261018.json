@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "release_id": "20261018-pair-quadrature-runtime-fix",
+  "release_report_finalized": true,
+  "status": "TABLE_FAILURE_REPAIR_TESTED_ON_COMPLETE_COARSE_AR2_AR5_AR20_TABLES; PRODUCTION_TABLES_AND_PHYSICAL_CONVERGENCE_PENDING",
+  "baseline_git_commit": "e2475dabec61dcb466fa8c1c9abb4c7620ab84d9",
+  "numerical_source_fingerprint": "4c89a605178ab6ca694dd88ee875d0239a5af5b46139625fa0e9fa4b5612cfab",
+  "validation_report": "validation_basis/table_failure_fix.json",
+  "actual_pair_preflight": {
+    "2": {
+      "passed": true,
+      "checks": 20
+    },
+    "5": {
+      "passed": true,
+      "checks": 20
+    },
+    "20": {
+      "passed": true,
+      "checks": 20
+    }
+  },
+  "actual_complete_coarse_tables": {
+    "2": {
+      "passed": true,
+      "stored_nodes": 640,
+      "source_poses": 52,
+      "loader_and_positive_total_passed": true,
+      "resume_byte_identical": true
+    },
+    "5": {
+      "passed": true,
+      "stored_nodes": 640,
+      "source_poses": 52,
+      "loader_and_positive_total_passed": true,
+      "resume_byte_identical": true
+    },
+    "20": {
+      "passed": true,
+      "stored_nodes": 640,
+      "source_poses": 52,
+      "loader_and_positive_total_passed": true,
+      "resume_byte_identical": true
+    }
+  },
+  "physical_accuracy_converged": false,
+  "ar20_failed_pose_degree12_to14_relative_energy_change": 0.0662476672472202,
+  "ar20_failed_pose_degree14_to16_relative_energy_change": 0.02372155588820768,
+  "not_completed_or_not_claimed": [
+    "Complete full-resolution production tables and their interpolation gates were not run locally.",
+    "Coarse global tables test generation, storage, resume and lookup; they do not qualify rheology accuracy.",
+    "AR20 L12 is not degree converged at the failed pose; degree refinements are diagnostics, not independent accuracy references.",
+    "For h_eff/c < 0.5 the unchanged Hybrid V3 film plus two-anchor residual closure is retained; this is not a direct narrow-gap Stokes replacement.",
+    "AR2/5 original SIGBUS cause is unconfirmed. Private runtime copies and bounded recovery address tested failure modes; production-node remediation is not proven.",
+    "No full-table cluster run, MPI scaling, or new equilibrium bulk-viscosity measurement was performed.",
+    "AR20 uses an existing genuine L12 source fit retargeted to factor3; its unused far slot is the original near basis. AR2/5 target3 sources were generated with the modified generator.",
+    "Earlier O2 smoke/gate runs were explicitly interrupted to use the benchmarked native Release binary; they were not numerical failures."
+  ],
+  "historical_reports": "Existing older reports remain historical; they are not evidence of rerunning their tests for this release."
+}

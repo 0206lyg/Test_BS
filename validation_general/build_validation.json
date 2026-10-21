@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "source_fingerprint": "2f090f0a38878f2987b32522529c89ea516b95e11a7733eddab617a962ac9d1e",
+  "source_files": 405,
+  "build_source_binding": "build.py captured source before compilation, checked unchanged after CTest/plugin load, then wrote manifest; final source snapshot matches",
+  "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+  "configuration": {
+    "serial": true,
+    "build_legacy_table_tools": false,
+    "cmake_version": "cmake version 4.4.4",
+    "cxx": "GNU 13.3.0"
+  },
+  "ctest": {
+    "passed": 35,
+    "total": 35,
+    "elapsed_seconds": 16.72,
+    "log": "ctest_last_run.txt"
+  },
+  "plugin_load_passed": true,
+  "verified_binary_smoke": {
+    "passed": true,
+    "ar": 2,
+    "count": 64,
+    "steps": 3,
+    "report": "verified_build_smoke.json"
+  },
+  "manifest": "verified_build_manifest.json",
+  "binary_sha256": {
+    "executable": "c271ead562465754eb06968b51ab20f390fbf04ee4d482405cf2cbcc8569418a",
+    "plugin": "2194cece7c6511a79f7f20676345aab1314a70dc5badf9457ddf8599b8528854",
+    "packer": "f5eae8d0bd85dade2406eaed07717872f998c64c4133ebaa7704ace17419ecc2"
+  },
+  "mpi_compile_passed": true,
+  "mpi_multiple_rank_execution": "environment-blocked; see mpi_startup_error.txt"
+}

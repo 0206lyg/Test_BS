@@ -37,6 +37,9 @@ add_library(slurry MODULE
   src/pair_slurry_spheroid.cpp
   src/fix_slurry_drag.cpp
   src/fix_slurry_implicit.cpp)
+if(SLURRY_ENABLE_LU)
+  target_sources(slurry PRIVATE src/fix_slurry_bridge.cpp)
+endif()
 target_link_libraries(slurry PRIVATE LAMMPS::lammps slurry_solver_options)
 target_include_directories(slurry PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/src"
@@ -192,4 +195,35 @@ if(BUILD_TESTING)
     add_test(NAME slurry_dense_friction_stall_ilu COMMAND slurry_friction_regression_test
       "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/dense_friction_stall.dat" ilu)
   endif()
+endif()
+
+# Compact bridge path: no offline basis or resistance-table generation.
+if(SLURRY_ENABLE_LU)
+  find_package(OpenMP QUIET COMPONENTS CXX)
+  if(OpenMP_CXX_FOUND)
+    target_link_libraries(slurry PRIVATE OpenMP::OpenMP_CXX)
+  endif()
+  if(BUILD_TESTING)
+    foreach(BRIDGE_TEST compact_bridge bridge_images bridge_solver periodic_mobility)
+      if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_${BRIDGE_TEST}.cpp")
+        add_executable(slurry_${BRIDGE_TEST}_test tests/test_${BRIDGE_TEST}.cpp)
+        target_include_directories(slurry_${BRIDGE_TEST}_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+        target_link_libraries(slurry_${BRIDGE_TEST}_test PRIVATE slurry_solver_options)
+        if(OpenMP_CXX_FOUND)
+          target_link_libraries(slurry_${BRIDGE_TEST}_test PRIVATE OpenMP::OpenMP_CXX)
+        endif()
+        if(BRIDGE_TEST STREQUAL "compact_bridge")
+          add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/compact_bridge_v4.dat")
+        else()
+          add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test)
+        endif()
+      endif()
+    endforeach()
+  endif()
+endif()
+
+if(BUILD_TESTING)
+  find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter)
+  add_test(NAME slurry_bridge_tools COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_bridge_tools.py")
+  add_test(NAME slurry_runtime_link_paths COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_runtime_link_paths.py")
 endif()

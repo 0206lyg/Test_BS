@@ -1,0 +1,25 @@
+{
+  "schema": "out_of_core_lu_test_summary_v1",
+  "scope": "Synthetic exact linear algebra and bounded-storage checks only; no Stokes physical qualification.",
+  "physical_accuracy_qualified": false,
+  "tests_run": 6,
+  "tests_skipped": 1,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "elapsed_seconds": 0.08946433600067394,
+  "source_sha256": {
+    "out_of_core_lu.py": "dfc2c80f4129ce0920eb70fc30b43116c5213dabc4e6f8bd9bd1693f8a9d8bc1",
+    "test_out_of_core_lu.py": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5"
+  },
+  "estimated_working_bytes_dimension38637_rhs17_stripe512": {
+    "1024": 1279265408,
+    "2048": 2279139968
+  },
+  "benchmarks": [
+    "out_of_core_lu_d3000_panel512_check.json",
+    "out_of_core_lu_d5000_panel1024_check.json",
+    "out_of_core_lu_d5000_panel2048_check.json"
+  ],
+  "benchmark_source_scope": "Benchmarks retain their own exact source hashes; final source only removes redundant cleanup flush that could mask an earlier write failure. The complete focused suite was rerun on the final source."
+}

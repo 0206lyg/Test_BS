@@ -1,0 +1,28 @@
+{
+  "command": [
+    "/workspace/scratch/581ed100c5ad/ar20_validation/slurry_generate_basis",
+    "--ar",
+    "20",
+    "--degree",
+    "16",
+    "--source-rings",
+    "192",
+    "--source-phi",
+    "256",
+    "--fit-phi",
+    "16384",
+    "--check-phi",
+    "32768",
+    "--target-rings",
+    "57",
+    "--target-phi",
+    "111",
+    "--output",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16.ssb",
+    "--report",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_generation.json"
+  ],
+  "returncode": 0,
+  "wall_seconds": 283.1077160835266,
+  "maxrss_kib": 5034444
+}

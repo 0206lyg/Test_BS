@@ -1,0 +1,44 @@
+{
+  "schema": "janoschek_appendix_scope_audit_v1",
+  "date": "2026-10-18",
+  "primary_source": "https://arxiv.org/html/1308.6482v1#A1",
+  "scope": "Appendix A.1-A.16 local six-coordinate resistance; exact recorded AR20 pose algebra checks",
+  "appendix_leading_terms_implemented": true,
+  "all_divergent_terms_included": false,
+  "normal_normal_subleading_log": "Intentionally omitted by Janoschek Appendix A and this paper-scope implementation",
+  "full17_strain_stresslet_physical_extension_qualified": false,
+  "physical_qualified": false,
+  "production_formula_modified": false,
+  "new_stokes_calculations": false,
+  "recorded_pose": {
+    "ar": 20,
+    "theta_i": 0.004924530359211356,
+    "theta_j": 0.041010932014513654,
+    "phi": 1.7016960206944713
+  },
+  "gap_over_c_algebra_checks": [
+    1.0,
+    0.5,
+    0.021,
+    0.006666666666666667,
+    0.001
+  ],
+  "appendix_entrywise_max_relative_error": 1.6495865392986592e-15,
+  "full17_energy_gradient_fd_error": 1.2506390800128825e-11,
+  "raw_test_passed": true,
+  "test_executable": "/workspace/scratch/581ed100c5ad/build-validation/slurry_janoschek_raw_test",
+  "test_executable_sha256": "8b6a1a1248a70acd17f2561efc70baf86d16b333c8fe6010422401117d4c8271",
+  "source_sha256": {
+    "lammps_slurry/src/slurry_spheroid_hydro_math.h": "f279ad0fd21763bc9966c09fb9eedd1d7b50f21006ac94e938386d4184bf4447",
+    "lammps_slurry/src/slurry_singular_pair.h": "d4de7f7c862064d37e3cad5c4286389e90ff448d0371263c091c8d69cc3ae5ea",
+    "lammps_slurry/tests/test_singular_pair.cpp": "8cda9e22d427754fd721fd6e270c1d082ac9b75b4084e8e474a31b453f65adb5"
+  },
+  "binary_newer_than_checked_sources": true,
+  "stdout": "AR20 h/c=1 full17-to-table restriction remainder=0.00044545008665558626\nAR20 h/c=0.5 full17-to-table restriction remainder=0.00022779474304109894\nAR20 h/c=0.020999999999999998 full17-to-table restriction remainder=1.948312304668562e-06\nAR20 h/c=0.0066666666666666671 full17-to-table restriction remainder=2.1228479552172197e-07\nAR20 h/c=0.001 full17-to-table restriction remainder=5.5021094063803e-09\nAppendix-A entrywise max relative error=1.6495865392986592e-15; gradient finite-difference error=1.2506390800128825e-11; largest finite-gap restriction remainder=0.00044545008665558626\nPASS raw Janoschek entries, physical gap floor, sphere limit, full17 force/torque/stress quadratic and honest 11-coordinate restriction.\n",
+  "stderr": "",
+  "limitations": [
+    "Paper-scope transcription and algebra checks do not establish finite-gap or 1 nm physical accuracy.",
+    "Full17 strain/stresslet kinematic extension needs independent physical reference validation.",
+    "A constant anchor residual does not recover all omitted divergent or finite terms."
+  ]
+}

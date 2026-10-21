@@ -4,6 +4,9 @@
 
 #include "fix_slurry_drag.h"
 #include "fix_slurry_implicit.h"
+#ifdef SLURRY_HAVE_EIGEN
+#include "fix_slurry_bridge.h"
+#endif
 #include "pair_slurry_spheroid.h"
 
 using namespace LAMMPS_NS;
@@ -22,6 +25,12 @@ void *create_implicit(void *lmp, int argc, char **argv)
 {
   return new FixSlurryImplicit(static_cast<LAMMPS *>(lmp), argc, argv);
 }
+#ifdef SLURRY_HAVE_EIGEN
+void *create_bridge(void *lmp, int argc, char **argv)
+{
+  return new FixSlurryBridge(static_cast<LAMMPS *>(lmp), argc, argv);
+}
+#endif
 }    // namespace
 
 extern "C" void lammpsplugin_init(void *lmp, void *handle, void *regfunc)
@@ -47,4 +56,10 @@ extern "C" void lammpsplugin_init(void *lmp, void *handle, void *regfunc)
   plugin.info = "Coupled overdamped spheroid resistance and implicit elastic contact";
   plugin.creator.v2 = &create_implicit;
   register_plugin(&plugin, lmp);
+#ifdef SLURRY_HAVE_EIGEN
+  plugin.name = "slurry/bridge";
+  plugin.info = "Compact spheroid lubrication, periodic mobility and implicit contact";
+  plugin.creator.v2 = &create_bridge;
+  register_plugin(&plugin, lmp);
+#endif
 }

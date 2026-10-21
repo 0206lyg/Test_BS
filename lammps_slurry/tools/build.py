@@ -129,11 +129,11 @@ def check_plugin(executable, plugin, build, *, mpi):
             print(error.stdout, file=sys.stderr)
         raise RuntimeError("LAMMPS startup/plugin verification failed. See {}.".format(log)) from error
     log.write_text(result.stdout)
-    for style in ("slurry/spheroid", "slurry/drag", "slurry/implicit"):
+    for style in ("slurry/spheroid", "slurry/drag", "slurry/implicit", "slurry/bridge"):
         if style not in result.stdout:
             raise RuntimeError("Plugin check did not find style {}. See {}."
                                .format(style, build / "check-slurry-plugin.log"))
-    print("Plugin load verified: pair slurry/spheroid, fix slurry/drag, fix slurry/implicit", flush=True)
+    print("Plugin load verified: pair slurry/spheroid, fix slurry/drag, fix slurry/implicit, fix slurry/bridge", flush=True)
 
 
 def write_environment(build, executable, plugin, packer):
@@ -238,7 +238,7 @@ def main():
         "packer": str(packer),
         "cmake_version": run(["cmake", "--version"], capture=True).stdout.splitlines()[0],
         "packages": ["ASPHERE", "PLUGIN"],
-        "validation": "CTest suite and loading slurry/spheroid, slurry/drag, slurry/implicit styles",
+        "validation": "CTest suite and loading slurry/spheroid, slurry/drag, slurry/implicit, slurry/bridge styles",
         **identity,
     }
     temporary_manifest = manifest_path.with_suffix(".json.tmp")

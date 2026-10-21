@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="13"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="ddf375874bd1"
+	time="0"
+	timestamp="2026-10-18T21:10:55"
+	>
+	<testcase name="slurry_grand_pair_math" classname="slurry_grand_pair_math" time="0.00149239" status="run">
+		<properties/>
+		<system-out>PASS: 17 conjugate finite differences, work balance, assembly, frame covariance, unit scaling, rate scaling, window and guards. Maximum normalized error=2.34100860919e-09
+</system-out>
+	</testcase>
+	<testcase name="slurry_grand_pair_lookup" classname="slurry_grand_pair_lookup" time="0.00161213" status="run">
+		<properties/>
+		<system-out>PASS: explicit geometry coverage, no extrapolation, interpolation gate, provenance, axis-director equivalence.
+</system-out>
+	</testcase>
+	<testcase name="slurry_grand_reduced" classname="slurry_grand_reduced" time="0.00174905" status="run">
+		<properties/>
+		<system-out>PASS: reduced midpoint common rotation, affine coordinate congruence, same stress and power.
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_table_contract" classname="slurry_hardfloor_table_contract" time="0.0134323" status="run">
+		<properties/>
+		<system-out>PASS hardfloor table serialization, lookup, old-model rejection, checkpoint identity
+</system-out>
+	</testcase>
+	<testcase name="slurry_hardfloor_preparation_contract" classname="slurry_hardfloor_preparation_contract" time="0.0473214" status="run">
+		<properties/>
+		<system-out>..
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_explicit_anchor_contract" classname="slurry_explicit_anchor_contract" time="0.312714" status="run">
+		<properties/>
+		<system-out>..Generating actual AR=20.0 scattering bases (far degree 8, near degree 12, source rings 192, runtime phi 256, fit/check phi 16384/32768, target oversampling 3); pair checks follow separately
+........
+----------------------------------------------------------------------
+Ran 10 tests in 0.233s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="slurry_basis_serialization_contract" classname="slurry_basis_serialization_contract" time="0.00341595" status="run">
+		<properties/>
+		<system-out>PASS streamed basis byte identity, file roundtrip and atomic publication
+</system-out>
+	</testcase>
+	<testcase name="slurry_janoschek_raw_coefficients" classname="slurry_janoschek_raw_coefficients" time="0.00174559" status="run">
+		<properties/>
+		<system-out>AR20 h/c=1 full17-to-table restriction remainder=0.00044545008665558626
+AR20 h/c=0.5 full17-to-table restriction remainder=0.00022779474304109894
+AR20 h/c=0.020999999999999998 full17-to-table restriction remainder=1.948312304668562e-06
+AR20 h/c=0.0066666666666666671 full17-to-table restriction remainder=2.1228479552172197e-07
+AR20 h/c=0.001 full17-to-table restriction remainder=5.5021094063803e-09
+Appendix-A entrywise max relative error=1.6495865392986592e-15; gradient finite-difference error=1.2506390800128825e-11; largest finite-gap restriction remainder=0.00044545008665558626
+PASS raw Janoschek entries, physical gap floor, sphere limit, full17 force/torque/stress quadratic and honest 11-coordinate restriction.
+</system-out>
+	</testcase>
+	<testcase name="slurry_grand_system_passivity" classname="slurry_grand_system_passivity" time="0.00157869" status="run">
+		<properties/>
+		<system-out>PASS: signed pair accepted only with global velocity+strain passivity; negative total velocity/strain rejected.
+</system-out>
+	</testcase>
+	<testcase name="slurry_spheroid_lubrication_algebra" classname="slurry_spheroid_lubrication_algebra" time="0.0022506" status="run">
+		<properties/>
+		<system-out>Spheroid lubrication implementation checks passed: exact/near-sphere Mari limit, anisotropic curvature coefficients, finite regularization, reciprocity, modal dissipation, affine force/stress energy identities, rotation covariance and particle exchange.
+</system-out>
+	</testcase>
+	<testcase name="slurry_mari_pair_lubrication" classname="slurry_mari_pair_lubrication" time="0.00737307" status="run">
+		<properties/>
+		<system-out>Mari sphere lubrication checks passed: independent unequal-sphere A/B/C/G/H/M coefficients, regularization, pump/twist, reciprocity, PSD, strain-stress derivative, periodic-image power and force-free pair.
+</system-out>
+	</testcase>
+	<testcase name="slurry_hydro_analytic_limits" classname="slurry_hydro_analytic_limits" time="0.0132832" status="run">
+		<properties/>
+		<system-out>PASS: sphere and thin-disk resistance, oblate/prolate anisotropy, Jeffery rotation
+</system-out>
+	</testcase>
+	<testcase name="slurry_stress_analytic_limits" classname="slurry_stress_analytic_limits" time="0.0253097" status="run">
+		<properties/>
+		<system-out>PASS: exact spheroid stresslet, Einstein limit, rotation coupling, objectivity, power, reciprocity
+</system-out>
+	</testcase>
+</testsuite>

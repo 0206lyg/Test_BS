@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "result": "/workspace/scratch/0520ed9b6708/periodic-check-approved-final/result.json",
+  "flip_steps": [
+    2
+  ],
+  "rebased_comparison": {
+    "maximum_relative_history_differences": {
+      "sigma_hydro_Pa": 6.7887644430701805e-12,
+      "sigma_contact_Pa": 4.135184090364255e-12,
+      "sigma_xz_Pa": 8.137609405159279e-14,
+      "hydro_dissipation_W": 6.598600584074944e-13,
+      "contact_power_W": 6.788424285261726e-13,
+      "stress_power_W": 8.124521157406672e-14,
+      "eta_Pa_s": 8.139665741767725e-14
+    },
+    "maximum_relative_per_particle_response_differences": {
+      "force": 1.478158288358934e-12,
+      "torque": 2.863247295713509e-10,
+      "stresslet": 8.955614879283206e-13,
+      "contact_force": 8.934666611432358e-13,
+      "contact_torque": 2.7740475181584405e-12
+    }
+  },
+  "translated_comparison": {
+    "maximum_relative_history_differences": {
+      "sigma_hydro_Pa": 3.452204726197995e-12,
+      "sigma_contact_Pa": 2.9588191829925245e-12,
+      "sigma_xz_Pa": 2.5882423444980996e-14,
+      "hydro_dissipation_W": 1.7117110944667157e-12,
+      "contact_power_W": 1.7603835051757103e-12,
+      "stress_power_W": 2.5975378478387227e-14,
+      "eta_Pa_s": 2.5875568989619504e-14
+    },
+    "maximum_relative_per_particle_response_differences": {
+      "force": 2.6708673443566822e-12,
+      "torque": 2.9240899872890903e-12,
+      "stresslet": 1.6788191338949926e-12,
+      "contact_force": 1.477047305754102e-12,
+      "contact_torque": 2.6440063144503627e-12
+    }
+  }
+}

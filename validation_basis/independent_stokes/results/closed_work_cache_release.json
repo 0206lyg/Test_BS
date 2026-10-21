@@ -1,0 +1,40 @@
+{
+  "scope": "Read-only cache advice for closed task temporary-work files; active /tmp solve excluded; no data changes",
+  "files_advised": 55,
+  "before": {
+    "path": "/sys/fs/cgroup",
+    "limit_bytes": 8589934592,
+    "current_bytes": 1483362304,
+    "memory_stat": {
+      "anon": 794902528,
+      "file": 583704576,
+      "kernel": 103501824,
+      "inactive_file": 231862272,
+      "active_file": 351780864,
+      "file_dirty": 208896,
+      "file_writeback": 0,
+      "shmem": 0
+    },
+    "reclaimable_clean_inactive_file_bytes": 231653376,
+    "effective_current_bytes": 1251708928,
+    "minimum_hierarchy_limit_bytes": 8589934592
+  },
+  "after": {
+    "path": "/sys/fs/cgroup",
+    "limit_bytes": 8589934592,
+    "current_bytes": 973291520,
+    "memory_stat": {
+      "anon": 801001472,
+      "file": 65183744,
+      "kernel": 103378944,
+      "inactive_file": 12771328,
+      "active_file": 52412416,
+      "file_dirty": 208896,
+      "file_writeback": 0,
+      "shmem": 0
+    },
+    "reclaimable_clean_inactive_file_bytes": 12562432,
+    "effective_current_bytes": 960729088,
+    "minimum_hierarchy_limit_bytes": 8589934592
+  }
+}

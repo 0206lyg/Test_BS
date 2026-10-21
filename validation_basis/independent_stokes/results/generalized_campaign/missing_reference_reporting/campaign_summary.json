@@ -1,0 +1,2656 @@
+{
+  "schema": "reference_table_campaign_summary_v1",
+  "created_utc": "2026-10-19T01:27:14.801875+00:00",
+  "campaign_sha256": "ee2ad09332e27fa4a84d516951c1364d2db6d08aa8735b123e70e67593cf6222",
+  "physical_accuracy_qualified": false,
+  "groups": [
+    {
+      "id": "AR2",
+      "aspect_ratio": 2.0,
+      "table_status": "waiting_for_references",
+      "missing_or_rejected_grid_tasks": [
+        {
+          "task_id": 0,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000000/task.json"
+        },
+        {
+          "task_id": 1,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000001/task.json"
+        },
+        {
+          "task_id": 2,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000002/task.json"
+        },
+        {
+          "task_id": 3,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000003/task.json"
+        },
+        {
+          "task_id": 4,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000004/task.json"
+        },
+        {
+          "task_id": 5,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000005/task.json"
+        },
+        {
+          "task_id": 6,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000006/task.json"
+        },
+        {
+          "task_id": 7,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000007/task.json"
+        },
+        {
+          "task_id": 8,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000008/task.json"
+        },
+        {
+          "task_id": 9,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000009/task.json"
+        },
+        {
+          "task_id": 10,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000010/task.json"
+        },
+        {
+          "task_id": 11,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000011/task.json"
+        },
+        {
+          "task_id": 12,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000012/task.json"
+        },
+        {
+          "task_id": 13,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000013/task.json"
+        },
+        {
+          "task_id": 14,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000014/task.json"
+        },
+        {
+          "task_id": 15,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000015/task.json"
+        },
+        {
+          "task_id": 16,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000016/task.json"
+        },
+        {
+          "task_id": 17,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000017/task.json"
+        },
+        {
+          "task_id": 18,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000018/task.json"
+        },
+        {
+          "task_id": 19,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000019/task.json"
+        },
+        {
+          "task_id": 20,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000020/task.json"
+        },
+        {
+          "task_id": 21,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000021/task.json"
+        },
+        {
+          "task_id": 22,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000022/task.json"
+        },
+        {
+          "task_id": 23,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000023/task.json"
+        },
+        {
+          "task_id": 24,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000024/task.json"
+        },
+        {
+          "task_id": 25,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000025/task.json"
+        },
+        {
+          "task_id": 26,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000026/task.json"
+        },
+        {
+          "task_id": 27,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000027/task.json"
+        },
+        {
+          "task_id": 28,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000028/task.json"
+        },
+        {
+          "task_id": 29,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000029/task.json"
+        },
+        {
+          "task_id": 30,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000030/task.json"
+        },
+        {
+          "task_id": 31,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000031/task.json"
+        },
+        {
+          "task_id": 32,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000032/task.json"
+        },
+        {
+          "task_id": 33,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000033/task.json"
+        },
+        {
+          "task_id": 34,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000034/task.json"
+        },
+        {
+          "task_id": 35,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000035/task.json"
+        },
+        {
+          "task_id": 36,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000036/task.json"
+        },
+        {
+          "task_id": 37,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000037/task.json"
+        },
+        {
+          "task_id": 38,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000038/task.json"
+        },
+        {
+          "task_id": 39,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000039/task.json"
+        },
+        {
+          "task_id": 40,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000040/task.json"
+        },
+        {
+          "task_id": 41,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000041/task.json"
+        },
+        {
+          "task_id": 42,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000042/task.json"
+        },
+        {
+          "task_id": 43,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000043/task.json"
+        },
+        {
+          "task_id": 44,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000044/task.json"
+        },
+        {
+          "task_id": 45,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000045/task.json"
+        },
+        {
+          "task_id": 46,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000046/task.json"
+        },
+        {
+          "task_id": 47,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000047/task.json"
+        },
+        {
+          "task_id": 48,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000048/task.json"
+        },
+        {
+          "task_id": 49,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000049/task.json"
+        },
+        {
+          "task_id": 50,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000050/task.json"
+        },
+        {
+          "task_id": 51,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000051/task.json"
+        },
+        {
+          "task_id": 52,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000052/task.json"
+        },
+        {
+          "task_id": 53,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000053/task.json"
+        },
+        {
+          "task_id": 54,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000054/task.json"
+        },
+        {
+          "task_id": 55,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000055/task.json"
+        },
+        {
+          "task_id": 56,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000056/task.json"
+        },
+        {
+          "task_id": 57,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000057/task.json"
+        },
+        {
+          "task_id": 58,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000058/task.json"
+        },
+        {
+          "task_id": 59,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000059/task.json"
+        },
+        {
+          "task_id": 60,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000060/task.json"
+        },
+        {
+          "task_id": 61,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000061/task.json"
+        },
+        {
+          "task_id": 62,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000062/task.json"
+        },
+        {
+          "task_id": 63,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000063/task.json"
+        },
+        {
+          "task_id": 64,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000064/task.json"
+        },
+        {
+          "task_id": 65,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000065/task.json"
+        },
+        {
+          "task_id": 66,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000066/task.json"
+        },
+        {
+          "task_id": 67,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000067/task.json"
+        },
+        {
+          "task_id": 68,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000068/task.json"
+        },
+        {
+          "task_id": 69,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000069/task.json"
+        },
+        {
+          "task_id": 70,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000070/task.json"
+        },
+        {
+          "task_id": 71,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000071/task.json"
+        },
+        {
+          "task_id": 72,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000072/task.json"
+        },
+        {
+          "task_id": 73,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000073/task.json"
+        },
+        {
+          "task_id": 74,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000074/task.json"
+        },
+        {
+          "task_id": 75,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000075/task.json"
+        },
+        {
+          "task_id": 76,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000076/task.json"
+        },
+        {
+          "task_id": 77,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000077/task.json"
+        },
+        {
+          "task_id": 78,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000078/task.json"
+        },
+        {
+          "task_id": 79,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000079/task.json"
+        },
+        {
+          "task_id": 80,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000080/task.json"
+        },
+        {
+          "task_id": 81,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000081/task.json"
+        },
+        {
+          "task_id": 82,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000082/task.json"
+        },
+        {
+          "task_id": 83,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000083/task.json"
+        },
+        {
+          "task_id": 84,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000084/task.json"
+        },
+        {
+          "task_id": 85,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000085/task.json"
+        },
+        {
+          "task_id": 86,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000086/task.json"
+        },
+        {
+          "task_id": 87,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000087/task.json"
+        },
+        {
+          "task_id": 88,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000088/task.json"
+        },
+        {
+          "task_id": 89,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000089/task.json"
+        },
+        {
+          "task_id": 90,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000090/task.json"
+        },
+        {
+          "task_id": 91,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000091/task.json"
+        },
+        {
+          "task_id": 92,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000092/task.json"
+        },
+        {
+          "task_id": 93,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000093/task.json"
+        },
+        {
+          "task_id": 94,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000094/task.json"
+        },
+        {
+          "task_id": 95,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000095/task.json"
+        },
+        {
+          "task_id": 96,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000096/task.json"
+        },
+        {
+          "task_id": 97,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000097/task.json"
+        },
+        {
+          "task_id": 98,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000098/task.json"
+        },
+        {
+          "task_id": 99,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000099/task.json"
+        },
+        {
+          "task_id": 100,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000100/task.json"
+        },
+        {
+          "task_id": 101,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000101/task.json"
+        },
+        {
+          "task_id": 102,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000102/task.json"
+        },
+        {
+          "task_id": 103,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000103/task.json"
+        },
+        {
+          "task_id": 104,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000104/task.json"
+        },
+        {
+          "task_id": 105,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000105/task.json"
+        },
+        {
+          "task_id": 106,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000106/task.json"
+        },
+        {
+          "task_id": 107,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000107/task.json"
+        },
+        {
+          "task_id": 108,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000108/task.json"
+        },
+        {
+          "task_id": 109,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000109/task.json"
+        },
+        {
+          "task_id": 110,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000110/task.json"
+        },
+        {
+          "task_id": 111,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000111/task.json"
+        },
+        {
+          "task_id": 112,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000112/task.json"
+        },
+        {
+          "task_id": 113,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000113/task.json"
+        },
+        {
+          "task_id": 114,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000114/task.json"
+        },
+        {
+          "task_id": 115,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000115/task.json"
+        },
+        {
+          "task_id": 116,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000116/task.json"
+        },
+        {
+          "task_id": 117,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000117/task.json"
+        },
+        {
+          "task_id": 118,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000118/task.json"
+        },
+        {
+          "task_id": 119,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000119/task.json"
+        },
+        {
+          "task_id": 120,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000120/task.json"
+        },
+        {
+          "task_id": 121,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000121/task.json"
+        },
+        {
+          "task_id": 122,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000122/task.json"
+        },
+        {
+          "task_id": 123,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000123/task.json"
+        },
+        {
+          "task_id": 124,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000124/task.json"
+        },
+        {
+          "task_id": 125,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000125/task.json"
+        },
+        {
+          "task_id": 126,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000126/task.json"
+        },
+        {
+          "task_id": 127,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000127/task.json"
+        }
+      ],
+      "accuracy_status": "UNRESOLVED",
+      "physical_accuracy_qualified": false,
+      "accuracy_counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      },
+      "accuracy_scope": "Empirical held-out screening only; no global or bulk-viscosity error bound"
+    },
+    {
+      "id": "AR5",
+      "aspect_ratio": 5.0,
+      "table_status": "waiting_for_references",
+      "missing_or_rejected_grid_tasks": [
+        {
+          "task_id": 176,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000176/task.json"
+        },
+        {
+          "task_id": 177,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000177/task.json"
+        },
+        {
+          "task_id": 178,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000178/task.json"
+        },
+        {
+          "task_id": 179,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000179/task.json"
+        },
+        {
+          "task_id": 180,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000180/task.json"
+        },
+        {
+          "task_id": 181,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000181/task.json"
+        },
+        {
+          "task_id": 182,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000182/task.json"
+        },
+        {
+          "task_id": 183,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000183/task.json"
+        },
+        {
+          "task_id": 184,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000184/task.json"
+        },
+        {
+          "task_id": 185,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000185/task.json"
+        },
+        {
+          "task_id": 186,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000186/task.json"
+        },
+        {
+          "task_id": 187,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000187/task.json"
+        },
+        {
+          "task_id": 188,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000188/task.json"
+        },
+        {
+          "task_id": 189,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000189/task.json"
+        },
+        {
+          "task_id": 190,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000190/task.json"
+        },
+        {
+          "task_id": 191,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000191/task.json"
+        },
+        {
+          "task_id": 192,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000192/task.json"
+        },
+        {
+          "task_id": 193,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000193/task.json"
+        },
+        {
+          "task_id": 194,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000194/task.json"
+        },
+        {
+          "task_id": 195,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000195/task.json"
+        },
+        {
+          "task_id": 196,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000196/task.json"
+        },
+        {
+          "task_id": 197,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000197/task.json"
+        },
+        {
+          "task_id": 198,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000198/task.json"
+        },
+        {
+          "task_id": 199,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000199/task.json"
+        },
+        {
+          "task_id": 200,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000200/task.json"
+        },
+        {
+          "task_id": 201,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000201/task.json"
+        },
+        {
+          "task_id": 202,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000202/task.json"
+        },
+        {
+          "task_id": 203,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000203/task.json"
+        },
+        {
+          "task_id": 204,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000204/task.json"
+        },
+        {
+          "task_id": 205,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000205/task.json"
+        },
+        {
+          "task_id": 206,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000206/task.json"
+        },
+        {
+          "task_id": 207,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000207/task.json"
+        },
+        {
+          "task_id": 208,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000208/task.json"
+        },
+        {
+          "task_id": 209,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000209/task.json"
+        },
+        {
+          "task_id": 210,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000210/task.json"
+        },
+        {
+          "task_id": 211,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000211/task.json"
+        },
+        {
+          "task_id": 212,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000212/task.json"
+        },
+        {
+          "task_id": 213,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000213/task.json"
+        },
+        {
+          "task_id": 214,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000214/task.json"
+        },
+        {
+          "task_id": 215,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000215/task.json"
+        },
+        {
+          "task_id": 216,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000216/task.json"
+        },
+        {
+          "task_id": 217,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000217/task.json"
+        },
+        {
+          "task_id": 218,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000218/task.json"
+        },
+        {
+          "task_id": 219,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000219/task.json"
+        },
+        {
+          "task_id": 220,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000220/task.json"
+        },
+        {
+          "task_id": 221,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000221/task.json"
+        },
+        {
+          "task_id": 222,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000222/task.json"
+        },
+        {
+          "task_id": 223,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000223/task.json"
+        },
+        {
+          "task_id": 224,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000224/task.json"
+        },
+        {
+          "task_id": 225,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000225/task.json"
+        },
+        {
+          "task_id": 226,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000226/task.json"
+        },
+        {
+          "task_id": 227,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000227/task.json"
+        },
+        {
+          "task_id": 228,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000228/task.json"
+        },
+        {
+          "task_id": 229,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000229/task.json"
+        },
+        {
+          "task_id": 230,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000230/task.json"
+        },
+        {
+          "task_id": 231,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000231/task.json"
+        },
+        {
+          "task_id": 232,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000232/task.json"
+        },
+        {
+          "task_id": 233,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000233/task.json"
+        },
+        {
+          "task_id": 234,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000234/task.json"
+        },
+        {
+          "task_id": 235,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000235/task.json"
+        },
+        {
+          "task_id": 236,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000236/task.json"
+        },
+        {
+          "task_id": 237,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000237/task.json"
+        },
+        {
+          "task_id": 238,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000238/task.json"
+        },
+        {
+          "task_id": 239,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000239/task.json"
+        },
+        {
+          "task_id": 240,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000240/task.json"
+        },
+        {
+          "task_id": 241,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000241/task.json"
+        },
+        {
+          "task_id": 242,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000242/task.json"
+        },
+        {
+          "task_id": 243,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000243/task.json"
+        },
+        {
+          "task_id": 244,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000244/task.json"
+        },
+        {
+          "task_id": 245,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000245/task.json"
+        },
+        {
+          "task_id": 246,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000246/task.json"
+        },
+        {
+          "task_id": 247,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000247/task.json"
+        },
+        {
+          "task_id": 248,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000248/task.json"
+        },
+        {
+          "task_id": 249,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000249/task.json"
+        },
+        {
+          "task_id": 250,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000250/task.json"
+        },
+        {
+          "task_id": 251,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000251/task.json"
+        },
+        {
+          "task_id": 252,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000252/task.json"
+        },
+        {
+          "task_id": 253,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000253/task.json"
+        },
+        {
+          "task_id": 254,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000254/task.json"
+        },
+        {
+          "task_id": 255,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000255/task.json"
+        },
+        {
+          "task_id": 256,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000256/task.json"
+        },
+        {
+          "task_id": 257,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000257/task.json"
+        },
+        {
+          "task_id": 258,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000258/task.json"
+        },
+        {
+          "task_id": 259,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000259/task.json"
+        },
+        {
+          "task_id": 260,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000260/task.json"
+        },
+        {
+          "task_id": 261,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000261/task.json"
+        },
+        {
+          "task_id": 262,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000262/task.json"
+        },
+        {
+          "task_id": 263,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000263/task.json"
+        },
+        {
+          "task_id": 264,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000264/task.json"
+        },
+        {
+          "task_id": 265,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000265/task.json"
+        },
+        {
+          "task_id": 266,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000266/task.json"
+        },
+        {
+          "task_id": 267,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000267/task.json"
+        },
+        {
+          "task_id": 268,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000268/task.json"
+        },
+        {
+          "task_id": 269,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000269/task.json"
+        },
+        {
+          "task_id": 270,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000270/task.json"
+        },
+        {
+          "task_id": 271,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000271/task.json"
+        },
+        {
+          "task_id": 272,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000272/task.json"
+        },
+        {
+          "task_id": 273,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000273/task.json"
+        },
+        {
+          "task_id": 274,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000274/task.json"
+        },
+        {
+          "task_id": 275,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000275/task.json"
+        },
+        {
+          "task_id": 276,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000276/task.json"
+        },
+        {
+          "task_id": 277,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000277/task.json"
+        },
+        {
+          "task_id": 278,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000278/task.json"
+        },
+        {
+          "task_id": 279,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000279/task.json"
+        },
+        {
+          "task_id": 280,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000280/task.json"
+        },
+        {
+          "task_id": 281,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000281/task.json"
+        },
+        {
+          "task_id": 282,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000282/task.json"
+        },
+        {
+          "task_id": 283,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000283/task.json"
+        },
+        {
+          "task_id": 284,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000284/task.json"
+        },
+        {
+          "task_id": 285,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000285/task.json"
+        },
+        {
+          "task_id": 286,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000286/task.json"
+        },
+        {
+          "task_id": 287,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000287/task.json"
+        },
+        {
+          "task_id": 288,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000288/task.json"
+        },
+        {
+          "task_id": 289,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000289/task.json"
+        },
+        {
+          "task_id": 290,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000290/task.json"
+        },
+        {
+          "task_id": 291,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000291/task.json"
+        },
+        {
+          "task_id": 292,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000292/task.json"
+        },
+        {
+          "task_id": 293,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000293/task.json"
+        },
+        {
+          "task_id": 294,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000294/task.json"
+        },
+        {
+          "task_id": 295,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000295/task.json"
+        },
+        {
+          "task_id": 296,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000296/task.json"
+        },
+        {
+          "task_id": 297,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000297/task.json"
+        },
+        {
+          "task_id": 298,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000298/task.json"
+        },
+        {
+          "task_id": 299,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000299/task.json"
+        },
+        {
+          "task_id": 300,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000300/task.json"
+        },
+        {
+          "task_id": 301,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000301/task.json"
+        },
+        {
+          "task_id": 302,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000302/task.json"
+        },
+        {
+          "task_id": 303,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000303/task.json"
+        }
+      ],
+      "accuracy_status": "UNRESOLVED",
+      "physical_accuracy_qualified": false,
+      "accuracy_counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      },
+      "accuracy_scope": "Empirical held-out screening only; no global or bulk-viscosity error bound"
+    },
+    {
+      "id": "AR10",
+      "aspect_ratio": 10.0,
+      "table_status": "waiting_for_references",
+      "missing_or_rejected_grid_tasks": [
+        {
+          "task_id": 352,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000352/task.json"
+        },
+        {
+          "task_id": 353,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000353/task.json"
+        },
+        {
+          "task_id": 354,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000354/task.json"
+        },
+        {
+          "task_id": 355,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000355/task.json"
+        },
+        {
+          "task_id": 356,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000356/task.json"
+        },
+        {
+          "task_id": 357,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000357/task.json"
+        },
+        {
+          "task_id": 358,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000358/task.json"
+        },
+        {
+          "task_id": 359,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000359/task.json"
+        },
+        {
+          "task_id": 360,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000360/task.json"
+        },
+        {
+          "task_id": 361,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000361/task.json"
+        },
+        {
+          "task_id": 362,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000362/task.json"
+        },
+        {
+          "task_id": 363,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000363/task.json"
+        },
+        {
+          "task_id": 364,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000364/task.json"
+        },
+        {
+          "task_id": 365,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000365/task.json"
+        },
+        {
+          "task_id": 366,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000366/task.json"
+        },
+        {
+          "task_id": 367,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000367/task.json"
+        },
+        {
+          "task_id": 368,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000368/task.json"
+        },
+        {
+          "task_id": 369,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000369/task.json"
+        },
+        {
+          "task_id": 370,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000370/task.json"
+        },
+        {
+          "task_id": 371,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000371/task.json"
+        },
+        {
+          "task_id": 372,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000372/task.json"
+        },
+        {
+          "task_id": 373,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000373/task.json"
+        },
+        {
+          "task_id": 374,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000374/task.json"
+        },
+        {
+          "task_id": 375,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000375/task.json"
+        },
+        {
+          "task_id": 376,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000376/task.json"
+        },
+        {
+          "task_id": 377,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000377/task.json"
+        },
+        {
+          "task_id": 378,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000378/task.json"
+        },
+        {
+          "task_id": 379,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000379/task.json"
+        },
+        {
+          "task_id": 380,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000380/task.json"
+        },
+        {
+          "task_id": 381,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000381/task.json"
+        },
+        {
+          "task_id": 382,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000382/task.json"
+        },
+        {
+          "task_id": 383,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000383/task.json"
+        },
+        {
+          "task_id": 384,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000384/task.json"
+        },
+        {
+          "task_id": 385,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000385/task.json"
+        },
+        {
+          "task_id": 386,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000386/task.json"
+        },
+        {
+          "task_id": 387,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000387/task.json"
+        },
+        {
+          "task_id": 388,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000388/task.json"
+        },
+        {
+          "task_id": 389,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000389/task.json"
+        },
+        {
+          "task_id": 390,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000390/task.json"
+        },
+        {
+          "task_id": 391,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000391/task.json"
+        },
+        {
+          "task_id": 392,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000392/task.json"
+        },
+        {
+          "task_id": 393,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000393/task.json"
+        },
+        {
+          "task_id": 394,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000394/task.json"
+        },
+        {
+          "task_id": 395,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000395/task.json"
+        },
+        {
+          "task_id": 396,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000396/task.json"
+        },
+        {
+          "task_id": 397,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000397/task.json"
+        },
+        {
+          "task_id": 398,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000398/task.json"
+        },
+        {
+          "task_id": 399,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000399/task.json"
+        },
+        {
+          "task_id": 400,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000400/task.json"
+        },
+        {
+          "task_id": 401,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000401/task.json"
+        },
+        {
+          "task_id": 402,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000402/task.json"
+        },
+        {
+          "task_id": 403,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000403/task.json"
+        },
+        {
+          "task_id": 404,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000404/task.json"
+        },
+        {
+          "task_id": 405,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000405/task.json"
+        },
+        {
+          "task_id": 406,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000406/task.json"
+        },
+        {
+          "task_id": 407,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000407/task.json"
+        },
+        {
+          "task_id": 408,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000408/task.json"
+        },
+        {
+          "task_id": 409,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000409/task.json"
+        },
+        {
+          "task_id": 410,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000410/task.json"
+        },
+        {
+          "task_id": 411,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000411/task.json"
+        },
+        {
+          "task_id": 412,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000412/task.json"
+        },
+        {
+          "task_id": 413,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000413/task.json"
+        },
+        {
+          "task_id": 414,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000414/task.json"
+        },
+        {
+          "task_id": 415,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000415/task.json"
+        },
+        {
+          "task_id": 416,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000416/task.json"
+        },
+        {
+          "task_id": 417,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000417/task.json"
+        },
+        {
+          "task_id": 418,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000418/task.json"
+        },
+        {
+          "task_id": 419,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000419/task.json"
+        },
+        {
+          "task_id": 420,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000420/task.json"
+        },
+        {
+          "task_id": 421,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000421/task.json"
+        },
+        {
+          "task_id": 422,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000422/task.json"
+        },
+        {
+          "task_id": 423,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000423/task.json"
+        },
+        {
+          "task_id": 424,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000424/task.json"
+        },
+        {
+          "task_id": 425,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000425/task.json"
+        },
+        {
+          "task_id": 426,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000426/task.json"
+        },
+        {
+          "task_id": 427,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000427/task.json"
+        },
+        {
+          "task_id": 428,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000428/task.json"
+        },
+        {
+          "task_id": 429,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000429/task.json"
+        },
+        {
+          "task_id": 430,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000430/task.json"
+        },
+        {
+          "task_id": 431,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000431/task.json"
+        },
+        {
+          "task_id": 432,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000432/task.json"
+        },
+        {
+          "task_id": 433,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000433/task.json"
+        },
+        {
+          "task_id": 434,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000434/task.json"
+        },
+        {
+          "task_id": 435,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000435/task.json"
+        },
+        {
+          "task_id": 436,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000436/task.json"
+        },
+        {
+          "task_id": 437,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000437/task.json"
+        },
+        {
+          "task_id": 438,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000438/task.json"
+        },
+        {
+          "task_id": 439,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000439/task.json"
+        },
+        {
+          "task_id": 440,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000440/task.json"
+        },
+        {
+          "task_id": 441,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000441/task.json"
+        },
+        {
+          "task_id": 442,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000442/task.json"
+        },
+        {
+          "task_id": 443,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000443/task.json"
+        },
+        {
+          "task_id": 444,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000444/task.json"
+        },
+        {
+          "task_id": 445,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000445/task.json"
+        },
+        {
+          "task_id": 446,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000446/task.json"
+        },
+        {
+          "task_id": 447,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000447/task.json"
+        },
+        {
+          "task_id": 448,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000448/task.json"
+        },
+        {
+          "task_id": 449,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000449/task.json"
+        },
+        {
+          "task_id": 450,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000450/task.json"
+        },
+        {
+          "task_id": 451,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000451/task.json"
+        },
+        {
+          "task_id": 452,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000452/task.json"
+        },
+        {
+          "task_id": 453,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000453/task.json"
+        },
+        {
+          "task_id": 454,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000454/task.json"
+        },
+        {
+          "task_id": 455,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000455/task.json"
+        },
+        {
+          "task_id": 456,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000456/task.json"
+        },
+        {
+          "task_id": 457,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000457/task.json"
+        },
+        {
+          "task_id": 458,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000458/task.json"
+        },
+        {
+          "task_id": 459,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000459/task.json"
+        },
+        {
+          "task_id": 460,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000460/task.json"
+        },
+        {
+          "task_id": 461,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000461/task.json"
+        },
+        {
+          "task_id": 462,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000462/task.json"
+        },
+        {
+          "task_id": 463,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000463/task.json"
+        },
+        {
+          "task_id": 464,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000464/task.json"
+        },
+        {
+          "task_id": 465,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000465/task.json"
+        },
+        {
+          "task_id": 466,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000466/task.json"
+        },
+        {
+          "task_id": 467,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000467/task.json"
+        },
+        {
+          "task_id": 468,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000468/task.json"
+        },
+        {
+          "task_id": 469,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000469/task.json"
+        },
+        {
+          "task_id": 470,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000470/task.json"
+        },
+        {
+          "task_id": 471,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000471/task.json"
+        },
+        {
+          "task_id": 472,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000472/task.json"
+        },
+        {
+          "task_id": 473,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000473/task.json"
+        },
+        {
+          "task_id": 474,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000474/task.json"
+        },
+        {
+          "task_id": 475,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000475/task.json"
+        },
+        {
+          "task_id": 476,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000476/task.json"
+        },
+        {
+          "task_id": 477,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000477/task.json"
+        },
+        {
+          "task_id": 478,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000478/task.json"
+        },
+        {
+          "task_id": 479,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000479/task.json"
+        }
+      ],
+      "accuracy_status": "UNRESOLVED",
+      "physical_accuracy_qualified": false,
+      "accuracy_counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      },
+      "accuracy_scope": "Empirical held-out screening only; no global or bulk-viscosity error bound"
+    },
+    {
+      "id": "AR20",
+      "aspect_ratio": 20.0,
+      "table_status": "waiting_for_references",
+      "missing_or_rejected_grid_tasks": [
+        {
+          "task_id": 528,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000528/task.json"
+        },
+        {
+          "task_id": 529,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000529/task.json"
+        },
+        {
+          "task_id": 530,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000530/task.json"
+        },
+        {
+          "task_id": 531,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000531/task.json"
+        },
+        {
+          "task_id": 532,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000532/task.json"
+        },
+        {
+          "task_id": 533,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000533/task.json"
+        },
+        {
+          "task_id": 534,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000534/task.json"
+        },
+        {
+          "task_id": 535,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000535/task.json"
+        },
+        {
+          "task_id": 536,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000536/task.json"
+        },
+        {
+          "task_id": 537,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000537/task.json"
+        },
+        {
+          "task_id": 538,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000538/task.json"
+        },
+        {
+          "task_id": 539,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000539/task.json"
+        },
+        {
+          "task_id": 540,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000540/task.json"
+        },
+        {
+          "task_id": 541,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000541/task.json"
+        },
+        {
+          "task_id": 542,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000542/task.json"
+        },
+        {
+          "task_id": 543,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000543/task.json"
+        },
+        {
+          "task_id": 544,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000544/task.json"
+        },
+        {
+          "task_id": 545,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000545/task.json"
+        },
+        {
+          "task_id": 546,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000546/task.json"
+        },
+        {
+          "task_id": 547,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000547/task.json"
+        },
+        {
+          "task_id": 548,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000548/task.json"
+        },
+        {
+          "task_id": 549,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000549/task.json"
+        },
+        {
+          "task_id": 550,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000550/task.json"
+        },
+        {
+          "task_id": 551,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000551/task.json"
+        },
+        {
+          "task_id": 552,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000552/task.json"
+        },
+        {
+          "task_id": 553,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000553/task.json"
+        },
+        {
+          "task_id": 554,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000554/task.json"
+        },
+        {
+          "task_id": 555,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000555/task.json"
+        },
+        {
+          "task_id": 556,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000556/task.json"
+        },
+        {
+          "task_id": 557,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000557/task.json"
+        },
+        {
+          "task_id": 558,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000558/task.json"
+        },
+        {
+          "task_id": 559,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000559/task.json"
+        },
+        {
+          "task_id": 560,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000560/task.json"
+        },
+        {
+          "task_id": 561,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000561/task.json"
+        },
+        {
+          "task_id": 562,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000562/task.json"
+        },
+        {
+          "task_id": 563,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000563/task.json"
+        },
+        {
+          "task_id": 564,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000564/task.json"
+        },
+        {
+          "task_id": 565,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000565/task.json"
+        },
+        {
+          "task_id": 566,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000566/task.json"
+        },
+        {
+          "task_id": 567,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000567/task.json"
+        },
+        {
+          "task_id": 568,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000568/task.json"
+        },
+        {
+          "task_id": 569,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000569/task.json"
+        },
+        {
+          "task_id": 570,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000570/task.json"
+        },
+        {
+          "task_id": 571,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000571/task.json"
+        },
+        {
+          "task_id": 572,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000572/task.json"
+        },
+        {
+          "task_id": 573,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000573/task.json"
+        },
+        {
+          "task_id": 574,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000574/task.json"
+        },
+        {
+          "task_id": 575,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000575/task.json"
+        },
+        {
+          "task_id": 576,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000576/task.json"
+        },
+        {
+          "task_id": 577,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000577/task.json"
+        },
+        {
+          "task_id": 578,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000578/task.json"
+        },
+        {
+          "task_id": 579,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000579/task.json"
+        },
+        {
+          "task_id": 580,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000580/task.json"
+        },
+        {
+          "task_id": 581,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000581/task.json"
+        },
+        {
+          "task_id": 582,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000582/task.json"
+        },
+        {
+          "task_id": 583,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000583/task.json"
+        },
+        {
+          "task_id": 584,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000584/task.json"
+        },
+        {
+          "task_id": 585,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000585/task.json"
+        },
+        {
+          "task_id": 586,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000586/task.json"
+        },
+        {
+          "task_id": 587,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000587/task.json"
+        },
+        {
+          "task_id": 588,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000588/task.json"
+        },
+        {
+          "task_id": 589,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000589/task.json"
+        },
+        {
+          "task_id": 590,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000590/task.json"
+        },
+        {
+          "task_id": 591,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000591/task.json"
+        },
+        {
+          "task_id": 592,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000592/task.json"
+        },
+        {
+          "task_id": 593,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000593/task.json"
+        },
+        {
+          "task_id": 594,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000594/task.json"
+        },
+        {
+          "task_id": 595,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000595/task.json"
+        },
+        {
+          "task_id": 596,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000596/task.json"
+        },
+        {
+          "task_id": 597,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000597/task.json"
+        },
+        {
+          "task_id": 598,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000598/task.json"
+        },
+        {
+          "task_id": 599,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000599/task.json"
+        },
+        {
+          "task_id": 600,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000600/task.json"
+        },
+        {
+          "task_id": 601,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000601/task.json"
+        },
+        {
+          "task_id": 602,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000602/task.json"
+        },
+        {
+          "task_id": 603,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000603/task.json"
+        },
+        {
+          "task_id": 604,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000604/task.json"
+        },
+        {
+          "task_id": 605,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000605/task.json"
+        },
+        {
+          "task_id": 606,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000606/task.json"
+        },
+        {
+          "task_id": 607,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000607/task.json"
+        },
+        {
+          "task_id": 608,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000608/task.json"
+        },
+        {
+          "task_id": 609,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000609/task.json"
+        },
+        {
+          "task_id": 610,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000610/task.json"
+        },
+        {
+          "task_id": 611,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000611/task.json"
+        },
+        {
+          "task_id": 612,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000612/task.json"
+        },
+        {
+          "task_id": 613,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000613/task.json"
+        },
+        {
+          "task_id": 614,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000614/task.json"
+        },
+        {
+          "task_id": 615,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000615/task.json"
+        },
+        {
+          "task_id": 616,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000616/task.json"
+        },
+        {
+          "task_id": 617,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000617/task.json"
+        },
+        {
+          "task_id": 618,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000618/task.json"
+        },
+        {
+          "task_id": 619,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000619/task.json"
+        },
+        {
+          "task_id": 620,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000620/task.json"
+        },
+        {
+          "task_id": 621,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000621/task.json"
+        },
+        {
+          "task_id": 622,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000622/task.json"
+        },
+        {
+          "task_id": 623,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000623/task.json"
+        },
+        {
+          "task_id": 624,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000624/task.json"
+        },
+        {
+          "task_id": 625,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000625/task.json"
+        },
+        {
+          "task_id": 626,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000626/task.json"
+        },
+        {
+          "task_id": 627,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000627/task.json"
+        },
+        {
+          "task_id": 628,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000628/task.json"
+        },
+        {
+          "task_id": 629,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000629/task.json"
+        },
+        {
+          "task_id": 630,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000630/task.json"
+        },
+        {
+          "task_id": 631,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000631/task.json"
+        },
+        {
+          "task_id": 632,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000632/task.json"
+        },
+        {
+          "task_id": 633,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000633/task.json"
+        },
+        {
+          "task_id": 634,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000634/task.json"
+        },
+        {
+          "task_id": 635,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000635/task.json"
+        },
+        {
+          "task_id": 636,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000636/task.json"
+        },
+        {
+          "task_id": 637,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000637/task.json"
+        },
+        {
+          "task_id": 638,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000638/task.json"
+        },
+        {
+          "task_id": 639,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000639/task.json"
+        },
+        {
+          "task_id": 640,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000640/task.json"
+        },
+        {
+          "task_id": 641,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000641/task.json"
+        },
+        {
+          "task_id": 642,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000642/task.json"
+        },
+        {
+          "task_id": 643,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000643/task.json"
+        },
+        {
+          "task_id": 644,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000644/task.json"
+        },
+        {
+          "task_id": 645,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000645/task.json"
+        },
+        {
+          "task_id": 646,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000646/task.json"
+        },
+        {
+          "task_id": 647,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000647/task.json"
+        },
+        {
+          "task_id": 648,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000648/task.json"
+        },
+        {
+          "task_id": 649,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000649/task.json"
+        },
+        {
+          "task_id": 650,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000650/task.json"
+        },
+        {
+          "task_id": 651,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000651/task.json"
+        },
+        {
+          "task_id": 652,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000652/task.json"
+        },
+        {
+          "task_id": 653,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000653/task.json"
+        },
+        {
+          "task_id": 654,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000654/task.json"
+        },
+        {
+          "task_id": 655,
+          "state": "missing",
+          "path": "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000655/task.json"
+        }
+      ],
+      "accuracy_status": "UNRESOLVED",
+      "physical_accuracy_qualified": false,
+      "accuracy_counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      },
+      "accuracy_scope": "Empirical held-out screening only; no global or bulk-viscosity error bound"
+    }
+  ],
+  "task_counts": {
+    "available": 0,
+    "missing": 704,
+    "invalid": 0,
+    "no_pair_report": 0
+  },
+  "assessment_invocation": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/assess_campaign_accuracy.py",
+      "/dev/shm/reference_campaign_contract_actualplan/accuracy_input.json",
+      "--output",
+      "/dev/shm/reference_campaign_contract_actualplan/accuracy/accuracy.json",
+      "--csv",
+      "/dev/shm/reference_campaign_contract_actualplan/accuracy/accuracy.csv",
+      "--plot",
+      "/dev/shm/reference_campaign_contract_actualplan/accuracy/accuracy.png",
+      "--model-tolerance",
+      "0.05",
+      "--refinement-tolerance",
+      "0.01",
+      "--boundary-tolerance",
+      "0.01"
+    ],
+    "returncode": 0
+  },
+  "assessment_report": "/dev/shm/reference_campaign_contract_actualplan/accuracy/accuracy.json",
+  "next_action": "Inspect campaign_summary.json and accuracy/accuracy.csv; rerun missing tasks or create a finer campaign. A completed table alone does not establish physical accuracy."
+}

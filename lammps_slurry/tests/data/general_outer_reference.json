@@ -1,0 +1,67 @@
+{
+  "scope": "C++ port regression, not independent Stokes accuracy certification",
+  "runtime_reads_fixture": false,
+  "cases": [
+    {
+      "name": "sphere_disk",
+      "ar": 1.0,
+      "gap_over_c": 0.2,
+      "method": "disk",
+      "nrad": 4,
+      "nphi": 16,
+      "minimum_grand_eigenvalue": 12.320786771396955
+    },
+    {
+      "name": "ar2_generic_disk",
+      "ar": 2.0,
+      "gap_over_c": 0.3,
+      "method": "disk",
+      "nrad": 8,
+      "nphi": 32,
+      "minimum_grand_eigenvalue": 18.21484584029332
+    },
+    {
+      "name": "ar5_generic_disk",
+      "ar": 5.0,
+      "gap_over_c": 2.0,
+      "method": "disk",
+      "nrad": 8,
+      "nphi": 32,
+      "minimum_grand_eigenvalue": 14.554053498987384
+    },
+    {
+      "name": "ar10_far",
+      "ar": 10.0,
+      "gap_over_c": 100.0,
+      "method": "far",
+      "nrad": 4,
+      "nphi": 16,
+      "minimum_grand_eigenvalue": 18.77711210582378
+    },
+    {
+      "name": "ar20_face_disk",
+      "ar": 20.0,
+      "gap_over_c": 0.02,
+      "method": "disk",
+      "nrad": 16,
+      "nphi": 64,
+      "minimum_grand_eigenvalue": -544.1226190532577
+    },
+    {
+      "name": "ar3p7_rotated_disk",
+      "ar": 3.7,
+      "gap_over_c": 1.0,
+      "method": "disk",
+      "nrad": 4,
+      "nphi": 16,
+      "minimum_grand_eigenvalue": 18.04003894129362
+    }
+  ],
+  "source_sha256": {
+    "outer.py": "0151b995101fdfedf3b04c4edd49b90cffd7459a2085f9a23ba05e19e8871786",
+    "vendor/kim_far.py": "b9c48294f48d948805e0c3ab5b34579c8cc2d1ecf4dc19e4b2e55ea9c2159fed",
+    "vendor/kim_disk.py": "a79b46b0721b192bc595dc398551a15fef06878ad3496bd809bae701e94d67b6",
+    "vendor/geometry.py": "64b69e5f52d7f87514b52052ae9b0dceaddc409113f8659e5c8cbe49111866ff"
+  },
+  "fixture_sha256": "bc6efd2dccde19a6fd5ed10071a5dc694861f03add3b4d5c1540da71077ca1da"
+}

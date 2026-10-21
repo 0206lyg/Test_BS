@@ -1,0 +1,12 @@
+{
+  "executable_sha256": "f30f4691b76223bba7e5e7601aa6cb70cdb05601e8e9b625464329bf874a45ff",
+  "sources_sha256": {
+    "validation_basis/ar20_collocation_probe.cpp": "3b6a17e120417c1858bf2f7f4cfe6448be14b8ef5d4f79a8ed48b5c59e7b89a5",
+    "validation_basis/ar20_pair_probe.cpp": "b8f62253e87073f1177777fe1dea8aacdd1cbb029e1f395e395266b130704242",
+    "lammps_slurry/src/slurry_scattering_math.h": "6ca1e66b91cb73c294012e0389300abaf6e1fb959296bd5467f194e59ef8dec8",
+    "lammps_slurry/tools/basis_cylindrical_kernel.h": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a"
+  },
+  "invalid_cli_returncode": 1,
+  "invalid_cli_stderr": "usage: ar20_collocation_probe basis h_over_c retained_degree target_factor source_phi self_phi output.json\n",
+  "note": "Final compile adds input/write error guards and explicit false qualification metadata; no numerical algorithm changed from recorded LS runs."
+}

@@ -1,0 +1,9 @@
+LAMMPS (30 Sep 2026)
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Currently loaded plugins: 3
+   1: pair style plugin slurry/spheroid
+   2: fix style plugin slurry/drag
+   3: fix style plugin slurry/implicit
+Total wall time: 0:00:00

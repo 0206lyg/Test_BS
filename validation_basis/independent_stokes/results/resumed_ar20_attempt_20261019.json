@@ -1,0 +1,93 @@
+{
+  "schema": "resumed_ar20_independent_reference_attempt_v1",
+  "created_utc": "2026-10-19T00:08:31.590321+00:00",
+  "scope": "Same recorded AR20 oblate pose, actual gap150nm; no other AR, no new gap and no production table generation.",
+  "physical_accuracy_qualified": false,
+  "new_pair_density_available": false,
+  "new_pair_force_torque_stresslet_available": false,
+  "new_matching_anchor_accepted": false,
+  "direct_1nm_accuracy_verified": false,
+  "best_completed_pair": {
+    "report": "pair_h150_p8_anisotropic_chunked.json",
+    "nodes": 9963,
+    "boundary_max_scaled_error": 0.007532226462396109,
+    "unchanged_boundary_tolerance": 0.001,
+    "passed": false
+  },
+  "larger_v2_attempt": {
+    "nodes": 12879,
+    "panels": 159,
+    "dimension": 38637,
+    "matrix_bytes": 11942542152,
+    "assembly_completed_targets": 12879,
+    "assembly_seconds": 932.9358454770008,
+    "original_operator_sha256": "e0b49c20487fd83ce83702b9d299b60d0e36b6024c51817eed4c22077330a169",
+    "status": "linear_solve_failed",
+    "failure_stage": "strict_cgroup_admission_before_LU",
+    "working_bytes": 2279139968,
+    "available_after_reserve_bytes": 1211215232,
+    "no_new_physical_result": true
+  },
+  "v3_fixes": [
+    "Bounded own-operator hash reads and best-effort own-file cache advice; no guaranteed eviction claim.",
+    "Maximum assembly/LU budget and actual strict cgroup admission checked before expensive assembly.",
+    "Same exact original-operator residual recomputed after destructive LU; numerical/physical thresholds unchanged."
+  ],
+  "v3_small_same_pose_storage_check": {
+    "schema": "same_pose_ooc_v3_storage_equivalence_v1",
+    "physical_accuracy_qualified": false,
+    "scope": "Same recorded AR20 h150nm N300 all17-RHS exact storage/cache-advice change; coarse BC fails. Different LU panel widths can change floating-point rounding.",
+    "v2_reference": "ooc_buffered_smoke_h150_p4_l0.json",
+    "v3_reference": "ooc_v3_smoke_h150_p4_l0.json",
+    "reports_sha256": {
+      "ooc_buffered_smoke_h150_p4_l0.json": "697018dc6feb0585bb411c4305fd502632c2d8042fedd850f31daa6f099e9758",
+      "ooc_v3_smoke_h150_p4_l0.json": "884f256469c508068c6847374ba4257b40f04e6dff689d7ffecf26795222cc62"
+    },
+    "original_matrix_bitwise_identical": true,
+    "original_matrix_sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0",
+    "density_relative_difference": 1.0944930340633586e-14,
+    "raw17_relative_difference": 2.726800138690093e-14,
+    "true_original_residual": 4.0819039994881485e-14,
+    "v3_hash_details": {
+      "status": "completed",
+      "algorithm": "sha256",
+      "chunk_bytes": 67108864,
+      "bytes_read": 6480000,
+      "digest_valid": true,
+      "cache_advice_scope": "only_this_operator_file_already_read_ranges_then_entire_file",
+      "posix_fadvise_supported": true,
+      "advice_calls_accepted": 2,
+      "advice_calls_failed": 0,
+      "cache_eviction_guaranteed": false,
+      "expected_bytes": 6480000,
+      "file_unchanged_during_hash": true,
+      "sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0"
+    },
+    "passed": true
+  },
+  "v3_large_retry": {
+    "report": "pair_h150_p8_159_ooc_v3_resource_retry.json",
+    "status": "linear_solve_failed",
+    "reason": "Cgroup has 0.668 GB headroom after reserve; this stage needs an estimated 0.830 GB (limit 8.590 GB)",
+    "outcome": "Entry resource guard rejected before assembly; no new pair response.",
+    "driver_failure_fields": {
+      "failure_type": "MemoryError",
+      "failure_message": "Cgroup has 0.668 GB headroom after reserve; this stage needs an estimated 0.830 GB (limit 8.590 GB)"
+    }
+  },
+  "resource_note": "The strict guard credits only conservative clean inactive-file cache. Rejection does not prove the physical8GiB limit cannot support the bounded algorithm. Available disk also fell below the exact matrix-plus-reserve requirement. No cgroup limits or acceptance thresholds were relaxed.",
+  "disk_free_bytes_at_summary": 6609604608,
+  "next_execution_scope": "Stable CPU allocation for the same p8/159/150nm attempt; validate independent BC,F/T/S,quadrature and compatible three-mesh convergence before any gap matching.",
+  "source_and_result_files": {
+    "pair_h150_p8_159_ooc_buffered_retry.json": "b7e33fab97c79b4e8f8983b2e16881ce00cd21db94dfe17c0544c1ad35cab8f9",
+    "pair_h150_p8_159_ooc_v3_resource_retry.json": "9cd121547ff58e401e964b47afc8cbb91c6766f60907792b79083c9f84bddab8",
+    "ooc_v3_assembly_equivalence.json": "090fe40b1f8a3b532ba823644e5d221a16d878a70c4353d9be34810e368325b2",
+    "pair_h150_p8_coarsened_hotspots_preserved_projection_audit.json": "863543f00cdb7b6b9588c13fa750f5741d3e41bc9e5c7f0bc2f604d23d3a0f9a",
+    "saved_n300_fmm48_action_comparison.json": "4cfa020f2b2be50580684465b4ab86836fc23eec4b5ee5658d9b72aac00f8443",
+    "implementation_validation.json": "881ae61677d5fda0fbcaa8767b22e5965c2cc4cb5caebf93fc4be9ecbd6cf574",
+    "coarsen_saved_density_portability_checks.json": "4e376da9256bdb8fa3ade2db471b9575943893a703eb5597c66336c371e7c1d6"
+  },
+  "github_push_performed": false,
+  "physical_solver_running": false,
+  "finalized_utc": "2026-10-19T00:13:27.946198+00:00"
+}

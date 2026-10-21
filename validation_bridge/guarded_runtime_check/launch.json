@@ -1,0 +1,21 @@
+{
+  "arguments": [
+    "--ar",
+    "2",
+    "--count",
+    "2",
+    "--phi",
+    "0.01",
+    "--initialization",
+    "aligned",
+    "--steps",
+    "2",
+    "--output-interval",
+    "1",
+    "--average-start-strain",
+    "0"
+  ],
+  "input_sha256": "96b4e6293895356a241724e1155ae77ae33943b358eb62ca2826a25fb51e6618",
+  "particles_sha256": "e2ec372020a24b3241ab9174d4bc1b6f6bb28e2518c800b973df9e0c92c27363",
+  "runtime_identity": "runtime/runtime_identity.json"
+}

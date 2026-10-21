@@ -1,0 +1,103 @@
+{
+  "files": {
+    "AR10/final.data": {
+      "sha256": "eba481966a473d5b3771ee8651ae57c116a649ca5b9f99f7b2e263645cc0f46c",
+      "size_bytes": 24337
+    },
+    "AR10/history.csv": {
+      "sha256": "f8588bd6f5c6e7d2a5a591ee89daf98fff50ed9d26b80a48e940da2b20d8d849",
+      "size_bytes": 8460
+    },
+    "AR10/in.slurry": {
+      "sha256": "f3c5cc33df065543dbcae1977aedd1188d07a8e32217f70945a3be2fd41c9337",
+      "size_bytes": 2896
+    },
+    "AR10/log.lammps": {
+      "sha256": "c27222f9aa9bd6900bc003b1bea882aaaa7579fd1e777639ad2f72208d78f39c",
+      "size_bytes": 6899
+    },
+    "AR10/parameters.txt": {
+      "sha256": "c67690092bd001498fdd914c937bf88c1990f821d1531f3c3a85fbb524059bb7",
+      "size_bytes": 4749
+    },
+    "AR10/particles.data": {
+      "sha256": "8858d8c6ec5fd3b5a649092f526006490aca61a4ac49294610f1c4bbc76d50d5",
+      "size_bytes": 17546
+    },
+    "AR2/final.data": {
+      "sha256": "f123f52d24c52b7537814a7aee86822fd16f2e07c6f6f5b0f93eb96ceda6e3f4",
+      "size_bytes": 24245
+    },
+    "AR2/history.csv": {
+      "sha256": "7e3564603f10e9351374378d1f3e55b58693aa400347fe811d7aa1bbceb88c16",
+      "size_bytes": 8476
+    },
+    "AR2/in.slurry": {
+      "sha256": "85032b34459db94c98cc60a57edf9803cde46ac1936a07040771700f727bdb2f",
+      "size_bytes": 2894
+    },
+    "AR2/log.lammps": {
+      "sha256": "4ddf78936a89a3da121a9f72654e33ee2846415bfd9604d6cac23bce75ae578c",
+      "size_bytes": 6890
+    },
+    "AR2/parameters.txt": {
+      "sha256": "a4dd440f8e2fc1687c60f84fbfc2b703f67f3be59997e38438024acc267070af",
+      "size_bytes": 4744
+    },
+    "AR2/particles.data": {
+      "sha256": "59ed426d2351a463e1f5279e81d19f3666480fdb6cbac75e68dc8660e945e2f2",
+      "size_bytes": 17554
+    },
+    "AR20/final.data": {
+      "sha256": "1d559d06641d2b276d90aa5918ac0c66417abbfaffd9d51f82744077137def31",
+      "size_bytes": 24269
+    },
+    "AR20/history.csv": {
+      "sha256": "fd5c3bab6d1e4719606657b98e94ca7df548ce2da4e3d53a628c5b9a56e92e7d",
+      "size_bytes": 7293
+    },
+    "AR20/in.slurry": {
+      "sha256": "70b19f4bbacd3c8bd09f8394031842bd9b13a591e565d771655b9744b33a5f09",
+      "size_bytes": 2895
+    },
+    "AR20/log.lammps": {
+      "sha256": "7f70084d1826cc593711f8a9700ef8e5955f6345edbf9eb83e49dce9015e2f4c",
+      "size_bytes": 6898
+    },
+    "AR20/parameters.txt": {
+      "sha256": "5a3ab2167d8e71b5b782bc9c238f91bc13e21a0031792e11521869afd76c8254",
+      "size_bytes": 4750
+    },
+    "AR20/particles.data": {
+      "sha256": "98be54d26a6f1ed94b83c2dbd5279e132bf8528fe9a3717c979d26fcb6562f41",
+      "size_bytes": 17392
+    },
+    "AR5/final.data": {
+      "sha256": "084fdf36c1b13bdf4de697abb78108de1b47c4066b807a57d45a9c0c78d1905f",
+      "size_bytes": 24306
+    },
+    "AR5/history.csv": {
+      "sha256": "24e0f6e26626565e9f8f2171c27a00000c1245901fdcbc6931ba0fb236e5b1e3",
+      "size_bytes": 8552
+    },
+    "AR5/in.slurry": {
+      "sha256": "c48ebc96bbb5f8690d5ebf7cfee3be8338a31400c43882a3f25876432d6cbf93",
+      "size_bytes": 2894
+    },
+    "AR5/log.lammps": {
+      "sha256": "674da508fe44098302c9da6f40dee3ae788dbfcf2a44cbcff7ccb6ee9d45a845",
+      "size_bytes": 6901
+    },
+    "AR5/parameters.txt": {
+      "sha256": "5d2951e3ed0050977cddf7e2956712802d569ca51961c47ed8c856a58a9c4503",
+      "size_bytes": 4740
+    },
+    "AR5/particles.data": {
+      "sha256": "cf475d0dd94ae57053093ed13e843d7db92ea4132f83d6a2ae915b5129af59e3",
+      "size_bytes": 17538
+    }
+  },
+  "schema": 1,
+  "scope": "Byte-preserved raw evidence for short serial energy-completed integration runs; no equilibrium viscosity qualification",
+  "source_run_root": "/workspace/scratch/581ed100c5ad/general_energy_serial_smoke"
+}

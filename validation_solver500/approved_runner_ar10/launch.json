@@ -1,0 +1,23 @@
+{
+  "arguments": [
+    "--ar",
+    "10",
+    "--count",
+    "500",
+    "--phi",
+    "0.24",
+    "--seed",
+    "1729",
+    "--initialization",
+    "random",
+    "--steps",
+    "10",
+    "--output-interval",
+    "1",
+    "--average-start-strain",
+    "0"
+  ],
+  "input_sha256": "f21cdb923e4cb405191031c685ce0009931699994e492bb5aa116be195d2884b",
+  "particles_sha256": "fb1a2d75f06e20519b3a1d363f3b6c0af0ed056a8836621ba6c4d399541c90d3",
+  "runtime_identity": "runtime/runtime_identity.json"
+}

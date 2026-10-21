@@ -1,0 +1,996 @@
+{
+  "schema": "actual_campaign_backend_routing_check_v1",
+  "completed_utc": "2026-10-19T01:25:33.750530+00:00",
+  "test_only_low_resolution": true,
+  "physical_accuracy_qualified": false,
+  "new_physical_stokes_solves": 12,
+  "scope": "Tiny actual BIE routing runs only; development rejection is expected and not bypassed.",
+  "campaign_sha256": "0cd81764454f957f2c8d3c72e7a2fed30f762a0546c98cb5328d0ebeb8bc3f5d",
+  "script_sha256": "0fa4367b8043b788f292576ee1fc9a7a573e7e07be3c1181e13a61a9db092c3f",
+  "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "operator_export_sha256": "9e4a5bceaf76621235227c0d0240085210ad244b9a15a9ea40a6ad48ca719fe1",
+  "controls": {
+    "order": 4,
+    "level": 0,
+    "rim_levels": 0,
+    "contact_levels": 0,
+    "max_refinements": 0,
+    "solver": "dense",
+    "max_memory_gb": 2
+  },
+  "routing_passed": true,
+  "tasks": [
+    {
+      "task_id": 0,
+      "aspect_ratio": 2.0,
+      "worker_status": "completed_unaccepted",
+      "workflow_completed": true,
+      "accepted_for_development": false,
+      "development_assessment": {
+        "accepted_for_development": false,
+        "provisional_accepted": false,
+        "physical_accuracy_qualified": false,
+        "development_boundary_limit": 0.01,
+        "failure": "recomputed raw reciprocity: measured 0.0023936692081656364 exceeds allowed 0.001"
+      },
+      "driver_completion_count": 3,
+      "reports": [
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/a3b01e027561eb878e9f6b90e40f8cb63055bf40ec28532b312a535f12b40b68/attempt_0000/reference.json",
+          "sha256": "b3c2653174bd082c99f383b17c97f6905aa83e00da11565de9958ba8ddca791d",
+          "solution_sha256": "f2f90d1ef8e0929d1ba9571342dc99cf27bb8f1a53cd5151217703414e47bd58",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 0,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0027744407473773588,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.22208710113910743,
+            "boundary_rms_scaled_error": 0.027052534194664708,
+            "boundary_per_mode_max_scaled_error": [
+              0.13922631982499623,
+              0.08456603151361344,
+              0.0446390068750189,
+              0.09802583844341056,
+              0.22208710113910743,
+              0.09015400677458392,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.14406957718780397,
+              0.17440343529781155,
+              0.09164599758620685,
+              0.07698449160670548,
+              0.056737687218339404
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.06315804559015009,
+              0.22208710113910743,
+              0.05943634932147455,
+              0.05915790519643948,
+              0.01935517200343671,
+              0.014378631823927509
+            ],
+            "boundary_worst_point": [
+              -0.1707085812460705,
+              -0.2834977835175967,
+              -0.021543843237630974
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 4,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.22208710113910743,
+            "linear_relative_residual": 5.129666422150157e-16,
+            "exact_surface_position_max_error_c": 0.017744177962601738,
+            "exact_surface_position_max_error_over_gap": 0.017744177962601738,
+            "area_relative_errors": [
+              6.946547561614835e-06
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.0051317525792643455,
+              "torque": 0.016762049127597375,
+              "stresslet": 0.01465760461231706
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/a3b01e027561eb878e9f6b90e40f8cb63055bf40ec28532b312a535f12b40b68/attempt_0001/reference.json",
+          "sha256": "95798865782ab0c58efd134cbfcce3cf4f9feccabc486ddcb078873ad0ba2516",
+          "solution_sha256": "f78b27cab4e4d40d3fc242f89e36da4ed5de06e49b6ed234c5d882cd38120a96",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 1,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.002774440747460009,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.10637922461692347,
+            "boundary_rms_scaled_error": 0.021545752701070408,
+            "boundary_per_mode_max_scaled_error": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.06915044115292192,
+              0.03537496437365257,
+              0.026462349450881252,
+              0.0600650598942389,
+              0.10637922461692347,
+              0.05397164397190356,
+              0.04752936476966027,
+              0.04863178239165886,
+              0.026583657971094424,
+              0.09325313563213483,
+              0.043221683903958794
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.05390411462051984,
+              0.05397164397190356,
+              0.05735870369785175,
+              0.0508732457978424,
+              0.015478285947831034,
+              0.10637922461692347
+            ],
+            "boundary_worst_point": [
+              0.10500541858464997,
+              -0.919785708805936,
+              1.3444441386648123
+            ],
+            "boundary_worst_patch": 5,
+            "boundary_worst_mode": 10,
+            "boundary_worst_body": 1,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.10637922461692347,
+            "linear_relative_residual": 5.269307637908672e-16,
+            "exact_surface_position_max_error_c": 0.015536600038056299,
+            "exact_surface_position_max_error_over_gap": 0.015536600038056299,
+            "area_relative_errors": [
+              6.946547561614835e-06
+            ],
+            "volume_relative_errors": [
+              0.0007121381818255834
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.005131752579308613,
+              "torque": 0.016762049127605157,
+              "stresslet": 0.014657604612452206
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/tasks/task_000000/attempt_0000/reference.json",
+          "sha256": "eb6ed962d2add7864155b292d01aead00433b81da19e6cf1c044855b7742fd82",
+          "solution_sha256": "8c7ecc0de9f2e9d7c519b93e8f2d8c8d1fa1ea3bc45f0198daba0934da6220ba",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": null,
+          "node_count": 300,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0023936692081656364,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 70,
+            "boundary_max_scaled_error": 0.272491347942073,
+            "boundary_rms_scaled_error": 0.028593653459513493,
+            "boundary_per_mode_max_scaled_error": [
+              0.18820566420347346,
+              0.11246041162820442,
+              0.12046332480097606,
+              0.11071176396771099,
+              0.2649306475587208,
+              0.09744703157525512,
+              0.11666153004018917,
+              0.06710012862487215,
+              0.10613171443646417,
+              0.07141173305008454,
+              0.11150876463646758,
+              0.05452461160972123,
+              0.1622258687997581,
+              0.272491347942073,
+              0.1018866985215414,
+              0.1279924619858821,
+              0.08653200438783806
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.06281946627411675,
+              0.272491347942073,
+              0.06080295472720396,
+              0.06140117081037961,
+              0.05398070371705298,
+              0.01441284140661023,
+              0.05452461160972123,
+              0.05390142252568125,
+              0.15964738960811029,
+              0.05064697390868319,
+              0.02069474649947066,
+              0.1279924619858821
+            ],
+            "boundary_worst_point": [
+              -0.1707085812460705,
+              -0.2834977835175967,
+              -0.021543843237630974
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 34,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.272491347942073,
+            "linear_relative_residual": 7.606729959891197e-16,
+            "exact_surface_position_max_error_c": 0.017744177962601738,
+            "exact_surface_position_max_error_over_gap": 0.017744177962601738,
+            "area_relative_errors": [
+              6.946547561614835e-06,
+              6.946547561614835e-06
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055,
+              0.0007121381818255834
+            ]
+          },
+          "isolated_exact_validation": null,
+          "physical_accuracy_qualified": false
+        }
+      ]
+    },
+    {
+      "task_id": 1,
+      "aspect_ratio": 5.0,
+      "worker_status": "completed_unaccepted",
+      "workflow_completed": true,
+      "accepted_for_development": false,
+      "development_assessment": {
+        "accepted_for_development": false,
+        "provisional_accepted": false,
+        "physical_accuracy_qualified": false,
+        "development_boundary_limit": 0.01,
+        "failure": "recomputed raw reciprocity: measured 0.0039363944397303521 exceeds allowed 0.001"
+      },
+      "driver_completion_count": 3,
+      "reports": [
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/885c7e5f89752a3166d766f86816979563ab8d7fcdb9087a8ebc60e16ead7da2/attempt_0000/reference.json",
+          "sha256": "fbfdb6e439b85ff5e61bcc33030078be7d20a3a2d2b0657fbd38dbf2e27a16e6",
+          "solution_sha256": "f9fb039f955f085b3f2049955a6895318c76a703eab79388843e286368993731",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 0,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0019472509907184532,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.0630602321756608,
+            "boundary_rms_scaled_error": 0.015218608619056651,
+            "boundary_per_mode_max_scaled_error": [
+              0.01544053977702117,
+              0.012783513216095546,
+              0.03153373090095602,
+              0.028543761285836893,
+              0.0630602321756608,
+              0.024042524143182125,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.02722300966533,
+              0.057758086503155275,
+              0.023800562006057978,
+              0.04485267040947909,
+              0.027926383984280028
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.03273300682009834,
+              0.0630602321756608,
+              0.028159742806189103,
+              0.028543761285836893,
+              0.013290605403069535,
+              0.009434187291788165
+            ],
+            "boundary_worst_point": [
+              -0.21788164619451947,
+              -1.640919212876378,
+              -0.1851520588645761
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 4,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.0630602321756608,
+            "linear_relative_residual": 5.026573441067008e-16,
+            "exact_surface_position_max_error_c": 0.03742951103149796,
+            "exact_surface_position_max_error_over_gap": 0.03742951103149796,
+            "area_relative_errors": [
+              0.0070849382424124085
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.015437214333581636,
+              "torque": 0.043046102450765025,
+              "stresslet": 0.03718743902303923
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/885c7e5f89752a3166d766f86816979563ab8d7fcdb9087a8ebc60e16ead7da2/attempt_0001/reference.json",
+          "sha256": "f9a91686571767fbe6c66b3ca96d1a5be7344414721f7882673217e630045c6f",
+          "solution_sha256": "7b818be427952a1cf2537401f43a4ac37af2553109affbd1b4268a2825a6434b",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 1,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0019472509917542395,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.3527956907807781,
+            "boundary_rms_scaled_error": 0.04195704223603008,
+            "boundary_per_mode_max_scaled_error": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.19023539470579007,
+              0.173547973623491,
+              0.09960121929815331,
+              0.24894127275074843,
+              0.3527956907807781,
+              0.13024390079148437,
+              0.18871191727195682,
+              0.28303611094555525,
+              0.20871517553944965,
+              0.23403223384374242,
+              0.26918611555127286
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.3527956907807781,
+              0.03059259420861564,
+              0.057800054194103806,
+              0.02947006089150376,
+              0.010780494820211947,
+              0.010211891718703993
+            ],
+            "boundary_worst_point": [
+              1.3090538619166048,
+              -1.6439679560957567,
+              1.4415354812644232
+            ],
+            "boundary_worst_patch": 0,
+            "boundary_worst_mode": 10,
+            "boundary_worst_body": 1,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.3527956907807781,
+            "linear_relative_residual": 4.975621348644857e-16,
+            "exact_surface_position_max_error_c": 0.07665733698149031,
+            "exact_surface_position_max_error_over_gap": 0.07665733698149031,
+            "area_relative_errors": [
+              0.00708493824241252
+            ],
+            "volume_relative_errors": [
+              0.0007121381818255834
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.015437214334597818,
+              "torque": 0.04304610245309989,
+              "stresslet": 0.03718743902598473
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/tasks/task_000001/attempt_0000/reference.json",
+          "sha256": "d2d14df178ed774e944e740930e84a944834477b36fcc9610da55443b4296d57",
+          "solution_sha256": "f2da99bae86daebb436b2c348d0218064d756b63a35b60cb3f8e79e8d1b129d6",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": null,
+          "node_count": 300,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.003936394439730352,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 70,
+            "boundary_max_scaled_error": 0.7176808380552424,
+            "boundary_rms_scaled_error": 0.05625467191210319,
+            "boundary_per_mode_max_scaled_error": [
+              0.22597083189772948,
+              0.22802269715720203,
+              0.373765890699644,
+              0.05290492213368939,
+              0.30161204427050037,
+              0.15424637219408757,
+              0.2908674656946869,
+              0.28306670885698754,
+              0.38123360403910506,
+              0.29427559437648926,
+              0.48162619697743725,
+              0.15643693645774867,
+              0.3208358271798208,
+              0.7176808380552424,
+              0.29995138167221586,
+              0.18761938107603968,
+              0.4300285647789544
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.02830253514042629,
+              0.1652123265381728,
+              0.028101300269227532,
+              0.028803189767316044,
+              0.053404928351004494,
+              0.016939384461140752,
+              0.7176808380552424,
+              0.030351888983117505,
+              0.2106617028284437,
+              0.029626523521173127,
+              0.025463768386560566,
+              0.020162514418939983
+            ],
+            "boundary_worst_point": [
+              1.3090538619166048,
+              -1.6439679560957567,
+              1.4415354812644232
+            ],
+            "boundary_worst_patch": 6,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 1,
+            "gap_patch_sample_count": 34,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.7176808380552424,
+            "linear_relative_residual": 8.002049878842179e-16,
+            "exact_surface_position_max_error_c": 0.07665733698149031,
+            "exact_surface_position_max_error_over_gap": 0.07665733698149031,
+            "area_relative_errors": [
+              0.0070849382424124085,
+              0.00708493824241252
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055,
+              0.0007121381818255834
+            ]
+          },
+          "isolated_exact_validation": null,
+          "physical_accuracy_qualified": false
+        }
+      ]
+    },
+    {
+      "task_id": 2,
+      "aspect_ratio": 10.0,
+      "worker_status": "completed_unaccepted",
+      "workflow_completed": true,
+      "accepted_for_development": false,
+      "development_assessment": {
+        "accepted_for_development": false,
+        "provisional_accepted": false,
+        "physical_accuracy_qualified": false,
+        "development_boundary_limit": 0.01,
+        "failure": "recomputed raw reciprocity: measured 0.0083243911468030042 exceeds allowed 0.001"
+      },
+      "driver_completion_count": 3,
+      "reports": [
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/39b725ce394b0efa41d01b1c016593da0db33768588896e548805e79a43d26b3/attempt_0000/reference.json",
+          "sha256": "5d887d29eaaae5514e728a119763572fd808d5bfdc17b694f41075ed92181221",
+          "solution_sha256": "530a30062c0c7b43dcd59dac8e561536c78addb3eb01244e8753fdbf05c41b48",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 0,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.00016642895265439202,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.0763880756130646,
+            "boundary_rms_scaled_error": 0.020218008741031707,
+            "boundary_per_mode_max_scaled_error": [
+              0.021674898486655273,
+              0.015931584594583572,
+              0.02656569963222196,
+              0.03343092683422797,
+              0.06491932794717507,
+              0.02945198956392602,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.038375631599674755,
+              0.0763880756130646,
+              0.03356237209097681,
+              0.02915646158545052,
+              0.03287025195845169
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.03343092683422797,
+              0.0763880756130646,
+              0.03345313397529747,
+              0.03356237209097681,
+              0.006618170925380754,
+              0.006565000438456084
+            ],
+            "boundary_worst_point": [
+              -0.17907759735092646,
+              -0.1300583902959986,
+              -0.014817304568420578
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.0763880756130646,
+            "linear_relative_residual": 5.351398959332708e-16,
+            "exact_surface_position_max_error_c": 0.07629573524202421,
+            "exact_surface_position_max_error_over_gap": 0.07629573524202421,
+            "area_relative_errors": [
+              0.018201184788038005
+            ],
+            "volume_relative_errors": [
+              0.0007121381818269157
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.04438416982774939,
+              "torque": 0.0901274296848961,
+              "stresslet": 0.07855132879782764
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/39b725ce394b0efa41d01b1c016593da0db33768588896e548805e79a43d26b3/attempt_0001/reference.json",
+          "sha256": "b1e9b6ff47d6caaaab1a1200e7f74ef2f359c19dfc47bbf2456cf52de94e601e",
+          "solution_sha256": "7dd29cdbc2a907b9e5a4f30f6201f0a61c01f0fcb9d6a69e8759c0872a312070",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 1,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.00016642879824221285,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.052562919710662626,
+            "boundary_rms_scaled_error": 0.01740449367018327,
+            "boundary_per_mode_max_scaled_error": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.02461262675387848,
+              0.02727399799483773,
+              0.0202355768190941,
+              0.052562919710662626,
+              0.05241700295666924,
+              0.04190507985826081,
+              0.03700994949854627,
+              0.04808210121621159,
+              0.028023154326058276,
+              0.040702853940210504,
+              0.05040029691122177
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.031648839404796375,
+              0.04097132056770114,
+              0.052562919710662626,
+              0.04190507985826081,
+              0.007155696603681234,
+              0.006929532867432833
+            ],
+            "boundary_worst_point": [
+              -0.19884653402011018,
+              0.0672928788574936,
+              1.031620609970477
+            ],
+            "boundary_worst_patch": 2,
+            "boundary_worst_mode": 9,
+            "boundary_worst_body": 1,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.052562919710662626,
+            "linear_relative_residual": 5.202168975711826e-16,
+            "exact_surface_position_max_error_c": 0.0768206307482627,
+            "exact_surface_position_max_error_over_gap": 0.0768206307482627,
+            "area_relative_errors": [
+              0.018201184788038227
+            ],
+            "volume_relative_errors": [
+              0.0007121381818246952
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.044384169828064785,
+              "torque": 0.09012742968474186,
+              "stresslet": 0.07855132879690868
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/tasks/task_000002/attempt_0000/reference.json",
+          "sha256": "5f521b62428993ffbe55c4e93b8ad985b217a7cd47717503795a26fd464c6213",
+          "solution_sha256": "519f355f09aa5c7fa5b249c94fd7dc019804148e2148568ec2c7665bd27bc058",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": null,
+          "node_count": 300,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.008324391146803004,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 70,
+            "boundary_max_scaled_error": 0.3655503175004439,
+            "boundary_rms_scaled_error": 0.07690983246373335,
+            "boundary_per_mode_max_scaled_error": [
+              0.10206077642182053,
+              0.10941294362527375,
+              0.21618936567672997,
+              0.06756132700573492,
+              0.20225123596294745,
+              0.11429052547743959,
+              0.09842606767635441,
+              0.10639088291554677,
+              0.22603537165132237,
+              0.1281349471902877,
+              0.13646949411654838,
+              0.04788825299561412,
+              0.12267037765009266,
+              0.3655503175004439,
+              0.14533480678783178,
+              0.3427637082383944,
+              0.14792285626522286
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.03324327869905032,
+              0.3655503175004439,
+              0.033377452173577196,
+              0.034058972061951784,
+              0.012452231360242701,
+              0.012726312809984151,
+              0.06348325127195847,
+              0.040597106450451496,
+              0.3427637082383944,
+              0.04209399025160291,
+              0.012207254965689479,
+              0.017694895928894398
+            ],
+            "boundary_worst_point": [
+              -0.22111823106350012,
+              1.6691451099443364,
+              -0.1791073996148412
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 34,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.3655503175004439,
+            "linear_relative_residual": 7.983481799665158e-16,
+            "exact_surface_position_max_error_c": 0.0768206307482627,
+            "exact_surface_position_max_error_over_gap": 0.0768206307482627,
+            "area_relative_errors": [
+              0.018201184788038005,
+              0.018201184788038227
+            ],
+            "volume_relative_errors": [
+              0.0007121381818269157,
+              0.0007121381818246952
+            ]
+          },
+          "isolated_exact_validation": null,
+          "physical_accuracy_qualified": false
+        }
+      ]
+    },
+    {
+      "task_id": 3,
+      "aspect_ratio": 20.0,
+      "worker_status": "completed_unaccepted",
+      "workflow_completed": true,
+      "accepted_for_development": false,
+      "development_assessment": {
+        "accepted_for_development": false,
+        "provisional_accepted": false,
+        "physical_accuracy_qualified": false,
+        "development_boundary_limit": 0.01,
+        "failure": "recomputed raw reciprocity: measured 0.024731711104714289 exceeds allowed 0.001"
+      },
+      "driver_completion_count": 3,
+      "reports": [
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/c7cc3a7e776a291158f1e883198db3b0b84c229aaffbf2cce6a1db0150c8f7d9/attempt_0000/reference.json",
+          "sha256": "eadc774053ffb96edaaaf5500ef2576d472b4367d806cf8349d13862e362cd33",
+          "solution_sha256": "11c221c1b2d2d85992732b87be0f19ccb022a7c4105e6e3a51fb872259529162",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 0,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0014837355133915018,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.1538038680429803,
+            "boundary_rms_scaled_error": 0.041323978955599985,
+            "boundary_per_mode_max_scaled_error": [
+              0.044588526108398696,
+              0.03612268189439723,
+              0.06468049531305953,
+              0.08095348090709846,
+              0.14356585872116698,
+              0.05840994910519566,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.08040212882406461,
+              0.1538038680429803,
+              0.07343458486718951,
+              0.0929958433604584,
+              0.08107261459466335
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.08801454895091433,
+              0.1538038680429803,
+              0.08107261459466335,
+              0.07541413428824202,
+              0.005390264146898114,
+              0.005463594253327351
+            ],
+            "boundary_worst_point": [
+              -0.010502316499093972,
+              -4.834430198719205e-33,
+              -0.0008802127717926568
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.1538038680429803,
+            "linear_relative_residual": 5.52279084326617e-16,
+            "exact_surface_position_max_error_c": 0.14494568235784072,
+            "exact_surface_position_max_error_over_gap": 0.14494568235784072,
+            "area_relative_errors": [
+              0.029246802073761735
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.10176007047719131,
+              "torque": 0.17257517623250793,
+              "stresslet": 0.15682608964494996
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/isolated_cache/c7cc3a7e776a291158f1e883198db3b0b84c229aaffbf2cce6a1db0150c8f7d9/attempt_0001/reference.json",
+          "sha256": "0e5598fafbf0d49c22d028d9f5d0f26a7d7bdf51ea474cd3a5eabf0e51af50a4",
+          "solution_sha256": "7eee82a424cec709e180930ba2ac3eeababb50ecb0d446b115d8801c7bfb4518",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": 1,
+          "node_count": 150,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.0014837533564856515,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 35,
+            "boundary_max_scaled_error": 0.09434184355019645,
+            "boundary_rms_scaled_error": 0.032723629113086065,
+            "boundary_per_mode_max_scaled_error": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.04441041176748128,
+              0.04370379064992748,
+              0.033232682007979346,
+              0.07398347091920814,
+              0.09276399259441612,
+              0.09434184355019645,
+              0.08965910282496531,
+              0.07618485427477839,
+              0.051183180839652544,
+              0.056285677751086914,
+              0.07344941599972127
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.0772295402775595,
+              0.09276399259441612,
+              0.08965910282496531,
+              0.09434184355019645,
+              0.005048776360372504,
+              0.004561107934327539
+            ],
+            "boundary_worst_point": [
+              3.903203206039226,
+              -19.68435725225323,
+              28.656918491127538
+            ],
+            "boundary_worst_patch": 3,
+            "boundary_worst_mode": 11,
+            "boundary_worst_body": 1,
+            "gap_patch_sample_count": 17,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.06515031117118462,
+            "linear_relative_residual": 5.331469176136247e-16,
+            "exact_surface_position_max_error_c": 0.14987880545515123,
+            "exact_surface_position_max_error_over_gap": 0.14987880545515123,
+            "area_relative_errors": [
+              0.029246802073761735
+            ],
+            "volume_relative_errors": [
+              0.0007121381818253614
+            ]
+          },
+          "isolated_exact_validation": {
+            "block_relative_errors": {
+              "force": 0.10176005317136236,
+              "torque": 0.17257514803040286,
+              "stresslet": 0.15682606494439563
+            },
+            "passed": false
+          },
+          "physical_accuracy_qualified": false
+        },
+        {
+          "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/p4_supported/run/tasks/task_000003/attempt_0000/reference.json",
+          "sha256": "7f6b0959b474cc0a1c28171fc042425dcd4f749f939482043588924dfe41c88e",
+          "solution_sha256": "d3430d6349188e214d80f3133f6bbc9efba453cb53ea082dc41615defefe3bae",
+          "schema": "independent_spheroid_panel_bie_v1",
+          "isolated_body": null,
+          "node_count": 300,
+          "status": "complete",
+          "geometry": "exact_generic_oblate_pair_v1",
+          "raw_reciprocity": 0.02473171110471429,
+          "validation": {
+            "off_grid_boundary": true,
+            "boundary_evaluation_valid": true,
+            "boundary_scope": "sampled polynomial-panel surface trace; not global supremum bound",
+            "boundary_sample_count": 70,
+            "boundary_max_scaled_error": 0.855283578542922,
+            "boundary_rms_scaled_error": 0.1547347095636313,
+            "boundary_per_mode_max_scaled_error": [
+              0.1875533288872322,
+              0.1937219471706649,
+              0.5427985269204225,
+              0.10107824964558074,
+              0.5069072097771539,
+              0.16067920400216157,
+              0.19260176799932077,
+              0.18489039178646297,
+              0.5440270477802859,
+              0.19856528195878828,
+              0.32764304574491876,
+              0.0948543767364894,
+              0.23225725889301257,
+              0.855283578542922,
+              0.2675680781286124,
+              0.5746284373132458,
+              0.2688629361412579
+            ],
+            "boundary_per_patch_max_scaled_error": [
+              0.08022993984637058,
+              0.855283578542922,
+              0.0815753153338918,
+              0.07290706857163029,
+              0.009298890429680805,
+              0.010634428468956177,
+              0.12718211145089797,
+              0.09175825829470613,
+              0.5376976313128222,
+              0.0948543767364894,
+              0.006233703819170166,
+              0.01328323219987585
+            ],
+            "boundary_worst_point": [
+              -0.03290034365865382,
+              2.4091097429236834,
+              -0.17868055915247508
+            ],
+            "boundary_worst_patch": 1,
+            "boundary_worst_mode": 13,
+            "boundary_worst_body": 0,
+            "gap_patch_sample_count": 34,
+            "gap_patch_edge_avoidance_uv": 0.001,
+            "gap_patch_max_scaled_error": 0.855283578542922,
+            "linear_relative_residual": 9.104297260751195e-16,
+            "exact_surface_position_max_error_c": 0.14987880545515123,
+            "exact_surface_position_max_error_over_gap": 0.14987880545515123,
+            "area_relative_errors": [
+              0.029246802073761735,
+              0.029246802073761735
+            ],
+            "volume_relative_errors": [
+              0.0007121381818258055,
+              0.0007121381818253614
+            ]
+          },
+          "isolated_exact_validation": null,
+          "physical_accuracy_qualified": false
+        }
+      ]
+    }
+  ]
+}

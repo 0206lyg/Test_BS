@@ -1,0 +1,87 @@
+{
+  "purpose": "Runtime loader regression only; hydrodynamic model unchanged",
+  "source_fingerprint": "24e4090ad0b801301a13c5e5b65c7dc549304b90cbc672962503de46d584883d",
+  "approved_build_completed_utc": "2026-10-21T03:51:18.726419+00:00",
+  "original_lmp_and_plugin_tags": "DT_RPATH from GNU --disable-new-dtags",
+  "before": "Both private copies resolved liblammps.so.0 in original install/lib despite private LD_LIBRARY_PATH",
+  "after": "Both copies resolve liblammps.so.0 in private runtime/lib; actual run_bridge.py finished 2 steps",
+  "elf_regressions_passed": 9,
+  "existing_runtime_regressions_passed": 4,
+  "smoke": {
+    "N": 2,
+    "AR": 2,
+    "phi": 0.01,
+    "steps": 2,
+    "mpi": false
+  },
+  "binaries": {
+    "libslurry.so": {
+      "sha256": "7af1840858ea57fca927467198b3693d29c10271ddcb2f3d8abc6d093477c6b0",
+      "snapshot_sha256": "008c289b715329d452c8f6be6b7fee57952e43e9268eceb2fd2bb4ec7de9ac9e",
+      "link_path_edits": [
+        {
+          "from_tag": 15,
+          "offset": 1334448,
+          "to_tag": 29
+        }
+      ]
+    },
+    "lmp": {
+      "sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+      "snapshot_sha256": "039a591006c2facf39e99a633839a4fe46c4f179c2b24765932feba22a3f2a0c",
+      "link_path_edits": [
+        {
+          "from_tag": 15,
+          "offset": 15664,
+          "to_tag": 29
+        }
+      ]
+    },
+    "slurry_pack": {
+      "sha256": "42f5a216c85ede8ecba8d43eaf3f0f028fb989a95bc9d09ee5a708072b071cb0",
+      "snapshot_sha256": "42f5a216c85ede8ecba8d43eaf3f0f028fb989a95bc9d09ee5a708072b071cb0",
+      "link_path_edits": []
+    }
+  },
+  "libraries": {
+    "libgcc_s.so.1": {
+      "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+      "snapshot_sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+      "link_path_edits": []
+    },
+    "libgomp.so.1": {
+      "sha256": "135f3c8f006d2fe5e68e51281c7974cb991a03de3bfb3593d68d174dfcf854d1",
+      "snapshot_sha256": "135f3c8f006d2fe5e68e51281c7974cb991a03de3bfb3593d68d174dfcf854d1",
+      "link_path_edits": []
+    },
+    "liblammps.so.0": {
+      "sha256": "c5e9db090e5d0a494ecde4f9ff1bd447280b8458ead1d01b229bd36a576577b5",
+      "snapshot_sha256": "65d1618c1b0ad8b7976cd3b35e79a51ed31ec8bb44b4ffaf738541a1f11ed199",
+      "link_path_edits": [
+        {
+          "from_tag": 15,
+          "offset": 9958320,
+          "to_tag": 29
+        }
+      ]
+    },
+    "libstdc++.so.6": {
+      "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+      "snapshot_sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+      "link_path_edits": []
+    },
+    "libz.so.1": {
+      "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286",
+      "snapshot_sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286",
+      "link_path_edits": []
+    }
+  },
+  "v2_test_fixture_fix": {
+    "reported_log": "build_slurry_44537727.out",
+    "before_site_rpath_simulation": "8 passed, 1 hash-preservation assertion failed, matching reported failure",
+    "after_normal_compiler": "9/9 passed",
+    "after_site_rpath_simulation": "9/9 passed",
+    "after_ctest": "31/31 passed",
+    "scope": "Test fixtures request --enable-new-dtags and assert their tags before byte-invariance check; runtime and numerical sources unchanged"
+  }
+}

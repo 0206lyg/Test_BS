@@ -14,6 +14,8 @@ import re
 import shlex
 import shutil
 import socket
+import stat
+import struct
 import subprocess
 import sys
 import time
@@ -71,6 +73,121 @@ def copy_checked(source, destination, expected=None):
         raise RuntimeError("File changed during runtime snapshot: {}".format(source))
     return {"original": str(source), "sha256": before,
             "snapshot": str(destination)}
+
+
+def private_link_paths(record):
+    """Let LD_LIBRARY_PATH select private copies, including old GNU DT_RPATH.
+
+    Only a private copy's dynamic tag changes (RPATH=15 -> RUNPATH=29). Path
+    strings, instructions and DT_NEEDED are untouched. Preserve both hashes
+    so the approved original and this explicit loader-only edit remain auditable.
+    Apply to executable AND DSO copies; a transitive DSO may have its own RPATH.
+    """
+    original, path = Path(record["original"]), Path(record["snapshot"])
+    if os.path.samefile(str(original), str(path)):
+        raise RuntimeError("Refusing to edit original runtime inode: {}".format(path))
+    expected = record.get("snapshot_sha256", record["sha256"])
+    if (bundle_guard.sha256_file(original) != record["sha256"] or
+            bundle_guard.sha256_file(path) != expected):
+        raise RuntimeError("Runtime file changed before link-path normalization: {}".format(path))
+    data = bytearray(path.read_bytes())
+    edits = []
+    if data[:4] == b"\x7fELF":
+        def invalid():
+            raise RuntimeError("Unsupported or malformed runtime ELF: {}".format(path))
+
+        if len(data) < 16 or data[4] not in (1, 2) or data[5] not in (1, 2) or data[6] != 1:
+            invalid()
+        wide = data[4] == 2
+        endian = "<" if data[5] == 1 else ">"
+
+        def unpack(fmt, offset):
+            size = struct.calcsize(endian+fmt)
+            if offset < 0 or offset+size > len(data):
+                invalid()
+            return struct.unpack_from(endian+fmt, data, offset)[0]
+
+        phoff = unpack("Q" if wide else "I", 32 if wide else 28)
+        phsize = unpack("H", 54 if wide else 42)
+        phnum = unpack("H", 56 if wide else 44)
+        if phnum == 0xffff or (phnum and phsize < (56 if wide else 32)) or phoff+phsize*phnum > len(data):
+            invalid()
+        loads, dynamic = [], []
+        for index in range(phnum):
+            header = phoff+index*phsize
+            kind = unpack("I", header)
+            offset = unpack("Q" if wide else "I", header+(8 if wide else 4))
+            vaddr = unpack("Q" if wide else "I", header+(16 if wide else 8))
+            size = unpack("Q" if wide else "I", header+(32 if wide else 16))
+            if kind in (1, 2) and offset+size > len(data):
+                invalid()
+            if kind == 1:
+                loads.append((vaddr, offset, size))
+            if kind == 2:
+                dynamic.append((offset, size))
+        if len(dynamic) > 1:
+            invalid()
+        entries = []
+        stride = 16 if wide else 8
+        for start, size in dynamic:
+            terminated = False
+            for offset in range(start, start+size-stride+1, stride):
+                tag = unpack("q" if wide else "i", offset)
+                value = unpack("Q" if wide else "I", offset+stride//2)
+                if tag == 0:
+                    terminated = True
+                    break
+                entries.append((tag, value, offset))
+            if not terminated:
+                invalid()
+        # Slash-containing DT_NEEDED bypasses search paths altogether. Do not
+        # silently miss such a dependency (ldd omits the usual 'name =>' prefix).
+        needed = [value for tag, value, _ in entries if tag == 1]
+        if needed:
+            tables = [value for tag, value, _ in entries if tag == 5]
+            sizes = [value for tag, value, _ in entries if tag == 10]
+            if len(tables) != 1 or len(sizes) != 1:
+                invalid()
+            locations = [offset+tables[0]-vaddr for vaddr, offset, size in loads
+                         if vaddr <= tables[0] and tables[0]+sizes[0] <= vaddr+size]
+            if len(locations) != 1:
+                invalid()
+            strings = data[locations[0]:locations[0]+sizes[0]]
+            for value in needed:
+                end = strings.find(b"\0", value)
+                if value >= len(strings) or end < 0:
+                    invalid()
+                name = bytes(strings[value:end])
+                if b"/" in name:
+                    raise RuntimeError("Runtime DT_NEEDED contains a path; cannot isolate {}: {}".format(
+                        path, name.decode("utf-8", "replace")))
+        rpaths = [offset for tag, _, offset in entries if tag == 15]
+        runpaths = [offset for tag, _, offset in entries if tag == 29]
+        if len(rpaths) > 1 or len(runpaths) > 1:
+            invalid()
+        if rpaths and not runpaths:
+            offset = rpaths[0]
+            struct.pack_into(endian+("q" if wide else "i"), data, offset, 29)
+            edits.append({"offset": offset, "from_tag": 15, "to_tag": 29})
+    if edits:
+        mode = stat.S_IMODE(path.stat().st_mode)
+        try:
+            path.chmod(mode | stat.S_IWUSR)
+            path.write_bytes(data)
+        finally:
+            path.chmod(mode)
+    record["snapshot_sha256"] = bundle_guard.sha256_file(path)
+    record.setdefault("link_path_edits", []).extend(edits)
+    if bundle_guard.sha256_file(original) != record["sha256"]:
+        raise RuntimeError("Original runtime file changed during link-path normalization: {}".format(original))
+    return record
+
+
+def verify_runtime_records(records):
+    for record in records:
+        if (bundle_guard.sha256_file(Path(record["original"])) != record["sha256"] or
+                bundle_guard.sha256_file(Path(record["snapshot"])) != record.get("snapshot_sha256", record["sha256"])):
+            raise RuntimeError("Runtime file changed while copying: {}".format(record["original"]))
 
 
 def linked_libraries(path, environment=None):
@@ -139,11 +256,12 @@ def create_runtime(root, destination, expected_release, overrides):
             raise RuntimeError("Missing runtime executable/library: {}".format(original))
         binaries[name] = copy_checked(original, destination / "build/lammps-slurry" / name)
     libraries = snapshot_libraries(paths.values(), destination / "runtime-lib")
+    for record in list(binaries.values()) + list(libraries.values()):
+        private_link_paths(record)
     runtime_environment = dict(os.environ)
     runtime_environment["LD_LIBRARY_PATH"] = str(destination / "runtime-lib") + (
         ":" + os.environ["LD_LIBRARY_PATH"] if os.environ.get("LD_LIBRARY_PATH") else "")
-    # Reject an RPATH that defeats isolation instead of silently mapping the old
-    # shared build again. DT_RUNPATH from the supported CMake build permits this.
+    # Verify actual resolution after normalizing old RPATH tags on private copies.
     for record in binaries.values():
         for soname, resolved in linked_libraries(Path(record["snapshot"]), runtime_environment).items():
             if soname not in libraries or resolved.resolve() != (destination / "runtime-lib" / soname).resolve():
@@ -152,10 +270,7 @@ def create_runtime(root, destination, expected_release, overrides):
         if (bundle_guard.sha256_file(root / relative) != digest or
                 bundle_guard.sha256_file(destination / relative) != digest):
             raise RuntimeError("Source changed while runtime was copied: {}".format(relative))
-    for record in list(binaries.values()) + list(libraries.values()):
-        if (bundle_guard.sha256_file(Path(record["original"])) != record["sha256"] or
-                bundle_guard.sha256_file(Path(record["snapshot"])) != record["sha256"]):
-            raise RuntimeError("Runtime binary/library changed while copying: {}".format(record["original"]))
+    verify_runtime_records(list(binaries.values()) + list(libraries.values()))
     if bundle_guard.source_snapshot(root)["sha256"] != source["sha256"]:
         raise RuntimeError("Source changed while runtime was copied; no computation started")
     bundle_guard.check_build(root, expected_release, executable, plugin, packer, manifest)

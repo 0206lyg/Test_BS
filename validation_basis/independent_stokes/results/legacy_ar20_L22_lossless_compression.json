@@ -1,0 +1,51 @@
+{
+  "schema": "legacy_ar20_checkpoint_lossless_compression_v1",
+  "source": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22.ssb",
+  "compressed_path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22.ssb.gz",
+  "compression": "gzip",
+  "compression_level": 1,
+  "cpu_threads": 1,
+  "source_size_bytes": 2255480143,
+  "source_inode": 1980823,
+  "source_mtime_ns": 1792346209256750845,
+  "status": "completed_with_explicit_compressed_notice",
+  "physical_accuracy_qualified": false,
+  "active_stokes_solver_modified": false,
+  "fd_visibility": "Cross-tool /proc fd symlink targets are permission-restricted; no complete zero-open-FD claim is made.",
+  "unlink_authorization_basis": "Parent explicitly authorized lossless compression of the known completed frozen legacy checkpoint after decompressed SHA256 and unchanged original stat/mtime verification; no old generator is known to run.",
+  "source_sha256": "10ef161cb7467560903d32d98cad932355740f2a19f2fea96a3548690d61048b",
+  "compressed_sha256": "e1dfaf099b7a0c8fac0c84507c2ee284d6ba5a3b13953a51ed1b822c7308b032",
+  "compressed_size_bytes": 893075941,
+  "saved_bytes": 1362404202,
+  "source_unchanged_after_compression": true,
+  "compression_seconds": 25.724242664000485,
+  "decompressed_sha256": "10ef161cb7467560903d32d98cad932355740f2a19f2fea96a3548690d61048b",
+  "decompressed_size_bytes": 2255480143,
+  "verification_seconds": 9.373543003002851,
+  "source_unchanged_after_verification": true,
+  "lossless_verified": true,
+  "original_unlinked": true,
+  "total_elapsed_seconds": 35.10167699900194,
+  "completed_generation_evidence": {
+    "ar20_L22_generation.json": {
+      "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22_generation.json",
+      "sha256": "2e0a2e8d1f67c1e74687bc50bfd1e2c309e3aa2ed08921a449af428cb909ba92"
+    },
+    "ar20_L22_generation.log": {
+      "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L22_generation.log",
+      "sha256": "76a502fd5a79960959a1ee4089ece7d767490285895fd76bbc5087cd086b231b"
+    },
+    "loader_roundtrip_pass": true
+  },
+  "original_reappeared_at_first_postcheck": false,
+  "original_reappeared_before_notice": true,
+  "reappeared_original_sha256": "10ef161cb7467560903d32d98cad932355740f2a19f2fea96a3548690d61048b",
+  "reappeared_original_verified_unchanged": true,
+  "source_path_now_notice": true,
+  "original_binary_available_at_source_path": false,
+  "manual_decompression_required": true,
+  "notice_sha256": "0837876ac5e8a4de55c3a0d6f8f234b196526b5a666ef4b46ea630d31798eb50",
+  "notice_size_bytes": 635,
+  "notice_replacement_authorization": "Parent explicitly authorized atomic UTF-8 markers after verified gzip preservation to prevent rehydration of deleted legacy checkpoint paths.",
+  "notice_observed_at_unix_seconds": 1792367316.0399818
+}

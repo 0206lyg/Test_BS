@@ -1,0 +1,1148 @@
+{
+  "physical_accuracy_qualified": false,
+  "source_report": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+  "source_sha256": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a",
+  "checkpoint_sha256": "cdc91152710d2b8189c8305d301cea76c8fe9821b1cbd5f935eb647c8e2fdc63",
+  "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "method": "Saved combined-layer density only, not traction.2D Legendre degrees7-8 tail L2 over reference square, each17input normalized by max prescribed boundary velocity. Axis indicator is not an error bound.",
+  "panels_above_point1_percent": 22,
+  "candidate_split_axis0": [
+    0,
+    1,
+    2,
+    32,
+    54,
+    67,
+    83,
+    84,
+    94
+  ],
+  "candidate_split_axis1": [
+    14,
+    30,
+    42,
+    63,
+    105,
+    119,
+    120
+  ],
+  "candidate_split_both_axes": [
+    26,
+    47,
+    66,
+    93,
+    102,
+    118
+  ],
+  "ranked_panels": [
+    {
+      "patch": 1,
+      "boundary_max_scaled_error": 0.007532226462396109,
+      "tail_u_max_scaled": 0.04952785325081385,
+      "tail_v_max_scaled": 0.003847350942218402,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 84,
+      "boundary_max_scaled_error": 0.00510914866834883,
+      "tail_u_max_scaled": 0.052674597823060984,
+      "tail_v_max_scaled": 0.0050430315755022465,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 66,
+      "boundary_max_scaled_error": 0.004107744017486802,
+      "tail_u_max_scaled": 0.032807787994922344,
+      "tail_v_max_scaled": 0.059464162639225854,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 94,
+      "boundary_max_scaled_error": 0.003193659239825133,
+      "tail_u_max_scaled": 0.042459074865475954,
+      "tail_v_max_scaled": 0.004615491073165326,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 120,
+      "boundary_max_scaled_error": 0.002834856059586395,
+      "tail_u_max_scaled": 0.00026548838101102853,
+      "tail_v_max_scaled": 0.02128736873638011,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 2,
+      "boundary_max_scaled_error": 0.002765881692868445,
+      "tail_u_max_scaled": 0.03259481449572054,
+      "tail_v_max_scaled": 0.00010768307790842246,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 42,
+      "boundary_max_scaled_error": 0.0023149414616764554,
+      "tail_u_max_scaled": 0.0003892046695332772,
+      "tail_v_max_scaled": 0.016563726682734287,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 26,
+      "boundary_max_scaled_error": 0.002299961231907888,
+      "tail_u_max_scaled": 0.03715524676680272,
+      "tail_v_max_scaled": 0.05740256265755574,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 0,
+      "boundary_max_scaled_error": 0.0022570539868521883,
+      "tail_u_max_scaled": 0.016378712158448626,
+      "tail_v_max_scaled": 5.486965438644477e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 32,
+      "boundary_max_scaled_error": 0.0021226820091327183,
+      "tail_u_max_scaled": 0.0301898555785528,
+      "tail_v_max_scaled": 0.00017469461106194405,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 102,
+      "boundary_max_scaled_error": 0.0019044557544462685,
+      "tail_u_max_scaled": 0.031148722290236543,
+      "tail_v_max_scaled": 0.026938926137548072,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 63,
+      "boundary_max_scaled_error": 0.0018783751685810598,
+      "tail_u_max_scaled": 0.0007984624915973433,
+      "tail_v_max_scaled": 0.020119433234228337,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 83,
+      "boundary_max_scaled_error": 0.0017324658638947,
+      "tail_u_max_scaled": 0.010064711187609245,
+      "tail_v_max_scaled": 9.356664443435419e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 93,
+      "boundary_max_scaled_error": 0.001710146601670198,
+      "tail_u_max_scaled": 0.03760127486348847,
+      "tail_v_max_scaled": 0.0307676478080494,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 118,
+      "boundary_max_scaled_error": 0.001708280146824524,
+      "tail_u_max_scaled": 0.029612568223510362,
+      "tail_v_max_scaled": 0.032724278502505366,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 14,
+      "boundary_max_scaled_error": 0.0014086057267291843,
+      "tail_u_max_scaled": 0.0014097620915590155,
+      "tail_v_max_scaled": 0.01812260984862947,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 105,
+      "boundary_max_scaled_error": 0.0013932181997770561,
+      "tail_u_max_scaled": 5.597487468082676e-05,
+      "tail_v_max_scaled": 0.008646566430272992,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 30,
+      "boundary_max_scaled_error": 0.001231108849771545,
+      "tail_u_max_scaled": 0.000653855817820283,
+      "tail_v_max_scaled": 0.016348302754433077,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 54,
+      "boundary_max_scaled_error": 0.0011283804260530707,
+      "tail_u_max_scaled": 0.009550078664802663,
+      "tail_v_max_scaled": 0.0007593880116914663,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 67,
+      "boundary_max_scaled_error": 0.0010911454507027537,
+      "tail_u_max_scaled": 0.01493251595920378,
+      "tail_v_max_scaled": 7.109938761902583e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 47,
+      "boundary_max_scaled_error": 0.0010768447191568443,
+      "tail_u_max_scaled": 0.03100915064379833,
+      "tail_v_max_scaled": 0.045675499376512205,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 119,
+      "boundary_max_scaled_error": 0.0010656473136896906,
+      "tail_u_max_scaled": 0.00014843841782371457,
+      "tail_v_max_scaled": 0.012673009397212769,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 16,
+      "boundary_max_scaled_error": 0.0009567678227669077,
+      "tail_u_max_scaled": 0.014705408880031277,
+      "tail_v_max_scaled": 4.613957790269218e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 85,
+      "boundary_max_scaled_error": 0.00093082369728174,
+      "tail_u_max_scaled": 0.016655456639613497,
+      "tail_v_max_scaled": 0.00010941912460185294,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 29,
+      "boundary_max_scaled_error": 0.0006116688737034277,
+      "tail_u_max_scaled": 7.902863430288837e-05,
+      "tail_v_max_scaled": 0.0072128697776767635,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 33,
+      "boundary_max_scaled_error": 0.000580973173557392,
+      "tail_u_max_scaled": 0.011874994629525687,
+      "tail_v_max_scaled": 0.005109483665943099,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 78,
+      "boundary_max_scaled_error": 0.0005749236160996444,
+      "tail_u_max_scaled": 0.008495297652765623,
+      "tail_v_max_scaled": 0.002713933736255108,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 15,
+      "boundary_max_scaled_error": 0.0005645537157823574,
+      "tail_u_max_scaled": 8.639745441811003e-05,
+      "tail_v_max_scaled": 0.011168945965195187,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 109,
+      "boundary_max_scaled_error": 0.0005587423511956781,
+      "tail_u_max_scaled": 0.007171711565117256,
+      "tail_v_max_scaled": 2.6578592910917458e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 97,
+      "boundary_max_scaled_error": 0.0005525086831675787,
+      "tail_u_max_scaled": 0.008430298840470717,
+      "tail_v_max_scaled": 3.699424811371153e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 88,
+      "boundary_max_scaled_error": 0.0005089927097814964,
+      "tail_u_max_scaled": 0.003803308756206519,
+      "tail_v_max_scaled": 0.014128519093520607,
+      "tail_u_mode": "aOmega_j_x",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 92,
+      "boundary_max_scaled_error": 0.0004540362221050905,
+      "tail_u_max_scaled": 0.008896729374203449,
+      "tail_v_max_scaled": 0.002273860346258296,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 98,
+      "boundary_max_scaled_error": 0.00043273741103466354,
+      "tail_u_max_scaled": 0.004749328372013828,
+      "tail_v_max_scaled": 0.012713216027038175,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 36,
+      "boundary_max_scaled_error": 0.00037617666444490343,
+      "tail_u_max_scaled": 0.005452741550605912,
+      "tail_v_max_scaled": 0.0006607761469220226,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 71,
+      "boundary_max_scaled_error": 0.0003712737898653401,
+      "tail_u_max_scaled": 0.006464682890074482,
+      "tail_v_max_scaled": 0.004317637775515185,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 95,
+      "boundary_max_scaled_error": 0.0003356794429594166,
+      "tail_u_max_scaled": 0.007301678269122501,
+      "tail_v_max_scaled": 4.0142907696573466e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 114,
+      "boundary_max_scaled_error": 0.00032833283980597614,
+      "tail_u_max_scaled": 0.004986116553073159,
+      "tail_v_max_scaled": 0.012284141099515663,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 70,
+      "boundary_max_scaled_error": 0.00030988158527569376,
+      "tail_u_max_scaled": 0.0033311098568610865,
+      "tail_v_max_scaled": 0.00030453293998319533,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 49,
+      "boundary_max_scaled_error": 0.0003087265764928323,
+      "tail_u_max_scaled": 0.0035283199077064177,
+      "tail_v_max_scaled": 0.003948526097392011,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 7,
+      "boundary_max_scaled_error": 0.00030865257375651726,
+      "tail_u_max_scaled": 0.00048325733618483107,
+      "tail_v_max_scaled": 0.009342893101747544,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 25,
+      "boundary_max_scaled_error": 0.00027766065927245943,
+      "tail_u_max_scaled": 0.00042121341598387395,
+      "tail_v_max_scaled": 0.008961654851784098,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 74,
+      "boundary_max_scaled_error": 0.0002682627877341016,
+      "tail_u_max_scaled": 0.004550539687417312,
+      "tail_v_max_scaled": 0.013607209488449646,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 99,
+      "boundary_max_scaled_error": 0.00026315357131520496,
+      "tail_u_max_scaled": 0.008469503764489215,
+      "tail_v_max_scaled": 8.895585051567832e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 87,
+      "boundary_max_scaled_error": 0.000249495781343197,
+      "tail_u_max_scaled": 0.0093539915703927,
+      "tail_v_max_scaled": 9.194081168560116e-05,
+      "tail_u_mode": "aOmega_j_y",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 21,
+      "boundary_max_scaled_error": 0.0002450684762107077,
+      "tail_u_max_scaled": 0.009187646189079003,
+      "tail_v_max_scaled": 0.004538294043794904,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 50,
+      "boundary_max_scaled_error": 0.00022613589727173418,
+      "tail_u_max_scaled": 0.0030241670472469155,
+      "tail_v_max_scaled": 0.0003334341880440036,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 73,
+      "boundary_max_scaled_error": 0.0002203505792977658,
+      "tail_u_max_scaled": 0.011227278985541149,
+      "tail_v_max_scaled": 8.755782131071796e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 39,
+      "boundary_max_scaled_error": 0.00021995278733117024,
+      "tail_u_max_scaled": 0.0004192904832694679,
+      "tail_v_max_scaled": 0.009750508810041232,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 115,
+      "boundary_max_scaled_error": 0.00020739640191143332,
+      "tail_u_max_scaled": 0.010039706150919323,
+      "tail_v_max_scaled": 8.299123843717665e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 10,
+      "boundary_max_scaled_error": 0.00020632403592919947,
+      "tail_u_max_scaled": 0.0020201340995494037,
+      "tail_v_max_scaled": 0.0017066483000441847,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aOmega_i_x",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 111,
+      "boundary_max_scaled_error": 0.00018900147599581007,
+      "tail_u_max_scaled": 0.005230096451542027,
+      "tail_v_max_scaled": 0.0038241180549023874,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 3,
+      "boundary_max_scaled_error": 0.00016315550030231274,
+      "tail_u_max_scaled": 0.0032242328187165313,
+      "tail_v_max_scaled": 0.0010945204063227216,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aOmega_i_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 58,
+      "boundary_max_scaled_error": 0.0001625950555516835,
+      "tail_u_max_scaled": 0.00045800862386415124,
+      "tail_v_max_scaled": 0.010175879699464008,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 110,
+      "boundary_max_scaled_error": 0.00015322082625123044,
+      "tail_u_max_scaled": 0.0002356529125852965,
+      "tail_v_max_scaled": 0.0053467219039391905,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 20,
+      "boundary_max_scaled_error": 0.00013298054924519155,
+      "tail_u_max_scaled": 5.3052882735603424e-05,
+      "tail_v_max_scaled": 0.004996916696472474,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 48,
+      "boundary_max_scaled_error": 0.00013279109908075063,
+      "tail_u_max_scaled": 0.0007446940720155298,
+      "tail_v_max_scaled": 0.004487067239076475,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 64,
+      "boundary_max_scaled_error": 0.00011922252194577046,
+      "tail_u_max_scaled": 2.7555236436949178e-05,
+      "tail_v_max_scaled": 0.004360222160920785,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 13,
+      "boundary_max_scaled_error": 0.00011360837429200393,
+      "tail_u_max_scaled": 4.528938984314043e-05,
+      "tail_v_max_scaled": 0.0021368044593105696,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 27,
+      "boundary_max_scaled_error": 0.00010777482930267227,
+      "tail_u_max_scaled": 2.739323276517097e-05,
+      "tail_v_max_scaled": 0.0018139317000792844,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 44,
+      "boundary_max_scaled_error": 9.491742419354327e-05,
+      "tail_u_max_scaled": 0.00027818719538296545,
+      "tail_v_max_scaled": 0.0014156883511968201,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 18,
+      "boundary_max_scaled_error": 9.376922289671097e-05,
+      "tail_u_max_scaled": 0.0021871258569270955,
+      "tail_v_max_scaled": 0.00010140445366296838,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 68,
+      "boundary_max_scaled_error": 9.291961738059273e-05,
+      "tail_u_max_scaled": 0.001620698727685509,
+      "tail_v_max_scaled": 0.0011717350129681267,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 61,
+      "boundary_max_scaled_error": 8.772492668334794e-05,
+      "tail_u_max_scaled": 0.0004375421341527315,
+      "tail_v_max_scaled": 0.003376064737768724,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 31,
+      "boundary_max_scaled_error": 8.660501106841539e-05,
+      "tail_u_max_scaled": 0.00173507402835308,
+      "tail_v_max_scaled": 0.0011148701121713842,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aOmega_i_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 34,
+      "boundary_max_scaled_error": 8.538600502755415e-05,
+      "tail_u_max_scaled": 6.771724051960829e-05,
+      "tail_v_max_scaled": 0.005401902367127484,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 108,
+      "boundary_max_scaled_error": 7.733615680233462e-05,
+      "tail_u_max_scaled": 0.0013742195280351417,
+      "tail_v_max_scaled": 0.0011272681862674393,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 46,
+      "boundary_max_scaled_error": 7.268388059554022e-05,
+      "tail_u_max_scaled": 1.7554852748787983e-05,
+      "tail_v_max_scaled": 0.003641617722681583,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 96,
+      "boundary_max_scaled_error": 7.09295928753852e-05,
+      "tail_u_max_scaled": 0.0013048927214900847,
+      "tail_v_max_scaled": 0.0010820645890437242,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 72,
+      "boundary_max_scaled_error": 6.415474285347856e-05,
+      "tail_u_max_scaled": 0.00023082567419686396,
+      "tail_v_max_scaled": 0.005769432378674509,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 104,
+      "boundary_max_scaled_error": 6.203537338069802e-05,
+      "tail_u_max_scaled": 4.809066896303148e-05,
+      "tail_v_max_scaled": 0.0011391656968485423,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 112,
+      "boundary_max_scaled_error": 5.0486920689552494e-05,
+      "tail_u_max_scaled": 0.0012806934266682529,
+      "tail_v_max_scaled": 7.297072833548776e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 86,
+      "boundary_max_scaled_error": 4.9997932250260125e-05,
+      "tail_u_max_scaled": 0.001805750929412411,
+      "tail_v_max_scaled": 0.0011203306784999653,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 17,
+      "boundary_max_scaled_error": 4.5994634265021954e-05,
+      "tail_u_max_scaled": 0.0013810613497219615,
+      "tail_v_max_scaled": 0.001078966981564993,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aOmega_i_y",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 60,
+      "boundary_max_scaled_error": 4.447908540058975e-05,
+      "tail_u_max_scaled": 0.0005902741762285873,
+      "tail_v_max_scaled": 0.0007456896597479243,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 41,
+      "boundary_max_scaled_error": 4.042560939777381e-05,
+      "tail_u_max_scaled": 0.0011173011110952034,
+      "tail_v_max_scaled": 0.00011557373989036093,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 62,
+      "boundary_max_scaled_error": 3.645832257527535e-05,
+      "tail_u_max_scaled": 0.002376393958999627,
+      "tail_v_max_scaled": 7.801376542015694e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 43,
+      "boundary_max_scaled_error": 3.643164490996503e-05,
+      "tail_u_max_scaled": 0.0006118150592077437,
+      "tail_v_max_scaled": 0.0005258496580824828,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 53,
+      "boundary_max_scaled_error": 3.4045447579241393e-05,
+      "tail_u_max_scaled": 0.00020498910718153682,
+      "tail_v_max_scaled": 0.0015205285730960083,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_i_y",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 121,
+      "boundary_max_scaled_error": 3.295046682959556e-05,
+      "tail_u_max_scaled": 7.865759105948014e-06,
+      "tail_v_max_scaled": 0.0007006770060046375,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 107,
+      "boundary_max_scaled_error": 3.1948835599442144e-05,
+      "tail_u_max_scaled": 6.841102491458581e-06,
+      "tail_v_max_scaled": 0.0006687504081622514,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 23,
+      "boundary_max_scaled_error": 2.8482763300758506e-05,
+      "tail_u_max_scaled": 3.679132175264102e-05,
+      "tail_v_max_scaled": 0.0009581459686261719,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 90,
+      "boundary_max_scaled_error": 2.829882642112267e-05,
+      "tail_u_max_scaled": 3.6417880836138865e-05,
+      "tail_v_max_scaled": 0.0009540888813743833,
+      "tail_u_mode": "aOmega_j_x",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 76,
+      "boundary_max_scaled_error": 2.4566649552525033e-05,
+      "tail_u_max_scaled": 3.65286952085587e-05,
+      "tail_v_max_scaled": 0.0009539357239455113,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 5,
+      "boundary_max_scaled_error": 2.4315637283173027e-05,
+      "tail_u_max_scaled": 3.6779680339292195e-05,
+      "tail_v_max_scaled": 0.0009582434065544033,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 81,
+      "boundary_max_scaled_error": 2.1580366397187706e-05,
+      "tail_u_max_scaled": 0.001371847903280143,
+      "tail_v_max_scaled": 0.001162168371307401,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 59,
+      "boundary_max_scaled_error": 2.153596010831878e-05,
+      "tail_u_max_scaled": 0.0007817044795690572,
+      "tail_v_max_scaled": 5.260149488607951e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 37,
+      "boundary_max_scaled_error": 2.1487037095785143e-05,
+      "tail_u_max_scaled": 3.650537264060101e-05,
+      "tail_v_max_scaled": 0.0009523988739602147,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 100,
+      "boundary_max_scaled_error": 2.1307472151729655e-05,
+      "tail_u_max_scaled": 3.643941130861814e-05,
+      "tail_v_max_scaled": 0.0009534315637812256,
+      "tail_u_mode": "aOmega_j_x",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 80,
+      "boundary_max_scaled_error": 2.102698577705019e-05,
+      "tail_u_max_scaled": 0.0009634922625066571,
+      "tail_v_max_scaled": 0.00018538618599728932,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aOmega_i_x",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 77,
+      "boundary_max_scaled_error": 1.9143052745941454e-05,
+      "tail_u_max_scaled": 0.00034147690727798127,
+      "tail_v_max_scaled": 0.0002808348757085522,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 56,
+      "boundary_max_scaled_error": 1.8716051831289926e-05,
+      "tail_u_max_scaled": 3.6494086347241016e-05,
+      "tail_v_max_scaled": 0.0009528073079735079,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 91,
+      "boundary_max_scaled_error": 1.8483224176485036e-05,
+      "tail_u_max_scaled": 0.00030427020590828715,
+      "tail_v_max_scaled": 0.0002868392575327541,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 116,
+      "boundary_max_scaled_error": 1.8427516787570424e-05,
+      "tail_u_max_scaled": 3.68324424846374e-05,
+      "tail_v_max_scaled": 0.0009546723003892988,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 6,
+      "boundary_max_scaled_error": 1.4484018795039454e-05,
+      "tail_u_max_scaled": 0.0007674532533567116,
+      "tail_v_max_scaled": 5.989063133939251e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 51,
+      "boundary_max_scaled_error": 1.4344421222990075e-05,
+      "tail_u_max_scaled": 0.00012700136562513928,
+      "tail_v_max_scaled": 4.1520672889827824e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 82,
+      "boundary_max_scaled_error": 1.3824392507792497e-05,
+      "tail_u_max_scaled": 9.279598192012928e-05,
+      "tail_v_max_scaled": 0.00025332179515658075,
+      "tail_u_mode": "aOmega_j_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 12,
+      "boundary_max_scaled_error": 1.182560708646846e-05,
+      "tail_u_max_scaled": 1.2226729298059973e-05,
+      "tail_v_max_scaled": 0.00037139147271495897,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 24,
+      "boundary_max_scaled_error": 1.132415384428264e-05,
+      "tail_u_max_scaled": 0.0006057469629096868,
+      "tail_v_max_scaled": 5.6687640634560796e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 52,
+      "boundary_max_scaled_error": 1.0923745513485411e-05,
+      "tail_u_max_scaled": 3.710655422699076e-05,
+      "tail_v_max_scaled": 0.0005422816277732601,
+      "tail_u_mode": "aE_yz",
+      "tail_v_mode": "aOmega_i_y",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 28,
+      "boundary_max_scaled_error": 1.0908015626486743e-05,
+      "tail_u_max_scaled": 7.10681833244002e-06,
+      "tail_v_max_scaled": 0.00021559295714836221,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 40,
+      "boundary_max_scaled_error": 9.669282521714682e-06,
+      "tail_u_max_scaled": 0.0006009802590691148,
+      "tail_v_max_scaled": 5.1273801608097794e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 9,
+      "boundary_max_scaled_error": 9.021375377556078e-06,
+      "tail_u_max_scaled": 0.00017050444621182813,
+      "tail_v_max_scaled": 0.00016183680686762713,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 11,
+      "boundary_max_scaled_error": 8.47435077723115e-06,
+      "tail_u_max_scaled": 0.00012198573141813928,
+      "tail_v_max_scaled": 0.00041887362880884776,
+      "tail_u_mode": "aOmega_j_y",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 55,
+      "boundary_max_scaled_error": 8.177269676331118e-06,
+      "tail_u_max_scaled": 0.00010456956687211516,
+      "tail_v_max_scaled": 6.398291107506267e-06,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 65,
+      "boundary_max_scaled_error": 6.9742964209542694e-06,
+      "tail_u_max_scaled": 9.514916917801598e-06,
+      "tail_v_max_scaled": 0.0005951464373532926,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 103,
+      "boundary_max_scaled_error": 5.609566820898872e-06,
+      "tail_u_max_scaled": 0.00023256147548821613,
+      "tail_v_max_scaled": 4.3450203346050866e-05,
+      "tail_u_mode": "aOmega_j_y",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 0
+    },
+    {
+      "patch": 45,
+      "boundary_max_scaled_error": 3.3700005377868657e-06,
+      "tail_u_max_scaled": 1.0075965787671463e-05,
+      "tail_v_max_scaled": 0.00033024390909841105,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 106,
+      "boundary_max_scaled_error": 3.338260731865562e-06,
+      "tail_u_max_scaled": 5.928575204439382e-06,
+      "tail_v_max_scaled": 0.00010615969142985922,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 122,
+      "boundary_max_scaled_error": 2.6157762959255733e-06,
+      "tail_u_max_scaled": 4.330865875898424e-06,
+      "tail_v_max_scaled": 0.00012938143283907066,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 79,
+      "boundary_max_scaled_error": 2.4428761667445205e-06,
+      "tail_u_max_scaled": 8.29941564466405e-05,
+      "tail_v_max_scaled": 5.4977218099018526e-05,
+      "tail_u_mode": "aOmega_i_y",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 69,
+      "boundary_max_scaled_error": 1.1750533570008082e-06,
+      "tail_u_max_scaled": 1.0558704373088708e-05,
+      "tail_v_max_scaled": 4.625118589481757e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": 1
+    },
+    {
+      "patch": 113,
+      "boundary_max_scaled_error": 1.1386314355434394e-06,
+      "tail_u_max_scaled": 1.1495093415617983e-05,
+      "tail_v_max_scaled": 4.345703120096773e-05,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 8,
+      "boundary_max_scaled_error": 9.929145652425016e-07,
+      "tail_u_max_scaled": 2.87491051230602e-05,
+      "tail_v_max_scaled": 3.268151198779758e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Uj_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 35,
+      "boundary_max_scaled_error": 8.266728275897321e-07,
+      "tail_u_max_scaled": 2.6464987483981042e-05,
+      "tail_v_max_scaled": 4.5286954871408925e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 117,
+      "boundary_max_scaled_error": 8.129779310219906e-07,
+      "tail_u_max_scaled": 2.851963889668576e-06,
+      "tail_v_max_scaled": 5.667337497146655e-06,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 57,
+      "boundary_max_scaled_error": 7.510345939844374e-07,
+      "tail_u_max_scaled": 8.24163108844934e-06,
+      "tail_v_max_scaled": 6.021272664537751e-06,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 19,
+      "boundary_max_scaled_error": 6.971015484300298e-07,
+      "tail_u_max_scaled": 2.813087260193145e-05,
+      "tail_v_max_scaled": 3.819363153233867e-05,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "Ui_z",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 4,
+      "boundary_max_scaled_error": 5.629181639646692e-07,
+      "tail_u_max_scaled": 7.241948914040777e-06,
+      "tail_v_max_scaled": 6.076206858631302e-06,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 89,
+      "boundary_max_scaled_error": 5.235755648454564e-07,
+      "tail_u_max_scaled": 3.2118484136399563e-06,
+      "tail_v_max_scaled": 5.649919746595182e-06,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 101,
+      "boundary_max_scaled_error": 5.002043068026051e-07,
+      "tail_u_max_scaled": 2.5656100412833016e-06,
+      "tail_v_max_scaled": 5.65947587686296e-06,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 38,
+      "boundary_max_scaled_error": 4.562767341155573e-07,
+      "tail_u_max_scaled": 9.537902727307814e-06,
+      "tail_v_max_scaled": 6.0748148167638384e-06,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 22,
+      "boundary_max_scaled_error": 4.182833661299488e-07,
+      "tail_u_max_scaled": 7.69007829112088e-06,
+      "tail_v_max_scaled": 6.136140946811014e-06,
+      "tail_u_mode": "Uj_z",
+      "tail_v_mode": "aE_yz",
+      "candidate_split_axis": null
+    },
+    {
+      "patch": 75,
+      "boundary_max_scaled_error": 3.5951495479710765e-07,
+      "tail_u_max_scaled": 3.4775898609905093e-06,
+      "tail_v_max_scaled": 5.648136792982014e-06,
+      "tail_u_mode": "Ui_z",
+      "tail_v_mode": "aOmega_j_x",
+      "candidate_split_axis": null
+    }
+  ],
+  "candidate_resulting_panels": 157,
+  "candidate_resulting_p8_nodes": 12717
+}

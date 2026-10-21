@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "guarded_launcher": "lammps_slurry/tools/run_bridge.py",
+  "build_release": "20261020-compact-bridge-integration",
+  "source_fingerprint": "64761248e677e920f556f21f7980e5f7541db92154aa0498b96c16e0e5d0e173",
+  "mpi": false,
+  "steps": 2,
+  "count": 2,
+  "ar": 2,
+  "initialization": "aligned",
+  "selected_mean_eta_Pa_s": 0.010201688659614875,
+  "history_rows": 3,
+  "verified_snapshots": {
+    "binaries": {
+      "libslurry.so": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/bin/libslurry.so",
+        "sha256": "533d0b3ad58c3654ed4e6aa98d84bf23b32b8f882151c1c1499ab9aa2ef7af92"
+      },
+      "lmp": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/bin/lmp",
+        "sha256": "0beba38a668b876b6edfdf09635725e81482bc10c23699559a434ce333057d1c"
+      },
+      "slurry_pack": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/bin/slurry_pack",
+        "sha256": "f5eae8d0bd85dade2406eaed07717872f998c64c4133ebaa7704ace17419ecc2"
+      }
+    },
+    "libraries": {
+      "libgcc_s.so.1": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgcc_s.so.1",
+        "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+      },
+      "libgomp.so.1": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgomp.so.1",
+        "sha256": "135f3c8f006d2fe5e68e51281c7974cb991a03de3bfb3593d68d174dfcf854d1"
+      },
+      "liblammps.so.0": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/liblammps.so.0",
+        "sha256": "4f463f055c3a0e37f8154fb988eadf9f70ee3fea7fbdc5ea89b49415e63c98e2"
+      },
+      "libstdc++.so.6": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libstdc++.so.6",
+        "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+      },
+      "libz.so.1": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libz.so.1",
+        "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286"
+      }
+    },
+    "scripts": {
+      "prepare_bridge.py": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/tools/prepare_bridge.py",
+        "sha256": "0562f35dd7c0b3c7c4de76a4774f467fd6eda87082abf0da52bbd60d83d5e947"
+      },
+      "summarize_bridge.py": {
+        "snapshot": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/tools/summarize_bridge.py",
+        "sha256": "95bfcf8083f4688e571d5bb4af8857e4af8b7a3025dc391aff53ec150659f478"
+      }
+    }
+  },
+  "resolved_private_libraries": {
+    "libslurry.so": {
+      "liblammps.so.0": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/liblammps.so.0",
+      "libgomp.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgomp.so.1",
+      "libstdc++.so.6": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libstdc++.so.6",
+      "libgcc_s.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgcc_s.so.1",
+      "libz.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libz.so.1"
+    },
+    "lmp": {
+      "liblammps.so.0": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/liblammps.so.0",
+      "libstdc++.so.6": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libstdc++.so.6",
+      "libgcc_s.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgcc_s.so.1",
+      "libz.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libz.so.1"
+    },
+    "slurry_pack": {
+      "libstdc++.so.6": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libstdc++.so.6",
+      "libgcc_s.so.1": "/workspace/scratch/0520ed9b6708/Test_BS/validation_bridge/guarded_runtime_check/runtime/lib/libgcc_s.so.1"
+    }
+  },
+  "source_manifest_path": "/workspace/scratch/0520ed9b6708/lammps-build-env/build/build-manifest.json",
+  "runtime_binary_archive_policy": "Private copied bin/lib removed after completed run and hash/ldd verification; metadata and simulation outputs retained. No binaries committed."
+}

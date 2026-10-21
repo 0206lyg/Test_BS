@@ -1,0 +1,612 @@
+Start testing: Oct 21 05:34 KST
+----------------------------------------------------------
+1/35 Testing: slurry_general_input_routing
+1/35 Test: slurry_general_input_routing
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/test_general_plumbing.py"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_input_routing" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.152s
+
+OK
+<end of output>
+Test time =   0.24 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_input_routing" end time: Oct 21 05:34 KST
+"slurry_general_input_routing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/35 Testing: slurry_rheology_component_summary
+2/35 Test: slurry_rheology_component_summary
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/test_summarize_rheology.py"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_rheology_component_summary" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_rheology_component_summary" end time: Oct 21 05:34 KST
+"slurry_rheology_component_summary" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/35 Testing: slurry_runtime_snapshot
+3/35 Test: slurry_runtime_snapshot
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/../validation_finite_gap/test_runtime_snapshot.py"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_runtime_snapshot" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+.Runtime snapshot verified: /tmp/slurry-runtime-test-5x29galq/whole_runtime (source bfee78e59cda416810d04c3f187d2cc03f9c7e35d41f923be3a91d5a6b09e5fa; host 683e1ee14bb0)
+Runtime snapshot verified: /tmp/slurry-runtime-test-5x29galq/general_only_runtime (source dc5057a3ecb6855d4620cef64e88723075d499ebc94ef2669b61fbabdaab8446; host 683e1ee14bb0)
+....
+----------------------------------------------------------------------
+Ran 5 tests in 3.627s
+
+OK
+<end of output>
+Test time =   3.68 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_runtime_snapshot" end time: Oct 21 05:34 KST
+"slurry_runtime_snapshot" time elapsed: 00:00:03
+----------------------------------------------------------
+
+4/35 Testing: slurry_general_smoke_analyzer
+4/35 Test: slurry_general_smoke_analyzer
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/../validation_general/test_smoke_analysis.py"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_smoke_analyzer" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.004s
+
+OK
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_smoke_analyzer" end time: Oct 21 05:34 KST
+"slurry_general_smoke_analyzer" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/35 Testing: slurry_general_near_python_parity
+5/35 Test: slurry_general_near_python_parity
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_near_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/general_near_python_v1.txt"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_near_python_parity" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+Python golden cases=12 max_matrix_relative_error=5.9778532479054569e-15
+General near algebra, continuation and strain-coordinate checks passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_near_python_parity" end time: Oct 21 05:34 KST
+"slurry_general_near_python_parity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/35 Testing: slurry_general_outer_python_parity
+6/35 Test: slurry_general_outer_python_parity
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_outer_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/general_outer_reference.dat"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_outer_python_parity" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+sphere_disk relative=6.33982320783e-14
+ar2_generic_disk relative=6.9136302073e-15
+ar5_generic_disk relative=6.79571276139e-15
+ar10_far relative=1.40859783118e-15
+ar20_face_disk relative=3.60896081861e-13
+ar3p7_rotated_disk relative=8.36327099663e-13
+general outer: 6 fixtures + sphere, rotation, reverse, exchange passed; max_relative=8.36327099663e-13
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_outer_python_parity" end time: Oct 21 05:34 KST
+"slurry_general_outer_python_parity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/35 Testing: slurry_general_runtime_contract
+7/35 Test: slurry_general_runtime_contract
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_provider_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_runtime_contract" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: general provider units/signs, isolated subtraction, reduced closure/free C5, rotation/similarity, stress-work, floor/window, sphere and unresolved rejection; largest relative check error=3.33239298714e-13
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_runtime_contract" end time: Oct 21 05:34 KST
+"slurry_general_runtime_contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/35 Testing: slurry_general_adaptive_python_parity
+8/35 Test: slurry_general_adaptive_python_parity
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_model_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/general_model_python_v1.txt"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_adaptive_python_parity" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+AR=2 h=0.02 quadrature=8x32 far=0
+AR=5 h=1 quadrature=8x32 far=0
+AR=20 h=0.02 quadrature=64x256 far=0
+AR=2 h=40 quadrature=0x0 far=1
+AR=5 h=42.3129 quadrature=8x32 far=0
+Python model golden cases=5 max_matrix_relative_error=1.7841199374157017e-12
+General model adaptive resolution, far branch, and explicit failure checks passed
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_adaptive_python_parity" end time: Oct 21 05:34 KST
+"slurry_general_adaptive_python_parity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/35 Testing: slurry_general_manybody_closure
+9/35 Test: slurry_general_manybody_closure
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_manybody_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_manybody_closure" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+{
+  "passed": true,
+  "scope": "structural regression; not all-configuration or viscosity certification",
+  "geometry": "27 aligned oblates, open 3x3x3 nearest-neighbor lattice",
+  "center_spacings_over_c": "(2*AR+0.1, 2*AR+0.1, 2.1)",
+  "gap_over_c": 0.1,
+  "edges": 54,
+  "solvent_in_strain_check": false,
+  "pair_evaluation": "adaptive general model at default tolerance 0.005",
+  "eigenvalue_clipping": false,
+  "cases": [
+    {"ar": 2, "minimum_pair_eigenvalue": 16.313160128480707, "naive_full_pair_velocity_minimum": -9.3724511643764234, "naive_common_translation_over_isolated": -0.22873317610608657, "relative_velocity_minimum": 29.884365973807849, "relative_free_strain_minimum": 624.12106697294655, "two_body_reduced_relative_error": 1.4885795096959679e-16, "two_body_free_strain_relative_error": 5.4805538225052029e-16, "maximum_radial_order": 8, "elapsed_seconds": 0.020578974999999999},
+    {"ar": 20, "minimum_pair_eigenvalue": 9.1327629608320233, "naive_full_pair_velocity_minimum": -121.01664312545502, "naive_common_translation_over_isolated": -0.31881804314213091, "relative_velocity_minimum": 170.00369782851368, "relative_free_strain_minimum": 362.4716021568679, "two_body_reduced_relative_error": 1.544873793696476e-16, "two_body_free_strain_relative_error": 3.0084138186255021e-13, "maximum_radial_order": 64, "elapsed_seconds": 4.5254272220000002}
+  ]
+}
+<end of output>
+Test time =   4.55 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_manybody_closure" end time: Oct 21 05:34 KST
+"slurry_general_manybody_closure" time elapsed: 00:00:04
+----------------------------------------------------------
+
+10/35 Testing: slurry_general_near_energy_completion
+10/35 Test: slurry_general_near_energy_completion
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_general_near_energy_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/general_near_energy_python_v1.txt"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_general_near_energy_completion" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+Python positive-square fixture max_relative_error=4.6064438287221827e-15
+Near positive-square identity and actual AR20 integration failure passed; completed_scaled_min=0.66646329738559851 quadrature=32x128 completion_full_Frobenius_ratio=0.00048719532623497783
+<end of output>
+Test time =   4.10 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_general_near_energy_completion" end time: Oct 21 05:34 KST
+"slurry_general_near_energy_completion" time elapsed: 00:00:04
+----------------------------------------------------------
+
+11/35 Testing: slurry_matched_hybrid_golden
+11/35 Test: slurry_matched_hybrid_golden
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_matched_hybrid_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/models/ar10_matched.ssb" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/matched_hybrid_golden.txt"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_matched_hybrid_golden" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS hybrid golden maximum error 2.673159796671079e-14
+<end of output>
+Test time =   1.87 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_matched_hybrid_golden" end time: Oct 21 05:34 KST
+"slurry_matched_hybrid_golden" time elapsed: 00:00:01
+----------------------------------------------------------
+
+12/35 Testing: slurry_independent_stokes_reference
+12/35 Test: slurry_independent_stokes_reference
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_independent_pair_reference_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/models/ar10_matched.ssb" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/independent_pair_reference.txt"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_independent_stokes_reference" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+offset75_boundary_checked all11_error=0.072151173215 limit=0.073 free_strain_error=0.040111582054 limit=0.042 normal_error=-0.0283562748677 isolated_error=1.24797310921e-14
+tilted150_full17_qualified all11_error=0.0787120434826 limit=0.081 free_strain_error=0.000995889407036 limit=0.0012 normal_error=-0.0281070495997 isolated_error=1.33796463305e-15
+PASS: two independent Stokes comparisons; this is not a universal accuracy bound.
+<end of output>
+Test time =   1.47 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_independent_stokes_reference" end time: Oct 21 05:34 KST
+"slurry_independent_stokes_reference" time elapsed: 00:00:01
+----------------------------------------------------------
+
+13/35 Testing: slurry_grand_pair_math
+13/35 Test: slurry_grand_pair_math
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_grand_pair_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_grand_pair_math" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: 17 conjugate finite differences, work balance, assembly, frame covariance, unit scaling, rate scaling, window and guards. Maximum normalized error=2.34100860919e-09
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_pair_math" end time: Oct 21 05:34 KST
+"slurry_grand_pair_math" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/35 Testing: slurry_grand_pair_lookup
+14/35 Test: slurry_grand_pair_lookup
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_grand_pair_lookup_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_grand_pair_lookup" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: explicit geometry coverage, no extrapolation, interpolation gate, provenance, axis-director equivalence.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_pair_lookup" end time: Oct 21 05:34 KST
+"slurry_grand_pair_lookup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/35 Testing: slurry_grand_reduced
+15/35 Test: slurry_grand_reduced
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_grand_reduced_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_grand_reduced" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: reduced midpoint common rotation, affine coordinate congruence, same stress and power.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_reduced" end time: Oct 21 05:34 KST
+"slurry_grand_reduced" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/35 Testing: slurry_grand_system_passivity
+16/35 Test: slurry_grand_system_passivity
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_grand_system_check_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_grand_system_passivity" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: signed pair accepted only with global velocity+strain passivity; negative total velocity/strain rejected.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_grand_system_passivity" end time: Oct 21 05:34 KST
+"slurry_grand_system_passivity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/35 Testing: slurry_exact_sparse_lu
+17/35 Test: slurry_exact_sparse_lu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_eigen_lu_solver_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_exact_sparse_lu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_exact_sparse_lu" end time: Oct 21 05:34 KST
+"slurry_exact_sparse_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/35 Testing: slurry_exact_jacobian_ilu
+18/35 Test: slurry_exact_jacobian_ilu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_eigen_lu_solver_test" "ilu"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_exact_jacobian_ilu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_exact_jacobian_ilu" end time: Oct 21 05:34 KST
+"slurry_exact_jacobian_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/35 Testing: slurry_adaptive_forcing_ilu
+19/35 Test: slurry_adaptive_forcing_ilu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_eigen_lu_solver_test" "ilu" "adaptive"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_adaptive_forcing_ilu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_adaptive_forcing_ilu" end time: Oct 21 05:34 KST
+"slurry_adaptive_forcing_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/35 Testing: slurry_cached_ilu_equivalence
+20/35 Test: slurry_cached_ilu_equivalence
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_eigen_lu_solver_test" "ilu" "cache"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_cached_ilu_equivalence" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: established Eigen full nonsymmetric LU, scaling, symbolic reuse, independent Jacobian differences, and unchanged converged contact solutions
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_cached_ilu_equivalence" end time: Oct 21 05:34 KST
+"slurry_cached_ilu_equivalence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/35 Testing: slurry_incomplete_sparse_lu
+21/35 Test: slurry_incomplete_sparse_lu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_eigen_ilu_solver_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_incomplete_sparse_lu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: approximate nonsymmetric ILUT, scaling, actual factor fill, symbolic reuse, tuning, and invalid-factor protection
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_incomplete_sparse_lu" end time: Oct 21 05:34 KST
+"slurry_incomplete_sparse_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/35 Testing: slurry_sparse_preconditioner
+22/35 Test: slurry_sparse_preconditioner
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_sparse_solver_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_sparse_preconditioner" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+{"particles":27,"pairs":81,"nested_seconds":0.108469524,"sparse_seconds":0.008907626,"speedup":12.1771529249,"nested_cg_iterations":7365,"nested_gmres_iterations":101,"sparse_gmres_iterations":162,"sparse_factorizations":2,"sparse_factor_nonzeros":7055,"sparse_setup_seconds":0.000931189,"sparse_solve_seconds":0.003234496,"nested_residual":3.92980199865e-15,"sparse_residual":2.91308533446e-15,"maximum_velocity_difference":1.45266150454e-19}
+PASS: sparse SPD factor, equilibration/permutation, assembly, explicit fallback, and unchanged coupled friction solutions
+<end of output>
+Test time =   0.13 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_sparse_preconditioner" end time: Oct 21 05:34 KST
+"slurry_sparse_preconditioner" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/35 Testing: slurry_spheroid_lubrication_algebra
+23/35 Test: slurry_spheroid_lubrication_algebra
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_spheroid_hydro_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_spheroid_lubrication_algebra" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+Spheroid lubrication implementation checks passed: exact/near-sphere Mari limit, anisotropic curvature coefficients, finite regularization, reciprocity, modal dissipation, affine force/stress energy identities, rotation covariance and particle exchange.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_spheroid_lubrication_algebra" end time: Oct 21 05:34 KST
+"slurry_spheroid_lubrication_algebra" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/35 Testing: slurry_mari_pair_lubrication
+24/35 Test: slurry_mari_pair_lubrication
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_pair_hydro_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_mari_pair_lubrication" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+Mari sphere lubrication checks passed: independent unequal-sphere A/B/C/G/H/M coefficients, regularization, pump/twist, reciprocity, PSD, strain-stress derivative, periodic-image power and force-free pair.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_mari_pair_lubrication" end time: Oct 21 05:34 KST
+"slurry_mari_pair_lubrication" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/35 Testing: slurry_hydro_analytic_limits
+25/35 Test: slurry_hydro_analytic_limits
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_hydro_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_hydro_analytic_limits" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: sphere and thin-disk resistance, oblate/prolate anisotropy, Jeffery rotation
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_hydro_analytic_limits" end time: Oct 21 05:34 KST
+"slurry_hydro_analytic_limits" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/35 Testing: slurry_packing_gradients
+26/35 Test: slurry_packing_gradients
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_pack" "--self-test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_packing_gradients" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PW periodic sphere/oblate tests: maximum gradient residual=7.56775e-11, contact optimum residual=4.16334e-17
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_packing_gradients" end time: Oct 21 05:34 KST
+"slurry_packing_gradients" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/35 Testing: slurry_implicit_resistance_contact
+27/35 Test: slurry_implicit_resistance_contact
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_implicit_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_implicit_resistance_contact" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: implicit anisotropic drag, lubrication/image velocities, 1 us unilateral contact, coupled rotational/contact equilibrium, angular balance, rough contact onset, Coulomb stick/slip/reversal/release, energy balance, frame covariance, exact load-dependent Jacobian, coupled friction network, full pair hydro/affine modes, 6x6 block preconditioning, Mari pair force/power balance and rate scaling, and failure reporting
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_implicit_resistance_contact" end time: Oct 21 05:34 KST
+"slurry_implicit_resistance_contact" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/35 Testing: slurry_stress_analytic_limits
+28/35 Test: slurry_stress_analytic_limits
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_stress_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_stress_analytic_limits" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS: exact spheroid stresslet, Einstein limit, rotation coupling, objectivity, power, reciprocity
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_stress_analytic_limits" end time: Oct 21 05:34 KST
+"slurry_stress_analytic_limits" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/35 Testing: slurry_history_objectivity
+29/35 Test: slurry_history_objectivity
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_history_math_test"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_history_objectivity" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+Objective contact history, common spin and antiparallel transport passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_history_objectivity" end time: Oct 21 05:34 KST
+"slurry_history_objectivity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/35 Testing: slurry_dense_friction_kink
+30/35 Test: slurry_dense_friction_kink
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_kink.dat"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_kink" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=5.78811e-11, Newton=3, directional reselections=1, LU factors=0, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink" end time: Oct 21 05:34 KST
+"slurry_dense_friction_kink" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/35 Testing: slurry_dense_friction_stall
+31/35 Test: slurry_dense_friction_stall
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_stall.dat"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_stall" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=1.23457e-13, Newton=3, directional reselections=1, LU factors=0, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall" end time: Oct 21 05:34 KST
+"slurry_dense_friction_stall" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/35 Testing: slurry_dense_friction_kink_lu
+32/35 Test: slurry_dense_friction_kink_lu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_kink.dat" "lu"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_kink_lu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.82428e-11, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink_lu" end time: Oct 21 05:34 KST
+"slurry_dense_friction_kink_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/35 Testing: slurry_dense_friction_stall_lu
+33/35 Test: slurry_dense_friction_stall_lu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_stall.dat" "lu"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_stall_lu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.76974e-13, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall_lu" end time: Oct 21 05:34 KST
+"slurry_dense_friction_stall_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+34/35 Testing: slurry_dense_friction_kink_ilu
+34/35 Test: slurry_dense_friction_kink_ilu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_kink.dat" "ilu"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_kink_ilu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=4.51603e-12, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_kink_ilu" end time: Oct 21 05:34 KST
+"slurry_dense_friction_kink_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/35 Testing: slurry_dense_friction_stall_ilu
+35/35 Test: slurry_dense_friction_stall_ilu
+Command: "/workspace/scratch/581ed100c5ad/general_verified_build-slurry/slurry_friction_regression_test" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/tests/data/dense_friction_stall.dat" "ilu"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_dense_friction_stall_ilu" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+PASS dense Coulomb kink: relative residual=3.2121e-14, Newton=3, directional reselections=1, LU factors=1, LU fallback=0
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_dense_friction_stall_ilu" end time: Oct 21 05:34 KST
+"slurry_dense_friction_stall_ilu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 21 05:34 KST

@@ -1,0 +1,76 @@
+{
+  "physical_accuracy_qualified": false,
+  "scope": "Same saved old-library density evaluated in separate processes with old and patched quadrature operators; no new solve",
+  "baseline": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_baseline.json",
+  "patched": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_patched.json",
+  "baseline_library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+  "patched_library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "source_checkpoint_sha256": "f0c12eb3bebaf9475b16da83268af73aa33f9a0608a8513a54827e08b6c6d988",
+  "same_source_checkpoint": true,
+  "max_point_position_difference": 0.0,
+  "comparisons": [
+    {
+      "eps": 1e-07,
+      "max_scaled_velocity_change": 5.661756654927171e-07,
+      "per_mode_max_scaled_velocity_change": [
+        2.053629201833056e-08,
+        1.9991342054561406e-08,
+        5.661756654927171e-07,
+        1.7346108995996642e-07,
+        1.3262315696523048e-07,
+        1.9266969193551773e-08,
+        1.5005396238185723e-08,
+        1.6980749634012715e-08,
+        5.471040464966121e-07,
+        2.823062157476863e-07,
+        1.2798756393015406e-07,
+        2.0344403417950074e-08,
+        1.2483961408680899e-08,
+        1.7935910997474596e-07,
+        1.2909981018834815e-08,
+        1.2457336905013855e-08,
+        3.42661640935243e-07
+      ],
+      "per_panel_max_scaled_velocity_change": {
+        "25": 2.286007521869149e-07,
+        "35": 5.661756654927171e-07,
+        "41": 2.422485510693057e-07,
+        "52": 3.7012378252004386e-07
+      },
+      "old_max_boundary_error": 0.025898612305974757,
+      "patched_max_boundary_error": 0.025898420556287514
+    },
+    {
+      "eps": 1e-11,
+      "max_scaled_velocity_change": 5.354805139437671e-09,
+      "per_mode_max_scaled_velocity_change": [
+        2.507078175446358e-10,
+        2.8272465255555896e-10,
+        5.354805139437671e-09,
+        2.628528408462136e-09,
+        1.3840924955675894e-09,
+        2.801651984204573e-10,
+        2.2320907557307932e-10,
+        2.625747794045857e-10,
+        5.163331382240645e-09,
+        2.23977910585188e-09,
+        1.3182823314553552e-09,
+        3.0964187643039396e-10,
+        2.0263565297884176e-10,
+        1.6785558209186538e-09,
+        1.5963233355282927e-10,
+        1.3968633791255342e-10,
+        3.2486168133760123e-09
+      ],
+      "per_panel_max_scaled_velocity_change": {
+        "25": 2.4821377669729645e-09,
+        "35": 5.354805139437671e-09,
+        "41": 1.99980556174953e-09,
+        "52": 3.766247235946447e-09
+      },
+      "old_max_boundary_error": 0.02589834996412766,
+      "patched_max_boundary_error": 0.02589835014336481
+    }
+  ],
+  "interpretation": "The deterministic high-order quadrature policy changes these sampled old-density velocities only slightly; the2.59% no-slip residual remains. This does not validate the old assembled operator, density, self-GGQ, or global surface."
+}

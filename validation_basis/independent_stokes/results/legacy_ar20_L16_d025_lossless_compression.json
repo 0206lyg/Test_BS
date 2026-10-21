@@ -1,0 +1,54 @@
+{
+  "schema": "legacy_ar20_checkpoint_lossless_compression_v1",
+  "source": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025.ssb",
+  "compressed_path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025.ssb.gz",
+  "compression": "gzip",
+  "compression_level": 1,
+  "cpu_threads": 1,
+  "source_size_bytes": 805444166,
+  "source_inode": 1982460,
+  "source_mtime_ns": 1792346724452723076,
+  "status": "completed_with_explicit_compressed_notice",
+  "physical_accuracy_qualified": false,
+  "active_stokes_solver_modified": false,
+  "minimum_savings_bytes": 100000000,
+  "fd_visibility": "Cross-tool /proc fd symlink targets are permission-restricted; no complete zero-open-FD claim is made.",
+  "unlink_authorization_basis": "Parent explicitly authorized lossless compression of this known completed frozen legacy checkpoint after decompressed SHA256 and unchanged original stat/mtime verification; no old generator is known to run.",
+  "source_sha256": "c9cdf85bceeec0bf363a680b76ee02adc2dbd0a4215b360f8f186233b3b1e61d",
+  "compressed_sha256": "bcd33c922a377068dd77f193315acba3a0e1f2a38eebcadc2fd631cb1ffa1084",
+  "compressed_size_bytes": 326939289,
+  "saved_bytes": 478504877,
+  "source_unchanged_after_compression": true,
+  "compression_seconds": 9.191786390998459,
+  "decompressed_sha256": "c9cdf85bceeec0bf363a680b76ee02adc2dbd0a4215b360f8f186233b3b1e61d",
+  "decompressed_size_bytes": 805444166,
+  "verification_seconds": 3.52825551800197,
+  "source_unchanged_after_verification": true,
+  "lossless_verified": true,
+  "original_unlinked": true,
+  "total_elapsed_seconds": 12.724006888001895,
+  "completed_generation_evidence": {
+    "ar20_L16_d025_generation.json": {
+      "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025_generation.json",
+      "sha256": "fbfcd2673125a6daab12b21ce47f5ba9a23583cfc86b4070511e8b3d355f88b4"
+    },
+    "ar20_L16_d025_generation.log": {
+      "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025_generation.log",
+      "sha256": "c0e0c45158b1cf08fba63b308308693054e88bec755ad7eec8fea539d816acdf"
+    },
+    "ar20_L16_d025_run.json": {
+      "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025_run.json",
+      "sha256": "9c7c53bbe62fa5c7d843d3f0fd7d6b9b1f900f6be4e22a5c62f779af72530845"
+    }
+  },
+  "original_reappeared_before_notice": true,
+  "reappeared_original_sha256": "c9cdf85bceeec0bf363a680b76ee02adc2dbd0a4215b360f8f186233b3b1e61d",
+  "reappeared_original_verified_unchanged": true,
+  "source_path_now_notice": true,
+  "original_binary_available_at_source_path": false,
+  "manual_decompression_required": true,
+  "notice_sha256": "fd6cf41960e3e8de20944f6bd366596bf01789450dee1d524803534f881c1b4c",
+  "notice_size_bytes": 649,
+  "notice_replacement_authorization": "Parent explicitly authorized atomic UTF-8 markers after verified gzip preservation to prevent rehydration of deleted legacy checkpoint paths.",
+  "notice_observed_at_unix_seconds": 1792367317.8008728
+}

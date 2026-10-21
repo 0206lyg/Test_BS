@@ -1,0 +1,22 @@
+3/35 Testing: slurry_runtime_snapshot
+3/35 Test: slurry_runtime_snapshot
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/scratch/581ed100c5ad/Test_BS_general/lammps_slurry/../validation_finite_gap/test_runtime_snapshot.py"
+Directory: /workspace/scratch/581ed100c5ad/general_verified_build-slurry
+"slurry_runtime_snapshot" start time: Oct 21 05:34 KST
+Output:
+----------------------------------------------------------
+.Runtime snapshot verified: /tmp/slurry-runtime-test-5x29galq/whole_runtime (source bfee78e59cda416810d04c3f187d2cc03f9c7e35d41f923be3a91d5a6b09e5fa; host 683e1ee14bb0)
+Runtime snapshot verified: /tmp/slurry-runtime-test-5x29galq/general_only_runtime (source dc5057a3ecb6855d4620cef64e88723075d499ebc94ef2669b61fbabdaab8446; host 683e1ee14bb0)
+....
+----------------------------------------------------------------------
+Ran 5 tests in 3.627s
+
+OK
+<end of output>
+Test time =   3.68 sec
+----------------------------------------------------------
+Test Passed.
+"slurry_runtime_snapshot" end time: Oct 21 05:34 KST
+"slurry_runtime_snapshot" time elapsed: 00:00:03
+----------------------------------------------------------
+

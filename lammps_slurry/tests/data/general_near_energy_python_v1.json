@@ -1,0 +1,20 @@
+{
+  "scope": "NumPy positive-square construction at actual AR20 failed pair; not independent Stokes accuracy",
+  "runtime_reads_fixture": false,
+  "source_sha256": {
+    "near.py": "00d95be7e9d5c31835fcc52af116fa373bf961d2aba697b1d5d5e642866b7d53",
+    "vendor/claeys_near.py": "20f1a34ed5fcbfbf0da3eec60fee6afaf46f2cdc87eae0afc0557b1fd7ed37fc",
+    "vendor/geometry.py": "64b69e5f52d7f87514b52052ae9b0dceaddc409113f8659e5c8cbe49111866ff"
+  },
+  "generator_sha256": "34e3a29634e8ff8f5edf610ee93faa8610672204dcb12d831e63285b6ff72485",
+  "fixture_sha256": "aec5095528bebf921240a6cd85bb152df837cb8debbf93405723d79522c9ef68",
+  "case": {
+    "ar": 20.0,
+    "h_over_c": 0.007800524472922343,
+    "particle_tags": [
+      1,
+      64
+    ],
+    "origin": "general_smoke_AR20 N64 phi0.04 initial geometry"
+  }
+}

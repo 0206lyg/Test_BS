@@ -1,0 +1,33 @@
+{
+  "schema": "coarsen_saved_density_portability_checks_v1",
+  "helper_path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/coarsen_saved_density.py",
+  "helper_sha256": "6e5200e03a764b32ce6e3d0f5e397598b1c6bc7d275588aab22bba6db5999f98",
+  "contains_new_stokes_solve": false,
+  "checks_previously_executed": true,
+  "checks_reexecuted_for_this_record": false,
+  "method": "Temporary-directory inline assertions against resolve_solution_file; synthetic byte payloads only.",
+  "checks": [
+    {
+      "case": "recorded_path_missing_adjacent_hash_valid",
+      "outcome": "passed",
+      "observed": "Returned parent_path.with_suffix(.solution.npz)."
+    },
+    {
+      "case": "recorded_path_missing_adjacent_hash_wrong",
+      "outcome": "passed",
+      "observed": "Raised ValueError; invalid fallback rejected."
+    },
+    {
+      "case": "recorded_path_exists_wrong_hash_adjacent_hash_valid",
+      "outcome": "passed",
+      "observed": "Raised ValueError; existing invalid recorded file was not bypassed. A subsequent valid recorded file was selected over the adjacent file."
+    },
+    {
+      "case": "physical_parent_record_immutability",
+      "outcome": "passed",
+      "observed": "Parent dictionary equals its original deep copy after all resolution attempts; physical report file was not modified."
+    }
+  ],
+  "all_checks_passed": true,
+  "scope": "Portability/hash-selection behavior only; no physical accuracy qualification."
+}

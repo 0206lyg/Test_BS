@@ -1,0 +1,160 @@
+{
+  "schema": "saved_density_boundary_quadrature_probe_v1",
+  "physical_accuracy_qualified": false,
+  "source_report": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+  "source_sha256": "5d569664bbc1b82d41cac86ab7dc4cc8de053dc17413f149e1183532ac2066fc",
+  "checkpoint": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.solution.npz",
+  "checkpoint_sha256": "f0c12eb3bebaf9475b16da83268af73aa33f9a0608a8513a54827e08b6c6d988",
+  "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "rebuilt_mesh_max_absolute_differences": {
+    "srcvals": 0.0,
+    "weights": 0.0,
+    "body_ids": 0.0,
+    "norders": 0.0,
+    "ixyzs": 0.0,
+    "iptype": 0.0
+  },
+  "saved_density_library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+  "library_matches_saved_density": false,
+  "cross_library_diagnostic": true,
+  "source_hashes": {
+    "backend.py": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+    "geometry.py": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+    "probe_saved_boundary_quadrature.py": "025b922a65cbb7b1786400ebf2332628ea66064ad208f135c571e7ec14372809"
+  },
+  "panels": [
+    35,
+    25,
+    52,
+    41
+  ],
+  "points_per_panel": 9,
+  "check_uv": [
+    [
+      -0.3382301370466583,
+      0.7865917224781507,
+      0.09141358200295979,
+      -0.6037645584722315,
+      0.5210573010525773,
+      -0.17412083942261405,
+      -0.8692989798978037,
+      0.25552287962700504,
+      -0.4396552608481863
+    ],
+    [
+      -0.41527270722045295,
+      0.33859597629857996,
+      -0.7275353401823873,
+      0.026333343336645863,
+      0.7802020268556786,
+      -0.28592928962528863,
+      0.46793939389374417,
+      -0.5981919225872231,
+      0.15567676093180968
+    ]
+  ],
+  "scope": "Same saved density and same36 off-grid sites; only boundary quadrature tolerance changes",
+  "evaluations": [
+    {
+      "eps": 1e-07,
+      "boundary_evaluation_valid": true,
+      "max_scaled_error": 0.025898420556287514,
+      "per_panel_max_scaled_error": {
+        "35": 0.025898420556287514,
+        "25": 0.02546213739910825,
+        "52": 0.01778071738339781,
+        "41": 0.015590728110819227
+      },
+      "per_mode_max_scaled_error": [
+        0.0008463541707230437,
+        0.0017335860798284282,
+        0.025898420556287514,
+        0.011920222314965482,
+        0.006751891945267872,
+        0.00048534813431077824,
+        0.0009022131286469355,
+        0.0018048158015525144,
+        0.025889965590805655,
+        0.01950929420637024,
+        0.0063597123261411115,
+        0.0007059511201289145,
+        0.0012261487921982352,
+        0.008921050133576507,
+        0.0006516673087397529,
+        0.0003955412648564181,
+        0.01629201342274401
+      ],
+      "log": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_patched_eps1e-07.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 2.118303470000683
+    },
+    {
+      "eps": 1e-11,
+      "boundary_evaluation_valid": true,
+      "max_scaled_error": 0.02589835014336481,
+      "per_panel_max_scaled_error": {
+        "35": 0.02589835014336481,
+        "25": 0.02546212577323239,
+        "52": 0.017780736823826363,
+        "41": 0.015590725535141722
+      },
+      "per_mode_max_scaled_error": [
+        0.000846355837210624,
+        0.0017335862914207524,
+        0.02589835014336481,
+        0.011920217967460001,
+        0.006751892541466576,
+        0.0004853488532768306,
+        0.000902215584752981,
+        0.0018048162384339261,
+        0.025889893661262178,
+        0.01950923460440284,
+        0.006359712541868913,
+        0.0007059551233924051,
+        0.0012261490712805673,
+        0.00892102614963244,
+        0.0006516688825590608,
+        0.00039554109767720726,
+        0.01629196820130024
+      ],
+      "log": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_patched_eps1e-11.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 6.4362172370001645
+    }
+  ],
+  "changes_relative_to_first": [
+    {
+      "first_eps": 1e-07,
+      "other_eps": 1e-11,
+      "max_scaled_change": 8.127173945413343e-08,
+      "per_mode_max_scaled_change": [
+        3.1771988894103327e-09,
+        3.5209951072069317e-09,
+        7.907790741215082e-08,
+        4.2203655571239064e-08,
+        9.75199617681584e-09,
+        3.4701831529835613e-09,
+        4.837822960649492e-09,
+        4.593780198074123e-09,
+        8.127173945413343e-08,
+        6.893523322420381e-08,
+        9.548305192839104e-09,
+        5.871087814414493e-09,
+        3.6213048833049184e-09,
+        2.4962686547163715e-08,
+        2.95918424075027e-09,
+        1.6974805602953194e-09,
+        5.158734470923325e-08
+      ],
+      "per_panel_max_scaled_change": {
+        "35": 8.127173945413343e-08,
+        "25": 1.7290220187039587e-08,
+        "52": 4.603038105859065e-08,
+        "41": 1.979076583183774e-08
+      }
+    }
+  ],
+  "interpretation": "Boundary quadrature sensitivity at sampled points only; density, geometry, assembly quadrature, and full physical reference remain unqualified. Upstream1e-7 and1e-9 requests use the same iprec3 bin; a request below5e-10 reaches iprec4. Self GGQ does not take eps, so this does not independently refine the singular self rule.",
+  "velocity_checkpoint": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_patched.velocities.npz",
+  "velocity_checkpoint_sha256": "b84af06c8fb43a511350789e1e2573f63b67fea0de3c3946894905bdd149b46a"
+}

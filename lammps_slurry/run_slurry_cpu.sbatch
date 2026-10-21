@@ -161,7 +161,7 @@ USAGE
     esac
 done
 
-readonly SLURRY_LAUNCHER_RELEASE=20261018-pair-quadrature-runtime-fix
+readonly SLURRY_LAUNCHER_RELEASE=20261020-compact-bridge-integration
 # Slurm executes a spool copy; an explicit root or submission directory takes
 # precedence. Direct bash execution without Slurm uses this script's parent.
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}}"

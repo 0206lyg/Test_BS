@@ -1,0 +1,107 @@
+LAMMPS (30 Sep 2026)
+  using 1 OpenMP thread(s) per MPI task
+# Generated directly from run_slurry_cpu.sbatch / prepare_case.py CLI.
+# Athermal overdamped dynamics; geometry packing finished before this physical run.
+# Coupled resistance, rough-surface normal contact and Coulomb sliding; zero inertia.
+# Stress decomposition and interval means are recorded in history.csv.
+# AR=2 phi=0.23999999999999999 t=300 nm rho=2400 kg/m3
+# Lubrication requested=general, resolved=general; epsilon/floor=1.5e-10 m; cutoff=1.5000000000000002e-07 m
+# Solver preconditioner=ilu; MPI layout=root
+# Solver forcing=fixed; cache=on; ILUT drop/fill/refresh=0.001/4/40
+plugin load ${slurry_plugin}
+plugin load "/workspace/scratch/581ed100c5ad/general_plugin_build/libslurry.so"
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+newton on
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (2.4705693e-06 2.4705693e-06 2.4705693e-06) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  64 atoms
+  64 ellipsoids
+  reading velocities ...
+  64 velocities
+  read_data CPU = 0.001 seconds
+comm_modify vel yes
+pair_style zero 7.5000000000000012e-07
+pair_coeff * *
+neighbor 3.0000000000000004e-08 bin
+neigh_modify every 1 delay 0 check yes
+timestep 9.9999999999999995e-07
+# Production starts at step/time/strain zero, with a fresh tangential contact history.
+fix shear all deform 0 xy erate 100 remap v units box
+fix integrate all slurry/implicit 0.01 100 1.5000000000000002e-07 1.5e-10 1 lubrication general finite_gap_range 0.5 general_tolerance 0.0050000000000000001 general_max_level 6 general_cutoff 1 general_normal_log leading general_closure relative general_near_completion energy solver_preconditioner ilu solver_layout root solver_forcing fixed solver_cache on solver_ilu 0.001 4 40 contact_gap 3.0000000000000004e-09 friction 0.10000000000000001 80 history history.csv 1 0
+slurry/implicit general: geometry-only F/T/S moments + compact lubrication; closure=relative tolerance=0.005 max_level=6 cutoff_factor=1 normal_log=leading near_completion=energy fluid_gap=max(h,1.5e-10) m pair_range=0.5 a; no basis/table
+slurry/implicit relative_pair: isolated collective drag; geometry-only relative/strain correction
+variable strain equal 100*time
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz tqx tqy tqz
+dump trajectory all custom 1 trajectory.lammpstrj id type x y z vx vy vz fx fy fz c_shape[*]
+dump_modify trajectory sort id format float %.17g
+thermo 1
+thermo_style custom step time atoms v_strain f_integrate[1] f_integrate[2] f_integrate[3] f_integrate[4] f_integrate[5] f_integrate[6] f_integrate[7] f_integrate[8]
+thermo_modify flush yes lost error
+fix diagnostics all ave/time 1 1 1 f_integrate[1] f_integrate[2] f_integrate[3] f_integrate[4] f_integrate[5] f_integrate[6] f_integrate[7] f_integrate[8] file diagnostics.dat ave one title1 "# Instantaneous overdamped solver diagnostics; overlaps/gaps in m" title2 "# step lubrication_pairs overlapping_pairs max_overlap_m scaled_relative_residual linear_iterations newton_iterations predicted_contacts min_candidate_gap_m"
+print "Integrator: slurry/implicit; dt=9.9999999999999995e-07 s; steps=3; duration=3.0000000000000001e-06 s; total strain=0.00029999999999999997"
+Integrator: slurry/implicit; dt=9.9999999999999995e-07 s; steps=3; duration=3.0000000000000001e-06 s; total strain=0.00029999999999999997
+print "Lubrication: general; epsilon/floor=1.5e-10 m; cutoff=1.5000000000000002e-07 m; mechanical contact gap=3.0000000000000004e-09 m"
+Lubrication: general; epsilon/floor=1.5e-10 m; cutoff=1.5000000000000002e-07 m; mechanical contact gap=3.0000000000000004e-09 m
+print "Solver preconditioner: ilu; MPI layout: root"
+Solver preconditioner: ilu; MPI layout: root
+print "Solver forcing: fixed; cache: on; ILUT drop/fill/refresh: 0.001/4/40"
+Solver forcing: fixed; cache: on; ILUT drop/fill/refresh: 0.001/4/40
+run 3
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.8e-07
+  ghost atom cutoff = 7.8e-07
+  binsize = 3.9e-07, bins = 7 7 7
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.783 | 4.783 | 4.783 Mbytes
+   Step          Time         Atoms       v_strain    f_integrate[1] f_integrate[2] f_integrate[3] f_integrate[4] f_integrate[5] f_integrate[6] f_integrate[7] f_integrate[8]
+         0   0                     64   0              145            0              0              5.1072544e-13  1686           54             66             2.4196626e-11
+         1   1e-06                 64   0.0001         145            0              0              4.2879693e-13  1413           54             66             1.229125e-10 
+         2   2e-06                 64   0.0002         145            0              0              5.2388153e-12  1906           59             66             1.54321e-10  
+         3   3e-06                 64   0.0003         145            0              0              7.9835294e-12  1821           63             65             1.8669444e-10
+Loop time of 6.11171 on 1 procs for 3 steps with 64 atoms
+
+99.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 6.369e-06  | 6.369e-06  | 6.369e-06  |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 3.7318e-05 | 3.7318e-05 | 3.7318e-05 |   0.0 |  0.00
+Output  | 0.001414   | 0.001414   | 0.001414   |   0.0 |  0.02
+Modify  | 6.1102     | 6.1102     | 6.1102     |   0.0 | 99.98
+Other   |            | 2.795e-05  |            |       |  0.00
+
+Nlocal:             64 ave          64 max          64 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            210 ave         210 max         210 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:            240 ave         240 max         240 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 240
+Ave neighs/atom = 3.75
+Neighbor list builds = 0
+Dangerous builds = 0
+write_data final.data nocoeff
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:00:08

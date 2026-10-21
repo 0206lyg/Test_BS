@@ -1,0 +1,295 @@
+{
+  "scope": "Same periodic Fourier model; numerical convergence and explicit local-tail approximation, not Stokes accuracy.",
+  "tail_integrals": [
+    {
+      "b": 0.01,
+      "absolute_error": 4.107825191113079e-15
+    },
+    {
+      "b": 0.08,
+      "absolute_error": 2.220446049250313e-16
+    },
+    {
+      "b": 0.5,
+      "absolute_error": 2.220446049250313e-16
+    },
+    {
+      "b": 1,
+      "absolute_error": 2.220446049250313e-16
+    },
+    {
+      "b": 4,
+      "absolute_error": 3.885780586188048e-16
+    },
+    {
+      "b": 20,
+      "absolute_error": 1.214306433183765e-16
+    },
+    {
+      "b": 80,
+      "absolute_error": 1.1506842440694998e-10
+    }
+  ],
+  "independent_fourier": {
+    "relative_error": 1.1581030499029808e-15,
+    "modes": 393
+  },
+  "cases": [
+    {
+      "name": "tilt45_AR20_h1nm",
+      "cell_c": 100.0,
+      "pure_fourier_cross_change_2_to_3": 0.0003686273854906543,
+      "pure_fourier_cross_change_3_to_4": 8.021141083662226e-05,
+      "split": [
+        {
+          "xi_a": 2,
+          "modes": 5389,
+          "seconds": 0.01382528199974331,
+          "cross_relative_difference": 0.13304848772235406,
+          "cross_FF_relative_difference": 0.12053687088774946,
+          "cross_moment_relative_difference": 0.8048223940557214,
+          "middle_R_relative_difference": 0.1244574572697228,
+          "combined_R_relative_difference": 0.07029188773672622,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.11008047942543162,
+              "T": 0.18068478350049547,
+              "S": 0.18829206889792413,
+              "power_relative_difference": -0.11322994793888014
+            },
+            "relative_normal": {
+              "F": 0.09253996755345761,
+              "T": 0.09683120711355304,
+              "S": 0.09081265481435648,
+              "power_relative_difference": -0.09217820131888037
+            },
+            "common_strain_xz": {
+              "F": 0.10681719517051878,
+              "T": 0.05794934053334191,
+              "S": 0.05676650003789346,
+              "power_relative_difference": -0.03988881519158941
+            }
+          }
+        },
+        {
+          "xi_a": 4,
+          "modes": 42735,
+          "seconds": 0.0797199599983287,
+          "cross_relative_difference": 0.0368953748546338,
+          "cross_FF_relative_difference": 0.023743733976901323,
+          "cross_moment_relative_difference": 0.48883985032258764,
+          "middle_R_relative_difference": 0.044407817910585005,
+          "combined_R_relative_difference": 0.025080934639689145,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.03638930357686007,
+              "T": 0.06565402584031137,
+              "S": 0.06346420332979355,
+              "power_relative_difference": -0.03496883487953196
+            },
+            "relative_normal": {
+              "F": 0.030475229011709546,
+              "T": 0.03374536293414968,
+              "S": 0.031510939176314534,
+              "power_relative_difference": -0.030103615078268496
+            },
+            "common_strain_xz": {
+              "F": 0.0329493147783127,
+              "T": 0.01735345509503789,
+              "S": 0.020022413649287807,
+              "power_relative_difference": -0.014300591028516437
+            }
+          }
+        },
+        {
+          "xi_a": 8,
+          "modes": 341842,
+          "seconds": 0.6531716130011773,
+          "cross_relative_difference": 0.011809901636397382,
+          "cross_FF_relative_difference": 0.005124511514709395,
+          "cross_moment_relative_difference": 0.20038431246429544,
+          "middle_R_relative_difference": 0.012820879377332135,
+          "combined_R_relative_difference": 0.007241059183175037,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.010162859450629318,
+              "T": 0.019177604791418043,
+              "S": 0.017751240045023573,
+              "power_relative_difference": -0.00952284687150482
+            },
+            "relative_normal": {
+              "F": 0.008379292192638086,
+              "T": 0.009531143412264477,
+              "S": 0.00879622782110393,
+              "power_relative_difference": -0.008245559617284872
+            },
+            "common_strain_xz": {
+              "F": 0.008570691307437591,
+              "T": 0.003651684627315771,
+              "S": 0.00564459471144647,
+              "power_relative_difference": -0.0045791628475514035
+            }
+          }
+        }
+      ],
+      "hard_tail_reference": {
+        "kmax": [
+          2,
+          3,
+          4
+        ],
+        "M23": 0.000289022643621268,
+        "M34": 6.21781995445484e-05,
+        "R23": 0.0001979171917451482,
+        "R34": 2.2959498061604212e-05
+      }
+    },
+    {
+      "name": "slide_AR20_h30nm",
+      "cell_c": 100.0,
+      "pure_fourier_cross_change_2_to_3": 0.00248774177617539,
+      "pure_fourier_cross_change_3_to_4": 0.0013413335596992335,
+      "split": [
+        {
+          "xi_a": 2,
+          "modes": 5389,
+          "seconds": 0.015712846998212626,
+          "cross_relative_difference": 0.2871973844156418,
+          "cross_FF_relative_difference": 0.2722967386755818,
+          "cross_moment_relative_difference": 1.142732104191818,
+          "middle_R_relative_difference": 0.22700466812212897,
+          "combined_R_relative_difference": 0.00017872113443227275,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.006844981988712249,
+              "T": 0.000322004219206387,
+              "S": 0.006359365712080025,
+              "power_relative_difference": -0.07799715251960435
+            },
+            "relative_normal": {
+              "F": 0.000294306827044665,
+              "T": 0.000268258116633799,
+              "S": 0.00026972519209157367,
+              "power_relative_difference": -0.0002930654565629583
+            },
+            "common_strain_xz": {
+              "F": 0.0002695108553912621,
+              "T": 0.0002330234388305894,
+              "S": 0.0002379288675901078,
+              "power_relative_difference": -0.00023579835697484002
+            }
+          }
+        },
+        {
+          "xi_a": 4,
+          "modes": 42735,
+          "seconds": 0.08809004200156778,
+          "cross_relative_difference": 0.12154371440479768,
+          "cross_FF_relative_difference": 0.09742819015028538,
+          "cross_moment_relative_difference": 1.4648726788674455,
+          "middle_R_relative_difference": 0.1075042559311812,
+          "combined_R_relative_difference": 8.463827081289781e-05,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.004186013666711267,
+              "T": 0.000277779832124634,
+              "S": 0.004070429193489362,
+              "power_relative_difference": -0.047734841801427855
+            },
+            "relative_normal": {
+              "F": 0.00011999856969904485,
+              "T": 0.00011096962360221513,
+              "S": 0.00011280168705116645,
+              "power_relative_difference": -0.00011879488364236014
+            },
+            "common_strain_xz": {
+              "F": 0.00011465960649320136,
+              "T": 9.987059576165395e-05,
+              "S": 0.00010640163963457686,
+              "power_relative_difference": -0.00010379708319905281
+            }
+          }
+        },
+        {
+          "xi_a": 8,
+          "modes": 341842,
+          "seconds": 0.6677433129989367,
+          "cross_relative_difference": 0.049094127150603045,
+          "cross_FF_relative_difference": 0.024156786122377726,
+          "cross_moment_relative_difference": 1.685805809051802,
+          "middle_R_relative_difference": 0.04032977041475541,
+          "combined_R_relative_difference": 3.175169206669995e-05,
+          "modes_response": {
+            "relative_x": {
+              "F": 0.0018664455529496158,
+              "T": 0.00015570360300996543,
+              "S": 0.0019212884286921087,
+              "power_relative_difference": -0.021294473715828793
+            },
+            "relative_normal": {
+              "F": 3.7340334263259255e-05,
+              "T": 3.406613493126522e-05,
+              "S": 3.5963361576758864e-05,
+              "power_relative_difference": -3.655355984860439e-05
+            },
+            "common_strain_xz": {
+              "F": 4.000319223524905e-05,
+              "T": 3.032275518500349e-05,
+              "S": 3.939043789068562e-05,
+              "power_relative_difference": -3.572606112398774e-05
+            }
+          }
+        }
+      ],
+      "hard_tail_reference": {
+        "kmax": [
+          2,
+          3,
+          4
+        ],
+        "M23": 0.001258352165101077,
+        "M34": 0.0006608895692763585,
+        "R23": 0.0028144472793495377,
+        "R34": 0.00032880878666147873
+      }
+    }
+  ],
+  "reference_cost": [
+    {
+      "case": "tilt45_AR20_h1nm",
+      "kmax": 2.0,
+      "modes": 67521,
+      "seconds": 0.15515274800054613
+    },
+    {
+      "case": "tilt45_AR20_h1nm",
+      "kmax": 3.0,
+      "modes": 227931,
+      "seconds": 0.4578561689995695
+    },
+    {
+      "case": "tilt45_AR20_h1nm",
+      "kmax": 4.0,
+      "modes": 540375,
+      "seconds": 1.3749506849999307
+    },
+    {
+      "case": "slide_AR20_h30nm",
+      "kmax": 2.0,
+      "modes": 67521,
+      "seconds": 0.13512200799959828
+    },
+    {
+      "case": "slide_AR20_h30nm",
+      "kmax": 3.0,
+      "modes": 227931,
+      "seconds": 0.4236421120003797
+    },
+    {
+      "case": "slide_AR20_h30nm",
+      "kmax": 4.0,
+      "modes": 540375,
+      "seconds": 1.0110628299989912
+    }
+  ]
+}

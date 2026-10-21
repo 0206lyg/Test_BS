@@ -1,0 +1,136 @@
+{
+  "schema": "provisional_reference_table_pipeline_v1",
+  "created_utc": "2026-10-19T01:26:04.421206+00:00",
+  "status": "complete",
+  "workflow_completed": true,
+  "physical_accuracy_qualified": false,
+  "new_stokes_solve_performed": false,
+  "matched_model": "dissipative-increment",
+  "layout": "sparse",
+  "input_reports": [
+    {
+      "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+      "sha256": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a"
+    }
+  ],
+  "executables": {
+    "/dev/shm/build-reference-pipeline/slurry_precompute_reference17": "c3e9f1f5127cf07c6da5e9612c06a67745e50bd07cfa70f2fcb967ec70c3310c",
+    "/dev/shm/build-reference-pipeline/slurry_reference_pipeline_probe": "83f636a4c78ddfbbec50df64671caf8d115fe7758c31953500fcbfb33c99b6e3"
+  },
+  "python_sources": {
+    "run_reference_table_pipeline.py": "bb820e43a22140031d3c3b27788c16b1c00e889039c0a3f5fda79fb42402f051",
+    "prepare_reference_source.py": "bacb5f8f605bd12db516d8e4eb64573ad30c21bdb8b6644fd53bee22189f7174"
+  },
+  "stages": [
+    {
+      "stage": "import",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/prepare_reference_source.py",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+        "--output",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/reference.source17",
+        "--floor-nm",
+        "1.0",
+        "--boundary-limit",
+        "0.01",
+        "--layout",
+        "sparse",
+        "--provisional-reason",
+        "User authorized current approximate references for end-to-end development before final mesh refinement."
+      ],
+      "returncode": 0,
+      "seconds": 0.3474559969981783
+    },
+    {
+      "stage": "generate",
+      "command": [
+        "/dev/shm/build-reference-pipeline/slurry_precompute_reference17",
+        "--source",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/reference.source17",
+        "--output",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/reference.sft",
+        "--report",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/generation.json",
+        "--layout",
+        "sparse",
+        "--matched-model",
+        "dissipative-increment",
+        "--gap-nodes",
+        "129",
+        "--max-gap-nodes",
+        "256",
+        "--interpolation-tolerance",
+        "1e-06"
+      ],
+      "returncode": 0,
+      "seconds": 1.0695277970007737
+    },
+    {
+      "stage": "runtime",
+      "command": [
+        "/dev/shm/build-reference-pipeline/slurry_reference_pipeline_probe",
+        "--source",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/reference.source17",
+        "--table",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/reference.sft",
+        "--matched-model",
+        "dissipative-increment",
+        "--layout",
+        "sparse",
+        "--output",
+        "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/ar20_current_transport/runtime.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.017310809998889454
+    }
+  ],
+  "outputs": {
+    "runtime.json": {
+      "bytes": 16055,
+      "sha256": "cae52228b8eb3f8bbb80dbc73a9b52eba549f74b3cb3dd26c44b80ddcc56e4bd"
+    },
+    "runtime.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "runtime.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "generation.json": {
+      "bytes": 4355,
+      "sha256": "e4919a05c52c9628345ac630a4404f7579981e62e1b487e1de1629ff1220d9f8"
+    },
+    "reference.sft": {
+      "bytes": 276643,
+      "sha256": "1e8e877a8be9955c17b629c3b335f683459441baaf9042a8fc7a675d0d647604"
+    },
+    "generate.stderr.log": {
+      "bytes": 2300,
+      "sha256": "ffe13ec7054731d1b2a050150a96e41ad07d5ca98f77d1039caa365bfd8df6a4"
+    },
+    "generate.stdout.log": {
+      "bytes": 4355,
+      "sha256": "e4919a05c52c9628345ac630a4404f7579981e62e1b487e1de1629ff1220d9f8"
+    },
+    "reference.source17.manifest.json": {
+      "bytes": 227643,
+      "sha256": "c8294ea8cf2fabecde11f4e2b1cc983a7de166b0f0ebf66b6c9bb80c92dc1bf6"
+    },
+    "reference.source17": {
+      "bytes": 6030,
+      "sha256": "9914fd880253ec7889348b286311902a09a921d14cc64128dcee3f463d0dd5c0"
+    },
+    "import.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "import.stdout.log": {
+      "bytes": 478,
+      "sha256": "bb3c2758ff18881e9e7f7f80056d0ded78cf4ea2eeeff3fd6a68a9e1ad68ae23"
+    }
+  },
+  "input_identity_verified_before_and_after": true
+}

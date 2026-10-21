@@ -1,0 +1,56 @@
+slurry runtime path fix v2 — 2026-10-21
+
+적용 대상: slurry_compact_bridge_overlay_v2.zip을 적용하고 빌드한 slurry 폴더.
+이 ZIP은 수정 파일만 포함한다. slurry 폴더 안에서 바로 unzip한다.
+
+  unzip -t slurry_runtime_path_fix_v2.zip && unzip -o slurry_runtime_path_fix_v2.zip
+  export SLURRY_ROOT="$PWD"
+  sbatch build_slurry_cpu.sbatch
+
+빌드 작업이 성공한 뒤 실행:
+
+  sbatch lammps_slurry/run_bridge_cpu.sbatch \
+    --output runs/ar20_bridge_rpath_fixed \
+    --ar 20 --count 108 --phi 0.24 \
+    --steps 20 --output-interval 1 --average-start-strain 0
+
+이미 같은 output 폴더가 있다면 새로운 이름을 사용한다.
+20-step은 실행 확인용이며 정상상태 점도 측정이 아니다.
+
+기존 build 폴더를 삭제하지 않는다. 변경된 실행기의 소스 hash를 정식
+build.py 절차로 승인하기 위해 증분 빌드를 한 번 실행한다. 수치 C++
+소스는 바뀌지 않았으며 기존 컴파일 결과를 재사용한다. CTest와 plugin
+load 검사를 통과해야 새 build manifest가 생성된다.
+
+원인 및 수정:
+GNU ELF의 DT_RPATH는 LD_LIBRARY_PATH보다 우선할 수 있어 private copy를
+만들어도 기존 install/lib/liblammps.so.0가 선택됐다. runtime_snapshot.py는
+실행 파일과 공유 라이브러리의 복사본에서 DT_RPATH tag만 DT_RUNPATH로
+바꾼다. 원본 파일, 경로 문자열, 기계어, 수치 모델은 변경하지 않는다.
+원본 hash와 변경된 복사본 hash를 각각 runtime_identity.json에 기록한다.
+실제 ldd 경로 검사와 기존 build/source 검사는 유지한다.
+절대경로 DT_NEEDED, 손상 ELF, 원본과 같은 inode는 변경 전에 거부한다.
+
+확인한 범위:
+- 실제 GNU ELF 9개 회귀 검사: 오류 재현, 실행 파일/dlopen plugin/전이 DSO,
+  원본 라이브러리 truncation 이후 private 실행, hash/권한 보존,
+  hardlink/손상 ELF/절대경로 DT_NEEDED 거부.
+- 기존 runtime snapshot 4개 검사 통과.
+- 실제 LAMMPS와 libslurry.so를 --disable-new-dtags로 relink하여 기존
+  RPATH 문제를 재현하고 정식 build 승인 후 run_bridge.py 실행 완료.
+  N=2, AR=2, phi=0.01, 2 steps, 직렬 빌드. MPI cluster 실행은 여기서
+  수행하지 않았다. validation_bridge/runtime_path_fix/에 기록을 포함했다.
+
+추가 의존성: 없음. Python 표준 라이브러리 사용; patchelf 불필요.
+이 수정으로 삭제해야 하는 폴더: 없음.
+
+v2 변경: build_slurry_44537727.out의 마지막 CTest 실패 수정.
+테스트용 plugin_loader와 leaf DSO에 site compiler가 RPATH를 자동 삽입할
+수 있는데, v1 검사는 이 파일들이 수정될 필요가 없다고 잘못 가정했다.
+해당 테스트 바이너리를 만들 때 --enable-new-dtags를 명시하고 readelf로
+전제 조건을 먼저 확인한다. 기존 hash 검사와 실제 경로 검사는 유지한다.
+실행기, 수치 코드, build/source 승인 정책은 v1과 동일하다.
+
+일반 compiler와 RPATH 자동 삽입을 재현한 compiler wrapper에서 각각
+9개 검사 통과. 수정 전 wrapper에서는 업로드 로그와 같은 단일 hash
+검사 실패를 재현했다. 수정 후 전체 CTest 31/31 통과.

@@ -1,0 +1,214 @@
+{
+  "schema": "observed_implementation_validation_v1",
+  "physical_accuracy_qualified": false,
+  "independent_python_tests": {
+    "command": "PATH=<gfortran13>/bin:$PATH OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m unittest discover -s validation_basis/independent_stokes -p 'test_*.py' -v",
+    "exit_code": 0,
+    "tests_run": 49,
+    "passed": 48,
+    "skipped": 1,
+    "scope": "Physical-identity and checkpoint gates, native diagnostics, adaptation, fused kernel, dense/COW and out-of-core exact storage, v3 bounded hashing and early stage admission. No pair physical qualification.",
+    "log": "independent_python_tests_ooc_v3.log",
+    "log_sha256": "ec424713bed760d77588e16340770399d6ef3982fb1a8e4658742decc45fb72c"
+  },
+  "related_ctest": {
+    "exit_code": 0,
+    "tests_run": 13,
+    "passed": 13,
+    "junit": "related_ctest.xml"
+  },
+  "unrestricted_ctest_attempt": {
+    "tests_registered": 28,
+    "passed": 13,
+    "not_run": 15,
+    "reason": "Unrelated solver/contact test executables were not built in the existing standalone build; these were not numerical failures. This is not a passing full-suite claim."
+  },
+  "test_source_sha256": {
+    "test_compare_reference.py": "04029ffda7b8035eef95cfc158cdedb631437d760cafd8cdff2a4e80be60b6ab",
+    "test_driver_contract.py": "6ac1d72b3c2592c47b8d4db858d9f13035c6bcece1168649d89c82db64e388ef",
+    "test_memory_bounded_dense.py": "7ae0f8f9c026121569d297b3744b1a10b5b410aa905f16c32ccd6be47fb81573",
+    "test_mesh_adapt.py": "062e096c66c10f9285e9ee9313b3d1e267f9582bf9fcf7d66618543b0b3b67d8",
+    "test_near_apply.py": "b522f83506a85e3aca6599c0ba3af28cd4c451f98525dadabf3bd221b1df89f9",
+    "test_out_of_core_dense.py": "c23c1edd2cfbbf6e377a58cc0645ca2122857a07103d4b5f0835ec1f5c96d7ab",
+    "test_out_of_core_lu.py": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5"
+  },
+  "storage_evidence": [
+    "mmap_cow_modes_check.json",
+    "mmap_stage_guard_check.json",
+    "cow_driver_smoke_h150_p4_l0.json",
+    "out_of_core_lu_checks.json",
+    "out_of_core_lu_d3000_panel512_check.json",
+    "out_of_core_lu_d5000_panel1024_check.json",
+    "out_of_core_lu_d5000_panel2048_check.json",
+    "ooc_stokes_storage_equivalence.json",
+    "ooc_buffered_assembly_equivalence.json"
+  ],
+  "historical_python_test_runs": [
+    {
+      "scope": "Preserved previous implementation-test evidence; superseded by the new OOC preflight run",
+      "previous_implementation_validation_sha256": "1565114e4a87dde74cf607503d1312aa0a672ffac8677cf117b9fd7257eee53c",
+      "independent_python_tests": {
+        "command": "PATH=<gfortran13>/bin:$PATH python -m unittest discover -s validation_basis/independent_stokes -p test_*.py -v",
+        "exit_code": 0,
+        "tests_run": 36,
+        "passed": 36,
+        "skipped": 0,
+        "scope": "comparison and mandatory operator identity gates, checkpoint identity, native diagnostic capture, adaptation, fused matrix application, shared/COW storage and staged cgroup admission; no pair physics claim",
+        "log": "independent_python_tests.log",
+        "log_sha256": "395e8ee087214c702f14f55fc976efaee2138f47cb765699114c51b906ee1563"
+      },
+      "test_source_sha256": {
+        "test_compare_reference.py": "04029ffda7b8035eef95cfc158cdedb631437d760cafd8cdff2a4e80be60b6ab",
+        "test_driver_contract.py": "e7237f48fe0a30a8b95824927f517e757524eea8d48b74e135d212d86fb160d5",
+        "test_memory_bounded_dense.py": "7ae0f8f9c026121569d297b3744b1a10b5b410aa905f16c32ccd6be47fb81573",
+        "test_mesh_adapt.py": "062e096c66c10f9285e9ee9313b3d1e267f9582bf9fcf7d66618543b0b3b67d8",
+        "test_near_apply.py": "b522f83506a85e3aca6599c0ba3af28cd4c451f98525dadabf3bd221b1df89f9"
+      }
+    },
+    {
+      "command": "PATH=<gfortran13>/bin:$PATH python -m unittest discover -s validation_basis/independent_stokes -p test_*.py -v",
+      "exit_code": 0,
+      "tests_run": 45,
+      "passed": 44,
+      "skipped": 1,
+      "skipped_tests": [
+        {
+          "test": "test_out_of_core_lu.OutOfCoreLUTests.test_moderate_benchmark",
+          "reason": "optional moderate benchmark; separately executed benchmark reports are linked below"
+        }
+      ],
+      "scope": "Comparison and mandatory operator identity gates, checkpoint identity including OOC resume, native diagnostic capture, adaptation, fused matrix application, shared/COW and tiled-LU storage, original-operator residual reassembly, and staged cgroup admission; no pair physical qualification",
+      "log": "independent_python_tests_ooc_preflight.log",
+      "log_sha256": "3eff651940c27d9f84d1bc8666954c32bda30e98492102afbe6fc24857bc8309",
+      "test_source_sha256": {
+        "test_compare_reference.py": "04029ffda7b8035eef95cfc158cdedb631437d760cafd8cdff2a4e80be60b6ab",
+        "test_driver_contract.py": "6ac1d72b3c2592c47b8d4db858d9f13035c6bcece1168649d89c82db64e388ef",
+        "test_memory_bounded_dense.py": "7ae0f8f9c026121569d297b3744b1a10b5b410aa905f16c32ccd6be47fb81573",
+        "test_mesh_adapt.py": "062e096c66c10f9285e9ee9313b3d1e267f9582bf9fcf7d66618543b0b3b67d8",
+        "test_near_apply.py": "b522f83506a85e3aca6599c0ba3af28cd4c451f98525dadabf3bd221b1df89f9",
+        "test_out_of_core_dense.py": "0d8441a89ec86177ba9aa485204b6c2a6c3891ce216ee720404a346cda82f9e7",
+        "test_out_of_core_lu.py": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5"
+      }
+    }
+  ],
+  "out_of_core_validation": {
+    "scope": "Synthetic LU correctness and same-pose N300 storage/operator equivalence only. These do not qualify the resource-blocked N12879 attempt or any physical matching anchor.",
+    "physical_accuracy_qualified": false,
+    "focused_suite": {
+      "path": "out_of_core_lu_checks.json",
+      "sha256": "0f5c54b9bc527df009894f37e16a95191957075906c49a4ccf7c95a553c95602",
+      "tests_run": 6,
+      "passed": 5,
+      "skipped": 1
+    },
+    "moderate_benchmarks": [
+      {
+        "path": "out_of_core_lu_d3000_panel512_check.json",
+        "sha256": "2112509440fcdc603319fcb279f8985edaf23325b396a3223e8b1d2598d276b8",
+        "dimension": 3000,
+        "rhs_count": 17,
+        "panel_columns": 512,
+        "stripe_columns": 512,
+        "true_original_operator_relative_residual": 7.731436155009543e-16,
+        "timings_seconds": {
+          "factorization": 2.5349316780011577,
+          "solve": 0.5281547099984891
+        },
+        "solver_source_sha256": "4c3746a3623e138f4c2398099a548252ffee8fe8d3040baef162c233a0f90e35",
+        "test_source_sha256": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5",
+        "synthetic": true,
+        "physical_accuracy_qualified": false
+      },
+      {
+        "path": "out_of_core_lu_d5000_panel1024_check.json",
+        "sha256": "3a080d95e66a4be35a3f57d24ae0ed5048385ad92a1c42d4d94712135801ecb5",
+        "dimension": 5000,
+        "rhs_count": 17,
+        "panel_columns": 1024,
+        "stripe_columns": 512,
+        "true_original_operator_relative_residual": 7.967343753321487e-16,
+        "timings_seconds": {
+          "factorization": 4.1456820530002005,
+          "solve": 0.9531949420015735
+        },
+        "solver_source_sha256": "4c3746a3623e138f4c2398099a548252ffee8fe8d3040baef162c233a0f90e35",
+        "test_source_sha256": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5",
+        "synthetic": true,
+        "physical_accuracy_qualified": false
+      },
+      {
+        "path": "out_of_core_lu_d5000_panel2048_check.json",
+        "sha256": "7a3bda71b19582f0fbf7f0b4c77a3796f7e1f8162a1be3d23b3d4975ceaed20b",
+        "dimension": 5000,
+        "rhs_count": 17,
+        "panel_columns": 2048,
+        "stripe_columns": 512,
+        "true_original_operator_relative_residual": 8.012070239561082e-16,
+        "timings_seconds": {
+          "factorization": 2.4256567400007043,
+          "solve": 0.7420564580024802
+        },
+        "solver_source_sha256": "4c3746a3623e138f4c2398099a548252ffee8fe8d3040baef162c233a0f90e35",
+        "test_source_sha256": "121e4f694b50a91c8fa28c3b86c9d57c543e1305cb05461f6a5295b6cbe95ed5",
+        "synthetic": true,
+        "physical_accuracy_qualified": false
+      }
+    ],
+    "benchmark_source_scope": "Benchmarks retain their own exact source hashes; final source only removes redundant cleanup flush that could mask an earlier write failure. The complete focused suite was rerun on the final source.",
+    "same_pose_stokes_storage_equivalence": [
+      {
+        "path": "ooc_stokes_storage_equivalence.json",
+        "sha256": "1f8d25454b6ab02a9c8eed9fa34dfe61c0e1ccecc11b0038324467ac0e7615b6",
+        "scope": "Same recorded pose,150nm,N300,all17RHS; coarse physical accuracy is deliberately not qualified",
+        "passed": true,
+        "physical_accuracy_qualified": false,
+        "metrics": {
+          "density_relative_difference": 8.235421561917808e-15,
+          "raw17_relative_difference": 9.484456428159611e-15,
+          "ooc_true_residual": 3.727830446427381e-14,
+          "same_library": true,
+          "same_discretization": true
+        },
+        "references": [
+          {
+            "path": "cow_driver_smoke_h150_p4_l0.json",
+            "sha256": "b36767237cda7f43f9ae10f40ac2de9755193a1bf94ea456f91fcd3a632f9f9c"
+          },
+          {
+            "path": "ooc_driver_smoke_h150_p4_l0.json",
+            "sha256": "a521de9f66bc2fcfb76f2b77f6a20ce2c0c3d15da0e11f562a1e279188cfa825"
+          }
+        ]
+      },
+      {
+        "path": "ooc_buffered_assembly_equivalence.json",
+        "sha256": "80e451f0b1af9e10570284bda3446d7b05d80cd6be59ff3089b13422239c31b0",
+        "scope": "Recorded AR20 pose150nm,N300,17RHS; storage equivalence only",
+        "passed": true,
+        "physical_accuracy_qualified": false,
+        "metrics": {
+          "original_operator_bitwise_identical": true,
+          "original_operator_sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0",
+          "density_relative_difference": 0.0,
+          "true_linear_residual": 3.727830446427381e-14
+        },
+        "references": [
+          {
+            "path": "ooc_driver_smoke_h150_p4_l0.json",
+            "sha256": "a521de9f66bc2fcfb76f2b77f6a20ce2c0c3d15da0e11f562a1e279188cfa825"
+          },
+          {
+            "path": "ooc_buffered_smoke_h150_p4_l0.json",
+            "sha256": "697018dc6feb0585bb411c4305fd502632c2d8042fedd850f31daa6f099e9758"
+          }
+        ]
+      }
+    ],
+    "evidence_integrity_checked": "All linked comparison/benchmark files hashed; comparison reference hashes, N300 completed statuses, density checkpoint hashes, source archive hashes and every archived source hash verified; original reports left unchanged"
+  },
+  "v3_cache_and_storage_evidence": {
+    "out_of_core_dense_v3_cache_admission_checks.json": "a27db954d18c5ffa978ccfb62e8f072c41feb05f9346eace6ec6d43ac5529b84",
+    "ooc_v3_assembly_equivalence.json": "090fe40b1f8a3b532ba823644e5d221a16d878a70c4353d9be34810e368325b2",
+    "ooc_v3_smoke_h150_p4_l0.json": "884f256469c508068c6847374ba4257b40f04e6dff689d7ffecf26795222cc62"
+  }
+}

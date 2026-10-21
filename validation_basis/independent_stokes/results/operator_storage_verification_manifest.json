@@ -1,0 +1,81 @@
+{
+  "schema": "independent_stokes_operator_storage_evidence_v1",
+  "scope": "Operator assembly, quadrature diagnostics, helper equivalence, linear solver and storage verification only. These records do not establish boundary-density resolution or physical pair accuracy.",
+  "physical_accuracy_qualified": false,
+  "physical_pair_gate_passed": false,
+  "production_table_qualified": false,
+  "recorded_pose": "Fixed failed AR20 orientations; h150 nm only. No other AR or table generation.",
+  "backend_scope": "Mixed historical plumbing checks. Original seven records use the original pinned build; mmap_chunked_p4_check uses the patched build recorded in its metadata; mmap_chunked_p6_check uses the original build to compare saved density. None qualifies the physical reference.",
+  "backend_library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+  "files_are_verbatim_copies": true,
+  "source_snapshot_note": "Original JSON records are preserved byte-for-byte. Some records do not contain a source-file hash; no current source hash is substituted for a historical verification hash.",
+  "records": [
+    {
+      "file": "matrix_free_operator_check.json",
+      "sha256": "c3f71a7ecf06d2afe7accee3191555b0f9a97ff008bffb028bb868f08b2c04f6",
+      "result_scope": "failed_accuracy_check",
+      "interpretation": "Default upstream far quadrature on the coarse p4/l0 AR20 mesh differs from dense by 6.258e-4; this is retained failure evidence, not a passing solver check."
+    },
+    {
+      "file": "matrix_free_split_check.json",
+      "sha256": "75bb43bc501f7ea7e04b865d065738207f9da1fd7a60a9107199db2e8d2b091e",
+      "result_scope": "quadrature_diagnostic",
+      "interpretation": "Same coarse mesh: all-patches-near FMM add/subtract agrees to 5.11e-11; adding eight far orders improves but does not resolve the default far-quadrature discrepancy."
+    },
+    {
+      "file": "matrix_free_far_refinement.json",
+      "sha256": "bb91b7f215e4372423fa00f77d78ab8aa512f58a76ec422aff94720287e1a252",
+      "result_scope": "quadrature_diagnostic",
+      "interpretation": "Explicit far-order refinement 0,16,32,48 monotonically reduces the coarse-mesh discrepancy; eps alone is not an achieved-error certificate."
+    },
+    {
+      "file": "matrix_free_allnear_p6l1_check.json",
+      "sha256": "b1f1bbfca44047f7a6ef008041415fd540e303f2bca5639b20bd30ff63c7c0a1",
+      "result_scope": "passed_operator_equivalence",
+      "interpretation": "Same recorded AR20 h150 nm, p6/l1 N2352: all-near matvec versus dense 2.21e-15; patch-GMRES solution versus dense 5.82e-9."
+    },
+    {
+      "file": "matrix_free_body_lu_check.json",
+      "sha256": "d0a3aaf264eddf1501e642c695770195447888ba8dbe43e145a9fb8c12489b3f",
+      "result_scope": "passed_preconditioner_algebra",
+      "interpretation": "Exact body-self inverse errors about2e-15; mixed RHS converges in300 iterations. This is no guarantee of fast convergence on refined meshes."
+    },
+    {
+      "file": "matrix_free_helper_check.json",
+      "sha256": "287889f9dffee8ba22b3c41f6ebc33e7e76ed28e81b1ad80305ac4f622dde40c",
+      "result_scope": "passed_helper_operator_equivalence",
+      "interpretation": "Same recorded AR20 h150 nm, p4/l0 N300: fused-helper matvec and all17 matmat match dense to floating-point roundoff."
+    },
+    {
+      "file": "mmap_dense_p6l1_check.json",
+      "sha256": "65442c149d4d94ca4168878bcdd640541972e8847335ed85f1ad4676c5ad2bb7",
+      "result_scope": "passed_storage_equivalence",
+      "interpretation": "Same recorded AR20 h150 nm, p6/l1 N2352: all17 mmap solutions equal ordinary dense exactly, LU aliases mmap, residual1.33e-13, temporary files removed."
+    },
+    {
+      "file": "mmap_chunked_p4_check.json",
+      "sha256": "7a76565cc8b5bdc9896044e22f4bead97c494eddee5468aa1cfa7a31152f670a",
+      "result_scope": "passed_chunked_operator_equivalence",
+      "interpretation": "Patched backend, same recorded AR20 h150 nm p4/l0 N300: target-chunked complete matrix equals native full matgen exactly; full17 residual4.55e-14."
+    },
+    {
+      "file": "mmap_chunked_p6_check.json",
+      "sha256": "3387f4dd5fecc2793c972a51036fc8614da7b3c15e4fe42fb139658f9f09b1c3",
+      "result_scope": "passed_chunked_storage_equivalence",
+      "interpretation": "Original backend, same recorded AR20 h150 nm p6/l1 N2352: all17 target-chunked solutions agree with saved native dense density to2.29e-15; residual1.33e-13. No new baseline assembly needed."
+    },
+    {
+      "file": "mmap_cow_modes_check.json",
+      "sha256": "93458f1db0dcb801b1db94df21d296a7887631201b3c6a3cbc02c6a0c9eaab55",
+      "result_scope": "passed_synthetic_storage_modes_equivalence",
+      "interpretation": "Synthetic SPD matrix with dimension3000 and17 RHS: shared and COW solutions coincide, original A remains unchanged, and strict private-memory guard/cleanup tests pass. Does not predict N9963 performance or qualify any physical reference."
+    },
+    {
+      "file": "mmap_stage_guard_check.json",
+      "sha256": "db6354d45c7a55fe92391d1a80589828eda1ea7e68654d0fa030e1068baf2914",
+      "result_scope": "passed_synthetic_stage_admission_and_strict_factor_guard",
+      "interpretation": "Four storage/error-path tests pass. Admission may proceed to assembly when nominal factor capacity fits, but actual LU headroom still rejects factorization if insufficient. No active-file cache credit or reserve weakening."
+    }
+  ],
+  "resource_failure_history": "The original monolithic mmap assembly passed N2352 equivalence but was OOM-killed at N9963 under an8GiB cgroup. Target-chunked v2 assembly supersedes that resource strategy. Small-mesh equivalence is not proof of large-mesh resource feasibility."
+}

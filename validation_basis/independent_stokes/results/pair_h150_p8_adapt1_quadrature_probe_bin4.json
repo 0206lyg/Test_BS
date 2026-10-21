@@ -1,0 +1,218 @@
+{
+  "schema": "saved_density_boundary_quadrature_probe_v1",
+  "physical_accuracy_qualified": false,
+  "source_report": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+  "source_sha256": "5d569664bbc1b82d41cac86ab7dc4cc8de053dc17413f149e1183532ac2066fc",
+  "checkpoint": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.solution.npz",
+  "checkpoint_sha256": "f0c12eb3bebaf9475b16da83268af73aa33f9a0608a8513a54827e08b6c6d988",
+  "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+  "rebuilt_mesh_max_absolute_differences": {
+    "srcvals": 0.0,
+    "weights": 0.0,
+    "body_ids": 0.0,
+    "norders": 0.0,
+    "ixyzs": 0.0,
+    "iptype": 0.0
+  },
+  "source_hashes": {
+    "backend.py": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+    "geometry.py": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+    "probe_saved_boundary_quadrature.py": "4f469c7f853c664e616ff8e7257346259b7ec0048655bd2c5835e854f4252b6e"
+  },
+  "panels": [
+    35,
+    25,
+    52,
+    41
+  ],
+  "points_per_panel": 9,
+  "check_uv": [
+    [
+      -0.3382301370466583,
+      0.7865917224781507,
+      0.09141358200295979,
+      -0.6037645584722315,
+      0.5210573010525773,
+      -0.17412083942261405,
+      -0.8692989798978037,
+      0.25552287962700504,
+      -0.4396552608481863
+    ],
+    [
+      -0.41527270722045295,
+      0.33859597629857996,
+      -0.7275353401823873,
+      0.026333343336645863,
+      0.7802020268556786,
+      -0.28592928962528863,
+      0.46793939389374417,
+      -0.5981919225872231,
+      0.15567676093180968
+    ]
+  ],
+  "scope": "Same saved density and same36 off-grid sites; only boundary quadrature tolerance changes",
+  "evaluations": [
+    {
+      "eps": 1e-07,
+      "boundary_evaluation_valid": true,
+      "max_scaled_error": 0.025898612305974757,
+      "per_panel_max_scaled_error": {
+        "35": 0.025898612305974757,
+        "25": 0.02546203199432999,
+        "52": 0.017780810422627833,
+        "41": 0.015590826032619484
+      },
+      "per_mode_max_scaled_error": [
+        0.0008463518014020376,
+        0.0017335873487117916,
+        0.025898612305974757,
+        0.011920180970804866,
+        0.00675187419334124,
+        0.00048535149735636483,
+        0.0009022151215672297,
+        0.0018048192140152275,
+        0.02589014635485495,
+        0.019509342568884966,
+        0.006359695376569679,
+        0.0007059622001933061,
+        0.0012261511944252075,
+        0.008921109473676726,
+        0.0006516640497311059,
+        0.00039554000445418723,
+        0.016292129429099873
+      ],
+      "log": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_bin4_eps1e-07.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 2.421910613000364
+    },
+    {
+      "eps": 1e-09,
+      "boundary_evaluation_valid": true,
+      "max_scaled_error": 0.025898612305974757,
+      "per_panel_max_scaled_error": {
+        "35": 0.025898612305974757,
+        "25": 0.02546203199432999,
+        "52": 0.017780810422627833,
+        "41": 0.015590826032619484
+      },
+      "per_mode_max_scaled_error": [
+        0.0008463518014020376,
+        0.0017335873487117916,
+        0.025898612305974757,
+        0.011920180970804866,
+        0.00675187419334124,
+        0.00048535149735636483,
+        0.0009022151215672297,
+        0.0018048192140152275,
+        0.02589014635485495,
+        0.019509342568884966,
+        0.006359695376569679,
+        0.0007059622001933061,
+        0.0012261511944252075,
+        0.008921109473676726,
+        0.0006516640497311059,
+        0.00039554000445418723,
+        0.016292129429099873
+      ],
+      "log": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_bin4_eps1e-09.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 2.3312180459997762
+    },
+    {
+      "eps": 1e-11,
+      "boundary_evaluation_valid": true,
+      "max_scaled_error": 0.02589834996412766,
+      "per_panel_max_scaled_error": {
+        "35": 0.02589834996412766,
+        "25": 0.025462126997999702,
+        "52": 0.01778073423222899,
+        "41": 0.015590724838981012
+      },
+      "per_mode_max_scaled_error": [
+        0.0008463559069708414,
+        0.001733586275655297,
+        0.02589834996412766,
+        0.011920218336822415,
+        0.0067518927900635396,
+        0.00048534881048166255,
+        0.0009022155956791001,
+        0.0018048161911043122,
+        0.02588989364089516,
+        0.01950923554286175,
+        0.006359712777344908,
+        0.0007059549970110565,
+        0.0012261490359396887,
+        0.008921026111438527,
+        0.0006516689670805342,
+        0.00039554111405704464,
+        0.016291968169429478
+      ],
+      "log": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_bin4_eps1e-11.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 3.412498730000152
+    }
+  ],
+  "changes_relative_to_first": [
+    {
+      "first_eps": 1e-07,
+      "other_eps": 1e-09,
+      "max_scaled_change": 0.0,
+      "per_mode_max_scaled_change": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "per_panel_max_scaled_change": {
+        "35": 0.0,
+        "25": 0.0,
+        "52": 0.0,
+        "41": 0.0
+      }
+    },
+    {
+      "first_eps": 1e-07,
+      "other_eps": 1e-11,
+      "max_scaled_change": 5.444725062484864e-07,
+      "per_mode_max_scaled_change": [
+        2.2303685997430474e-08,
+        1.894342154171057e-08,
+        5.444725062484864e-07,
+        1.5988152455637666e-07,
+        1.3800735834972355e-07,
+        1.7521597637465247e-08,
+        1.517497752882188e-08,
+        1.506696429916233e-08,
+        5.272878101829276e-07,
+        2.6444712759310266e-07,
+        1.3364615390194612e-07,
+        1.9449262377892822e-08,
+        1.118919149465316e-08,
+        1.7291742732702492e-07,
+        1.5633721196791476e-08,
+        1.1993550551908365e-08,
+        3.303804068965998e-07
+      ],
+      "per_panel_max_scaled_change": {
+        "35": 5.444725062484864e-07,
+        "25": 2.2640042211671768e-07,
+        "52": 3.420623957633218e-07,
+        "41": 2.2423151542561114e-07
+      }
+    }
+  ],
+  "interpretation": "Boundary quadrature sensitivity at sampled points only; density, geometry, assembly quadrature, and full physical reference remain unqualified. Upstream1e-7 and1e-9 requests use the same iprec3 bin; a request below5e-10 reaches iprec4. Self GGQ does not take eps, so this does not independently refine the singular self rule."
+}

@@ -1,0 +1,35 @@
+{
+  "fix": "private ELF RPATH normalization",
+  "base_commit": "0ab65b9d7baeb26c7a8a0d3de1cf6e6f37378d36",
+  "input_log": "build_slurry_44521656.out",
+  "input_log_sha256": "3c09ccd8c102313cb17472bd0e7d5f095b44f82ea5adef1424ab493d2ef49476",
+  "observed_user_result": {
+    "compiled": true,
+    "ctest_passed": 34,
+    "ctest_total": 35,
+    "failed_test": "slurry_runtime_snapshot",
+    "build_completed": false
+  },
+  "reproduction": "Original unmodified test suite with gcc wrapper appending --disable-new-dtags reproduced escaped library plus private-copy SIGBUS -7.",
+  "correction": "Convert DT_RPATH to DT_RUNPATH only on private copies of executables and non-glibc dependencies; preserve original binaries; audit both digests; retain actual loader confinement check.",
+  "validation": {
+    "runtime_tests_passed": 5,
+    "forced_old_rpath_executable_and_dependency": true,
+    "native_runpath_byte_identical": true,
+    "private_copy_survives_original_truncation": true,
+    "ctest_passed": 35,
+    "ctest_total": 35,
+    "ctest_seconds": 16.9,
+    "incremental_build_script_passed": true,
+    "plugin_load_passed": true,
+    "original_binary_hashes_unchanged": true,
+    "read_only_private_copy_mode_preserved": true
+  },
+  "new_source_fingerprint": "324b9ccdc12baebf6506c2fb7f3015062b80a752712af83e4d2848544718c68e",
+  "binary_sha256": {
+    "executable": "c271ead562465754eb06968b51ab20f390fbf04ee4d482405cf2cbcc8569418a",
+    "plugin": "2194cece7c6511a79f7f20676345aab1314a70dc5badf9457ddf8599b8528854",
+    "packer": "f5eae8d0bd85dade2406eaed07717872f998c64c4133ebaa7704ace17419ecc2"
+  },
+  "scope": "Local reproduction, regression suite and serial incremental build; corrected Negishi build has not yet been run. No hydrodynamic model change."
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "out_of_core_dense_v3_cache_admission_checks_v1",
+  "scope": "Synthetic exact operator/storage tests and arithmetic resource estimates only; no new Stokes solve.",
+  "physical_accuracy_qualified": false,
+  "tests_run": 12,
+  "tests_skipped": 1,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "elapsed_seconds": 0.18136804800087702,
+  "source_sha256": {
+    "out_of_core_dense.py": "112e816727006d8dee92e331a59e8bf035c4481dab64739fd2f2876cf6d99f43",
+    "test_out_of_core_dense.py": "c23c1edd2cfbbf6e377a58cc0645ca2122857a07103d4b5f0835ec1f5c96d7ab",
+    "out_of_core_lu.py": "dfc2c80f4129ce0920eb70fc30b43116c5213dabc4e6f8bd9bd1693f8a9d8bc1"
+  },
+  "hash_policy": "64 MiB bounded reads; POSIX_FADV_DONTNEED only for already-read ranges of the owned original operator, then the entire owned file; accepted advice never implies actual eviction.",
+  "strict_cgroup_guard_unchanged": true,
+  "maximum_stage_budget_and_actual_headroom_preflight_before_matrix_creation": true,
+  "failed_hash_never_publishes_digest": true,
+  "original_operator_residual_unchanged": true,
+  "resource_estimates": [
+    {
+      "patch_count": 123,
+      "node_count": 9963,
+      "dimension": 29889,
+      "matrix_bytes": 7146818568,
+      "assembly_and_residual_working_bytes": 703233568,
+      "factor_working_bytes": {
+        "2048/512": 1839080576,
+        "512/256": 674337920,
+        "256/256": 609979520
+      },
+      "physical_solve_run": false
+    },
+    {
+      "patch_count": 138,
+      "node_count": 11178,
+      "dimension": 33534,
+      "matrix_bytes": 8996233248,
+      "assembly_and_residual_working_bytes": 756257728,
+      "factor_working_bytes": {
+        "2048/512": 2022438656,
+        "512/256": 723326720,
+        "256/256": 651503360
+      },
+      "physical_solve_run": false
+    },
+    {
+      "patch_count": 159,
+      "node_count": 12879,
+      "dimension": 38637,
+      "matrix_bytes": 11942542152,
+      "assembly_and_residual_working_bytes": 830491552,
+      "factor_working_bytes": {
+        "2048/512": 2279139968,
+        "512/256": 791911040,
+        "256/256": 709636736
+      },
+      "physical_solve_run": false
+    }
+  ],
+  "cgroup_reserve_bytes": 250000000
+}

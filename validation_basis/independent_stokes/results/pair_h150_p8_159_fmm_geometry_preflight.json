@@ -1,0 +1,68 @@
+{
+  "schema": "fmm_geometry_only_preflight_v1",
+  "physical_accuracy_qualified": false,
+  "contains_new_stokes_solve": false,
+  "node_count": 12879,
+  "patch_count": 159,
+  "rfac": 1.25,
+  "near_patch_interactions": 162710,
+  "near_node_interactions": 13179510,
+  "near_fraction": 0.07945751481740301,
+  "patch_self_LU_bytes": 75110328,
+  "gmres_restart80_basis_bytes": 25036776,
+  "near_cases": [
+    {
+      "increment": 0,
+      "far_order_min": 8,
+      "far_order_max": 14,
+      "oversampled_nodes": 24359,
+      "retained_near_bytes": 632616480,
+      "retained_oversampled_geometry_bytes": 2533336,
+      "oversampled_direct_subtraction_interactions_per_matvec": 25530470,
+      "max_oversampled_near_sources_per_target": 3814,
+      "wrapper_explicit_temporary_estimate_bytes": 6836568,
+      "warning": "Temporary estimate excludes FMM tree/multipole arrays and quadrature construction; no matvec or solve performed"
+    },
+    {
+      "increment": 16,
+      "far_order_min": 24,
+      "far_order_max": 30,
+      "oversampled_nodes": 127687,
+      "retained_near_bytes": 632616480,
+      "retained_oversampled_geometry_bytes": 13279448,
+      "oversampled_direct_subtraction_interactions_per_matvec": 132032614,
+      "max_oversampled_near_sources_per_target": 18662,
+      "wrapper_explicit_temporary_estimate_bytes": 32064600,
+      "warning": "Temporary estimate excludes FMM tree/multipole arrays and quadrature construction; no matvec or solve performed"
+    },
+    {
+      "increment": 32,
+      "far_order_min": 40,
+      "far_order_max": 46,
+      "oversampled_nodes": 312423,
+      "retained_near_bytes": 632616480,
+      "retained_oversampled_geometry_bytes": 32491992,
+      "oversampled_direct_subtraction_interactions_per_matvec": 321842278,
+      "max_oversampled_near_sources_per_target": 45351,
+      "wrapper_explicit_temporary_estimate_bytes": 77292216,
+      "warning": "Temporary estimate excludes FMM tree/multipole arrays and quadrature construction; no matvec or solve performed"
+    },
+    {
+      "increment": 48,
+      "far_order_min": 56,
+      "far_order_max": 62,
+      "oversampled_nodes": 578567,
+      "retained_near_bytes": 632616480,
+      "retained_oversampled_geometry_bytes": 60170968,
+      "oversampled_direct_subtraction_interactions_per_matvec": 594959462,
+      "max_oversampled_near_sources_per_target": 83911,
+      "wrapper_explicit_temporary_estimate_bytes": 142545336,
+      "warning": "Temporary estimate excludes FMM tree/multipole arrays and quadrature construction; no matvec or solve performed"
+    }
+  ],
+  "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "proposal_sha256": "c31dee4a5cee8f08b2d83ad3a10fb3c1cca9cfcc41aeab7969bc98105d9fa5e1",
+  "script_sha256": "5cb2cb742d0f9c49e4a08257583eea1762ab21d3abf99c4d9121ce763474f2a2",
+  "wall_seconds": 0.2031120430001465,
+  "peak_rss_kib": 85264
+}

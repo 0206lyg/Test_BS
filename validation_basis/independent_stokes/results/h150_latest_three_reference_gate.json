@@ -1,0 +1,260 @@
+{
+  "schema": "independent_ar20_reference_and_matching_comparison_v1",
+  "qualified": false,
+  "scope": "Only the recorded AR20 pose and explicitly supplied effective gaps; no other AR or full table",
+  "convention_id": "slurry_full17_c_eta_1_v1",
+  "conventions": {
+    "input": "Ui-uinf(xi),a(Omegai-Omegainf),Uj-uinf(xj),a(Omegaj-Omegainf),aE5; c=eta=1,a=20",
+    "output": "Fsource_i,Tsource_i/a,Fsource_j,Tsource_j/a,sum intrinsic S/a; physical hydrodynamic forces=-Fsource",
+    "stresslet": "minus STF symmetric source dipole about each body center; not the global-origin force dipole",
+    "combined_layer": "density is not traction; for D=+3r_i r_j(r.n)/(4pi r^5), M=STF integral[alpha sym(r_body tensor q)+2beta sym(n tensor q)], S=-M"
+  },
+  "thresholds": {
+    "reference_refinement_budget": 0.002,
+    "total_model_budget": 0.01,
+    "boundary_max_scaled": 0.001,
+    "raw_reciprocity": 0.001,
+    "energy_scaled_raw_reciprocity": 0.001,
+    "surface_position_error_over_gap": 0.001,
+    "linear_relative_residual": 1e-08,
+    "encoding_energy": 1e-09,
+    "minimum_consecutive_refinements": 2,
+    "minimum_heldout_gaps": 1
+  },
+  "reference_groups": [
+    {
+      "h_over_c": 1.0,
+      "gap_nm": 150.0,
+      "references": [
+        {
+          "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_adapt2.json",
+          "sha256": "82fee307e725bc4e8b2251a11c492f037cfb055d560159d7bcad71da3fa2a9fa",
+          "resolution_level": 3,
+          "method": "independent_ar20_panel_bie_v1",
+          "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+          "solver_contract": null,
+          "operator_identity": {
+            "kind": "panel_bie",
+            "convention_id": "slurry_full17_c_eta_1_v1",
+            "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+            "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+            "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+            "alpha": 1.0,
+            "beta": 1.0
+          },
+          "operator_identity_failures": [],
+          "raw_reciprocity": 4.4229012377101114e-05,
+          "minimum_symmetric_eigenvalue": 9.935696460201216,
+          "energy_scaled_raw_reciprocity": 0.0001871394933020716,
+          "discretization_signature": "{\"mesh_sha256\": \"e9996b22781c70da6c800c8ff1367bc2a725a524013680929d302c024a7b1000\"}",
+          "quadrature_tolerance": 1e-07,
+          "boundary_max_scaled_error": 0.034002315696901535,
+          "linear_relative_residual": 7.890045120649926e-14,
+          "boundary_evaluation_valid": true,
+          "exact_surface_position_max_error_over_gap": 0.00025234627781048797,
+          "moment_method": "combined_layer_farfield_moments",
+          "max_scaled_flux_error": 2.2101024621900455e-06,
+          "source_gates_passed": false,
+          "source_gate_failures": [
+            "boundary_error_missing_or_above_tolerance"
+          ],
+          "source_claimed_qualified": false
+        },
+        {
+          "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+          "sha256": "5d569664bbc1b82d41cac86ab7dc4cc8de053dc17413f149e1183532ac2066fc",
+          "resolution_level": 5,
+          "method": "independent_ar20_panel_bie_v1",
+          "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+          "solver_contract": null,
+          "operator_identity": {
+            "kind": "panel_bie",
+            "convention_id": "slurry_full17_c_eta_1_v1",
+            "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+            "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+            "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+            "alpha": 1.0,
+            "beta": 1.0
+          },
+          "operator_identity_failures": [],
+          "raw_reciprocity": 2.915861440907998e-06,
+          "minimum_symmetric_eigenvalue": 9.935719215156322,
+          "energy_scaled_raw_reciprocity": 5.207926355703671e-05,
+          "discretization_signature": "{\"mesh_sha256\": \"d1ae32fb3609c15252441beec1f6b45f6e735ee6abec86d7045d8a48989de2c5\"}",
+          "quadrature_tolerance": 1e-07,
+          "boundary_max_scaled_error": 0.02589861230597417,
+          "linear_relative_residual": 7.16652650636305e-14,
+          "boundary_evaluation_valid": true,
+          "exact_surface_position_max_error_over_gap": 9.660881511385277e-06,
+          "moment_method": "combined_layer_farfield_moments",
+          "max_scaled_flux_error": 9.032023479033685e-07,
+          "source_gates_passed": false,
+          "source_gate_failures": [
+            "boundary_error_missing_or_above_tolerance"
+          ],
+          "source_claimed_qualified": false
+        },
+        {
+          "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+          "sha256": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a",
+          "resolution_level": 12,
+          "method": "independent_ar20_panel_bie_v1",
+          "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+          "solver_contract": "mmap-dense_combined_dirichlet_full17_v1",
+          "operator_identity": {
+            "kind": "panel_bie",
+            "convention_id": "slurry_full17_c_eta_1_v1",
+            "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+            "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+            "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+            "alpha": 1.0,
+            "beta": 1.0
+          },
+          "operator_identity_failures": [],
+          "raw_reciprocity": 2.4416553158587682e-06,
+          "minimum_symmetric_eigenvalue": 9.935695453691098,
+          "energy_scaled_raw_reciprocity": 7.1828325465092635e-06,
+          "discretization_signature": "{\"mesh_sha256\": \"9558c932529f0de149eb625cf6c65d6f494263adea171068ff8d0dcd18f0b9b9\"}",
+          "quadrature_tolerance": 1e-07,
+          "boundary_max_scaled_error": 0.007532226462396109,
+          "linear_relative_residual": 1.4437629331682206e-13,
+          "boundary_evaluation_valid": true,
+          "exact_surface_position_max_error_over_gap": 8.36478334085863e-06,
+          "moment_method": "combined_layer_farfield_moments",
+          "max_scaled_flux_error": 5.173615307233559e-08,
+          "source_gates_passed": false,
+          "source_gate_failures": [
+            "boundary_error_missing_or_above_tolerance"
+          ],
+          "source_claimed_qualified": false
+        }
+      ],
+      "refinements": [
+        {
+          "previous": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_adapt2.json",
+          "current": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+          "full17_max_relative_energy_error": 0.00030325950754553436,
+          "blocks": {
+            "force": {
+              "energy_input_scaled_operator_absolute": 0.0003999457880700043,
+              "energy_input_scaled_operator_relative": 0.000275562700952363,
+              "unweighted_relative_frobenius": 0.00024217266216856688
+            },
+            "torque_over_a": {
+              "energy_input_scaled_operator_absolute": 0.0003446242787634103,
+              "energy_input_scaled_operator_relative": 0.00024200730097123405,
+              "unweighted_relative_frobenius": 0.00023369314662115997
+            },
+            "intrinsic_stresslet_over_a": {
+              "energy_input_scaled_operator_absolute": 0.00039828957714642556,
+              "energy_input_scaled_operator_relative": 0.00027923929573770107,
+              "unweighted_relative_frobenius": 0.00024349253598761355
+            }
+          },
+          "common_motion_max_relative_energy_error": 1.6583533255174776e-05,
+          "fixed_body_total_dipole_max_relative_energy_error": 2.0609409967689796e-05,
+          "fixed_body_intrinsic_stress_relative_frobenius_error": 1.713914652729886e-05,
+          "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+          "force_torque_free_strain_max_relative_energy_error": 2.243295423075327e-05,
+          "force_torque_free_velocity_relative_frobenius_error": 3.6116220178883813e-06,
+          "refinement_gate_passed": true
+        },
+        {
+          "previous": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+          "current": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+          "full17_max_relative_energy_error": 6.228157598114479e-05,
+          "blocks": {
+            "force": {
+              "energy_input_scaled_operator_absolute": 1.443577276013822e-05,
+              "energy_input_scaled_operator_relative": 9.946247844516795e-06,
+              "unweighted_relative_frobenius": 3.5468278843895267e-06
+            },
+            "torque_over_a": {
+              "energy_input_scaled_operator_absolute": 3.198379234052519e-05,
+              "energy_input_scaled_operator_relative": 2.2459922166191617e-05,
+              "unweighted_relative_frobenius": 4.6395141198964856e-06
+            },
+            "intrinsic_stresslet_over_a": {
+              "energy_input_scaled_operator_absolute": 5.78312972630705e-05,
+              "energy_input_scaled_operator_relative": 4.0544974998532584e-05,
+              "unweighted_relative_frobenius": 4.49395842957554e-06
+            }
+          },
+          "common_motion_max_relative_energy_error": 6.16066098258594e-05,
+          "fixed_body_total_dipole_max_relative_energy_error": 5.456558188686766e-05,
+          "fixed_body_intrinsic_stress_relative_frobenius_error": 6.577214570678399e-05,
+          "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+          "force_torque_free_strain_max_relative_energy_error": 3.48580345802783e-05,
+          "force_torque_free_velocity_relative_frobenius_error": 5.02008536012941e-06,
+          "refinement_gate_passed": true
+        }
+      ],
+      "qualified_reference": false,
+      "distinct_resolution_levels": true,
+      "distinct_discretizations": true,
+      "operator_identity_gate": {
+        "passed": false,
+        "scope": "latest_three_reference_sources",
+        "failures": [
+          "latest_three_operator_identities_differ"
+        ],
+        "sources": [
+          {
+            "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_adapt2.json",
+            "identity": {
+              "kind": "panel_bie",
+              "convention_id": "slurry_full17_c_eta_1_v1",
+              "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+              "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+              "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+              "alpha": 1.0,
+              "beta": 1.0
+            },
+            "failures": []
+          },
+          {
+            "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+            "identity": {
+              "kind": "panel_bie",
+              "convention_id": "slurry_full17_c_eta_1_v1",
+              "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+              "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+              "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+              "alpha": 1.0,
+              "beta": 1.0
+            },
+            "failures": []
+          },
+          {
+            "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+            "identity": {
+              "kind": "panel_bie",
+              "convention_id": "slurry_full17_c_eta_1_v1",
+              "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+              "backend_sha256": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+              "geometry_sha256": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61",
+              "alpha": 1.0,
+              "beta": 1.0
+            },
+            "failures": []
+          }
+        ]
+      },
+      "same_library_across_inputs": false,
+      "refinement_provenance_note": "Observed changes include a library change, not solely spatial resolution.",
+      "estimated_energy_uncertainty": 0.0003031698756139002,
+      "estimated_block_uncertainty": {
+        "force": 0.00027549075735585493,
+        "torque_over_a": 0.00024194734328150883,
+        "intrinsic_stresslet_over_a": 0.00027916674436288797
+      },
+      "uncertainty_interpretation": "maximum of last two observed refinement changes, measured against latest reference; not a rigorous error bound",
+      "latest_path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json"
+    }
+  ],
+  "qualification_failures": [
+    "one_or_more_reference_groups_unqualified"
+  ],
+  "qualification_scope": "Reference matrices only; matching not requested",
+  "wall_seconds": 0.009043137997650774
+}
