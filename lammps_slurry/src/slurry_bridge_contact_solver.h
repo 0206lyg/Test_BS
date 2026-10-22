@@ -127,6 +127,66 @@ inline std::vector<Scale> contact_scales(const Problem &p) {
   return scales;
 }
 
+// Exact elimination of contact INCREMENTS in a frozen Newton Jacobian.
+// The nonlinear state and merit still retain all contact tractions. With
+// J=[A,B;C,D], B=-contact_map^T and D block diagonal, the Krylov system is
+// (A-B D^-1 C) dx = b_core-B D^-1 b_contact. This reduces its dimension to
+// 17N, even when the broad-phase contact candidate list is much larger.
+struct ContactLinearization {
+  const Problem &problem;
+  const std::vector<ProximalResponse> &state;
+  int nm, nu, core;
+  std::vector<ContactResponse> condensed;
+  ContactLinearization(const Problem &p,
+                       const std::vector<ProximalResponse> &responses)
+      : problem(p), state(responses), nm(11 * p.count), nu(6 * p.count),
+        core(nm + nu), condensed(p.contacts.size()) {
+    if (state.size() != p.contacts.size())
+      throw std::invalid_argument("bridge contact linearization size mismatch");
+    for (std::size_t k = 0; k < state.size(); ++k)
+      condensed[k].derivative =
+          -state[k].traction_inverse * state[k].velocity_derivative;
+  }
+  Vector reduce_rhs(const Vector &full) const {
+    Vector out = full.head(core);
+    for (std::size_t k = 0; k < state.size(); ++k) {
+      const auto &c = problem.contacts[k];
+      const V3 load = state[k].traction_inverse * full.segment<3>(core + 3 * k);
+      out.segment<6>(nm + 6 * c.i).noalias() += c.Bi.transpose() * load;
+      out.segment<6>(nm + 6 * c.j).noalias() += c.Bj.transpose() * load;
+    }
+    return out;
+  }
+  Vector recover(const Vector &increment, const Vector &full_rhs) const {
+    Vector out(full_rhs.size());
+    out.head(core) = increment;
+    for (std::size_t k = 0; k < state.size(); ++k) {
+      const auto &c = problem.contacts[k];
+      const V3 velocity = c.Bi * increment.segment<6>(nm + 6 * c.i) +
+                          c.Bj * increment.segment<6>(nm + 6 * c.j);
+      out.segment<3>(core + 3 * k) = state[k].traction_inverse *
+          (full_rhs.segment<3>(core + 3 * k) - state[k].velocity_derivative * velocity);
+    }
+    return out;
+  }
+  Vector apply(const Vector &increment, const Apply &mobility) const {
+    const Vector du = increment.tail(nu),
+                 dq = SlurryBridgeSolver::detail::embed(du, problem.count);
+    Vector out(core);
+    out.head(nm) = mobility(increment.head(nm)) - dq;
+    out.tail(nu) = -SlurryBridgeSolver::detail::select(
+        increment.head(nm) + problem.near_resistance * dq, problem.count);
+    for (std::size_t k = 0; k < state.size(); ++k) {
+      const auto &c = problem.contacts[k];
+      const V3 velocity = c.Bi * du.segment<6>(6 * c.i) + c.Bj * du.segment<6>(6 * c.j),
+               load = condensed[k].derivative * velocity;
+      out.segment<6>(nm + 6 * c.i).noalias() -= c.Bi.transpose() * load;
+      out.segment<6>(nm + 6 * c.j).noalias() -= c.Bj.transpose() * load;
+    }
+    return out;
+  }
+};
+
 inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
                              const Result *warm = nullptr) {
   SlurryBridgeSolver::detail::validate(p, opt);
@@ -137,7 +197,7 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
   const int dimension = core + 3 * nc;
   const auto started = std::chrono::steady_clock::now();
   const auto scales = contact_scales(p);
-  SlurryBridgeSolver::detail::Preconditioner monitor(p, Vector::Zero(nu));
+  SlurryBridgeSolver::detail::Preconditioner monitor(p, Vector::Zero(nu), opt.workspace);
   auto contact_scale = [&](const Vector &value, bool inverse) -> Vector {
     Vector out = value;
     for (int k = 0; k < nc; ++k) {
@@ -157,11 +217,6 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     out.head(core) = monitor.left(value.head(core));
     return out;
   };
-  auto inverse_left = [&](const Vector &value) -> Vector {
-    Vector out = contact_scale(value, true);
-    out.head(core) = monitor.inverse_left(value.head(core));
-    return out;
-  };
   auto right = [&](const Vector &value) -> Vector {
     Vector out = contact_scale(value, false);
     out.head(core) = monitor.right(value.head(core));
@@ -178,6 +233,8 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     x.segment<3>(core + 3 * k) =
         contact_response(p.contacts[k], x.segment(nm, nu), p.dt).traction;
   auto mob = [&](const Vector &value) -> Vector {
+    if (value.isZero(0.))
+      return Vector::Zero(value.size());
     ++work.mobility_applications;
     return p.mobility(value);
   };
@@ -284,40 +341,18 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
       polish = true;
       break;
     }
-    std::vector<ContactResponse> condensed(nc);
-    for (int k = 0; k < nc; ++k)
-      condensed[k].derivative =
-          -states[k].traction_inverse * states[k].velocity_derivative;
-    SlurryBridgeSolver::detail::CoupledPreconditioner factor(p, condensed);
+    const ContactLinearization reduced(p, states);
+    SlurryBridgeSolver::detail::CoupledPreconditioner factor(p, reduced.condensed, opt.workspace);
     auto inverse = [&](const Vector &weighted) -> Vector {
-      const Vector value = inverse_left(weighted);
-      Vector rhs = value.head(core);
-      for (int k = 0; k < nc; ++k) {
-        const auto &c = p.contacts[k];
-        const V3 local =
-            states[k].traction_inverse * value.segment<3>(core + 3 * k);
-        rhs.segment<6>(nm + 6 * c.i) += c.Bi.transpose() * local;
-        rhs.segment<6>(nm + 6 * c.j) += c.Bj.transpose() * local;
-      }
-      Vector result(dimension);
-      result.head(core) = factor.apply(rhs);
-      for (int k = 0; k < nc; ++k) {
-        const auto &c = p.contacts[k];
-        const V3 velocity = c.Bi * result.segment<6>(nm + 6 * c.i) +
-                            c.Bj * result.segment<6>(nm + 6 * c.j);
-        result.segment<3>(core + 3 * k) =
-            states[k].traction_inverse *
-            (value.segment<3>(core + 3 * k) -
-             states[k].velocity_derivative * velocity);
-      }
-      return result;
+      return factor.apply(monitor.inverse_left(weighted));
     };
     auto jacobian = [&](const Vector &direction,
-                        bool transpose = false) -> Vector {
+                        bool transpose = false,
+                        const Vector *known_mobility = nullptr) -> Vector {
       const Vector du = direction.segment(nm, nu),
                    dq = SlurryBridgeSolver::detail::embed(du, n);
       Vector out(dimension);
-      out.head(nm) = mob(direction.head(nm)) - dq;
+      out.head(nm) = (known_mobility ? *known_mobility : mob(direction.head(nm))) - dq;
       const Vector near = transpose ? Vector(p.near_resistance.transpose() * dq)
                                     : Vector(p.near_resistance * dq);
       out.segment(nm, nu) =
@@ -348,12 +383,25 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
                    iteration == 0 ? opt.max_linear_forcing
                                   : .9 * std::pow(norm / previous_norm, 1.5)));
     const double target = forcing * norm;
+    const Vector full_rhs = -raw;
+    const Vector condensed_rhs = monitor.left(reduced.reduce_rhs(full_rhs));
+    Vector last_core_direction, last_mobility;
     const auto linear = SlurryBridgeSolver::detail::fgmres(
-        [&](const Vector &v) { return left(jacobian(v)); }, inverse, -residual,
-        target, opt);
+        [&](const Vector &v) -> Vector {
+          last_core_direction = v;
+          return monitor.left(reduced.apply(v, [&](const Vector &moment) -> Vector {
+            last_mobility = mob(moment);
+            return last_mobility;
+          }));
+        }, inverse, condensed_rhs, target, opt);
     work.linear_iterations += linear.iterations;
-    const Vector direction = linear.x;
-    const Vector raw_image = jacobian(direction), image = left(raw_image);
+    const Vector direction = reduced.recover(linear.x, full_rhs);
+    // FGMRES recomputes its true residual at the returned core increment.
+    // Reuse that mobility image; the force/traction rows are evaluated afresh.
+    const bool cached_image = last_core_direction.size() == core &&
+        (last_core_direction.array() == linear.x.array()).all();
+    const Vector raw_image = jacobian(direction, false,
+        cached_image ? &last_mobility : nullptr);
     trace("prox_linear", iteration, linear.iterations, 0., target,
           linear.residual);
     double chosen_step = 0.;
@@ -404,7 +452,11 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
           "bridge proximal solver: Newton/descent line search failed", work,
           physical_norm, tolerance);
     ++work.newton_iterations;
-    raw = evaluate(x, &states);
+    // The accepted core residual is affine in the retained variables and
+    // was already evaluated by the line search. Only contact derivatives
+    // need refreshing here. A fresh physical residual is checked at return.
+    const Vector accepted_core = raw.head(core);
+    raw = evaluate(x, &states, &accepted_core);
     residual = left(raw);
     norm = residual.norm();
     physical_norm = monitor.left(original_residual(x, raw)).norm();
@@ -417,6 +469,42 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
   if (physical_norm > tolerance && !polish)
     throw NonlinearFailure("bridge proximal solver: nonlinear iteration limit",
                            work, physical_norm, tolerance);
+  if (physical_norm <= tolerance) {
+    // The original law and a freshly evaluated mobility residual remain the
+    // acceptance gate. A root that already passes needs no second nonlinear
+    // solver, monitor factorization, or zero-state evaluation for 'polish'.
+    const Vector final_velocity = x.segment(nm, nu),
+                 final_q = SlurryBridgeSolver::detail::embed(final_velocity, n) + p.prescribed,
+                 final_moment = x.head(nm) + p.near_resistance * final_q;
+    Vector physical(core);
+    physical.head(nm) = mob(x.head(nm)) - final_q;
+    physical.tail(nu) = -SlurryBridgeSolver::detail::select(final_moment, n) + p.external;
+    std::vector<ContactResponse> physical_contacts;
+    physical_contacts.reserve(p.contacts.size());
+    for (const auto &c : p.contacts) {
+      physical_contacts.push_back(contact_response(c, final_velocity, p.dt));
+      physical.segment<6>(nm + 6 * c.i).noalias() -=
+          c.Bi.transpose() * physical_contacts.back().traction;
+      physical.segment<6>(nm + 6 * c.j).noalias() -=
+          c.Bj.transpose() * physical_contacts.back().traction;
+    }
+    const double final_norm = monitor.left(physical).norm();
+    if (std::isfinite(final_norm) && final_norm <= tolerance) {
+      work.velocity = final_velocity;
+      work.mid_moment = x.head(nm);
+      work.q = final_q;
+      work.total_moment = final_moment;
+      work.residual_norm = final_norm;
+      work.relative_residual = final_norm / std::max(physical_rhs, opt.absolute_tolerance);
+      work.mobility_residual_norm = physical.head(nm).norm();
+      work.force_residual_norm = physical.tail(nu).norm();
+      work.hydro_power = work.q.dot(work.total_moment);
+      work.contacts = std::move(physical_contacts);
+      for (const auto &c : work.contacts)
+        work.contact_power += c.traction.dot(c.relative);
+      return work;
+    }
+  }
   Result initial;
   initial.velocity = x.segment(nm, nu);
   initial.mid_moment = x.head(nm);

@@ -9,6 +9,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
 import sys
@@ -77,6 +78,61 @@ def lammps_quoted_path(path):
     return '"'+value+'"'
 
 
+THREAD_ENVIRONMENT = ("OMP_NUM_THREADS", "OMP_DYNAMIC", "OMP_PLACES", "OMP_PROC_BIND",
+                      "OMP_MAX_ACTIVE_LEVELS", "MKL_NUM_THREADS", "MKL_DYNAMIC",
+                      "OPENBLAS_NUM_THREADS")
+
+
+def execution_environment(environ):
+    """One driver, one MPI rank, with all allocated CPUs available to threads."""
+    environment = dict(environ)
+    # The batch script runs this driver once. Running it under MPI could
+    # duplicate preparation and create nested simulation launches.
+    for key in ("OMPI_COMM_WORLD_SIZE", "PMI_SIZE", "PMIX_UNIV_SIZE"):
+        if key in environment:
+            raise ValueError("Run run_bridge.py once, outside MPI ranks ({} is set)".format(key))
+    raw = environment.get("SLURM_CPUS_PER_TASK", environment.get("OMP_NUM_THREADS", "1"))
+    try:
+        threads = int(raw)
+    except (TypeError, ValueError):
+        raise ValueError("Thread count must be one positive integer, got {!r}".format(raw))
+    if threads < 1:
+        raise ValueError("Thread count must be positive")
+    environment.update(OMP_NUM_THREADS=str(threads), OMP_DYNAMIC="FALSE",
+                       OMP_PLACES="cores", OMP_PROC_BIND="close",
+                       OMP_MAX_ACTIVE_LEVELS="1", MKL_NUM_THREADS=str(threads),
+                       MKL_DYNAMIC="FALSE", OPENBLAS_NUM_THREADS="1")
+    return environment, threads
+
+
+def execution_command(runtime, mpi, threads, launcher=None):
+    """Construct exactly one launch; failed launches are never retried."""
+    runtime = Path(runtime)
+    executable = [str(runtime/"bin/lmp"), "-var", "slurry_plugin",
+                  lammps_quoted_path(runtime/"bin/libslurry.so"), "-in", "in.bridge"]
+    if not mpi:
+        return executable
+    launcher = launcher or shutil.which("mpirun") or shutil.which("mpiexec")
+    if not launcher:
+        raise RuntimeError("The verified MPI build requires OpenMPI mpirun or mpiexec")
+    return [str(launcher), "-np", "1", "--map-by", "slot:PE={}".format(threads),
+            "--bind-to", "core", "--report-bindings"] + executable
+
+
+def run_simulation(command, output, environment):
+    """Run the single selected command once, and preserve its output on failure."""
+    with (output/"console.log").open("w") as log:
+        process = subprocess.Popen(command, cwd=str(output), env=environment, stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, universal_newlines=True)
+        for line in process.stdout:
+            print(line, end="", flush=True)
+            log.write(line)
+            log.flush()
+        code = process.wait()
+    if code:
+        raise RuntimeError("LAMMPS exited {}; see {}".format(code, output/"console.log"))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, add_help=False)
     p.add_argument("--help", "-h", action="store_true")
@@ -92,6 +148,7 @@ def main():
         p.error("--output NEW_RUN_DIRECTORY is required")
     if any(flag == "--packer" or flag.startswith("--packer=") for flag in physical):
         p.error("--packer is bound to the verified build, not a runtime override")
+    environment, threads = execution_environment(os.environ)
     output = args.output.expanduser().resolve()
     if output.exists():
         p.error("Run directory already exists; choose a new --output")
@@ -100,10 +157,11 @@ def main():
     # requested run path absent until prepare_bridge creates it atomically.
     with tempfile.TemporaryDirectory(prefix=".bridge-runtime-", dir=str(output.parent)) as temporary:
         staging = Path(temporary)/"runtime"
-        identity, environment = freeze_runtime(ROOT, staging, args.build_env.expanduser().resolve())
+        identity, snapshot_environment = freeze_runtime(ROOT, staging, args.build_env.expanduser().resolve())
+        snapshot_environment.update({key: environment[key] for key in THREAD_ENVIRONMENT})
         command = [sys.executable, str(staging/"tools/prepare_bridge.py"), "--output", str(output),
                    "--packer", str(staging/"bin/slurry_pack")]+physical
-        subprocess.run(command, env=environment, check=True)
+        subprocess.run(command, env=snapshot_environment, check=True)
         runtime = output/"runtime"
         staging.rename(runtime)
         identity = relocate_identity(identity, str(staging), str(runtime))
@@ -112,32 +170,23 @@ def main():
         parameters = json.loads(parameters_path.read_text())
         parameters["packer"] = str(runtime/"bin/slurry_pack")
         parameters_path.write_text(json.dumps(parameters, indent=2, sort_keys=True)+"\n")
-    environment = dict(os.environ)
     environment["LD_LIBRARY_PATH"] = str(runtime/"lib")+(":"+environment["LD_LIBRARY_PATH"] if environment.get("LD_LIBRARY_PATH") else "")
     # An immutable input record binds the exact helper/runtime used for this run.
     record = {"arguments": physical, "runtime_identity": "runtime/runtime_identity.json",
               "input_sha256": bundle_guard.sha256_file(output/"in.bridge"),
-              "particles_sha256": bundle_guard.sha256_file(output/"particles.data")}
+              "particles_sha256": bundle_guard.sha256_file(output/"particles.data"),
+              "mpi_ranks": 1, "threads": threads,
+              "thread_environment": {key: environment[key] for key in THREAD_ENVIRONMENT}}
     (output/"launch.json").write_text(json.dumps(record, indent=2, sort_keys=True)+"\n")
     if args.prepare_only:
         print("Prepared verified runtime and input: {}".format(output))
         return 0
-    executable = [str(runtime/"bin/lmp"), "-var", "slurry_plugin", lammps_quoted_path(runtime/"bin/libslurry.so"), "-in", "in.bridge"]
-    if identity["approved_build"].get("mpi", False):
-        launcher = shutil.which("mpirun") or shutil.which("mpiexec")
-        if not launcher:
-            raise RuntimeError("The verified MPI build requires mpirun or mpiexec")
-        executable = [launcher, "-np", "1"]+executable
-    with (output/"console.log").open("w") as log:
-        process = subprocess.Popen(executable, cwd=str(output), env=environment, stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT, universal_newlines=True)
-        for line in process.stdout:
-            print(line, end="", flush=True)
-            log.write(line)
-            log.flush()
-        code = process.wait()
-    if code:
-        raise RuntimeError("LAMMPS exited {}; see {}".format(code, output/"console.log"))
+    executable = execution_command(runtime, identity["approved_build"].get("mpi", False), threads)
+    record["command"] = executable
+    (output/"launch.json").write_text(json.dumps(record, indent=2, sort_keys=True)+"\n")
+    print("Run directory: {}".format(output), flush=True)
+    print("One process; {} threads; command: {}".format(threads, shlex.join(executable)), flush=True)
+    run_simulation(executable, output, environment)
     print("Run completed: {}".format(output))
     return 0
 

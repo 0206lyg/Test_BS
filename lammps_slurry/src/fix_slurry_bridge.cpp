@@ -87,7 +87,7 @@ struct FixSlurryBridge::Impl {
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
   std::ofstream csv;
-  std::array<double, 32> diag{};
+  std::array<double, 40> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
   long double selected_integral = 0;
@@ -96,6 +96,11 @@ struct FixSlurryBridge::Impl {
   std::map<PairKey, std::vector<History>> history, pending;
   std::vector<tagint> tags;
   bs::Result warm;
+  // Reuse FFT plans/buffers and exact solver caches across physical steps.
+  // reset() still refreshes all position, orientation and lattice coefficients.
+  pm::Mobility mobility;
+  std::shared_ptr<bs::detail::SolverWorkspace> solver_workspace =
+      std::make_shared<bs::detail::SolverWorkspace>();
   bool have_warm = false;
   bool direct_mobility = false;
 };
@@ -165,7 +170,10 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "interval_mean_eta_relative,solver_relative_residual,descent_steps,continuation_stages,"
              "continuation_retries,mobility_applications,breakpoint_steps,geometry_iterations,"
              "contact_gap_consistency_m,actual_endpoint_min_gap_m,actual_endpoint_overlap_m,"
-             "normal_elastic_energy_J,tangential_elastic_energy_J,linear_gap_defect_m\n";
+             "normal_elastic_energy_J,tangential_elastic_energy_J,linear_gap_defect_m,"
+             "contact_candidates,krylov_dimension,fft_plan_builds,mobility_threads,"
+             "preconditioner_symbolic_total,preconditioner_numeric_total,"
+             "preconditioner_numeric_reuses_total,monitor_reuses_total\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -423,7 +431,7 @@ void FixSlurryBridge::solve_velocities() {
 #ifdef _OPENMP
       settings.threads = omp_get_max_threads();
 #endif
-      pm::Mobility mobility;
+      auto &mobility = p.mobility;
       const char *trace_setting = std::getenv("SLURRY_BRIDGE_TRACE");
       const bool trace_solver = trace_setting && std::strcmp(trace_setting, "0");
       if (trace_solver) {
@@ -437,6 +445,7 @@ void FixSlurryBridge::solve_velocities() {
       problem.mobility = [&mobility](const Eigen::VectorXd &x) { return mobility.apply(x); };
       double middle_time = MPI_Wtime() - section;
       bs::Options options;
+      options.workspace = p.solver_workspace;
       options.relative_tolerance = p.rtol;
       options.maximum_linear_iterations = p.maxit;
       options.linear_relative_tolerance = std::min(1e-6, .1 * p.rtol);
@@ -544,6 +553,14 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[29] = normal_energy * energy_scale;
       p.diag[30] = tangent_energy * energy_scale;
       p.diag[31] = consistent.maximum_linear_gap_defect * length;
+      p.diag[32] = problem.contacts.size();
+      p.diag[33] = 17 * n;
+      p.diag[34] = mobility.mesh_fft_plan_builds();
+      p.diag[35] = settings.threads;
+      p.diag[36] = p.solver_workspace->coupled_symbolic_analyses;
+      p.diag[37] = p.solver_workspace->coupled_numeric_factorizations;
+      p.diag[38] = p.solver_workspace->coupled_numeric_reuses;
+      p.diag[39] = p.solver_workspace->monitor_reuses;
       p.diag[16] = geometry_time;
       p.diag[17] = middle_time;
       p.diag[18] = solve_time;
@@ -624,7 +641,7 @@ void FixSlurryBridge::write_history() {
     o << ',' << eta(mean) << ',' << eta(mean) / p.eta << ',' << p.diag[15] << ',' << p.diag[20]
       << ',' << p.diag[21] << ',' << p.diag[22] << ',' << p.diag[23]
       << ',' << p.diag[24];
-    for (int k = 25; k < 32; ++k)
+    for (int k = 25; k < 40; ++k)
       o << ',' << p.diag[k];
     o << '\n';
     o.flush();

@@ -13,5 +13,13 @@
   "mechanical_contact_gap_m": 3e-09,
   "periodic_mobility_backend": "mesh",
   "contact_model": "linear normal/tangential springs with Coulomb friction; endpoint gap correction",
-  "initialization": "actual periodic surface gaps certified at mechanical contact onset"
+  "initialization": "actual periodic surface gaps certified at mechanical contact onset",
+  "performance_update": "20261022-fftw-condensed-newton-pardiso",
+  "performance_baseline_git_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
+  "run_batch": "run_slurry_cpu.sbatch",
+  "production_numerics": {
+    "fft": "FFTW",
+    "sparse_preconditioner": "MKL-PARDISO-static-GNU-LP64",
+    "contact_linear_system": "exactly condensed 17N Newton-FGMRES"
+  }
 }

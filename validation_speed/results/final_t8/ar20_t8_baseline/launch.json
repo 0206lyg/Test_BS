@@ -1,0 +1,42 @@
+{
+  "label": "baseline",
+  "directory": "/workspace/scratch/0520ed9b6708/speed-validation/final_t8/ar20_t8_baseline",
+  "command": [
+    "/workspace/scratch/0520ed9b6708/lammps-build-env/install/bin/lmp",
+    "-var",
+    "slurry_plugin",
+    "\"/workspace/scratch/0520ed9b6708/speed-baseline-build/libslurry.so\"",
+    "-var",
+    "validation_steps",
+    "5",
+    "-in",
+    "in.bridge"
+  ],
+  "threads": 8,
+  "steps_requested": 5,
+  "lmp_sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+  "plugin_sha256": "d52e3e4ad7254a439458ef158e542363cda871ea21de867286bc499a434140e3",
+  "thread_environment": {
+    "OMP_NUM_THREADS": "8",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_PLACES": "cores",
+    "OMP_PROC_BIND": "close",
+    "OMP_MAX_ACTIVE_LEVELS": "1",
+    "OMP_DISPLAY_ENV": "VERBOSE",
+    "OMP_DISPLAY_AFFINITY": "TRUE",
+    "MKL_NUM_THREADS": "8",
+    "MKL_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "driver_allowed_cpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}

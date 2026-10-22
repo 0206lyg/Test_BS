@@ -118,11 +118,17 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
   bs::Result previous;
   Result out;
   const int nm = 11 * original.count, nu = 6 * original.count;
-  bs::detail::Preconditioner monitor(original, bs::Vector::Zero(nu));
+  auto workspace = options.workspace ? options.workspace
+      : std::make_shared<bs::detail::SolverWorkspace>();
+  bs::detail::Preconditioner monitor(original, bs::Vector::Zero(nu), workspace);
   auto raw_residual = [&](const bs::Result &state,
-                          const std::vector<bs::ContactResponse> &contacts) {
+                          const std::vector<bs::ContactResponse> &contacts,
+                          bool zero_moment = false) {
     bs::Vector raw(nm + nu);
-    raw.head(nm) = original.mobility(state.mid_moment) - state.q;
+    if (zero_moment)
+      raw.head(nm) = -state.q;
+    else
+      raw.head(nm) = original.mobility(state.mid_moment) - state.q;
     raw.tail(nu) = -bs::detail::select(state.total_moment, original.count) + original.external;
     for (std::size_t k = 0; k < contacts.size(); ++k) {
       const auto &c = original.contacts[k];
@@ -141,15 +147,16 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
   std::vector<bs::ContactResponse> zero_contacts;
   for (const auto &c : original.contacts)
     zero_contacts.push_back(bs::contact_response(c, zero.velocity, original.dt));
-  const double rhs = monitor.left(raw_residual(zero, zero_contacts)).norm();
+  const double rhs = monitor.left(raw_residual(zero, zero_contacts, true)).norm();
   const double tolerance = options.absolute_tolerance + options.relative_tolerance * rhs;
   bs::Options inner = options;
+  inner.workspace = workspace;
   inner.relative_tolerance *= .1;
   inner.absolute_tolerance *= .1;
   // These are nonlinear geometry corrections of ONE physical time step.
   // Every solve starts with the original committed tangential history.
   constexpr int maximum_geometry_iterations = 24;
-  int linear = 0, newton = 0, applications = 1;
+  int linear = 0, newton = 0, applications = 0;
   for (int iteration = 0; iteration < maximum_geometry_iterations; ++iteration) {
     auto state = SlurryBridgeContactSolver::solve_proximal(
         corrected, inner, iteration ? &previous : warm);

@@ -12,18 +12,23 @@
 #include <Eigen/SparseCholesky>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#ifdef SLURRY_HAVE_MKL_PARDISO
+#include <Eigen/PardisoSupport>
+#endif
 #include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <functional>
 #include <iomanip>
 #include <limits>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 namespace SlurryBridgeSolver {
+namespace detail { struct SolverWorkspace; }
 using Vector = Eigen::VectorXd;
 using Matrix11 = Eigen::Matrix<double, 11, 11>;
 using Matrix6 = Eigen::Matrix<double, 6, 6>;
@@ -80,6 +85,9 @@ struct Options {
   // accepted result solves the original coefficients/tolerance; no intermediate
   // parameter stage advances physical time or committed spring history.
   bool cold_start_continuation = false;
+  // Shared by sequential Newton/endpoint solves. Exact comparisons invalidate
+  // cached numeric factors; only unchanged sparsity reuses symbolic analysis.
+  std::shared_ptr<detail::SolverWorkspace> workspace;
 };
 struct Result {
   Vector velocity, mid_moment, q, total_moment;
@@ -163,13 +171,14 @@ inline Vector select(const Vector &q, int n) {
     u.segment<6>(6 * i) = q.segment<6>(11 * i);
   return u;
 }
+#include "slurry_bridge_workspace.h"
 struct Preconditioner {
   int n;
-  std::vector<Matrix11> lower_m;
-  Eigen::SimplicialLLT<Sparse> velocity_factor;
-  explicit Preconditioner(const Problem &p, const Vector &velocity)
+  std::shared_ptr<MonitorFactors> factors;
+  explicit Preconditioner(const Problem &p, const Vector &velocity,
+                          const std::shared_ptr<SolverWorkspace> &workspace = {})
       : n(p.count) {
-    lower_m.resize(n);
+    auto self = self_factors(p, workspace);
     std::vector<Eigen::Triplet<double>> entries;
     entries.reserve(36 * n + p.near_resistance.nonZeros());
     auto add_block = [&](int i, int j, const Matrix6 &block) {
@@ -179,14 +188,7 @@ struct Preconditioner {
             entries.emplace_back(6 * i + r, 6 * j + c, block(r, c));
     };
     for (int i = 0; i < n; ++i) {
-      Eigen::LLT<Matrix11> factor(p.self_mobility[i]);
-      if (factor.info() != Eigen::Success)
-        throw std::runtime_error(
-            "bridge solver: self mobility is not positive definite");
-      lower_m[i] = factor.matrixL();
-      add_block(
-          i, i,
-          factor.solve(Matrix11::Identity()).template topLeftCorner<6, 6>());
+      add_block(i, i, self->inverse[i].template topLeftCorner<6, 6>());
     }
     // Preserve the complete near-contact graph, not only its diagonal blocks.
     // Independent diagonal scaling cannot resolve nearly rigid clusters of
@@ -237,40 +239,38 @@ struct Preconditioner {
     Sparse approximate(6 * n, 6 * n);
     approximate.setFromTriplets(entries.begin(), entries.end());
     approximate = (.5 * (approximate + Sparse(approximate.transpose()))).eval();
-    velocity_factor.compute(approximate);
-    if (velocity_factor.info() != Eigen::Success)
-      throw std::runtime_error("bridge solver: global sparse velocity "
-                               "preconditioner is not positive definite");
+    approximate.makeCompressed();
+    factors = monitor_factors(std::move(self), approximate, workspace);
   }
   Vector left(const Vector &x) const {
     Vector y(x.size());
     for (int i = 0; i < n; ++i) {
       y.segment<11>(11 * i) =
-          lower_m[i].template triangularView<Eigen::Lower>().solve(
+          factors->self->lower[i].template triangularView<Eigen::Lower>().solve(
               x.segment<11>(11 * i));
     }
     // Eigen factors P*A*P^-1=L*L^T. Retain the permutation on BOTH sides.
-    const Vector permuted = velocity_factor.permutationP() * x.tail(6 * n);
-    y.tail(6 * n) = velocity_factor.matrixL().solve(permuted);
+    const Vector permuted = factors->factor.permutationP() * x.tail(6 * n);
+    y.tail(6 * n) = factors->factor.matrixL().solve(permuted);
     return y;
   }
   Vector inverse_left(const Vector &x) const {
     Vector y(x.size());
     for (int i = 0; i < n; ++i)
-      y.segment<11>(11 * i) = lower_m[i] * x.segment<11>(11 * i);
-    const Vector triangular = velocity_factor.matrixL() * x.tail(6 * n);
-    y.tail(6 * n) = velocity_factor.permutationPinv() * triangular;
+      y.segment<11>(11 * i) = factors->self->lower[i] * x.segment<11>(11 * i);
+    const Vector triangular = factors->factor.matrixL() * x.tail(6 * n);
+    y.tail(6 * n) = factors->factor.permutationPinv() * triangular;
     return y;
   }
   Vector right(const Vector &x) const {
     Vector y(x.size());
     for (int i = 0; i < n; ++i) {
       y.segment<11>(11 * i) =
-          lower_m[i].transpose().template triangularView<Eigen::Upper>().solve(
+          factors->self->lower[i].transpose().template triangularView<Eigen::Upper>().solve(
               x.segment<11>(11 * i));
     }
-    const Vector triangular = velocity_factor.matrixU().solve(x.tail(6 * n));
-    y.tail(6 * n) = velocity_factor.permutationPinv() * triangular;
+    const Vector triangular = factors->factor.matrixU().solve(x.tail(6 * n));
+    y.tail(6 * n) = factors->factor.permutationPinv() * triangular;
     return y;
   }
 };
@@ -281,33 +281,23 @@ struct Preconditioner {
 // matrix-free.
 struct CoupledPreconditioner {
   int n;
-  std::vector<Matrix11> inverse_self;
-  Eigen::SparseLU<Sparse> schur;
+  std::shared_ptr<SelfFactors> self;
+  std::shared_ptr<CoupledFactors> factors;
   CoupledPreconditioner(const Problem &p,
-                        const std::vector<ContactResponse> &state)
-      : n(p.count) {
-    inverse_self.resize(n);
+                        const std::vector<ContactResponse> &state,
+                        const std::shared_ptr<SolverWorkspace> &workspace = {})
+      : n(p.count), self(self_factors(p, workspace)) {
+    Sparse matrix = base_resistance(p, self, workspace);
     std::vector<Eigen::Triplet<double>> entries;
-    entries.reserve(36 * n + p.near_resistance.nonZeros());
+    std::size_t active = 0;
+    for (const auto &response : state) active += !response.derivative.isZero(0.);
+    entries.reserve(144 * active);
     auto add = [&](int i, int j, const Matrix6 &block) {
       for (int r = 0; r < 6; ++r)
         for (int c = 0; c < 6; ++c)
           if (block(r, c) != 0.)
             entries.emplace_back(6 * i + r, 6 * j + c, block(r, c));
     };
-    for (int i = 0; i < n; ++i) {
-      Eigen::LLT<Matrix11> factor(p.self_mobility[i]);
-      if (factor.info() != Eigen::Success)
-        throw std::runtime_error(
-            "bridge solver: invalid self mobility in coupled preconditioner");
-      inverse_self[i] = factor.solve(Matrix11::Identity());
-      add(i, i, inverse_self[i].template topLeftCorner<6, 6>());
-    }
-    for (int outer = 0; outer < p.near_resistance.outerSize(); ++outer)
-      for (Sparse::InnerIterator it(p.near_resistance, outer); it; ++it)
-        if (it.row() % 11 < 6 && it.col() % 11 < 6)
-          entries.emplace_back(6 * (it.row() / 11) + it.row() % 11,
-                               6 * (it.col() / 11) + it.col() % 11, it.value());
     for (std::size_t k = 0; k < p.contacts.size(); ++k) {
       const auto &c = p.contacts[k];
       const auto &derivative = state[k].derivative;
@@ -323,27 +313,28 @@ struct CoupledPreconditioner {
         add(c.j, c.j, c.Bj.transpose() * derivative * c.Bj);
       }
     }
-    Sparse matrix(6 * n, 6 * n);
-    matrix.setFromTriplets(entries.begin(), entries.end());
+    if (!entries.empty()) {
+      Sparse contacts(6 * n, 6 * n);
+      contacts.setFromTriplets(entries.begin(), entries.end());
+      matrix += contacts;
+    }
     matrix.makeCompressed();
-    schur.compute(matrix);
-    if (schur.info() != Eigen::Success)
-      throw std::runtime_error(
-          "bridge solver: coupled sparse Schur factorization failed");
+    factors = coupled_factors(matrix, workspace);
   }
   Vector apply(const Vector &rhs) const {
     Vector out(rhs.size()), free_m(11 * n);
     for (int i = 0; i < n; ++i)
-      free_m.segment<11>(11 * i) = inverse_self[i] * rhs.segment<11>(11 * i);
-    const Vector u = schur.solve(-rhs.tail(6 * n) - select(free_m, n));
-    if (schur.info() != Eigen::Success || !u.allFinite())
+      free_m.segment<11>(11 * i) = self->inverse[i] * rhs.segment<11>(11 * i);
+    const Vector schur_rhs = -rhs.tail(6 * n) - select(free_m, n);
+    const Vector u = factors->factor.solve(schur_rhs);
+    if (factors->factor.info() != Eigen::Success || !u.allFinite())
       throw std::runtime_error(
           "bridge solver: coupled sparse Schur solve failed");
     out.tail(6 * n) = u;
     for (int i = 0; i < n; ++i)
       out.segment<11>(11 * i) =
           free_m.segment<11>(11 * i) +
-          inverse_self[i].template leftCols<6>() * u.segment<6>(6 * i);
+          self->inverse[i].template leftCols<6>() * u.segment<6>(6 * i);
     return out;
   }
 };
@@ -360,6 +351,15 @@ inline LinearResult fgmres(const Apply &apply, const Apply &precondition,
   LinearResult out;
   out.x = Vector::Zero(dimension);
   Vector residual = rhs;
+  KrylovWorkspace local;
+  auto &storage = opt.workspace ? opt.workspace->krylov : local;
+  storage.resize(dimension, restart);
+  auto &basis = storage.basis;
+  auto &directions = storage.directions;
+  auto &h = storage.h;
+  auto &cs = storage.cs;
+  auto &sn = storage.sn;
+  auto &g = storage.g;
   while (out.iterations < opt.maximum_linear_iterations) {
     const double beta = residual.norm();
     if (beta <= target) {
@@ -368,10 +368,10 @@ inline LinearResult fgmres(const Apply &apply, const Apply &precondition,
     }
     const int m =
         std::min(restart, opt.maximum_linear_iterations - out.iterations);
-    Eigen::MatrixXd basis = Eigen::MatrixXd::Zero(dimension, m + 1),
-                    directions = Eigen::MatrixXd::Zero(dimension, m),
-                    h = Eigen::MatrixXd::Zero(m + 1, m);
-    Vector cs = Vector::Zero(m), sn = Vector::Zero(m), g = Vector::Zero(m + 1);
+    // Only Hessenberg and rotations need clearing. Basis/directions are
+    // overwritten before use; avoid zeroing O(dimension*restart) each restart.
+    h.topLeftCorner(m + 1, m).setZero();
+    cs.head(m).setZero(); sn.head(m).setZero(); g.head(m + 1).setZero();
     basis.col(0) = residual / beta;
     g[0] = beta;
     int used = 0;
@@ -550,7 +550,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
   const auto solve_start = std::chrono::steady_clock::now();
   // The convergence metric is fixed independently of the warm start; the
   // Krylov preconditioner below is refreshed at each Newton iterate.
-  detail::Preconditioner monitor(p, Vector::Zero(nu));
+  detail::Preconditioner monitor(p, Vector::Zero(nu), opt.workspace);
   Vector x = Vector::Zero(dimension);
   if (warm && warm->mid_moment.size() == nm && warm->velocity.size() == nu &&
       warm->mid_moment.allFinite() && warm->velocity.allFinite()) {
@@ -558,6 +558,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
     x.tail(nu) = warm->velocity;
   }
   auto mob = [&](const Vector &f) -> Vector {
+    if (f.isZero(0.)) return Vector::Zero(f.size());
     ++out.mobility_applications;
     return p.mobility(f);
   };
@@ -670,7 +671,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
     double achieved_linear_residual = std::numeric_limits<double>::quiet_NaN();
     Vector dx;
     for (int reselection = 0; reselection < 8; ++reselection) {
-      detail::CoupledPreconditioner pre(p, state);
+      detail::CoupledPreconditioner pre(p, state, opt.workspace);
       auto inverse = [&](const Vector &value) -> Vector {
         return pre.apply(monitor.inverse_left(value));
       };

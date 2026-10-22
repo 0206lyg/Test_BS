@@ -1,0 +1,66 @@
+{
+  "scope": "isolated local full-step timing; no concurrent compilation or other simulations; short transient, not steady-state viscosity",
+  "parameters": {
+    "N": 500,
+    "phi": 0.24,
+    "AR": [
+      2,
+      20
+    ],
+    "threads": 8,
+    "steps": 5,
+    "dt_s": 1e-06,
+    "spectral": 2,
+    "normal_stiffness_N_m": 100
+  },
+  "summary_statistic": "median of profile_total_s at steps 1..5; excludes initial step 0",
+  "baseline_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+  "cpu_quota": "800000 100000",
+  "allowed_cpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "runs": {
+    "ar2_t8_baseline": {
+      "median_total_s": 7.749703884124756,
+      "mean_total_s": 8.64673638343811,
+      "median_solve_s": 7.526018857955933,
+      "whole_run_wall_s": 59.19229508299941
+    },
+    "ar2_t8_candidate": {
+      "median_total_s": 1.8104429244995117,
+      "mean_total_s": 1.9867330074310303,
+      "median_solve_s": 1.6217219829559326,
+      "whole_run_wall_s": 14.511575675000131
+    },
+    "ar20_t8_baseline": {
+      "median_total_s": 5.432919979095459,
+      "mean_total_s": 5.694647169113159,
+      "median_solve_s": 5.075942039489746,
+      "whole_run_wall_s": 34.056631989999005
+    },
+    "ar20_t8_candidate": {
+      "median_total_s": 2.338009834289551,
+      "mean_total_s": 2.290964698791504,
+      "median_solve_s": 1.9783909320831299,
+      "whole_run_wall_s": 14.239576976000535
+    }
+  },
+  "speedup": {
+    "2": 4.280556862220401,
+    "20": 2.3237370088934446
+  },
+  "max_solver_relative_residual": 1.168510554842864e-08,
+  "max_normalized_power_imbalance": 2.9097018046728086e-08,
+  "production_Negishi_timing_measured": false,
+  "raw_directory": "final_t8"
+}

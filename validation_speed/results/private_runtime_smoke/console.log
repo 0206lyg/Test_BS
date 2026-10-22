@@ -1,0 +1,65 @@
+LAMMPS (30 Sep 2026)
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+Reading data file ...
+  triclinic box = (0 0 0) to (1.9608921e-06 1.9608921e-06 1.9608921e-06) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  32 atoms
+  32 ellipsoids
+  reading velocities ...
+  32 velocities
+  read_data CPU = 0.001 seconds
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.8e-07
+  ghost atom cutoff = 1.8e-07
+  binsize = 9e-08, bins = 22 22 22
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : si
+  Current step  : 0
+  Time step     : 1e-06
+Per MPI rank memory allocation (min/avg/max) = 4.839 | 4.839 | 4.839 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                     32   1.653687       0.01653687     56             0            
+         1   1e-06                 32   1.6536871      0.016536871    56             0            
+         2   2e-06                 32   1.6536874      0.016536874    56             0            
+         3   3e-06                 32   1.6536879      0.016536879    56             0            
+Loop time of 0.57673 on 1 procs for 3 steps with 32 atoms
+
+296.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5.588e-06  | 5.588e-06  | 5.588e-06  |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 1.8987e-05 | 1.8987e-05 | 1.8987e-05 |   0.0 |  0.00
+Output  | 0.0012367  | 0.0012367  | 0.0012367  |   0.0 |  0.21
+Modify  | 0.57544    | 0.57544    | 0.57544    |   0.0 | 99.78
+Other   |            | 3.102e-05  |            |       |  0.01
+
+Nlocal:             32 ave          32 max          32 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:00:02

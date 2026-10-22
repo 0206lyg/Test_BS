@@ -1,0 +1,929 @@
+{
+  "schema": 1,
+  "scope": "Numerical equivalence only: initial concurrent-build run. These timings are not final performance evidence.",
+  "source_run_name": "compare_t8",
+  "source_reanalysis_sha256": "648a5392c0fdc111883d34c7c76957f284231dcc092a2e2c349bea8f7f0f25cc",
+  "simulation": {
+    "count": 500,
+    "phi": 0.24,
+    "ars": [
+      2,
+      20
+    ],
+    "threads": 8,
+    "steps": 5,
+    "dt_s": 1e-06,
+    "final_time_s": 5e-06,
+    "final_strain": 0.0005,
+    "normal_stiffness_N_m": 100,
+    "friction": 0.1,
+    "mobility_backend": "mesh",
+    "spectral": 2,
+    "solver_relative_tolerance": 1e-06
+  },
+  "limitations": [
+    "These are five transient steps from certified initial packing, not steady-state viscosity measurements.",
+    "The initial run overlapped compilation; timing columns retained in raw histories must not be quoted as clean speed evidence.",
+    "Agreement with the old code checks the implementation change, not physical accuracy of the lubrication model.",
+    "Raw force/mobility residuals are unweighted norms of nondimensional mixed equations, not SI force or velocity errors; solver_relative_residual is the weighted normalized convergence measure.",
+    "A relative error for an individual near-zero force/torque can be large despite an insignificant absolute difference; denominator and absolute errors are retained."
+  ],
+  "definitions": {
+    "global_group_relative_l2": "norm(candidate_all_particles - baseline_all_particles) / norm(baseline_all_particles)",
+    "maximum_particle_relative_l2": "maximum_i norm(candidate_i - baseline_i) / norm(baseline_i) over nonzero baseline norms; no denominator threshold; zero denominators counted separately",
+    "power_balance_normalized": "abs(stress_power_W - hydro_dissipation_W - contact_power_W) / max(abs(stress_power_W), abs(hydro_dissipation_W) + abs(contact_power_W))",
+    "baseline_krylov_dimension": "17*N + 3*Nc; inferred using candidate contact_candidates and unchanged baseline candidate-assembly algorithm (baseline CSV does not expose Nc)",
+    "candidate_krylov_dimension": "17*N; directly logged as krylov_dimension",
+    "quaternion": "Each quaternion normalized and candidate sign aligned to baseline before differencing"
+  },
+  "cases": [
+    {
+      "ar": 2,
+      "threads": 8,
+      "step": 5,
+      "all_runs_completed": true,
+      "runs": {
+        "baseline": {
+          "raw_history": "numerical_raw_histories/ar2_t8_baseline.csv",
+          "history_sha256": "6c5b359e9060f07ac8bf4a640465715cc56e372adf0fc264c9ce63e199fab1a4",
+          "trajectory_sha256": "f2eb107888b590ae985ab55ac9cf95a9ad86cf8a21f08daab0aa54e645c0d19a",
+          "lmp_sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+          "plugin_sha256": "d52e3e4ad7254a439458ef158e542363cda871ea21de867286bc499a434140e3",
+          "final_residuals": {
+            "force_residual": 1.680771554968683e-05,
+            "mobility_residual": 1.4417245608282422e-08,
+            "solver_relative_residual": 1.721464401304796e-10,
+            "contact_gap_consistency_m": 2.1009236017555113e-21,
+            "actual_endpoint_overlap_m": 0.0,
+            "linear_gap_defect_m": 7.135578494743556e-15
+          },
+          "maximum_solver_relative_residual": 2.797301634553323e-10,
+          "final_power_balance_error_W": 2.679530472748427e-24,
+          "final_normalized_power_balance_error": 9.734825527981637e-11,
+          "maximum_normalized_power_balance_error": 1.681546914408876e-10,
+          "final_eta_relative_transient": 2.3364117822277697,
+          "final_sigma_xz_Pa": 2.3364117822277697,
+          "final_contacts_active": 1,
+          "final_near_pairs": 881
+        },
+        "candidate": {
+          "raw_history": "numerical_raw_histories/ar2_t8_candidate.csv",
+          "history_sha256": "d6c330ce6a6c0b221e2ab780cba3dcf3547454ae10d1e15e053bda73e45d4837",
+          "trajectory_sha256": "b6de2938f778afd3aa67d7b82a0525fc58f219d341b66132f63916006177ca23",
+          "lmp_sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+          "plugin_sha256": "432a1d33b2d3bcd6fe26999fe1fbee5b091f5c7e286377da48a008ff9a4b59d4",
+          "final_residuals": {
+            "force_residual": 1.9468288757920966e-05,
+            "mobility_residual": 1.4417234731217277e-08,
+            "solver_relative_residual": 1.9174464839798965e-10,
+            "contact_gap_consistency_m": 2.426704670543956e-21,
+            "actual_endpoint_overlap_m": 0.0,
+            "linear_gap_defect_m": 7.135578961037227e-15
+          },
+          "maximum_solver_relative_residual": 2.695646507761532e-10,
+          "final_power_balance_error_W": 3.103678134564021e-24,
+          "final_normalized_power_balance_error": 1.12757684386949e-10,
+          "maximum_normalized_power_balance_error": 1.6044506679051876e-10,
+          "final_eta_relative_transient": 2.3364117822165045,
+          "final_sigma_xz_Pa": 2.3364117822165045,
+          "final_contacts_active": 1,
+          "final_near_pairs": 881
+        }
+      },
+      "final_global_group_metrics": {
+        "position_m": {
+          "baseline_l2": 0.00011203314823662757,
+          "candidate_l2": 0.00011203314823662763,
+          "absolute_l2_difference": 3.118913811162455e-18,
+          "relative_l2_difference": 2.783920527320121e-14,
+          "rms_component_difference": 8.053000832592329e-20,
+          "maximum_absolute_component_difference": 5.8106460181645e-19
+        },
+        "velocity_m_s": {
+          "baseline_l2": 0.00649339932511888,
+          "candidate_l2": 0.006493399325130604,
+          "absolute_l2_difference": 1.7616303867925062e-12,
+          "relative_l2_difference": 2.712955570093873e-10,
+          "rms_component_difference": 4.548510100146871e-14,
+          "maximum_absolute_component_difference": 1.962937462313824e-13
+        },
+        "angular_momentum_kg_m2_s": {
+          "baseline_l2": 4.798520084975553e-27,
+          "candidate_l2": 4.798520084602156e-27,
+          "absolute_l2_difference": 1.4471234028685162e-35,
+          "relative_l2_difference": 3.0157702317419574e-09,
+          "rms_component_difference": 3.7364565594778464e-37,
+          "maximum_absolute_component_difference": 2.2694197009763886e-36
+        },
+        "hydrodynamic_force_N": {
+          "baseline_l2": 2.8024589566117693e-12,
+          "candidate_l2": 2.8024589529158205e-12,
+          "absolute_l2_difference": 3.707606923765323e-21,
+          "relative_l2_difference": 1.322983487418455e-09,
+          "rms_component_difference": 9.572999913350939e-23,
+          "maximum_absolute_component_difference": 2.4333252454932326e-21
+        },
+        "hydrodynamic_torque_N_m": {
+          "baseline_l2": 3.4452046054066357e-19,
+          "candidate_l2": 3.445204601096365e-19,
+          "absolute_l2_difference": 4.369275403066199e-28,
+          "relative_l2_difference": 1.268219424822955e-09,
+          "rms_component_difference": 1.1281420580712726e-29,
+          "maximum_absolute_component_difference": 3.4433089992942047e-28
+        },
+        "hydrodynamic_stresslet_N_m": {
+          "baseline_l2": 1.1429174674214944e-17,
+          "candidate_l2": 1.1429174673464073e-17,
+          "absolute_l2_difference": 3.81819010200309e-26,
+          "relative_l2_difference": 3.340740001653144e-09,
+          "rms_component_difference": 7.63638020400618e-28,
+          "maximum_absolute_component_difference": 7.539846972664651e-27
+        },
+        "contact_force_N": {
+          "baseline_l2": 2.8024592491020794e-12,
+          "candidate_l2": 2.8024592917060112e-12,
+          "absolute_l2_difference": 4.2604944851120045e-20,
+          "relative_l2_difference": 1.5202699152457206e-08,
+          "rms_component_difference": 1.1000549458298224e-21,
+          "maximum_absolute_component_difference": 2.71229608740845e-20
+        },
+        "contact_torque_N_m": {
+          "baseline_l2": 3.4452049649835433e-19,
+          "candidate_l2": 3.4452050175920473e-19,
+          "absolute_l2_difference": 5.2613370866066316e-27,
+          "relative_l2_difference": 1.52714777207218e-08,
+          "rms_component_difference": 1.3584713943473957e-28,
+          "maximum_absolute_component_difference": 4.150194140879832e-27
+        },
+        "position_periodic_m": {
+          "baseline_l2": 0.00011203314823662757,
+          "candidate_l2": 0.00011203314823662763,
+          "absolute_l2_difference": 3.118913811162455e-18,
+          "relative_l2_difference": 2.783920527320121e-14,
+          "rms_component_difference": 8.053000832592329e-20,
+          "maximum_absolute_component_difference": 5.8106460181645e-19
+        },
+        "orientation_quaternion_sign_aligned": {
+          "baseline_l2": 22.360679774997898,
+          "candidate_l2": 22.360679774997898,
+          "absolute_l2_difference": 3.879432453087658e-12,
+          "relative_l2_difference": 1.7349349358445535e-13,
+          "rms_component_difference": 8.674674679222768e-14,
+          "maximum_absolute_component_difference": 6.642672523149429e-13
+        }
+      },
+      "orientation_maximum_angle_rad": 1.4502072954646186e-12,
+      "orientation_rms_angle_rad": 3.469869871689107e-13,
+      "final_scalar_differences": {
+        "sigma_hydro_Pa": {
+          "baseline": 1.3340068111807115,
+          "candidate": 1.334006811132769,
+          "candidate_minus_baseline": -4.794253882778321e-11,
+          "absolute_difference": 4.794253882778321e-11,
+          "relative_to_baseline": 3.593875115626277e-11
+        },
+        "sigma_contact_Pa": {
+          "baseline": 0.0024049710470582363,
+          "candidate": 0.002404971083735395,
+          "candidate_minus_baseline": 3.6677158705977764e-11,
+          "absolute_difference": 3.6677158705977764e-11,
+          "relative_to_baseline": 1.5250561436421994e-08
+        },
+        "sigma_xz_Pa": {
+          "baseline": 2.3364117822277697,
+          "candidate": 2.3364117822165045,
+          "candidate_minus_baseline": -1.1265210986266538e-11,
+          "absolute_difference": 1.1265210986266538e-11,
+          "relative_to_baseline": 4.82158627685277e-12
+        },
+        "eta_relative": {
+          "baseline": 2.3364117822277697,
+          "candidate": 2.3364117822165045,
+          "candidate_minus_baseline": -1.1265210986266538e-11,
+          "absolute_difference": 1.1265210986266538e-11,
+          "relative_to_baseline": 4.82158627685277e-12
+        },
+        "hydro_dissipation_W": {
+          "baseline": 2.752254320861481e-14,
+          "candidate": 2.7522543208016015e-14,
+          "candidate_minus_baseline": -5.987959141606821e-25,
+          "absolute_difference": 5.987959141606821e-25,
+          "relative_to_baseline": 2.1756561870824985e-11
+        },
+        "contact_power_W": {
+          "baseline": 2.6596292334595844e-18,
+          "candidate": 2.659629275389878e-18,
+          "candidate_minus_baseline": 4.193029365070531e-26,
+          "absolute_difference": 4.193029365070531e-26,
+          "relative_to_baseline": 1.5765465773649717e-08
+        },
+        "power_balance_error_W": {
+          "baseline": 2.679530472748427e-24,
+          "candidate": 3.103678134564021e-24,
+          "candidate_minus_baseline": 4.241476618155938e-25,
+          "absolute_difference": 4.241476618155938e-25,
+          "relative_to_baseline": 0.15829178512030145
+        },
+        "force_residual": {
+          "baseline": 1.680771554968683e-05,
+          "candidate": 1.9468288757920966e-05,
+          "candidate_minus_baseline": 2.660573208234135e-06,
+          "absolute_difference": 2.660573208234135e-06,
+          "relative_to_baseline": 0.15829475459463663
+        },
+        "mobility_residual": {
+          "baseline": 1.4417245608282422e-08,
+          "candidate": 1.4417234731217277e-08,
+          "candidate_minus_baseline": -1.087706514547907e-14,
+          "absolute_difference": 1.087706514547907e-14,
+          "relative_to_baseline": 7.544482102205716e-07
+        },
+        "solver_relative_residual": {
+          "baseline": 1.721464401304796e-10,
+          "candidate": 1.9174464839798965e-10,
+          "candidate_minus_baseline": 1.9598208267510044e-11,
+          "absolute_difference": 1.9598208267510044e-11,
+          "relative_to_baseline": 0.11384614315959972
+        },
+        "actual_endpoint_min_gap_m": {
+          "baseline": 2.999980281965531e-09,
+          "candidate": 2.9999802819652312e-09,
+          "candidate_minus_baseline": -2.9985297205047253e-22,
+          "absolute_difference": 2.9985297205047253e-22,
+          "relative_to_baseline": 9.995164763350194e-14
+        },
+        "actual_endpoint_overlap_m": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "candidate_minus_baseline": 0.0,
+          "absolute_difference": 0.0,
+          "relative_to_baseline": null
+        }
+      },
+      "maximum_scalar_history_absolute_differences": {
+        "sigma_hydro_Pa": 2.4496693562525707e-10,
+        "sigma_contact_Pa": 8.124514277486894e-11,
+        "sigma_xz_Pa": 2.0545076750977387e-10,
+        "eta_relative": 2.0545076750977387e-10,
+        "hydro_dissipation_W": 2.8963627669477416e-24,
+        "contact_power_W": 1.9546620150034944e-25,
+        "power_balance_error_W": 7.383463173332128e-25,
+        "force_residual": 5.269359536561391e-06,
+        "mobility_residual": 3.3564750658081482e-09,
+        "solver_relative_residual": 4.049400656484272e-11,
+        "actual_endpoint_min_gap_m": 6.662939834114638e-22,
+        "actual_endpoint_overlap_m": 0.0
+      },
+      "dimension_reduction": {
+        "contact_candidates_final": 3076,
+        "contact_candidates_min": 3076,
+        "contact_candidates_max": 3076,
+        "baseline_dimension_inferred": 17728,
+        "candidate_dimension_logged": 8500,
+        "eliminated_unknowns": 9228,
+        "baseline_over_candidate_dimension": 2.0856470588235294,
+        "fraction_removed": 0.5205324909747293
+      },
+      "maximum_particle_errors": {
+        "position_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 47,
+            "baseline_norm": 2.030050041088793e-06,
+            "absolute_l2_difference": 3.5417970470176075e-19,
+            "relative_l2_difference": 1.7446846015273628e-13
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 368,
+            "baseline_norm": 5.1565905863813396e-06,
+            "absolute_l2_difference": 6.985988639997015e-19,
+            "relative_l2_difference": 1.354768916199621e-13
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 1.3943324573974204e-13,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "velocity_m_s": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 73,
+            "baseline_norm": 2.3052940047427806e-06,
+            "absolute_l2_difference": 1.806722639714203e-13,
+            "relative_l2_difference": 7.837276442818811e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 104,
+            "baseline_norm": 0.00012059476591471081,
+            "absolute_l2_difference": 2.457253594494568e-13,
+            "relative_l2_difference": 2.0376121433267103e-09
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 8.46180220888381e-10,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "angular_momentum_kg_m2_s": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 230,
+            "baseline_norm": 2.4859139858767618e-29,
+            "absolute_l2_difference": 1.4930671216548988e-36,
+            "relative_l2_difference": 6.006109343032261e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 407,
+            "baseline_norm": 2.1952421037005884e-28,
+            "absolute_l2_difference": 2.5277407506203342e-36,
+            "relative_l2_difference": 1.151463315303238e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 1.1779048639560311e-08,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "hydrodynamic_force_N": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 96,
+            "baseline_norm": 8.23962023734003e-29,
+            "absolute_l2_difference": 1.4902501782600506e-27,
+            "relative_l2_difference": 18.08639397610324
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 414,
+            "baseline_norm": 1.981637732217166e-12,
+            "absolute_l2_difference": 2.6216801416426835e-21,
+            "relative_l2_difference": 1.3229865878206722e-09
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 2.0918254656838595e-08,
+          "zero_baseline_norm_count": 2,
+          "zero_baseline_norm_with_nonzero_difference_count": 2
+        },
+        "hydrodynamic_torque_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 176,
+            "baseline_norm": 1.4988010832439618e-36,
+            "absolute_l2_difference": 4.817194247493734e-35,
+            "relative_l2_difference": 32.1403173599764
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 414,
+            "baseline_norm": 3.114147143224282e-19,
+            "absolute_l2_difference": 3.7931091680106307e-28,
+            "relative_l2_difference": 1.2180250301478608e-09
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 2.4618711853684972e-08,
+          "zero_baseline_norm_count": 5,
+          "zero_baseline_norm_with_nonzero_difference_count": 5
+        },
+        "hydrodynamic_stresslet_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 461,
+            "baseline_norm": 3.2074806201389474e-19,
+            "absolute_l2_difference": 7.809542110274227e-27,
+            "relative_l2_difference": 2.434790115718897e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 461,
+            "baseline_norm": 3.2074806201389474e-19,
+            "absolute_l2_difference": 7.809542110274227e-27,
+            "relative_l2_difference": 2.434790115718897e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 1.5279027164680036e-08,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "contact_force_N": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 136,
+            "baseline_norm": 1.9816379390390403e-12,
+            "absolute_l2_difference": 3.0126245416305864e-20,
+            "relative_l2_difference": 1.5202699152457206e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 136,
+            "baseline_norm": 1.9816379390390403e-12,
+            "absolute_l2_difference": 3.0126245416305864e-20,
+            "relative_l2_difference": 1.5202699152457206e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 2.403757795203809e-07,
+          "zero_baseline_norm_count": 498,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "contact_torque_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 414,
+            "baseline_norm": 3.114147468250441e-19,
+            "absolute_l2_difference": 4.766861281810301e-27,
+            "relative_l2_difference": 1.5307114805608006e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 414,
+            "baseline_norm": 3.114147468250441e-19,
+            "absolute_l2_difference": 4.766861281810301e-27,
+            "relative_l2_difference": 1.5307114805608006e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 3.093872780800004e-07,
+          "zero_baseline_norm_count": 498,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "orientation_quaternion_sign_aligned": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 202,
+            "baseline_norm": 1.0,
+            "absolute_l2_difference": 7.251036477323093e-13,
+            "relative_l2_difference": 7.251036477323093e-13
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 202,
+            "baseline_norm": 1.0,
+            "absolute_l2_difference": 7.251036477323093e-13,
+            "relative_l2_difference": 7.251036477323093e-13
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 7.251036477323093e-13,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        }
+      }
+    },
+    {
+      "ar": 20,
+      "threads": 8,
+      "step": 5,
+      "all_runs_completed": true,
+      "runs": {
+        "baseline": {
+          "raw_history": "numerical_raw_histories/ar20_t8_baseline.csv",
+          "history_sha256": "fd4ecc759ba33c6e9137b670ffd618e19e2dcb817da66b408ef0eaabb6132e43",
+          "trajectory_sha256": "f26c03d1929f299b1ea55910918d87a39500055848a5bda0aaf93a6347a754dd",
+          "lmp_sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+          "plugin_sha256": "d52e3e4ad7254a439458ef158e542363cda871ea21de867286bc499a434140e3",
+          "final_residuals": {
+            "force_residual": 0.6324904187957483,
+            "mobility_residual": 2.3059901325595598e-05,
+            "solver_relative_residual": 1.0541090597378009e-08,
+            "contact_gap_consistency_m": 0.0,
+            "actual_endpoint_overlap_m": 0.0,
+            "linear_gap_defect_m": 3.1072059440417915e-13
+          },
+          "maximum_solver_relative_residual": 1.1684767583634295e-08,
+          "final_power_balance_error_W": 2.3577005447572883e-19,
+          "final_normalized_power_balance_error": 2.9097018046728086e-08,
+          "maximum_normalized_power_balance_error": 2.9097018046728086e-08,
+          "final_eta_relative_transient": 6.8779500896110335,
+          "final_sigma_xz_Pa": 6.877950089611033,
+          "final_contacts_active": 47,
+          "final_near_pairs": 1246
+        },
+        "candidate": {
+          "raw_history": "numerical_raw_histories/ar20_t8_candidate.csv",
+          "history_sha256": "7ace77ef61a2b9834a164f487a04cdfae2ec524469937d53259a56cc66a2cce7",
+          "trajectory_sha256": "834a77701d447f187cb24f45bcc77deac676942f0d68c8c23c58227d321d4c39",
+          "lmp_sha256": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+          "plugin_sha256": "432a1d33b2d3bcd6fe26999fe1fbee5b091f5c7e286377da48a008ff9a4b59d4",
+          "final_residuals": {
+            "force_residual": 0.6324249765952287,
+            "mobility_residual": 2.3059769298076553e-05,
+            "solver_relative_residual": 1.054123472100047e-08,
+            "contact_gap_consistency_m": 0.0,
+            "actual_endpoint_overlap_m": 0.0,
+            "linear_gap_defect_m": 3.107205970853677e-13
+          },
+          "maximum_solver_relative_residual": 1.1682522507184703e-08,
+          "final_power_balance_error_W": 2.357375804675182e-19,
+          "final_normalized_power_balance_error": 2.909301035160616e-08,
+          "maximum_normalized_power_balance_error": 2.909301035160616e-08,
+          "final_eta_relative_transient": 6.8779500872990145,
+          "final_sigma_xz_Pa": 6.8779500872990145,
+          "final_contacts_active": 47,
+          "final_near_pairs": 1246
+        }
+      },
+      "final_global_group_metrics": {
+        "position_m": {
+          "baseline_l2": 0.0005093693536296991,
+          "candidate_l2": 0.0005093693536296992,
+          "absolute_l2_difference": 9.124758581863112e-17,
+          "relative_l2_difference": 1.7913835052779052e-13,
+          "rms_component_difference": 2.356002535047936e-18,
+          "maximum_absolute_component_difference": 1.0729366342870222e-17
+        },
+        "velocity_m_s": {
+          "baseline_l2": 0.029582224509319535,
+          "candidate_l2": 0.029582224509889694,
+          "absolute_l2_difference": 5.3818823178689056e-11,
+          "relative_l2_difference": 1.8192960154749033e-09,
+          "rms_component_difference": 1.3895960392236295e-12,
+          "maximum_absolute_component_difference": 6.623261455344226e-12
+        },
+        "angular_momentum_kg_m2_s": {
+          "baseline_l2": 5.507721589743883e-23,
+          "candidate_l2": 5.507721585924383e-23,
+          "absolute_l2_difference": 5.662592265157901e-31,
+          "relative_l2_difference": 1.0281188278838219e-08,
+          "rms_component_difference": 1.462075035954632e-32,
+          "maximum_absolute_component_difference": 1.3159793006672113e-31
+        },
+        "hydrodynamic_force_N": {
+          "baseline_l2": 1.082736555185189e-09,
+          "candidate_l2": 1.082736555183833e-09,
+          "absolute_l2_difference": 8.192139218668265e-18,
+          "relative_l2_difference": 7.566142640549436e-09,
+          "rms_component_difference": 2.1152012509143221e-19,
+          "maximum_absolute_component_difference": 1.5623111577491737e-18
+        },
+        "hydrodynamic_torque_N_m": {
+          "baseline_l2": 1.9721216433381595e-15,
+          "candidate_l2": 1.9721216432098867e-15,
+          "absolute_l2_difference": 1.6325800482984515e-23,
+          "relative_l2_difference": 8.278292841688128e-09,
+          "rms_component_difference": 4.215303558940269e-25,
+          "maximum_absolute_component_difference": 4.863984885318475e-24
+        },
+        "hydrodynamic_stresslet_N_m": {
+          "baseline_l2": 5.686267561239097e-15,
+          "candidate_l2": 5.686267556800576e-15,
+          "absolute_l2_difference": 1.1136098596949264e-22,
+          "relative_l2_difference": 1.9584197326308354e-08,
+          "rms_component_difference": 2.227219719389853e-24,
+          "maximum_absolute_component_difference": 1.784878863381312e-23
+        },
+        "contact_force_N": {
+          "baseline_l2": 1.0827367595559907e-09,
+          "candidate_l2": 1.082736759392881e-09,
+          "absolute_l2_difference": 8.629026742458348e-18,
+          "relative_l2_difference": 7.969644206036695e-09,
+          "rms_component_difference": 2.2280051245013077e-19,
+          "maximum_absolute_component_difference": 1.8598420399497538e-18
+        },
+        "contact_torque_N_m": {
+          "baseline_l2": 1.972122210235262e-15,
+          "candidate_l2": 1.972122209641622e-15,
+          "absolute_l2_difference": 1.691010611508814e-23,
+          "relative_l2_difference": 8.574573131079371e-09,
+          "rms_component_difference": 4.366170624422438e-25,
+          "maximum_absolute_component_difference": 4.426803459478245e-24
+        },
+        "position_periodic_m": {
+          "baseline_l2": 0.0005093693536296991,
+          "candidate_l2": 0.0005093693536296992,
+          "absolute_l2_difference": 9.124758581863112e-17,
+          "relative_l2_difference": 1.7913835052779052e-13,
+          "rms_component_difference": 2.356002535047936e-18,
+          "maximum_absolute_component_difference": 1.0729366342870222e-17
+        },
+        "orientation_quaternion_sign_aligned": {
+          "baseline_l2": 22.360679774997898,
+          "candidate_l2": 22.360679774997898,
+          "absolute_l2_difference": 1.4324016839173171e-11,
+          "relative_l2_difference": 6.405895072648576e-13,
+          "rms_component_difference": 3.202947536324288e-13,
+          "maximum_absolute_component_difference": 2.938427279275402e-12
+        }
+      },
+      "orientation_maximum_angle_rad": 7.876830072957303e-12,
+      "orientation_rms_angle_rad": 1.2811790145297153e-12,
+      "final_scalar_differences": {
+        "sigma_hydro_Pa": {
+          "baseline": 5.432817919367541,
+          "candidate": 5.432817916106726,
+          "candidate_minus_baseline": -3.260815617522894e-09,
+          "absolute_difference": 3.260815617522894e-09,
+          "relative_to_baseline": 6.002070501752616e-10
+        },
+        "sigma_contact_Pa": {
+          "baseline": 0.4451321702434916,
+          "candidate": 0.44513217119228843,
+          "candidate_minus_baseline": 9.487968188892637e-10,
+          "absolute_difference": 9.487968188892637e-10,
+          "relative_to_baseline": 2.131494603884196e-09
+        },
+        "sigma_xz_Pa": {
+          "baseline": 6.877950089611033,
+          "candidate": 6.8779500872990145,
+          "candidate_minus_baseline": -2.3120181324998157e-09,
+          "absolute_difference": 2.3120181324998157e-09,
+          "relative_to_baseline": 3.3614930355369396e-10
+        },
+        "eta_relative": {
+          "baseline": 6.8779500896110335,
+          "candidate": 6.8779500872990145,
+          "candidate_minus_baseline": -2.3120190206782354e-09,
+          "absolute_difference": 2.3120190206782354e-09,
+          "relative_to_baseline": 3.3614943268787027e-10
+        },
+        "hydro_dissipation_W": {
+          "baseline": 8.029555237761131e-12,
+          "candidate": 8.029555235375315e-12,
+          "candidate_minus_baseline": -2.3858166843888107e-21,
+          "absolute_difference": 2.3858166843888107e-21,
+          "relative_to_baseline": 2.9712936940378333e-10
+        },
+        "contact_power_W": {
+          "baseline": 7.333857894855933e-14,
+          "candidate": 7.333857864306867e-14,
+          "candidate_minus_baseline": -3.0549066432838674e-22,
+          "absolute_difference": 3.0549066432838674e-22,
+          "relative_to_baseline": 4.165483824586539e-09
+        },
+        "power_balance_error_W": {
+          "baseline": 2.3577005447572883e-19,
+          "candidate": 2.357375804675182e-19,
+          "candidate_minus_baseline": -3.2474008210612985e-23,
+          "absolute_difference": 3.2474008210612985e-23,
+          "relative_to_baseline": 0.00013773593208358867
+        },
+        "force_residual": {
+          "baseline": 0.6324904187957483,
+          "candidate": 0.6324249765952287,
+          "candidate_minus_baseline": -6.544220051962757e-05,
+          "absolute_difference": 6.544220051962757e-05,
+          "relative_to_baseline": 0.00010346749701636347
+        },
+        "mobility_residual": {
+          "baseline": 2.3059901325595598e-05,
+          "candidate": 2.3059769298076553e-05,
+          "candidate_minus_baseline": -1.3202751904446176e-10,
+          "absolute_difference": 1.3202751904446176e-10,
+          "relative_to_baseline": 5.725415611293893e-06
+        },
+        "solver_relative_residual": {
+          "baseline": 1.0541090597378009e-08,
+          "candidate": 1.054123472100047e-08,
+          "candidate_minus_baseline": 1.4412362246141872e-13,
+          "absolute_difference": 1.4412362246141872e-13,
+          "relative_to_baseline": 1.367255324579679e-05
+        },
+        "actual_endpoint_min_gap_m": {
+          "baseline": 2.9956753097687622e-09,
+          "candidate": 2.9956753097839583e-09,
+          "candidate_minus_baseline": 1.519613503321167e-20,
+          "absolute_difference": 1.519613503321167e-20,
+          "relative_to_baseline": 5.072690950069843e-12
+        },
+        "actual_endpoint_overlap_m": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "candidate_minus_baseline": 0.0,
+          "absolute_difference": 0.0,
+          "relative_to_baseline": null
+        }
+      },
+      "maximum_scalar_history_absolute_differences": {
+        "sigma_hydro_Pa": 7.805038393371433e-09,
+        "sigma_contact_Pa": 1.2187899578464112e-09,
+        "sigma_xz_Pa": 8.625929304173496e-09,
+        "eta_relative": 8.625929304173496e-09,
+        "hydro_dissipation_W": 9.432702416460167e-21,
+        "contact_power_W": 6.105282385072507e-22,
+        "power_balance_error_W": 1.3400110658995232e-21,
+        "force_residual": 0.0002170630879766433,
+        "mobility_residual": 1.1183999814751923e-07,
+        "solver_relative_residual": 1.121785253018819e-10,
+        "actual_endpoint_min_gap_m": 2.4750898288811694e-20,
+        "actual_endpoint_overlap_m": 0.0
+      },
+      "dimension_reduction": {
+        "contact_candidates_final": 32243,
+        "contact_candidates_min": 32238,
+        "contact_candidates_max": 32244,
+        "baseline_dimension_inferred": 105229,
+        "candidate_dimension_logged": 8500,
+        "eliminated_unknowns": 96729,
+        "baseline_over_candidate_dimension": 12.379882352941177,
+        "fraction_removed": 0.9192237881192447
+      },
+      "maximum_particle_errors": {
+        "position_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 312,
+            "baseline_norm": 1.7286753064173023e-06,
+            "absolute_l2_difference": 4.5032827896570354e-18,
+            "relative_l2_difference": 2.605048370240295e-12
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 118,
+            "baseline_norm": 2.4866801222377516e-05,
+            "absolute_l2_difference": 1.1807359772696582e-17,
+            "relative_l2_difference": 4.748242311950922e-13
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 5.18328377991499e-13,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "velocity_m_s": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 324,
+            "baseline_norm": 2.7905816632435212e-05,
+            "absolute_l2_difference": 3.1046075707534404e-12,
+            "relative_l2_difference": 1.1125306281647832e-07
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 302,
+            "baseline_norm": 0.0005572147395862594,
+            "absolute_l2_difference": 7.716722311833887e-12,
+            "relative_l2_difference": 1.3848740465056025e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 5.832933776604217e-09,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "angular_momentum_kg_m2_s": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 489,
+            "baseline_norm": 4.4336176784795855e-25,
+            "absolute_l2_difference": 4.126291881247095e-32,
+            "relative_l2_difference": 9.306828374660665e-08
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 425,
+            "baseline_norm": 3.1846895004482864e-24,
+            "absolute_l2_difference": 1.374368409229826e-31,
+            "relative_l2_difference": 4.315549158046227e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 5.579768583235609e-08,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "hydrodynamic_force_N": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 234,
+            "baseline_norm": 1.9046736384059155e-25,
+            "absolute_l2_difference": 6.476766297394455e-24,
+            "relative_l2_difference": 34.004598828884276
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 413,
+            "baseline_norm": 2.2991221283997222e-11,
+            "absolute_l2_difference": 2.1861706238792396e-18,
+            "relative_l2_difference": 9.5087189883249e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 4.514880468380417e-08,
+          "zero_baseline_norm_count": 3,
+          "zero_baseline_norm_with_nonzero_difference_count": 3
+        },
+        "hydrodynamic_torque_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 161,
+            "baseline_norm": 1.9645085558295256e-31,
+            "absolute_l2_difference": 4.8160519239542806e-30,
+            "relative_l2_difference": 24.51530134426253
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 413,
+            "baseline_norm": 6.375226582461725e-17,
+            "absolute_l2_difference": 6.0584422819617656e-24,
+            "relative_l2_difference": 9.503101111148843e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 6.869296742413236e-08,
+          "zero_baseline_norm_count": 2,
+          "zero_baseline_norm_with_nonzero_difference_count": 2
+        },
+        "hydrodynamic_stresslet_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 489,
+            "baseline_norm": 3.540178286861202e-17,
+            "absolute_l2_difference": 1.9129364904262515e-23,
+            "relative_l2_difference": 5.403503257239347e-07
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 212,
+            "baseline_norm": 1.1966075712299461e-16,
+            "absolute_l2_difference": 2.0850364996779192e-23,
+            "relative_l2_difference": 1.7424563823666865e-07
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 8.199197977648597e-08,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "contact_force_N": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 126,
+            "baseline_norm": 6.588228374389125e-12,
+            "absolute_l2_difference": 8.033684774406593e-19,
+            "relative_l2_difference": 1.2193998625846807e-07
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 466,
+            "baseline_norm": 1.1008651398867085e-10,
+            "absolute_l2_difference": 2.3363474862660576e-18,
+            "relative_l2_difference": 2.122283104092563e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 4.825024875385238e-08,
+          "zero_baseline_norm_count": 424,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "contact_torque_N_m": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 126,
+            "baseline_norm": 1.392962589949608e-17,
+            "absolute_l2_difference": 1.7000506202577094e-24,
+            "relative_l2_difference": 1.2204567678441463e-07
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 413,
+            "baseline_norm": 6.375229717336833e-17,
+            "absolute_l2_difference": 5.031360260950408e-24,
+            "relative_l2_difference": 7.892045438406872e-08
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 5.704749687613976e-08,
+          "zero_baseline_norm_count": 424,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        },
+        "orientation_quaternion_sign_aligned": {
+          "maximum_relative_l2_particle": {
+            "particle_id": 445,
+            "baseline_norm": 1.0,
+            "absolute_l2_difference": 3.938415036478651e-12,
+            "relative_l2_difference": 3.938415036478651e-12
+          },
+          "maximum_absolute_l2_particle": {
+            "particle_id": 445,
+            "baseline_norm": 1.0,
+            "absolute_l2_difference": 3.938415036478651e-12,
+            "relative_l2_difference": 3.938415036478651e-12
+          },
+          "maximum_absolute_l2_over_baseline_particle_rms": 3.938415036478651e-12,
+          "zero_baseline_norm_count": 0,
+          "zero_baseline_norm_with_nonzero_difference_count": 0
+        }
+      }
+    }
+  ],
+  "maximum_across_cases": {
+    "final_global_group_relative_l2": {
+      "position_m": 1.7913835052779052e-13,
+      "velocity_m_s": 1.8192960154749033e-09,
+      "angular_momentum_kg_m2_s": 1.0281188278838219e-08,
+      "hydrodynamic_force_N": 7.566142640549436e-09,
+      "hydrodynamic_torque_N_m": 8.278292841688128e-09,
+      "hydrodynamic_stresslet_N_m": 1.9584197326308354e-08,
+      "contact_force_N": 1.5202699152457206e-08,
+      "contact_torque_N_m": 1.52714777207218e-08,
+      "position_periodic_m": 1.7913835052779052e-13,
+      "orientation_quaternion_sign_aligned": 6.405895072648576e-13
+    },
+    "normalized_power_balance_error_all_history": 2.9097018046728086e-08,
+    "solver_relative_residual_all_history": 1.1684767583634295e-08,
+    "orientation_maximum_angle_rad": 7.876830072957303e-12,
+    "maximum_particle_relative_l2": {
+      "position_m": {
+        "particle_id": 312,
+        "baseline_norm": 1.7286753064173023e-06,
+        "absolute_l2_difference": 4.5032827896570354e-18,
+        "relative_l2_difference": 2.605048370240295e-12,
+        "ar": 20
+      },
+      "velocity_m_s": {
+        "particle_id": 324,
+        "baseline_norm": 2.7905816632435212e-05,
+        "absolute_l2_difference": 3.1046075707534404e-12,
+        "relative_l2_difference": 1.1125306281647832e-07,
+        "ar": 20
+      },
+      "angular_momentum_kg_m2_s": {
+        "particle_id": 489,
+        "baseline_norm": 4.4336176784795855e-25,
+        "absolute_l2_difference": 4.126291881247095e-32,
+        "relative_l2_difference": 9.306828374660665e-08,
+        "ar": 20
+      },
+      "hydrodynamic_force_N": {
+        "particle_id": 234,
+        "baseline_norm": 1.9046736384059155e-25,
+        "absolute_l2_difference": 6.476766297394455e-24,
+        "relative_l2_difference": 34.004598828884276,
+        "ar": 20
+      },
+      "hydrodynamic_torque_N_m": {
+        "particle_id": 176,
+        "baseline_norm": 1.4988010832439618e-36,
+        "absolute_l2_difference": 4.817194247493734e-35,
+        "relative_l2_difference": 32.1403173599764,
+        "ar": 2
+      },
+      "hydrodynamic_stresslet_N_m": {
+        "particle_id": 489,
+        "baseline_norm": 3.540178286861202e-17,
+        "absolute_l2_difference": 1.9129364904262515e-23,
+        "relative_l2_difference": 5.403503257239347e-07,
+        "ar": 20
+      },
+      "contact_force_N": {
+        "particle_id": 126,
+        "baseline_norm": 6.588228374389125e-12,
+        "absolute_l2_difference": 8.033684774406593e-19,
+        "relative_l2_difference": 1.2193998625846807e-07,
+        "ar": 20
+      },
+      "contact_torque_N_m": {
+        "particle_id": 126,
+        "baseline_norm": 1.392962589949608e-17,
+        "absolute_l2_difference": 1.7000506202577094e-24,
+        "relative_l2_difference": 1.2204567678441463e-07,
+        "ar": 20
+      },
+      "orientation_quaternion_sign_aligned": {
+        "particle_id": 445,
+        "baseline_norm": 1.0,
+        "absolute_l2_difference": 3.938415036478651e-12,
+        "relative_l2_difference": 3.938415036478651e-12,
+        "ar": 20
+      }
+    }
+  }
+}

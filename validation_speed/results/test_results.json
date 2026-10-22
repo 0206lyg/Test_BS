@@ -1,0 +1,33 @@
+{
+  "ctest": {
+    "passed": 36,
+    "total": 36,
+    "log": "ctest.log"
+  },
+  "build": {
+    "lammps_tag": "stable_30Sep2026",
+    "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+    "mpi": false,
+    "numerical_backends": {
+      "fft": "FFTW",
+      "sparse": "MKL-PARDISO-static-GNU-LP64"
+    },
+    "source_fingerprint": "ab096887c839b6d5cfe8f7a889dd4d06ba279a60fea59fe8b7dde8a0f0820ca7",
+    "binary_sha256": {
+      "executable": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+      "plugin": "432a1d33b2d3bcd6fe26999fe1fbee5b091f5c7e286377da48a008ff9a4b59d4",
+      "packer": "4593b1df79061d7798efebbd60bed7cb59adf7ca77ba736c372f27c6225827d0"
+    }
+  },
+  "runtime_smoke": {
+    "count": 32,
+    "ar": 2,
+    "phi": 0.24,
+    "steps": 3,
+    "threads": 4,
+    "completed": true,
+    "mpi": false,
+    "scope": "actual private-copy preparation/loading/time integration; production OpenMPI binding command is unit-tested but not executed on Negishi"
+  },
+  "full_newton_and_cache_tests": "contact_condensation and bridge_workspace use independent full nonsymmetric Jacobian references"
+}

@@ -1,30 +1,24 @@
-# Compact bridge 실행
+# Slurry 실행
 
-새 경로는 `fix slurry/bridge`를 사용합니다. 이전 `finite_gap_fast` 기저·저항표를 생성하거나 읽지 않습니다. 근거리에는 검증한 compact bridge v4, 중거리에는 ellipsoid 형상함수를 유지하는 particle–mesh FFT를 사용합니다. `--mobility-backend direct`는 같은 Fourier 합의 직접 계산 기준 경로입니다. 유한 간격의 모델 선택과 중거리 해상도는 별도 수렴 항목입니다.
+실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 앞부분의 `AR`, `PHI`, `COUNT`, `STEPS` 등을 직접 수정한 뒤 인수 없이 제출합니다. 기본값은 AR2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. `PREPARE_ONLY=1`이면 입자와 입력만 준비하며 LAMMPS를 실행하지 않습니다.
 
 기존 빌드 스크립트로 새 소스를 빌드한 뒤 실행합니다. 현재 소스와 실행 파일이 빌드 기록과 일치해야 합니다. 실행기는 해당 실행의 프로그램과 공유 라이브러리를 `runtime/`에 복사한 뒤 입자 준비와 LAMMPS를 시작합니다.
 
-```bash
-sbatch build_slurry_cpu.sbatch
-# 위 빌드 완료 후:
-sbatch lammps_slurry/run_bridge_cpu.sbatch \
-  --output runs/ar10_bridge_solver_check --ar 10 --count 500 --phi 0.24 \
-  --initialization random --steps 2 --output-interval 1 \
-  --average-start-strain 0
-```
+빌드 제출: `sbatch build_slurry_cpu.sbatch`
 
-위 짧은 실행에서 `history.csv`의 step 0, 1, 2와 계산시간을 확인합니다. 출력 폴더는 기존 실행과 다른 새 이름이어야 합니다. 기본값 `random`은 기존 기하 전용 성장 packer를 사용합니다. 선택 가능한 `aligned`는 대칭축이 z인 정렬 격자이며 평형화된 무작위 미세구조를 뜻하지 않습니다.
+빌드 완료 후 실행 제출: `sbatch run_slurry_cpu.sbatch`
 
-현재 solver는 접촉력도 미지수로 유지하는 semismooth Newton과 right FGMRES를 사용합니다. 국소 접촉 변수를 제거한 sparse Schur 전처리기를 사용하며, 마지막에는 원래 접촉 법칙으로 힘을 다시 계산해 `--tolerance`를 검사합니다. 별도 solver 선택이나 continuation 환경변수가 필요하지 않습니다. `--iterations`는 한 선형계의 Krylov 상한입니다.
+`OUTPUT_DIR`를 비워두면 `runs/ar2_phi0.24_n500_<job ID>`처럼 실행마다 별도 폴더가 생깁니다. `OUTPUT_DIR`에 직접 새 경로를 지정할 수도 있습니다. 상대 경로는 저장소 최상위 기준입니다. 기존 실행 폴더에는 덮어쓰지 않습니다. `BUILD_ENV`를 비워두면 `build/lammps/env.sh`의 빌드를 사용합니다.
 
-`SLURRY_BRIDGE_TRACE=1`을 export한 뒤 제출하면 `prox_*`/`polish_*` 단계, 원래 방정식의 `residual`, line search에 사용하는 `merit`, 반복 횟수와 시간이 표시됩니다. `merit`가 감소하는 도중 `residual`은 일시적으로 커질 수 있으며, 최종 허용오차는 원래 `residual`에 적용합니다. CSV의 전체 Newton/Krylov 반복 수와 `mobility_applications`에는 마지막 실제 방정식 검증·보정 비용도 포함됩니다. `continuation_*` 열은 현재 기본 경로에서 0입니다.
+자원 기본 요청은 **1 node, MPI 1 rank, 물리 코어 16개, RAM 96 GB**입니다. 코어 수는 파일 상단의 `#SBATCH --cpus-per-task`에서 바꿉니다. Python 실행기는 한 번만 실행하며, MPI 빌드일 때 LAMMPS 하나를 `mpirun -np 1 --map-by slot:PE=<할당 코어 수> --bind-to core --report-bindings`로 시작합니다. 실행 실패 후 다른 명령으로 재시도하지 않습니다. `console.log`에서 MPI 바인딩을 확인하고 `launch.json`에서 실제 명령과 스레드 설정을 확인할 수 있습니다. 실행 배치 파일을 `mpirun`이나 다중 task `srun`으로 감싸지 않습니다.
 
-```bash
-sbatch lammps_slurry/run_bridge_cpu.sbatch \
-  --output runs/ar20_bridge_random --ar 20 --count 500 --phi 0.24 \
-  --initialization random --steps 100000 --timestep 1e-6 \
-  --output-interval 100 --average-start-strain 5
-```
+현재 경로는 `fix slurry/bridge`를 사용합니다. 근거리에는 compact bridge v4, 중거리에는 ellipsoid 형상함수를 유지하는 FFTW particle–mesh 연산을 사용합니다. `MOBILITY_BACKEND=direct`는 같은 Fourier 합의 직접 합산 기준 경로이며 밀집 행렬 LU solver가 아닙니다. 유한 간격의 모델 선택과 중거리 해상도는 별도 수렴 항목입니다.
+
+solver는 접촉력도 비선형 미지수로 유지하는 semismooth Newton과 right FGMRES를 사용합니다. 선형 Newton 단계에서는 국소 접촉 증분을 정확히 제거하고, 원래 접촉 법칙의 물리 잔차로 최종 수렴을 검사합니다. `SOLVER_TOLERANCE`가 그 상대 허용오차이며, `KRYLOV_ITERATIONS`는 한 선형계의 반복 상한입니다.
+
+`TRACE_SOLVER=1`로 바꾸면 Newton/선형 반복과 시간이 출력됩니다. line search에 사용하는 `merit`가 감소하는 도중 원래 방정식의 `residual`은 일시적으로 커질 수 있으며, 최종 허용오차는 원래 물리 잔차에 적용합니다. CSV의 전체 Newton/Krylov 반복 수와 `mobility_applications`에는 실제 방정식 검증 비용도 포함됩니다.
+
+`INITIALIZATION=random`은 기하 전용 성장 packer를 사용합니다. `aligned`는 대칭축이 z인 정렬 격자이며 평형화된 무작위 미세구조를 뜻하지 않습니다. 요청한 초기화 방식이 실패했다고 다른 방식으로 자동 전환하지 않습니다.
 
 주요 기본값은 두께 300 nm, 매질 점도 0.01 Pa·s, xz 전단률 100 s⁻¹, `max(actual_gap,1 nm)` 유체 간격, 접촉 시작 간격 3 nm, 법선 강성 100 N/m, 접선 강성 80 N/m, 마찰계수 0.1입니다. `--gap-floor-nm`과 `--contact-gap-nm`는 서로 독립적입니다. `--spectral 2`가 기본 중거리 해상도입니다. `--spectral-tolerance 1e-8`은 Fourier 절단 허용값이며 격자 보간·표면 구적·고파수 상호작용 생략을 포함한 전체 오차가 아닙니다.
 

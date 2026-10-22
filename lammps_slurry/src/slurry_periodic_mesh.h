@@ -68,9 +68,14 @@ struct FFTPlan {
 };
 class Operator {
 public:
+  ~Operator() { clear(); }
   void clear() {
     stencil_.clear(); spectral_.clear(); active_.clear();
+#ifdef SLURRY_HAVE_FFTW
+    fftw_plans_.clear();
+#endif
     for (auto &g : grid_) std::vector<Complex>().swap(g);
+    std::vector<std::array<std::vector<Complex>, 2>>().swap(private_grid_);
     dimensions_ = {{0, 0, 0}}; nodes_ = entries_ = 0; order_ = 0;
   }
   template<class Modes>
@@ -96,9 +101,25 @@ public:
         if (candidate >= target) { n = candidate; break; }
       if (n < target || nodes_ > cfg.mesh_max_nodes / std::size_t(n))
         throw std::runtime_error("Particle-mesh FFT exceeds mesh_max_nodes");
-      dimensions_[j] = n; nodes_ *= std::size_t(n); plans_[j].reset(n);
+      dimensions_[j] = n; nodes_ *= std::size_t(n);
+#ifndef SLURRY_HAVE_FFTW
+      plans_[j].reset(n);
+#endif
     }
+    // FFTW plans are reused when only particle geometry / cell shear changes.
+    // reset() also checks data pointers, so a reallocation cannot leave a
+    // plan bound to an obsolete grid. Planning is outside the Krylov loop.
     for (auto &g : grid_) g.resize(nodes_);
+#ifdef SLURRY_HAVE_FFTW
+    fftw_plans_.reset(dimensions_, threads_, grid_);
+#endif
+    private_grid_.resize(threads_ > 1 ? threads_ : 0);
+    // Parallel first-touch keeps each worker's grid local on NUMA machines.
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static) num_threads(threads_)
+#endif
+    for (int worker = 0; worker < int(private_grid_.size()); ++worker)
+      for (auto &g : private_grid_[worker]) g.resize(nodes_);
     active_.assign(nodes_, 0);
     spectral_.clear(); spectral_.reserve(modes.size());
     const Mat3 inverse = cell.inverse();
@@ -155,17 +176,48 @@ public:
   Eigen::VectorXd apply(const Eigen::VectorXd &g) const {
     if (g.size() != Eigen::Index(11 * stencil_.size()))
       throw std::invalid_argument("Particle-mesh vector size mismatch");
-    for (auto &field : grid_) std::fill(field.begin(), field.end(), Complex(0., 0.));
-    // Spread is serial to avoid atomics and grid-sized thread-private arrays.
-    // FFTs and adjoint gathering are threaded. This ordering is deterministic.
-    for (std::size_t i = 0; i < stencil_.size(); ++i) {
-      const Vec3 F = g.segment<3>(11 * i), T = g.segment<3>(11 * i + 3);
-      Mat3 S = Mat3::Zero(); const auto basis = stf_basis();
-      for (int j = 0; j < 5; ++j) S += g[11 * i + 6 + j] * basis[j];
-      for (const auto &entry : stencil_[i]) {
-        const Vec3 value = entry.scalar * F - .5 * entry.vector.cross(T) + S * entry.vector;
-        grid_[0][entry.node] += Complex(value[0], value[1]);
-        grid_[1][entry.node] += value[2];
+    // Each worker owns a grid, avoiding atomic updates and serial spreading.
+    // All buffers persist between applications. The ordered reduction below
+    // preserves the same linear spread map (up to roundoff); gathering remains
+    // its transpose. A reduced OpenMP team must not read unused stale buffers.
+    int used_threads = 1;
+#ifdef _OPENMP
+#pragma omp parallel num_threads(threads_)
+#endif
+    {
+      int tid = 0;
+#ifdef _OPENMP
+      tid = omp_get_thread_num();
+#pragma omp single
+      used_threads = omp_get_num_threads();
+#endif
+      auto &local = threads_ > 1 ? private_grid_[tid] : grid_;
+      for (auto &field : local) std::fill(field.begin(), field.end(), Complex(0., 0.));
+#ifdef _OPENMP
+#pragma omp for schedule(static)
+#endif
+      for (std::int64_t i = 0; i < std::int64_t(stencil_.size()); ++i) {
+        const Vec3 F = g.segment<3>(11 * i), T = g.segment<3>(11 * i + 3);
+        Mat3 S = Mat3::Zero(); const auto basis = stf_basis();
+        for (int j = 0; j < 5; ++j) S += g[11 * i + 6 + j] * basis[j];
+        for (const auto &entry : stencil_[i]) {
+          const Vec3 value = entry.scalar * F - .5 * entry.vector.cross(T) + S * entry.vector;
+          local[0][entry.node] += Complex(value[0], value[1]);
+          local[1][entry.node] += value[2];
+        }
+      }
+      if (threads_ > 1) {
+#ifdef _OPENMP
+#pragma omp for schedule(static)
+#endif
+        for (std::int64_t node = 0; node < std::int64_t(nodes_); ++node) {
+          Complex xy(0., 0.), z(0., 0.);
+          for (int worker = 0; worker < used_threads; ++worker) {
+            xy += private_grid_[worker][0][node];
+            z += private_grid_[worker][1][node];
+          }
+          grid_[0][node] = xy; grid_[1][node] = z;
+        }
       }
     }
     fft(false);
@@ -214,11 +266,30 @@ public:
   const std::array<int, 3> &dimensions() const { return dimensions_; }
   std::size_t stencil_entries() const { return entries_; }
   int quadrature_order() const { return order_; }
+  int threads() const { return threads_; }
+  std::size_t fft_plan_builds() const {
+#ifdef SLURRY_HAVE_FFTW
+    return fftw_plans_.builds();
+#else
+    return 0;
+#endif
+  }
+  const char *fft_backend() const {
+#ifdef SLURRY_HAVE_FFTW
+    return "fftw";
+#else
+    return "reference";
+#endif
+  }
   std::size_t bytes() const {
     std::size_t result = active_.capacity() + spectral_.capacity() * sizeof(FourierEntry);
     for (const auto &g : grid_) result += g.capacity() * sizeof(Complex);
+    for (const auto &fields : private_grid_)
+      for (const auto &g : fields) result += g.capacity() * sizeof(Complex);
     for (const auto &s : stencil_) result += s.capacity() * sizeof(Entry);
+#ifndef SLURRY_HAVE_FFTW
     for (const auto &p : plans_) result += p.reverse.capacity() * sizeof(int) + p.roots.capacity() * sizeof(Complex);
+#endif
     return result;
   }
 private:
@@ -293,6 +364,9 @@ private:
     out.resize(used);
   }
   void fft(bool inverse) const {
+#ifdef SLURRY_HAVE_FFTW
+    fftw_plans_.execute(inverse);
+#else
     for (int axis = 0; axis < 3; ++axis) {
       const int n = dimensions_[axis];
       const std::size_t lines = nodes_ / n;
@@ -320,15 +394,21 @@ private:
         }
       }
     }
+#endif
   }
   std::array<int, 3> dimensions_{{0, 0, 0}};
+#ifdef SLURRY_HAVE_FFTW
+  SlurryFFT::Plans fftw_plans_;
+#else
   std::array<FFTPlan, 3> plans_;
+#endif
   std::size_t nodes_ = 0, entries_ = 0;
   int threads_ = 1, order_ = 0;
   std::vector<std::vector<Entry>> stencil_;
   std::vector<FourierEntry> spectral_;
   std::vector<unsigned char> active_;
   mutable std::array<std::vector<Complex>, 2> grid_;
+  mutable std::vector<std::array<std::vector<Complex>, 2>> private_grid_;
 };
 } // namespace MeshDetail
 #endif

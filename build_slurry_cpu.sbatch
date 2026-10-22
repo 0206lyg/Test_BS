@@ -4,8 +4,8 @@
 #SBATCH --partition=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=96G
 #SBATCH --time=12:00:00
 #SBATCH --output=build_slurry_%j.out
 
@@ -30,8 +30,13 @@ module load "${SLURRY_PYTHON_MODULE:-anaconda/2024.02-py311}"
 module load "${SLURRY_GCC_MODULE:-gcc/12.2.0}"
 module load "${SLURRY_MPI_MODULE:-openmpi/4.1.4}"
 module load "${SLURRY_CMAKE_MODULE:-cmake/3.23.1}"
-export OMP_NUM_THREADS=1 PYTHONUNBUFFERED=1
+# Full MKL supplies static archives: no hidden runtime CPU-dispatch libraries.
+# Set these module names only if the site's installed defaults differ.
+module load "${SLURRY_FFTW_MODULE:-fftw}"
+module load "${SLURRY_MKL_MODULE:-intel-mkl}"
+export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONUNBUFFERED=1
 python3 "$SLURRY_BASE/lammps_slurry/tools/bundle_guard.py" check-source \
     --root "$SLURRY_BASE" --expected-release "$SLURRY_LAUNCHER_RELEASE"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/runtime_snapshot.py" build \
-    --root "$SLURRY_BASE" -- --jobs "${SLURM_CPUS_PER_TASK:-4}" "$@"
+    --root "$SLURRY_BASE" -- --jobs "${SLURM_CPUS_PER_TASK:-16}" "$@"
+

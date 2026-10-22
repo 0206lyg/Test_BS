@@ -32,6 +32,11 @@ int main(int argc, char **argv) {
     cfg.backend = direct ? Backend::Direct : Backend::Mesh;
     Mobility m; const auto start = std::chrono::steady_clock::now(); m.reset(bodies, H, cfg);
     const double setup = seconds(start);
+    const auto plan_builds = m.mesh_fft_plan_builds();
+    const auto warm_start = std::chrono::steady_clock::now();
+    m.reset(bodies, H, cfg);
+    const double warm_setup = seconds(warm_start);
+    require(m.mesh_fft_plan_builds() == plan_builds, "Benchmark reuses FFTW plans");
     Eigen::VectorXd g = Eigen::VectorXd::Random(11 * N);
     for (int i = 0; i < N; ++i) g.segment<8>(11*i+3) *= ar;
     const auto apply_start = std::chrono::steady_clock::now();
@@ -42,7 +47,8 @@ int main(int argc, char **argv) {
     std::cout << "backend=" << (direct ? "direct" : "mesh") << " N=" << N << " AR=" << ar
               << " threads=" << threads << " modes=" << m.mode_count() << " grid=" << grid[0] << ',' << grid[1] << ',' << grid[2]
               << " quadrature_order=" << m.mesh_quadrature_order() << " entries=" << m.mesh_stencil_entries()
-              << " bytes=" << m.bytes() << " setup_s=" << setup << " apply_s=" << apply
+              << " bytes=" << m.bytes() << " setup_s=" << setup << " warm_setup_s=" << warm_setup << " apply_s=" << apply
+              << " fft=" << m.mesh_fft_backend() << " fft_plan_builds=" << m.mesh_fft_plan_builds()
               << " power=" << g.dot(out) << '\n';
     require(out.allFinite() && g.dot(out) > 0, "Benchmark positivity"); return 0;
   }
@@ -58,6 +64,48 @@ int main(int argc, char **argv) {
     for (int i = 0; i < N; ++i) scale.segment<8>(11*i+3).setConstant(ar);
     const Eigen::MatrixXd ref = scale.asDiagonal() * direct.dense() * scale.asDiagonal();
     const Eigen::MatrixXd got = scale.asDiagonal() * mesh.dense() * scale.asDiagonal();
+    // All setup changes below reuse one live mobility object as in time
+    // integration. Geometry changes must update the stencil without planning
+    // new FFTs when array dimensions and thread count remain the same.
+    const auto first_builds = mesh.mesh_fft_plan_builds();
+    const auto first_dimensions = mesh.mesh_dimensions();
+    mesh.reset(bodies, H, mesh_cfg);
+    require(mesh.mesh_fft_plan_builds() == first_builds, "FFTW plan reused at identical geometry");
+    const Eigen::VectorXd probe = scale.cwiseProduct(Eigen::VectorXd::LinSpaced(11*N, .1, .9));
+    const Eigen::VectorXd original_response = mesh.apply(probe);
+    require((scale.asDiagonal()*original_response - got*scale.cwiseInverse().asDiagonal()*probe).norm() /
+                (scale.asDiagonal()*original_response).norm() < 5e-14, "Mesh repeat reset response");
+    require(mesh.apply(Eigen::VectorXd::Zero(11*N)).isZero(0.), "Exact zero mobility");
+    auto moved = bodies;
+    moved[0].x += H * Vec3(.013, -.017, .009);
+    mesh.reset(moved, H, mesh_cfg);
+    require(mesh.mesh_dimensions() == first_dimensions &&
+            mesh.mesh_fft_plan_builds() == first_builds, "FFTW plan reused after particle motion");
+    Mobility fresh;
+    fresh.reset(moved, H, mesh_cfg);
+    const Eigen::VectorXd moved_response = mesh.apply(probe);
+    require((moved_response-fresh.apply(probe)).norm()/moved_response.norm() < 5e-14,
+            "Persistent and fresh mesh agree after particle motion");
+    Settings serial_cfg = mesh_cfg; serial_cfg.threads = 1;
+    mesh.reset(moved, H, serial_cfg);
+    require((mesh.apply(probe)-moved_response).norm()/moved_response.norm() < 5e-14,
+            "Serial and parallel spread responses agree");
+#ifdef SLURRY_HAVE_FFTW
+    require(first_builds == 1 && mesh.mesh_fft_plan_builds() == first_builds + 1,
+            "FFTW plan rebuilt when thread count changes");
+#endif
+    // Reuse a larger grid, then switch through the explicit direct backend.
+    const Mat3 bigger = 2. * H;
+    mesh.reset(moved, bigger, mesh_cfg);
+    require(mesh.mesh_dimensions() != first_dimensions, "Grid resize exercised");
+    fresh.reset(moved, bigger, mesh_cfg);
+    const Eigen::VectorXd enlarged_response = fresh.apply(probe);
+    require((mesh.apply(probe)-enlarged_response).norm()/enlarged_response.norm() < 5e-14,
+            "FFTW plan follows resized grid storage");
+    mesh.reset(bodies, H, direct_cfg);
+    mesh.reset(bodies, H, mesh_cfg);
+    require((mesh.apply(probe)-original_response).norm()/original_response.norm() < 5e-14,
+            "Mesh restored after switching to direct reference");
     const double error = (got-ref).norm()/ref.norm();
     const double symmetry = (got-got.transpose()).norm()/got.norm();
     Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(got);
@@ -90,3 +138,4 @@ int main(int argc, char **argv) {
   // the FFT nor the tests replace an ellipsoid by a point or spherical radius.
   return 0;
 }
+

@@ -1,0 +1,9 @@
+{
+  "certified": true,
+  "target_gap_m": 3e-09,
+  "minimum_surface_gap_m": 3.0017189195377938e-09,
+  "max_clearance_deficit_m": 0,
+  "checked_pair_images": 2310,
+  "nominal_volume_fraction": 0.23999999999999946,
+  "method": "ellipsoid_support_gap_all_periodic_images"
+}

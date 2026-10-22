@@ -5,6 +5,7 @@
 #ifndef SLURRY_PERIODIC_MOBILITY_H
 #define SLURRY_PERIODIC_MOBILITY_H
 #include <Eigen/Dense>
+#include "slurry_fft_plans.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -385,6 +386,8 @@ public:
     if (g.size() != Eigen::Index(11 * N))
       throw std::invalid_argument("Mobility vector size mismatch");
     Eigen::VectorXd out = Eigen::VectorXd::Zero(g.size());
+    // M is linear. Zero-state residual scaling must not execute a full FFT.
+    if (g.isZero(0.)) return out;
     for (std::size_t i = 0; i < N; i++)
       out.segment<11>(11 * i).noalias() = tails_[i] * g.segment<11>(11 * i);
     if (cfg_.backend == Backend::Mesh) {
@@ -462,6 +465,9 @@ public:
   const std::array<int, 3> &mesh_dimensions() const { return mesh_.dimensions(); }
   std::size_t mesh_stencil_entries() const { return mesh_.stencil_entries(); }
   int mesh_quadrature_order() const { return mesh_.quadrature_order(); }
+  std::size_t mesh_fft_plan_builds() const { return mesh_.fft_plan_builds(); }
+  int mesh_threads() const { return mesh_.threads(); }
+  const char *mesh_fft_backend() const { return mesh_.fft_backend(); }
   // self_blocks() is exact for Direct; Mesh returns positive continuum
   // isolated blocks for preconditioning only, not physical self corrections.
 

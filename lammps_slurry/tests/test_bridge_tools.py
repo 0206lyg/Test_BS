@@ -6,6 +6,7 @@ import json
 import math
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import sys
 import unittest
@@ -25,6 +26,89 @@ TEST_PACKER = Path(os.environ.get("SLURRY_TEST_PACKER", str(prepare.DEFAULT_PACK
 
 
 class BridgeToolsTest(unittest.TestCase):
+    def test_one_mpi_rank_receives_all_allocated_cores(self):
+        env, threads = runner.execution_environment({"SLURM_CPUS_PER_TASK": "16", "OMP_NUM_THREADS": "1"})
+        self.assertEqual(threads, 16)
+        self.assertEqual(env["OMP_NUM_THREADS"], "16")
+        self.assertEqual(env["MKL_NUM_THREADS"], "16")
+        self.assertEqual(env["OMP_PLACES"], "cores")
+        self.assertEqual(env["OMP_PROC_BIND"], "close")
+        command = runner.execution_command(Path("/tmp/with spaces/runtime"), True, threads, launcher="/usr/bin/mpirun")
+        self.assertEqual(command[:9], ["/usr/bin/mpirun", "-np", "1", "--map-by", "slot:PE=16",
+                                       "--bind-to", "core", "--report-bindings", "/tmp/with spaces/runtime/bin/lmp"])
+        self.assertEqual(command.count("-np"), 1)
+        local = runner.execution_command(Path("/tmp/runtime"), False, 8)
+        self.assertEqual(local[0], "/tmp/runtime/bin/lmp")
+        self.assertNotIn("-np", local)
+
+    def test_rejects_nested_mpi_driver_and_invalid_thread_counts(self):
+        for key in ("OMPI_COMM_WORLD_SIZE", "PMI_SIZE", "PMIX_UNIV_SIZE"):
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "outside MPI"):
+                runner.execution_environment({key: "8"})
+        for value in ("0", "-2", "8,2", "many"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                runner.execution_environment({"OMP_NUM_THREADS": value})
+
+    def test_failed_simulation_is_not_relaunched(self):
+        process = mock.Mock(stdout=["simulation failed\n"])
+        process.wait.return_value = 7
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(runner.subprocess, "Popen", return_value=process) as launch:
+                with self.assertRaisesRegex(RuntimeError, "LAMMPS exited 7"):
+                    runner.run_simulation(["lmp", "-in", "in.bridge"], Path(temporary), {})
+            self.assertEqual(launch.call_count, 1)
+            self.assertEqual(process.wait.call_count, 1)
+            self.assertEqual((Path(temporary)/"console.log").read_text(), "simulation failed\n")
+
+    def test_single_batch_forwards_every_physical_setting_once(self):
+        source = TOOLS.parents[1]/"run_slurry_cpu.sbatch"
+        text = source.read_text()
+        self.assertIn("#SBATCH --ntasks=1\n", text)
+        self.assertIn("#SBATCH --hint=nomultithread\n", text)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)/"source with spaces"
+            tools = root/"lammps_slurry/tools"
+            tools.mkdir(parents=True)
+            (tools/"run_bridge.py").write_text("# command is captured before this file executes\n")
+            script = root/"run_slurry_cpu.sbatch"
+            stub = root/"bin/python3"
+            stub.parent.mkdir()
+            stub.write_text("#!"+sys.executable+"\nimport json,os,sys\n"
+                            "with open(os.environ['CAPTURE'], 'a') as f:\n"
+                            " f.write(json.dumps({'argv':sys.argv[1:], 'threads':os.environ['OMP_NUM_THREADS']})+'\\n')\n")
+            stub.chmod(0o755)
+            capture = root/"capture.jsonl"
+            environment = {key: value for key, value in os.environ.items()
+                           if not key.startswith(("SLURM_", "BASH_FUNC_")) and key not in ("BASH_ENV", "SLURRY_ROOT")}
+            environment.update(PATH=str(stub.parent)+os.pathsep+os.environ["PATH"],
+                               SLURRY_ROOT=str(root), SLURM_JOB_ID="12345", SLURM_CPUS_PER_TASK="16",
+                               CAPTURE=str(capture))
+            for ar, count in ((2, 500), (5, 123)):
+                script.write_text(text.replace("AR=2\n", "AR={}\n".format(ar))
+                                  .replace("COUNT=500\n", "COUNT={}\n".format(count)))
+                subprocess.run(["bash", str(script)], env=environment, check=True, capture_output=True, text=True)
+                records = [json.loads(line) for line in capture.read_text().splitlines()]
+                self.assertEqual(len(records), 1 if ar == 2 else 2)
+                record = records[-1]
+                self.assertEqual(record["threads"], "16")
+                arguments = record["argv"][1:]
+                index = arguments.index("--build-env")
+                del arguments[index:index+2]
+                supplied = {arg for arg in arguments if arg.startswith("--")}
+                expected = {option for action in prepare.parser()._actions for option in action.option_strings
+                            if option not in ("-h", "--help", "--packer")}
+                self.assertEqual(supplied, expected)
+                args = prepare.parser().parse_args(arguments)
+                self.assertEqual(args.ar, ar)
+                self.assertEqual(args.count, count)
+                self.assertEqual(args.phi, .24)
+                self.assertEqual(args.steps, 100000)
+                self.assertEqual(args.output_interval, 100)
+                self.assertEqual(args.normal_stiffness, 100.)
+                self.assertEqual(args.mobility_backend, "mesh")
+                self.assertEqual(args.friction, .1)
+                self.assertIn("12345", str(args.output))
+
     def test_defaults_and_explicit_physical_overrides(self):
         defaults = prepare.parser().parse_args(["--output", "unused"])
         self.assertEqual(defaults.normal_stiffness, 100.)

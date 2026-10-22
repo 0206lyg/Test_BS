@@ -1,0 +1,45 @@
+{
+  "arguments": [
+    "--ar",
+    "2",
+    "--phi",
+    ".24",
+    "--count",
+    "32",
+    "--steps",
+    "3",
+    "--output-interval",
+    "1",
+    "--initialization",
+    "aligned",
+    "--normal-stiffness",
+    "100",
+    "--friction",
+    ".1",
+    "--timestep",
+    "1e-6"
+  ],
+  "command": [
+    "/workspace/scratch/0520ed9b6708/speed-validation/private_runtime_smoke/runtime/bin/lmp",
+    "-var",
+    "slurry_plugin",
+    "\"/workspace/scratch/0520ed9b6708/speed-validation/private_runtime_smoke/runtime/bin/libslurry.so\"",
+    "-in",
+    "in.bridge"
+  ],
+  "input_sha256": "952a5176ea4cbcd672e45a026c219dcb419b2332d870011e226391ab7c1c5eac",
+  "mpi_ranks": 1,
+  "particles_sha256": "12dc047598b2a64a89c0e5fb98a7dcef796313849cc9b8e85a85f95494b95873",
+  "runtime_identity": "runtime/runtime_identity.json",
+  "thread_environment": {
+    "MKL_DYNAMIC": "FALSE",
+    "MKL_NUM_THREADS": "4",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_MAX_ACTIVE_LEVELS": "1",
+    "OMP_NUM_THREADS": "4",
+    "OMP_PLACES": "cores",
+    "OMP_PROC_BIND": "close",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "threads": 4
+}
