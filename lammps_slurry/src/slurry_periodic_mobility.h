@@ -26,7 +26,15 @@ struct Body {
   Vec3 x = Vec3::Zero();
   Mat3 shape = Mat3::Identity();
 };
+enum class Backend { Mesh, Direct };
 struct Settings {
+  Backend backend = Backend::Mesh;
+  // Mesh accuracy controls are separate from the Fourier truncation tolerance.
+  int mesh_window = 10;
+  double mesh_alpha = .6;
+  int mesh_quadrature_order = 0; // zero chooses from largest kmax*semiaxis
+  double mesh_grid_oversampling = 1.;
+  std::size_t mesh_max_nodes = 16777216;
   double eta = 1.;
   // xi is inverse length, not an angular or lattice-index cutoff.
   // xi==0 selects the unsmoothed, truncated exact Fourier sum; kmax required.
@@ -206,6 +214,8 @@ inline Eigen::Matrix<double, 11, 11> rotation11(const Mat3 &Q) {
   return R;
 }
 
+#include "slurry_periodic_mesh.h"
+
 class Mobility {
 public:
   struct Mode {
@@ -260,10 +270,13 @@ public:
     if (mode_.empty())
       throw std::invalid_argument("Reciprocal cutoff contains no nonzero modes");
     const std::size_t N = body_.size(), K = mode_.size();
-    coeff_.resize(K * N);
+    if (cfg_.backend == Backend::Direct)
+      coeff_.resize(K * N);
+    else
+      std::vector<Coeff>().swap(coeff_);
     tails_.resize(N);
     self_.assign(N, Mat11::Zero());
-    std::vector<std::pair<Vec3, Mat11>> tail_cache;
+    std::vector<std::pair<Vec3, Mat11>> tail_cache, full_cache;
     for (std::size_t i = 0; i < N; i++) {
       const auto &A = body_[i].shape;
       if (!body_[i].x.allFinite() || !A.allFinite() ||
@@ -301,7 +314,28 @@ public:
       }
       tails_[i] = R * body_tail * R.transpose();
       self_[i] = tails_[i];
+      if (cfg_.backend == Backend::Mesh) {
+        // This is only the isolated continuum preconditioner block. The
+        // physical operator is the mesh Gram operator plus the tail below;
+        // no analytic/discrete self subtraction is made.
+        Mat11 full = Mat11::Zero();
+        bool found = false;
+        for (const auto &entry : full_cache)
+          if ((entry.first - axes2).norm() < 1e-12 * axes2.norm()) {
+            full = entry.second; found = true; break;
+          }
+        if (!found) {
+          full = self_tail(axes2.asDiagonal(), 0., cfg_.eta, cfg_.self_order);
+          full_cache.push_back({axes2, full});
+        }
+        self_[i] = R * full * R.transpose();
+      }
     }
+    if (cfg_.backend == Backend::Mesh) {
+      mesh_.reset(body_, H_, cfg_, kmax_, mode_);
+      return;
+    }
+    mesh_.clear();
     int nt = 1;
 #ifdef _OPENMP
     nt = std::max(1, cfg_.threads);
@@ -353,6 +387,10 @@ public:
     Eigen::VectorXd out = Eigen::VectorXd::Zero(g.size());
     for (std::size_t i = 0; i < N; i++)
       out.segment<11>(11 * i).noalias() = tails_[i] * g.segment<11>(11 * i);
+    if (cfg_.backend == Backend::Mesh) {
+      out += mesh_.apply(g);
+      return out;
+    }
     // No global dense matrix; each mode is a rank-at-most-four real Gram term.
     int nt = 1;
 #ifdef _OPENMP
@@ -417,14 +455,21 @@ public:
   std::size_t mode_count() const { return mode_.size(); }
   std::size_t bytes() const {
     return coeff_.size() * sizeof(Coeff) + mode_.size() * sizeof(Mode) +
-           (self_.size() + tails_.size()) * sizeof(Mat11);
+           (self_.size() + tails_.size()) * sizeof(Mat11) + mesh_.bytes();
   }
   double cutoff() const { return kmax_; }
+  Backend backend() const { return cfg_.backend; }
+  const std::array<int, 3> &mesh_dimensions() const { return mesh_.dimensions(); }
+  std::size_t mesh_stencil_entries() const { return mesh_.stencil_entries(); }
+  int mesh_quadrature_order() const { return mesh_.quadrature_order(); }
+  // self_blocks() is exact for Direct; Mesh returns positive continuum
+  // isolated blocks for preconditioning only, not physical self corrections.
 
 private:
   struct Coeff {
     double fr, fi, dr, di;
   };
+  MeshDetail::Operator mesh_;
   Settings cfg_;
   Mat3 H_;
   double kmax_ = 0;

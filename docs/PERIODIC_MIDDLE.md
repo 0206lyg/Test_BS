@@ -100,7 +100,50 @@ It does not prove a finite-distance accuracy bound. The leading force,
 rotlet, and stresslet Fourier coefficients remain those of the selected
 ellipsoid model, since the filter tends to one at small wavenumber.
 
-## What was measured
+## Particle–mesh evaluation (default since 2026-10-22)
+
+The retained Gaussian sum is evaluated by `slurry_periodic_mesh.h`. Let
+`L L^T=A`, and integrate over the unit sphere with normalized positive weights.
+At a quadrature point `n`, the source position is `x+L*n` and the vector
+coefficient is `v=3*L^(-T)*n`. Spread the three-vector `F+B(v)*(T,S)` with the
+quadrature weight. This uses mapped uniform unit-sphere measure, not uniform
+ellipsoid surface-area measure. Its exact Fourier transform is the same
+`Psi` above, including both the monopole and derivative shape factors.
+
+Each particle caches four coefficients at each affected grid node: one
+scalar and one three-vector. Gaussian spreading and its exact transpose
+gathering enclose the native threaded radix-2/3 FFT. A positive Fourier
+deconvolution factor, the same Gaussian physical filter and the Stokes
+projector act on the retained physical modes. Thus
+
+```
+M_mesh = J^T F^* D F J + blockdiag(M_high,self),  D >= 0.
+```
+
+No isolated self term is subtracted from this operator. Reciprocity and
+nonnegative power hold independently of the interpolation accuracy. The
+same ellipsoid high-frequency tail is retained. Modes and mesh geometry use
+the actual triclinic reciprocal lattice; grid-phase and lattice-basis errors
+are bounded by the mesh approximation, rather than exact invariance.
+
+Defaults are a 10-node Gaussian window per direction, exponent coefficient
+0.6, a `2^p` or `3*2^p` grid exceeding twice each reciprocal-index bound, and
+automatic shell quadrature order `max(12,ceil(0.65*kmax*a_max+8))` with twice
+as many azimuthal points. These are numerical settings, separate from
+`spectral_tolerance`. Three real vector fields are packed into two complex
+FFT grids. There is no additional FFT library dependency. The bridge solver
+still runs on MPI rank 0 with OpenMP; this is not a distributed MPI FFT.
+
+The `N*K` coefficient array and self-block loop are absent from the mesh path.
+For fixed shape, cutoff and density, a mobility product uses cached stencil
+work proportional to N and FFT work proportional to `G log G`. Enumeration
+of K physical modes remains proportional to K. Positive continuum isolated
+self blocks serve only as preconditioners. `--mobility-backend direct`
+retains the old sum for reference; unfiltered Fourier API tests explicitly
+select this backend. New checks and timings are recorded in
+[FFT_CONTACT_UPDATE.md](FFT_CONTACT_UPDATE.md).
+
+## Earlier direct-sum model checks (2026-10-20)
 
 The two previously troublesome AR20 poses were reused in a cubic cell
 of side `100c`, with `c=150 nm`. The reference retained the periodic
@@ -142,7 +185,7 @@ per-step timing and residuals.
 
 ## Tests and reproduction
 
-The C++ test checks reciprocity, positive eigenvalues of a representative
+The direct-backend C++ test checks reciprocity, positive eigenvalues of a representative
 assembled matrix, image-shift invariance, integer lattice-basis changes,
 joint cell/body rotations, parallel reduction, and the analytic sphere
 self normalization. The invariance errors are around `1e-15`.

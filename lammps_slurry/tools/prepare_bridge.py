@@ -3,7 +3,8 @@
 
 AR=a/c; full thickness=2c. The hydrodynamic floor max(h,1 nm) and the
 mechanical contact onset are independent. Packing is geometry preparation,
-not physical relaxation. This module never loads a resistance table.
+not physical relaxation; its accepted surface gaps must satisfy the same
+mechanical contact onset. This module never loads a resistance table.
 """
 import argparse
 import itertools
@@ -17,6 +18,51 @@ import sys
 
 PROJECT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKER = PROJECT.parent / "build/lammps-slurry/slurry_pack"
+
+
+def write_packing_geometry(path, particles, a, c, box, scale=1.):
+    with path.open("w") as stream:
+        stream.write("{} {} {} {} {}\n".format(len(particles), box, a, c, scale))
+        for x, q, _ in particles:
+            stream.write(" ".join("{:.17g}".format(v) for v in (*x, *q))+"\n")
+
+
+def certify_packing(args, particles, a, c, box, output):
+    """Check actual surface clearance with the production gap implementation."""
+    packer = args.packer.expanduser().resolve()
+    if not packer.is_file() or not os.access(str(packer), os.X_OK):
+        raise ValueError("Missing executable geometry packer: {}".format(packer))
+    geometry, report_path = output/"packing.validation", output/"packing_clearance.json"
+    write_packing_geometry(geometry, particles, a, c, box)
+    target = args.contact_gap_nm*1e-9
+    command = [str(packer), "--input", str(geometry), "--contact-gap-m", str(target),
+               "--certify-only", "1", "--report", str(report_path)]
+    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                             universal_newlines=True)
+    (output/"packing_validation.log").write_text(process.stdout)
+    if process.returncode:
+        raise ValueError("Actual surface-gap certification failed; shear input was not written. "
+                         "See packing_validation.log")
+    try:
+        report = json.loads(report_path.read_text())
+    except (OSError, ValueError) as error:
+        raise ValueError("Missing or malformed actual surface-gap certificate") from error
+    if not isinstance(report, dict) or report.get("certified") is not True:
+        raise ValueError("Geometry packer did not certify the requested contact gap")
+    for field in ("target_gap_m", "minimum_surface_gap_m", "max_clearance_deficit_m",
+                  "nominal_volume_fraction"):
+        value = report.get(field)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("Geometry packer returned invalid clearance data: "+field)
+    if not math.isclose(report["target_gap_m"], target, rel_tol=1e-12, abs_tol=1e-30):
+        raise ValueError("Geometry packer did not certify the requested contact gap")
+    if (report["minimum_surface_gap_m"] < target or report["max_clearance_deficit_m"] != 0. or
+            not math.isclose(report["nominal_volume_fraction"], args.phi, rel_tol=1e-10)):
+        raise ValueError("Geometry packer returned a contradictory clearance certificate")
+    checks = report.get("checked_pair_images")
+    if isinstance(checks, bool) or not isinstance(checks, int) or checks < 1:
+        raise ValueError("Geometry packer did not verify periodic image clearances")
+    return report
 
 # Geometric PW routines retained from prepare_case.py. No finite-gap/table
 # pipeline dependency: old offline scripts are not imported by this run path.
@@ -120,8 +166,8 @@ def aligned_particles(count, a, c, box, gap):
 
 
 def random_particles(args, a, c, box, output):
-    if box <= 4*a:
-        raise ValueError("The retained geometry-only random packer needs L>4a. "
+    if box <= 4*a+2*args.contact_gap_nm*1e-9:
+        raise ValueError("The geometry-only random packer needs L>4a+2*contact_gap. "
                          "This is not the hydrodynamic 3a image limit; use --initialization aligned "
                          "for smaller compatible boxes, or increase --count/lower --phi.")
     packer = args.packer.expanduser().resolve()
@@ -147,20 +193,19 @@ def random_particles(args, a, c, box, output):
         else:
             raise ValueError("Random seed insertion failed at {}/{}; lower --initial-phi".format(index, args.count))
     seed, final = output/"packing.seed", output/"packing.final"
-    with seed.open("w") as stream:
-        stream.write("{} {} {} {} {}\n".format(args.count, box, a, c, scale))
-        for x, q, _ in particles:
-            stream.write(" ".join("{:.17g}".format(v) for v in (*x, *q))+"\n")
+    write_packing_geometry(seed, particles, a, c, box, scale)
     command = [str(packer), "--input", str(seed), "--output", str(final),
                "--history", str(output/"packing_history.csv"),
                "--growth-fraction", str(args.growth_fraction),
-               "--overlap-tolerance", str(args.overlap_tolerance), "--max-relax", str(args.max_relax)]
+               "--overlap-tolerance", str(args.overlap_tolerance), "--max-relax", str(args.max_relax),
+               "--contact-gap-m", str(args.contact_gap_nm*1e-9)]
     with (output/"packing.log").open("w") as log:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
         for line in process.stdout:
             print(line, end="", flush=True)
             log.write(line)
             log.flush()
+        process.stdout.close()
         if process.wait():
             raise ValueError("Geometry packing failed; shear input was not written. See packing.log")
     rows = final.read_text().splitlines()
@@ -203,9 +248,11 @@ def parser():
     p.add_argument("--output", type=Path, required=True, help="new run directory")
     p.add_argument("--packer", type=Path, default=DEFAULT_PACKER)
     p.add_argument("--initialization", choices=("random", "aligned"), default="random")
+    p.add_argument("--mobility-backend", choices=("mesh", "direct"), default="mesh",
+                   help="periodic mobility implementation; direct is a reference/debug option")
     for name, default in (("ar", 20.), ("phi", .24), ("thickness-nm", 300.), ("density", 2400.),
                           ("viscosity", .01), ("shear-rate", 100.), ("gap-floor-nm", 1.),
-                          ("contact-gap-nm", 3.), ("friction", .1), ("normal-stiffness", 1.),
+                          ("contact-gap-nm", 3.), ("friction", .1), ("normal-stiffness", 100.),
                           ("tangential-stiffness", 80.), ("timestep", 1e-6),
                           ("average-start-strain", 5.), ("initial-phi", .05),
                           ("growth-fraction", .02), ("overlap-tolerance", 1e-6), ("tolerance", 1e-6), ("spectral", 2.), ("spectral-tolerance", 1e-8)):
@@ -244,6 +291,7 @@ def prepare(args):
     else:
         particles, packing = random_particles(args, a, c, box, output)
     worst, checked = verify_packing(particles, a, box, args.overlap_tolerance)
+    clearance = certify_packing(args, particles, a, c, box, output)
     write_data(output/"particles.data", particles, a, c, box, args.density, args.shear_rate)
     f = lambda v: "{:.17g}".format(v)
     # Pair zero only supplies LAMMPS communication. Hydro/contact images are
@@ -263,7 +311,7 @@ neighbor {skin} bin
 neigh_modify every 1 delay 0 check yes
 timestep {dt}
 fix shear all deform 0 xz erate {rate} remap v units box
-fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
+fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
 compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
 dump trajectory all custom {interval} trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
 dump_modify trajectory sort id format float %.17g
@@ -274,7 +322,8 @@ run {steps}
 write_data final.data nocoeff
 '''.format(communication=f(c), skin=f(.2*c), dt=f(args.timestep), rate=f(args.shear_rate), eta=f(args.viscosity),
            floor=f(args.gap_floor_nm*1e-9), kn=f(args.normal_stiffness), hc=f(args.contact_gap_nm*1e-9),
-           mu=f(args.friction), kt=f(args.tangential_stiffness), spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
+           mu=f(args.friction), kt=f(args.tangential_stiffness), backend=args.mobility_backend,
+           spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
            slurry_plugin="{slurry_plugin}")
     (output/"in.bridge").write_text(text)
@@ -283,9 +332,21 @@ write_data final.data nocoeff
                      "box_length_m": box, "particle_volume_m3": volume, "hydro_gap_rule": "max(actual_gap, gap_floor)",
                      "near_support_center_m": 3*a, "periodic_images": "all images in geometric support; self images included",
                      "packing": packing, "packing_max_PW_overlap": worst, "packing_image_checks": checked,
+                     "packing_clearance": clearance,
+                     "normal_contact_law": "linear spring; normal_stiffness in N/m; no Hertz conversion",
+                     "contact_gap_use": "pair contact onset; initial actual surface gaps are certified at or above this gap",
+                     "step_geometry": "endpoint actual-gap correction with frozen-geometry implicit force solves",
+                     "spectral_tolerance_scope": "Fourier truncation only; not a total mobility or mesh error bound",
+                     "mesh_numerics": ({"window_support": 10, "gaussian_alpha": .6,
+                                         "quadrature_order": "automatic from wave-number/particle-size bound",
+                                         "grid_oversampling": 1., "grid_dimensions": "automatic radix-2/3 smooth dimensions",
+                                         "maximum_grid_nodes": 16777216,
+                                         "settings_origin": "compiled SlurryPeriodic::Settings defaults",
+                                         "actual_grid_and_quadrature": "available through Mobility diagnostic accessors"}
+                                        if args.mobility_backend == "mesh" else None),
                      "accumulated_strain": abs(args.shear_rate)*args.timestep*args.steps,
                      "average_window": "selected strain window; no automatic steady-state certification",
-                     "preparation": "geometric only; aligned initialization is not an equilibrated microstructure"})
+                     "preparation": "geometric contact-clearance preparation; no physical equilibration"})
     (output/"parameters.json").write_text(json.dumps(metadata, indent=2, sort_keys=True)+"\n")
     print("Prepared {}: N={}, AR={}, phi={}, L/a={:.6g}; no table generation".format(output, args.count, args.ar, args.phi, box/a), flush=True)
     return metadata

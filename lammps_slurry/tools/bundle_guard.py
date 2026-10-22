@@ -41,7 +41,9 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/fix_slurry_bridge.cpp",
         "lammps_slurry/src/slurry_compact_bridge.h",
         "lammps_slurry/src/slurry_periodic_mobility.h",
+        "lammps_slurry/src/slurry_periodic_mesh.h",
         "lammps_slurry/src/slurry_bridge_solver.h",
+        "lammps_slurry/src/slurry_bridge_step.h",
         "lammps_slurry/src/slurry_bridge_images.h",
         "lammps_slurry/tools/prepare_bridge.py",
         "lammps_slurry/tools/run_bridge.py",
@@ -69,12 +71,14 @@ def check_source(root, expected_release=RELEASE_ID):
         if not (root / relative).is_file():
             raise RuntimeError("Incomplete source bundle: missing {}. Re-extract the "
                                "complete matching ZIP.".format(root / relative))
-    prepare = root / "lammps_slurry/tools/prepare_case.py"
-    expected_prepare = release.get("prepare_case_sha256")
-    if not expected_prepare or sha256_file(prepare) != expected_prepare:
-        raise RuntimeError("prepare_case.py does not match release {}. The source bundle "
-                           "may contain an older input generator; re-extract the complete "
-                           "matching ZIP.".format(expected_release))
+    for filename, field in (("prepare_case.py", "prepare_case_sha256"),
+                            ("prepare_bridge.py", "prepare_bridge_sha256")):
+        prepare = root / "lammps_slurry/tools" / filename
+        expected_prepare = release.get(field)
+        if not expected_prepare or sha256_file(prepare) != expected_prepare:
+            raise RuntimeError("{} does not match release {}. The source bundle "
+                               "may contain an older input generator; re-extract the complete "
+                               "matching ZIP.".format(filename, expected_release))
     return release
 
 

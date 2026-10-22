@@ -14,6 +14,7 @@
 #include "slurry_bridge_images.h"
 #include "slurry_bridge_solver.h"
 #include "slurry_bridge_contact_solver.h"
+#include "slurry_bridge_step.h"
 #include "slurry_compact_bridge.h"
 #include "slurry_history_math.h"
 #include "slurry_periodic_mobility.h"
@@ -37,6 +38,7 @@ namespace bs = SlurryBridgeSolver;
 namespace pm = SlurryPeriodic;
 namespace im = SlurryBridgeImages;
 namespace gr = slurry::gr_re2::graphite;
+namespace step = SlurryBridgeStep;
 namespace {
 using V3 = Eigen::Vector3d;
 using M3 = Eigen::Matrix3d;
@@ -95,12 +97,13 @@ struct FixSlurryBridge::Impl {
   std::vector<tagint> tags;
   bs::Result warm;
   bool have_warm = false;
+  bool direct_mobility = false;
 };
 FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     : Fix(lmp, narg, arg), p_(new Impl) {
   if (narg < 7)
     error->all(FLERR, "slurry/bridge requires eta shear_rate gap_floor kn [contact hc mu kt] "
-                      "[spectral xi_a] [spectral_tolerance tol] [tolerance rtol] [iterations "
+                      "[spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] [tolerance rtol] [iterations "
                       "maxit] [history file interval average_start_strain]");
   auto &p = *p_;
   p.eta = utils::numeric(FLERR, arg[3], false, lmp);
@@ -119,6 +122,11 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
       k += 2;
     } else if (!std::strcmp(arg[k], "spectral_tolerance") && k + 1 < narg) {
       p.spectral_tol = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      k += 2;
+    } else if (!std::strcmp(arg[k], "mobility_backend") && k + 1 < narg) {
+      if (std::strcmp(arg[k + 1], "mesh") && std::strcmp(arg[k + 1], "direct"))
+        error->all(FLERR, "slurry/bridge mobility_backend must be mesh or direct");
+      p.direct_mobility = !std::strcmp(arg[k + 1], "direct");
       k += 2;
     } else if (!std::strcmp(arg[k], "tolerance") && k + 1 < narg) {
       p.rtol = utils::numeric(FLERR, arg[k + 1], false, lmp);
@@ -155,7 +163,9 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "interval_end_strain,interval_mean_sigma_solvent_Pa,interval_mean_sigma_hydro_Pa,"
              "interval_mean_sigma_contact_Pa,interval_mean_sigma_xz_Pa,interval_mean_eta_Pa_s,"
              "interval_mean_eta_relative,solver_relative_residual,descent_steps,continuation_stages,"
-             "continuation_retries,mobility_applications,breakpoint_steps\n";
+             "continuation_retries,mobility_applications,breakpoint_steps,geometry_iterations,"
+             "contact_gap_consistency_m,actual_endpoint_min_gap_m,actual_endpoint_overlap_m,"
+             "normal_elastic_energy_J,tangential_elastic_energy_J,linear_gap_defect_m\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -240,10 +250,8 @@ void FixSlurryBridge::initial_integrate(int) {
     V3 w(wr[0], wr[1], wr[2]);
     for (int k = 0; k < 3; ++k)
       atom->x[i][k] += dt * atom->v[i][k];
-    const double m = w.norm(), a = .5 * dt * m, f = m > 0 ? std::sin(a) / m : .5 * dt;
-    Eigen::Quaterniond dq(std::cos(a), f * w[0], f * w[1], f * w[2]),
-        q(b.quat[0], b.quat[1], b.quat[2], b.quat[3]);
-    q = (dq * q).normalized();
+    Eigen::Quaterniond q = step::rotate(
+        Eigen::Quaterniond(b.quat[0], b.quat[1], b.quat[2], b.quat[3]), w, dt);
     b.quat[0] = q.w();
     b.quat[1] = q.x();
     b.quat[2] = q.y();
@@ -297,9 +305,12 @@ void FixSlurryBridge::solve_velocities() {
       V3 omega_inf(0, .5 * p.shear / rate, 0);
       std::vector<gr::Body> bodies(n);
       std::vector<pm::Body> middle_bodies(n);
+      std::vector<Eigen::Quaterniond> quaternions;
+      quaternions.reserve(n);
       for (int i = 0; i < n; ++i) {
         double R[3][3], q[4];
         std::copy(records[i].quat, records[i].quat + 4, q);
+        quaternions.emplace_back(q[0], q[1], q[2], q[3]);
         MathExtra::quat_to_mat(q, R);
         for (int k = 0; k < 3; ++k) {
           bodies[i].position[k] = (records[i].x[k] - domain->boxlo[k]) / length;
@@ -331,6 +342,7 @@ void FixSlurryBridge::solve_velocities() {
       std::vector<Eigen::Triplet<double>> entries;
       std::vector<PairKey> contact_keys;
       std::vector<V3> contact_displacements;
+      std::vector<im::ImageIndex> contact_images;
       int active_near = 0;
       double min_gap = std::numeric_limits<double>::infinity(), overlap = 0;
       double section = MPI_Wtime();
@@ -392,6 +404,7 @@ void FixSlurryBridge::solve_velocities() {
             problem.contacts.push_back(contact);
             contact_keys.push_back(key);
             contact_displacements.push_back(d);
+            contact_images.push_back(image.image);
           }
         }
       problem.near_resistance.resize(11 * n, 11 * n);
@@ -404,6 +417,7 @@ void FixSlurryBridge::solve_velocities() {
         for (double a : b.axes)
           amax = std::max(amax, a);
       pm::Settings settings;
+      settings.backend = p.direct_mobility ? pm::Backend::Direct : pm::Backend::Mesh;
       settings.xi = p.spectral / amax;
       settings.spectral_tolerance = p.spectral_tol;
 #ifdef _OPENMP
@@ -446,8 +460,16 @@ void FixSlurryBridge::solve_velocities() {
         };
       }
       section = MPI_Wtime();
-      auto result = SlurryBridgeContactSolver::solve_proximal(
-          problem, options, p.have_warm ? &p.warm : nullptr);
+      step::Geometry geometry;
+      geometry.bodies = bodies;
+      geometry.quaternions = std::move(quaternions);
+      geometry.lattice = H;
+      geometry.kappa = kappa;
+      geometry.ambient_rotation = omega_inf;
+      geometry.contact_onset = p.hc / length;
+      geometry.images = std::move(contact_images);
+      auto consistent = step::solve(problem, geometry, options, p.have_warm ? &p.warm : nullptr);
+      auto result = std::move(consistent.solution);
       double solve_time = MPI_Wtime() - section;
       M3 hydro = M3::Zero(), contact_stress = M3::Zero();
       Eigen::VectorXd contact_moments = Eigen::VectorXd::Zero(6 * n);
@@ -456,10 +478,13 @@ void FixSlurryBridge::solve_velocities() {
           hydro -= result.total_moment[11 * i + 6 + k] * cb::strain_basis()[k];
       p.pending.clear();
       int contacts = 0;
+      double normal_energy = 0., tangent_energy = 0.;
       for (size_t k = 0; k < problem.contacts.size(); ++k) {
         const auto &c = problem.contacts[k];
         const auto &response = result.contacts[k];
         const auto &d = contact_displacements[k];
+        normal_energy += response.normal_energy;
+        tangent_energy += response.tangent_energy;
         contact_stress +=
             .5 * (d * response.traction.transpose() + response.traction * d.transpose());
         contact_moments.segment<6>(6 * c.i) -= c.Bi.transpose() * response.traction;
@@ -508,6 +533,17 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[22] = result.continuation_retries;
       p.diag[23] = result.mobility_applications;
       p.diag[24] = result.breakpoint_steps;
+      p.diag[25] = consistent.geometry_iterations;
+      p.diag[26] = consistent.maximum_gap_error * length;
+      const double endpoint_min = consistent.endpoint.gaps.empty()
+          ? std::numeric_limits<double>::infinity()
+          : *std::min_element(consistent.endpoint.gaps.begin(), consistent.endpoint.gaps.end());
+      p.diag[27] = endpoint_min * length;
+      p.diag[28] = std::max(0., -endpoint_min) * length;
+      const double energy_scale = p.eta * std::pow(length, 3) * rate;
+      p.diag[29] = normal_energy * energy_scale;
+      p.diag[30] = tangent_energy * energy_scale;
+      p.diag[31] = consistent.maximum_linear_gap_defect * length;
       p.diag[16] = geometry_time;
       p.diag[17] = middle_time;
       p.diag[18] = solve_time;
@@ -587,8 +623,10 @@ void FixSlurryBridge::write_history() {
     }
     o << ',' << eta(mean) << ',' << eta(mean) / p.eta << ',' << p.diag[15] << ',' << p.diag[20]
       << ',' << p.diag[21] << ',' << p.diag[22] << ',' << p.diag[23]
-      << ',' << p.diag[24]
-      << '\n';
+      << ',' << p.diag[24];
+    for (int k = 25; k < 32; ++k)
+      o << ',' << p.diag[k];
+    o << '\n';
     o.flush();
     if (!o)
       error->one(FLERR, "Failed writing slurry/bridge history");

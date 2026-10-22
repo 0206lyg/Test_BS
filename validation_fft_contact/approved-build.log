@@ -1,0 +1,661 @@
++ git -C /workspace/scratch/8454c904b341/lammps_source rev-parse HEAD
++ git -C /workspace/scratch/8454c904b341/lammps_source status --porcelain --untracked-files=no
++ cmake -S /workspace/scratch/8454c904b341/lammps_source/cmake -B /workspace/scratch/8454c904b341/build_validation/lammps -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_STANDARD=17 -D CMAKE_INSTALL_PREFIX=/workspace/scratch/8454c904b341/build_validation/install -D CMAKE_INSTALL_LIBDIR=lib -D BUILD_SHARED_LIBS=ON -D CMAKE_INSTALL_RPATH=/workspace/scratch/8454c904b341/build_validation/install/lib -D BUILD_MPI=OFF -D BUILD_OMP=OFF -D PKG_ASPHERE=ON -D PKG_PLUGIN=ON -D DOWNLOAD_POTENTIALS=OFF -D ENABLE_TESTING=OFF
+CMake Warning (deprecated) at CMakeLists.txt:22 (cmake_policy):
+  The OLD behavior for policy CMP0109 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- Running check for auto-generated files from make-based build system
+-- Generating style headers...
+-- Generating style source files...
+-- Generating package registry...
+-- Generating lmpinstalledpkgs.h...
+-- The following tools and libraries have been found and configured:
+ * ZLIB
+ * Git
+ * Python
+ * Python3
+
+-- <<< Build configuration >>>
+   LAMMPS Version:   2026.9.30.0 stable_30Sep2026
+   Operating System: Linux Ubuntu" 24.04
+   CMake Version:    4.4.4
+   Build type:       Release
+   Install path:     /workspace/scratch/8454c904b341/build_validation/install
+   Generator:        Unix Makefiles using /usr/bin/gmake
+-- Enabled packages: ASPHERE;PLUGIN
+-- <<< Compilers and Flags: >>>
+-- C++ Compiler:     /usr/bin/c++
+      Type:          GNU
+      Version:       13.3.0
+      C++ Standard:  17
+      C++ Flags:     -O3 -DNDEBUG
+      Defines:       LAMMPS_ZLIB;LAMMPS_SMALLBIG;LAMMPS_MEMALIGN=64;LAMMPS_GZIP;LMP_PLUGIN
+-- C compiler:       /usr/bin/cc
+      Type:          GNU
+      Version:       13.3.0
+      C Flags:       -O3 -DNDEBUG
+-- <<< Linker flags: >>>
+-- Executable name:  lmp
+-- Shared library flags:    
+-- Configuring done (2.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/8454c904b341/build_validation/lammps
++ cmake --build /workspace/scratch/8454c904b341/build_validation/lammps --parallel 3
+[  0%] Built target angle.h
+[  0%] Built target utils.h
+-- Git Directory: /workspace/scratch/8454c904b341/lammps_source/.git
+[  0%] Built target atom.h
+[  0%] Built target library.h
+-- Generating lmpgitversion.h...
+[  0%] Built target lmptype.h
+[  0%] Built target lmppython.h
+[  0%] Built target gitversion
+[  1%] Built target modify.h
+[  1%] Built target memory.h
+[  2%] Built target json_fwd.h
+[  2%] Built target kspace.h
+[  2%] Built target lammps.h
+[  2%] Built target lattice.h
+[  2%] Built target bond.h
+[  2%] Built target citeme.h
+[  2%] Built target comm.h
+[  2%] Built target command.h
+[  3%] Built target compute.h
+[  3%] Built target dihedral.h
+[  3%] Built target domain.h
+[  3%] Built target error.h
+[  4%] Built target exceptions.h
+[  4%] Built target fix.h
+[  4%] Built target force.h
+[  4%] Built target group.h
+[  4%] Built target neighbor.h
+[  4%] Built target neigh_list.h
+[  4%] Built target output.h
+[  5%] Built target pair.h
+[  5%] Built target platform.h
+[  6%] Built target improper.h
+[  6%] Built target input.h
+[  6%] Built target info.h
+[  7%] Built target variable.h
+[  7%] Built target json.h
+[  8%] Built target fmt_core.h
+[  8%] Built target fmt_format.h
+[  8%] Built target json_json_fwd.hpp
+[  8%] Built target json_json.hpp
+[  8%] Built target region.h
+[  8%] Built target pointers.h
+[  9%] Built target timer.h
+[  9%] Built target update.h
+[  9%] Built target universe.h
+[ 98%] Built target lammps
+[100%] Built target lmp
++ cmake --install /workspace/scratch/8454c904b341/build_validation/lammps
+-- Install configuration: "Release"
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/bin/lmp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/angle.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/atom.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/bond.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/citeme.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/comm.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/command.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/compute.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/dihedral.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/domain.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/error.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/exceptions.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/fix.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/force.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/group.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/improper.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/input.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/info.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/json.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/json_fwd.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/kspace.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/lammps.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/lattice.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/library.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/lmppython.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/lmptype.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/memory.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/modify.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/neighbor.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/neigh_list.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/output.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/pair.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/platform.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/pointers.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/region.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/timer.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/universe.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/update.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/utils.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/variable.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/fmt/core.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/fmt/format.h
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/nlohmann/json_fwd.hpp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/include/lammps/nlohmann/json.hpp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/liblammps.so.0
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/liblammps.so
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/pkgconfig/liblammps.pc
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/cmake/LAMMPS/LAMMPS_Targets.cmake
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/cmake/LAMMPS/LAMMPS_Targets-release.cmake
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/cmake/LAMMPS/LAMMPSConfig.cmake
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/lib/cmake/LAMMPS/LAMMPSConfigVersion.cmake
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/man/man1/lmp.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.rhodo.fixed.g++.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chain.fixed.g++.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/data.chain
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chute.scaled.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chute.fixed.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.rhodo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.lj.fixed.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.rhodo.scaled
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.lj.fixed.g++.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.chute
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.lj
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eff.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eim.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.spce
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/Si.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.rebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.reaxc
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.airebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.meam.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.spce.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.eff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/CdTe.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.meam.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.protein
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.comb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/Ni.adp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.peri.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.lj.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.gb.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/Ni.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.comb.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eam.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/ffield.eim
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.sw.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.granular
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.adp.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.rebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.comb.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.protein
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.adp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.lj.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.bop.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.eff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.lj
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.gb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.gb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.bop
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.fene
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.dpd.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/ffield.reax
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.reaxc.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.peri.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.eim
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.protein.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.peri
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/library.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.airebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.granular
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/CH.airebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.reax
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.sw.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.dpd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/ffield.comb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.granular.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.eim
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/Si.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.reaxc.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.spce.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eff.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.bop.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.protein.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.fene.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.airebo.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.spce
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/Cu_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.fene.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.dpd.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.fene
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.tersoff.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.airebo.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.adp.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.tersoff.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.gb.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/CH.rebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.rebo.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eam.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/in.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.eim.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.rebo.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/log.9Oct20.granular.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/POTENTIALS/data.comb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.eam.fixed.g++.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.rhodo.fixed.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chain.scaled.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chute.fixed.g++.1
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/data.rhodo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.eam.scaled.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.lj.scaled.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.chain.fixed.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.rhodo.scaled.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.chain
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/Cu_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/data.chute
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.chain.scaled
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/in.chute.scaled
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/bench/log.15Jul25.eam.fixed.g++.4
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_zhou.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta6.8x.mgpt.potin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/He_He_JW2013.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdTe.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Mo.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CuTa_eam.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_quadratic.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna3_lj.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CuH.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN.streitz+tersoff.mod
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN.streitz
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_tablespline.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CuZr_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CBNOH.aip.water.2dm
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdTe.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Pd_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_2.meam.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/lib.comb3
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Pt_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta6.8x.mgpt.parmin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna_lj.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC_1994.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni.adp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Chen_PRM2017.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/NiO.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.ZnOH
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.nn.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.tersoff.mod
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CoAl.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.edip
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH.airebo-bc
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/PSiO.nb3b.screened
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.eim
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/PdHHe.eam.he
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_quadratic.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mg_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/TiO.meam.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.cho
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/NiAlH_jea.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.budzien
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_noforce.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_linear.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ci-reaxFF_ZBL.dat
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlCuH.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_quadratic.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC_1989.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.V_O_C_H
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.AB
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdTeZnSeHgS0.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.tersoff.zbl
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/FeCH_BOP_I.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiO.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W.quadratic.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/TMD.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.smtbq.Al2O3
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/README.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.rdx
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna2_lj.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta4.mgpt.parmin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/MoS.rebomos
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Au_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/FeCr.cdeam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlCu.adp
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_He_JW2013.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Chen_PRM2017.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH_taper.KC
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/V6.1.mgpt.README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta_param.pod
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CuNi.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.Fe_O_C_H
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiCGe.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlO.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_constant.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_linear.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/NiO.ctip
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ag_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_mdpd.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlCu.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlCu.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdTeSe.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_tablelin.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_2940_2017_2.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LDINDSET2.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Al_jnp.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_u6.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN_sw.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.comb3
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/FeP_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.FC
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxrna2_real.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.smtbq.Al
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_mdpd.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/C.lcbop
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.mattsson
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BNCH-old.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_2940_2017_2_He_JW2013.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlO.streitz
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.vashishta
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo5.2.mgpt.README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlSiMgCuFe.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.smtbq.TiO2
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_tablelin.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_2940_2017_2.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_tablespline.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W_2940_2017_2.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CuTa.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/library.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.nn.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_smf7.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.edip
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_mdpd.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/FeCH_BOP_II.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W.quadratic.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/COH.DMC.aip.water.2dm
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.tersoff.modc
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.b.meam.sw.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Bi.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Mo.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/MoS2.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/V6.1.mgpt.potin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Al_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu.snap.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.ci-reax.CH
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SGLD_constant.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/VFe_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH.airebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/MOH.nb3b.harmonic
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta6.8x.mgpt.README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/tmd.sw.mod
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.gw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CHAu.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_zhou.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna3_real.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/charmm36.cmap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/library_2nn.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.comb
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiGeH.sw.quip
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/W.quadratic.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo5.2.mgpt.potin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/AlFe_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.gw.zbl
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BNC.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/C_SNAP_2021.10.15.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/C.drip
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.nn.mliap.descriptor
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu-PBE-core-rep.ace
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Fe_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/acks2_ff.water
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.pytorch.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/.gitignore
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Al_zhou.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_tablespline.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC_1990.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.AuO
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/MoCoNiVFeAlCr_2nn.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdTeZn.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BNCH.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_linear.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/HGa.msmeam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaAs.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiO.1994.vashishta
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdZnTe_v2.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ti.meam.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta4.mgpt.potin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/C_SNAP_2021.10.15.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP.vashishta
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta4.mgpt.README
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_u3.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SG_constant.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo5.2.mgpt.parmin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/ffield.reax.lg
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu_mishin1.eam.alloy
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiO.1997.vashishta
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN.sw
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.quadratic.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta_coeff.pod
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CCu_v2.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CC.Lebedeva
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Nb.uf3
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_tablelin.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Cu.nn.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna_real.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/README.reax
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/V6.1.mgpt.parmin
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/TMDAu.SAIP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/charmm22.cmap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ge_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CC.KC
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ti.meam.sw.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BNC_MBD_bulk.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiC_Erhart-Albe.tersoff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CdZnTe_v1.bop.table
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/GaN_tersoff.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BN.extep
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/NiAlH_jea.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/InP_JCPA2020.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_smf7.eam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Zr_mm.eam.fs
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH.rebo
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH.airebo-m
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WBe_Wood_PRB2019.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LD_SG_table.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/library.msmeam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CC.KC-full
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Mo_Chen_PRM2017.snap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/BNC_TS_bulk.ILP
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/SiO.1990.vashishta
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_1.meam.spline
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/WL.meam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ta06A.mliap
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si_Zuo_JPCA2020.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/LDINDSET1.ldd
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/CH.KC
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Li_Zuo_JPCA2020.quadratic.snapparam
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/TlBr_msw.poly
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Si.nn.mliap.model
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxdna2_real.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/Ni_Zuo_JPCA2020.quadratic.snapcoeff
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/share/lammps/potentials/oxrna2_lj.cgdna
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/etc/profile.d/lammps.sh
+-- Up-to-date: /workspace/scratch/8454c904b341/build_validation/install/etc/profile.d/lammps.csh
+/sbin/ldconfig.real: relative path `||' used to build cache
++ cmake -S /workspace/scratch/8454c904b341/Test_BS/lammps_slurry -B /workspace/scratch/8454c904b341/build_validation/slurry -D CMAKE_BUILD_TYPE=Release -D BUILD_TESTING=ON -D LAMMPS_SOURCE_DIR=/workspace/scratch/8454c904b341/lammps_source -D LAMMPS_DIR=/workspace/scratch/8454c904b341/build_validation/install/lib/cmake/LAMMPS -D CMAKE_INSTALL_PREFIX=/workspace/scratch/8454c904b341/build_validation/install
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/scratch/8454c904b341/build_validation/slurry
++ cmake --build /workspace/scratch/8454c904b341/build_validation/slurry --parallel 3
+[  3%] Built target slurry_pack
+[  6%] Built target slurry_precompute_fast
+[ 16%] Built target slurry
+[ 20%] Built target slurry_generate_basis
+[ 23%] Built target slurry_basis_physical_probe
+[ 26%] Built target slurry_table_interpolation_probe
+[ 30%] Built target slurry_matched_hybrid_test
+[ 33%] Built target slurry_independent_pair_reference_test
+[ 36%] Built target slurry_grand_pair_math_test
+[ 40%] Built target slurry_grand_pair_lookup_test
+[ 43%] Built target slurry_grand_reduced_test
+[ 46%] Built target slurry_grand_system_check_test
+[ 50%] Built target slurry_eigen_lu_solver_test
+[ 53%] Built target slurry_eigen_ilu_solver_test
+[ 60%] Built target slurry_sparse_solver_test
+[ 60%] Built target slurry_spheroid_hydro_math_test
+[ 63%] Built target slurry_pair_hydro_math_test
+[ 66%] Built target slurry_hydro_math_test
+[ 70%] Built target slurry_implicit_math_test
+[ 73%] Built target slurry_stress_math_test
+[ 76%] Built target slurry_history_math_test
+[ 80%] Built target slurry_friction_regression_test
+[ 83%] Built target slurry_bridge_images_test
+[ 86%] Built target slurry_compact_bridge_test
+[ 90%] Built target slurry_bridge_solver_test
+[ 93%] Built target slurry_bridge_step_test
+[ 96%] Built target slurry_periodic_mobility_test
+[100%] Built target slurry_periodic_mesh_test
++ ctest --test-dir /workspace/scratch/8454c904b341/build_validation/slurry --output-on-failure
+Test project /workspace/scratch/8454c904b341/build_validation/slurry
+      Start  1: slurry_matched_hybrid_golden
+ 1/34 Test  #1: slurry_matched_hybrid_golden ..........   Passed    1.89 sec
+      Start  2: slurry_independent_stokes_reference
+ 2/34 Test  #2: slurry_independent_stokes_reference ...   Passed    1.38 sec
+      Start  3: slurry_grand_pair_math
+ 3/34 Test  #3: slurry_grand_pair_math ................   Passed    0.00 sec
+      Start  4: slurry_grand_pair_lookup
+ 4/34 Test  #4: slurry_grand_pair_lookup ..............   Passed    0.00 sec
+      Start  5: slurry_grand_reduced
+ 5/34 Test  #5: slurry_grand_reduced ..................   Passed    0.00 sec
+      Start  6: slurry_grand_system_passivity
+ 6/34 Test  #6: slurry_grand_system_passivity .........   Passed    0.00 sec
+      Start  7: slurry_exact_sparse_lu
+ 7/34 Test  #7: slurry_exact_sparse_lu ................   Passed    0.00 sec
+      Start  8: slurry_exact_jacobian_ilu
+ 8/34 Test  #8: slurry_exact_jacobian_ilu .............   Passed    0.00 sec
+      Start  9: slurry_adaptive_forcing_ilu
+ 9/34 Test  #9: slurry_adaptive_forcing_ilu ...........   Passed    0.00 sec
+      Start 10: slurry_cached_ilu_equivalence
+10/34 Test #10: slurry_cached_ilu_equivalence .........   Passed    0.00 sec
+      Start 11: slurry_incomplete_sparse_lu
+11/34 Test #11: slurry_incomplete_sparse_lu ...........   Passed    0.00 sec
+      Start 12: slurry_sparse_preconditioner
+12/34 Test #12: slurry_sparse_preconditioner ..........   Passed    0.13 sec
+      Start 13: slurry_spheroid_lubrication_algebra
+13/34 Test #13: slurry_spheroid_lubrication_algebra ...   Passed    0.00 sec
+      Start 14: slurry_mari_pair_lubrication
+14/34 Test #14: slurry_mari_pair_lubrication ..........   Passed    0.01 sec
+      Start 15: slurry_hydro_analytic_limits
+15/34 Test #15: slurry_hydro_analytic_limits ..........   Passed    0.01 sec
+      Start 16: slurry_packing_gradients
+16/34 Test #16: slurry_packing_gradients ..............   Passed    0.00 sec
+      Start 17: slurry_implicit_resistance_contact
+17/34 Test #17: slurry_implicit_resistance_contact ....   Passed    0.00 sec
+      Start 18: slurry_stress_analytic_limits
+18/34 Test #18: slurry_stress_analytic_limits .........   Passed    0.03 sec
+      Start 19: slurry_history_objectivity
+19/34 Test #19: slurry_history_objectivity ............   Passed    0.00 sec
+      Start 20: slurry_dense_friction_kink
+20/34 Test #20: slurry_dense_friction_kink ............   Passed    0.02 sec
+      Start 21: slurry_dense_friction_stall
+21/34 Test #21: slurry_dense_friction_stall ...........   Passed    0.02 sec
+      Start 22: slurry_dense_friction_kink_lu
+22/34 Test #22: slurry_dense_friction_kink_lu .........   Passed    0.02 sec
+      Start 23: slurry_dense_friction_stall_lu
+23/34 Test #23: slurry_dense_friction_stall_lu ........   Passed    0.02 sec
+      Start 24: slurry_dense_friction_kink_ilu
+24/34 Test #24: slurry_dense_friction_kink_ilu ........   Passed    0.03 sec
+      Start 25: slurry_dense_friction_stall_ilu
+25/34 Test #25: slurry_dense_friction_stall_ilu .......   Passed    0.03 sec
+      Start 26: slurry_compact_bridge
+26/34 Test #26: slurry_compact_bridge .................   Passed    0.01 sec
+      Start 27: slurry_bridge_images
+27/34 Test #27: slurry_bridge_images ..................   Passed    0.00 sec
+      Start 28: slurry_bridge_solver
+28/34 Test #28: slurry_bridge_solver ..................   Passed    0.00 sec
+      Start 29: slurry_bridge_step
+29/34 Test #29: slurry_bridge_step ....................   Passed    0.00 sec
+      Start 30: slurry_periodic_mobility
+30/34 Test #30: slurry_periodic_mobility ..............   Passed    0.06 sec
+      Start 31: slurry_periodic_mesh
+31/34 Test #31: slurry_periodic_mesh ..................   Passed    0.51 sec
+      Start 32: slurry_bridge_tools
+32/34 Test #32: slurry_bridge_tools ...................   Passed    0.45 sec
+      Start 33: slurry_packing_clearance
+33/34 Test #33: slurry_packing_clearance ..............   Passed    0.34 sec
+      Start 34: slurry_runtime_link_paths
+34/34 Test #34: slurry_runtime_link_paths .............   Passed    1.94 sec
+
+100% tests passed out of 34
+
+Total Test time (real) =   6.96 sec
++ /workspace/scratch/8454c904b341/build_validation/install/bin/lmp -log none -in /workspace/scratch/8454c904b341/build_validation/lammps/check-slurry-plugin.in
+Plugin load verified: pair slurry/spheroid, fix slurry/drag, fix slurry/implicit, fix slurry/bridge
++ cmake --version
+
+Build complete.
+  LAMMPS: /workspace/scratch/8454c904b341/build_validation/install/bin/lmp
+  Plugin: /workspace/scratch/8454c904b341/build_validation/slurry/libslurry.so
+  Environment: /workspace/scratch/8454c904b341/build_validation/lammps/env.sh

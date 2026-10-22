@@ -10,7 +10,9 @@ sbatch lammps_slurry/run_bridge_cpu.sbatch \
   --steps 10 --output-interval 1 --average-start-strain 0
 ```
 
-기본 물성은 두께 300 nm, 매질 점도 0.01 Pa·s, 유체 gap floor 1 nm, 접촉 시작 간격 3 nm, 마찰계수 0.1입니다. 표면 기하는 실제 간격을 사용하며 스칼라 gap 함수에만 floor를 적용합니다. 기본 전단률은 100 s⁻¹, timestep은 1e-6 s입니다.
+기본 물성은 두께 300 nm, 매질 점도 0.01 Pa·s, 유체 gap floor 1 nm, 접촉 시작 간격 3 nm, 법선 강성 **100 N/m**, 접선 강성 80 N/m, 마찰계수 0.1입니다. 표면 기하는 실제 간격을 사용하며 스칼라 gap 함수에만 floor를 적용합니다. 기본 전단률은 100 s⁻¹, timestep은 1e-6 s입니다.
+
+중거리는 ellipsoid 형상함수를 유지하는 particle–mesh FFT가 기본입니다. 초기배치는 실제 주기 표면 gap이 3 nm 이상임을 인증하며, 접촉력은 실제 위치·배향 갱신 후의 gap과 일치하도록 보정합니다. 자세한 변경 사항과 재현 검사는 [FFT·접촉 overlay](docs/FFT_CONTACT_UPDATE.md)에 정리했습니다.
 
 - [실행·출력·점도 평균](docs/BRIDGE_RUN.md)
 - [연결식·단위·접촉·응력 구현 명세](docs/COMPACT_BRIDGE_MODEL.md)

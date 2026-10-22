@@ -1,6 +1,6 @@
 # Compact bridge 실행
 
-새 경로는 `fix slurry/bridge`를 사용합니다. 이전 `finite_gap_fast` 기저·저항표를 생성하거나 읽지 않습니다. 근거리에는 검증한 compact bridge v4, 중거리에는 주기 Fourier mobility와 해상도 매개변수를 사용합니다. 유한 간격의 모델 선택과 중거리 해상도는 별도 수렴 항목입니다.
+새 경로는 `fix slurry/bridge`를 사용합니다. 이전 `finite_gap_fast` 기저·저항표를 생성하거나 읽지 않습니다. 근거리에는 검증한 compact bridge v4, 중거리에는 ellipsoid 형상함수를 유지하는 particle–mesh FFT를 사용합니다. `--mobility-backend direct`는 같은 Fourier 합의 직접 계산 기준 경로입니다. 유한 간격의 모델 선택과 중거리 해상도는 별도 수렴 항목입니다.
 
 기존 빌드 스크립트로 새 소스를 빌드한 뒤 실행합니다. 현재 소스와 실행 파일이 빌드 기록과 일치해야 합니다. 실행기는 해당 실행의 프로그램과 공유 라이브러리를 `runtime/`에 복사한 뒤 입자 준비와 LAMMPS를 시작합니다.
 
@@ -26,9 +26,11 @@ sbatch lammps_slurry/run_bridge_cpu.sbatch \
   --output-interval 100 --average-start-strain 5
 ```
 
-주요 기본값은 두께 300 nm, 매질 점도 0.01 Pa·s, xz 전단률 100 s⁻¹, `max(actual_gap,1 nm)` 유체 간격, 접촉 시작 간격 3 nm, 마찰계수 0.1입니다. `--gap-floor-nm`과 `--contact-gap-nm`는 서로 독립적입니다. `--spectral 2`가 기본 중거리 해상도이며 4, 8 등으로 늘려 같은 상태의 변화와 비용을 비교합니다. `--spectral-tolerance 1e-8`은 Fourier 절단의 수치 허용값입니다.
+주요 기본값은 두께 300 nm, 매질 점도 0.01 Pa·s, xz 전단률 100 s⁻¹, `max(actual_gap,1 nm)` 유체 간격, 접촉 시작 간격 3 nm, 법선 강성 100 N/m, 접선 강성 80 N/m, 마찰계수 0.1입니다. `--gap-floor-nm`과 `--contact-gap-nm`는 서로 독립적입니다. `--spectral 2`가 기본 중거리 해상도입니다. `--spectral-tolerance 1e-8`은 Fourier 절단 허용값이며 격자 보간·표면 구적·고파수 상호작용 생략을 포함한 전체 오차가 아닙니다.
 
-근거리 이미지 검사는 `3a` 범위의 모든 이미지와 자기 이미지를 사용합니다. `L>6a` 제한은 없습니다. 유지한 무작위 성장 packer 자체는 `L>4a`를 필요로 하며, 이 조건은 유체력의 제한이 아닙니다. 입력을 쓰기 전 모든 겹침 가능 주기 이미지를 다시 검사합니다.
+근거리 이미지 검사는 `3a` 범위의 모든 이미지와 자기 이미지를 사용합니다. `L>6a` 제한은 없습니다. 무작위 성장·간격 정리 packer는 `L>4a+2h_c`를 필요로 하며, 이 조건은 유체력의 제한이 아닙니다. 정렬·무작위 초기화 모두 입력을 쓰기 전 실제 표면 gap을 검사합니다. `packing_clearance.json`의 `minimum_surface_gap_m`이 요청한 접촉 시작 간격 이상이어야 합니다. 입자 크기와 상자 크기는 유지합니다.
+
+한 step의 접촉력은 실제 Euler 이동·quaternion 회전·전단 격자 갱신 후 gap으로 계산한 압축량과 일치할 때만 수락합니다. 내부 보정 반복은 물리 시간을 추가로 진행하거나 접선 이력을 중복 누적하지 않습니다. CSV의 `actual_endpoint_min_gap_m`, `contact_gap_consistency_m`, `geometry_iterations`, `normal_elastic_energy_J`, `tangential_elastic_energy_J`는 해당 출력 시점에서 다음 이동을 위해 구한 상태의 진단입니다. `min_gap_m`은 현재 위치의 gap입니다. 유한 스프링이므로 모든 하중에서의 비침투를 강제하는 hard wall은 아닙니다.
 
 ```bash
 python3 lammps_slurry/tools/summarize_bridge.py \
@@ -58,7 +60,7 @@ STF5 기저의 순서는 `diag(1,-1,0)/sqrt(2)`, `diag(1,1,-2)/sqrt(6)`, 대칭 
 plugin load ${slurry_plugin}
 # units/box/particles 설정 후:
 fix shear all deform 0 xz erate 100 remap v units box
-fix hydro all slurry/bridge 0.01 100 1e-9 1 contact 3e-9 0.1 80 spectral 2 spectral_tolerance 1e-8 history history.csv 100 5
+fix hydro all slurry/bridge 0.01 100 1e-9 100 contact 3e-9 0.1 80 mobility_backend mesh spectral 2 spectral_tolerance 1e-8 history history.csv 100 5
 ```
 
 입력의 `${slurry_plugin}` 참조 자체에는 따옴표를 붙이지 않습니다. 실행기는 `-var` 값에 경로를 감싼 실제 큰따옴표를 넣어 공백이 있는 경로도 처리합니다. 일반 실행에는 위 launch script를 사용하면 됩니다.

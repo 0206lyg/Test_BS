@@ -2,10 +2,16 @@
   "release_id": "20261020-compact-bridge-integration",
   "status": "COMPACT_BRIDGE_INTEGRATION",
   "baseline_git_commit": "b8f78900f8c180d6c37e97f1a2682ff40d6bbd0b",
-  "prepare_case_sha256": "b39c1f5cdea804eba14f655399ed46b1eeeb9bba840d1610d2fd45c512611d62",
+  "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
   "model_stage": "COMPACT_BRIDGE_V4_PERIODIC_LOCAL_TAIL",
   "details": "validation_bridge/RESULT.json",
   "legacy_release": "20261018-pair-quadrature-runtime-fix",
   "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
-  "equilibrium_bulk_viscosity_tested": false
+  "equilibrium_bulk_viscosity_tested": false,
+  "prepare_bridge_sha256": "173a14eb4e83cc67c93a2c7ffb17251d157ec623eb15a87fb0a2d7935c83fb4f",
+  "normal_stiffness_N_m": 100.0,
+  "mechanical_contact_gap_m": 3e-09,
+  "periodic_mobility_backend": "mesh",
+  "contact_model": "linear normal/tangential springs with Coulomb friction; endpoint gap correction",
+  "initialization": "actual periodic surface gaps certified at mechanical contact onset"
 }

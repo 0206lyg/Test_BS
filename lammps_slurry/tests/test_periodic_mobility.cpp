@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
           std::cin >> x.shape(i, j);
     }
     Settings s;
+    s.backend = Backend::Direct;
     s.xi = xi;
     s.kmax = kmax;
     s.local_high_frequency_tail = xi != 0;
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
       b[i].shape = Vec3(ar * ar, ar * ar, 1).asDiagonal();
     }
     Settings s;
+    s.backend = Backend::Direct;
     s.xi = 2 / ar;
     if (argc > 2)
       s.threads = std::stoi(argv[2]);
@@ -74,6 +76,7 @@ int main(int argc, char **argv) {
     return 0;
   }
   Settings s;
+  s.backend = Backend::Direct;
   s.xi = 1.2;
   s.self_order = 128;
   Mat3 H;

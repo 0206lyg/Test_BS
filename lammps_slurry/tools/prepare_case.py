@@ -1101,7 +1101,8 @@ def prepare(args):
                "--history", str(output/"packing_history.csv"),
                "--growth-fraction", format_float(args.growth_fraction),
                "--overlap-tolerance", format_float(args.overlap_tolerance),
-               "--max-relax", str(args.max_relax)]
+               "--max-relax", str(args.max_relax),
+               "--contact-gap-m", format_float(contact_gap)]
     print(f"Growing N={args.count}, AR={args.ar:g}, phi={initial_phi:g} -> {args.phi:g}", flush=True)
     # Preserve live progress in Slurm stdout and a separate preparation log.
     with (output/"packing.log").open("w") as log:
@@ -1253,7 +1254,7 @@ def main():
     parser.add_argument("--tangential-stiffness", type=float, default=80.0, help="N/m; tangential contact spring")
     parser.add_argument("--count", type=int, default=300)
     parser.add_argument("--viscosity", type=float, default=0.01, help="Newtonian medium, Pa s")
-    parser.add_argument("--normal-stiffness", type=float, default=1.0, help="N/m; finite repulsive spring")
+    parser.add_argument("--normal-stiffness", type=float, default=100.0, help="N/m; finite repulsive spring")
     parser.add_argument("--lubrication-model", choices=("auto", "legacy", "mari", "spheroid", "finite_gap", "finite_gap_fast"), default="auto",
                         help="auto: Mari sphere model at AR=1, local-curvature spheroid extension otherwise")
     parser.add_argument("--lubrication-epsilon-relative", type=float, default=0.001,

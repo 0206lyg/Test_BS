@@ -1,0 +1,7 @@
+Final frozen two-grid packed FFT, N=500, four OpenMP threads; no competing build. Three matvec applications averaged per row; environment-specific timings.
+backend=mesh N=500 AR=2 threads=4 modes=186412 grid=96,96,96 quadrature_order=20 entries=3263538 bytes=298699016 setup_s=0.291166305 apply_s=0.236490633667 power=73.8272000738
+backend=direct N=500 AR=2 threads=4 modes=186412 grid=0,0,0 quadrature_order=0 entries=0 bytes=3031281472 setup_s=3.136464936 apply_s=0.289568062 power=73.8272050984
+backend=mesh N=500 AR=20 threads=4 modes=18636 grid=48,48,48 quadrature_order=20 entries=2863383 bytes=212506080 setup_s=0.233918617 apply_s=0.0409129196667 power=62.4620978568
+backend=direct N=500 AR=20 threads=4 modes=18636 grid=0,0,0 quadrature_order=0 entries=0 bytes=303914816 setup_s=0.330032571 apply_s=0.023271566 power=62.4620990379
+backend=mesh N=500 AR=30 threads=4 modes=12425 grid=48,48,48 quadrature_order=20 entries=3331196 bytes=251182176 setup_s=0.247458916 apply_s=0.0438899803333 power=61.8944515105
+backend=direct N=500 AR=30 threads=4 modes=12425 grid=0,0,0 quadrature_order=0 entries=0 bytes=202948800 setup_s=0.210975873 apply_s=0.016072403 power=61.8944521189

@@ -1,0 +1,210 @@
+#ifndef SLURRY_BRIDGE_STEP_H
+#define SLURRY_BRIDGE_STEP_H
+
+// Endpoint-consistent normal penalty for the first-order bridge integrator.
+// Hydrodynamics, contact normals and tangential kinematics remain frozen at
+// the beginning of the step. Only the normal compression uses the ACTUAL
+// translated/rotated endpoint geometry. No particle position is projected.
+#include "slurry_bridge_contact_solver.h"
+#include "slurry_bridge_images.h"
+#include "../vendor/gr_re2/ellipsoidGap.h"
+#include <Eigen/Geometry>
+#include <set>
+#include <tuple>
+
+namespace SlurryBridgeStep {
+namespace bs = SlurryBridgeSolver;
+namespace im = SlurryBridgeImages;
+namespace gr = slurry::gr_re2::graphite;
+using Vec3 = Eigen::Vector3d;
+using Mat3 = Eigen::Matrix3d;
+using Image = Eigen::Vector3i;
+inline Vec3 vector(const gr::Vec3 &v) { return {v[0], v[1], v[2]}; }
+inline gr::Vec3 array(const Vec3 &v) { return {v[0], v[1], v[2]}; }
+
+// Shared by the trial geometry and the actual LAMMPS advance.
+inline Eigen::Quaterniond rotate(const Eigen::Quaterniond &q, const Vec3 &omega,
+                                double dt) {
+  const double speed = omega.norm(), half = .5 * dt * speed;
+  const double factor = speed > 0. ? std::sin(half) / speed : .5 * dt;
+  return (Eigen::Quaterniond(std::cos(half), factor * omega[0],
+                            factor * omega[1], factor * omega[2]) * q).normalized();
+}
+
+struct Endpoint {
+  std::vector<gr::Body> bodies;
+  Mat3 lattice;
+  std::vector<double> gaps;
+};
+struct Geometry {
+  std::vector<gr::Body> bodies;
+  // Preserve the original quaternion, so trial and actual integration use
+  // identical arithmetic, rather than converting a rotation matrix twice.
+  std::vector<Eigen::Quaterniond> quaternions;
+  Mat3 lattice = Mat3::Identity(), kappa = Mat3::Zero();
+  Vec3 ambient_rotation = Vec3::Zero();
+  double contact_onset = 0.;
+  std::vector<Image> images;
+
+  Endpoint advance(const bs::Problem &p, const bs::Vector &velocity,
+                   bool check_candidates = true) const {
+    if (int(bodies.size()) != p.count || images.size() != p.contacts.size() ||
+        quaternions.size() != bodies.size())
+      throw std::invalid_argument("bridge endpoint geometry size mismatch");
+    Endpoint out;
+    out.bodies = bodies;
+    // fix deform 0 updates xz after INITIAL_INTEGRATE. In the supported
+    // constant-volume simple shear this is exact. A later integer tilt flip
+    // changes the lattice basis, not these physical image separations.
+    out.lattice = lattice + p.dt * kappa * lattice;
+    for (int i = 0; i < p.count; ++i) {
+      out.bodies[i].position = array(vector(bodies[i].position) + p.dt *
+          (velocity.segment<3>(6 * i) + kappa * vector(bodies[i].position)));
+      const Mat3 rotation = rotate(quaternions[i],
+          velocity.segment<3>(6 * i + 3) + ambient_rotation, p.dt).toRotationMatrix();
+      for (int a = 0; a < 3; ++a)
+        for (int b = 0; b < 3; ++b)
+          out.bodies[i].rotation[3 * a + b] = rotation(a, b);
+    }
+    using Key = std::tuple<int, int, int, int, int>;
+    std::set<Key> candidates;
+    out.gaps.reserve(p.contacts.size());
+    for (std::size_t k = 0; k < p.contacts.size(); ++k) {
+      const auto &c = p.contacts[k];
+      auto second = out.bodies[c.j];
+      second.position = array(vector(second.position) + out.lattice * images[k].cast<double>());
+      out.gaps.push_back(gr::closestEllipsoidGap(out.bodies[c.i], second).gap);
+      if (check_candidates)
+        candidates.emplace(c.i, c.j, images[k][0], images[k][1], images[k][2]);
+    }
+    if (!check_candidates)
+      return out;
+    double onset = contact_onset;
+    for (const auto &c : p.contacts)
+      onset = std::max(onset, c.onset);
+    // Independent endpoint broad phase: a new contact must never silently
+    // bypass the force solve just because it was outside the old near list.
+    for (int i = 0; i < p.count; ++i)
+      for (int j = i; j < p.count; ++j) {
+        const double ai = *std::max_element(bodies[i].axes.begin(), bodies[i].axes.end());
+        const double aj = *std::max_element(bodies[j].axes.begin(), bodies[j].axes.end());
+        const Vec3 d = vector(out.bodies[j].position) - vector(out.bodies[i].position);
+        for (const auto &image : im::images_within(d, out.lattice, ai + aj + onset)) {
+          if (i == j && !im::positive_image(image.image))
+            continue;
+          if (candidates.count(Key(i, j, image.image[0], image.image[1], image.image[2])))
+            continue;
+          auto second = out.bodies[j];
+          second.position = array(vector(out.bodies[i].position) + image.displacement);
+          if (gr::closestEllipsoidGap(out.bodies[i], second).gap < onset)
+            throw std::runtime_error("bridge endpoint gained an unlisted contact; reduce timestep");
+        }
+      }
+    return out;
+  }
+};
+
+struct Result {
+  bs::Result solution;
+  Endpoint endpoint;
+  int geometry_iterations = 0;
+  double maximum_gap_error = 0., maximum_linear_gap_defect = 0.;
+};
+
+inline Result solve(const bs::Problem &original, const Geometry &geometry,
+                    const bs::Options &options = bs::Options{},
+                    const bs::Result *warm = nullptr) {
+  bs::Problem corrected = original;
+  bs::Result previous;
+  Result out;
+  const int nm = 11 * original.count, nu = 6 * original.count;
+  bs::detail::Preconditioner monitor(original, bs::Vector::Zero(nu));
+  auto raw_residual = [&](const bs::Result &state,
+                          const std::vector<bs::ContactResponse> &contacts) {
+    bs::Vector raw(nm + nu);
+    raw.head(nm) = original.mobility(state.mid_moment) - state.q;
+    raw.tail(nu) = -bs::detail::select(state.total_moment, original.count) + original.external;
+    for (std::size_t k = 0; k < contacts.size(); ++k) {
+      const auto &c = original.contacts[k];
+      raw.segment<6>(nm + 6 * c.i) -= c.Bi.transpose() * contacts[k].traction;
+      raw.segment<6>(nm + 6 * c.j) -= c.Bj.transpose() * contacts[k].traction;
+    }
+    return raw;
+  };
+  // Scale the acceptance test from the same fixed zero state as the inner
+  // solver. It does not depend on an artificially excellent warm start.
+  bs::Result zero;
+  zero.velocity = bs::Vector::Zero(nu);
+  zero.mid_moment = bs::Vector::Zero(nm);
+  zero.q = original.prescribed;
+  zero.total_moment = original.near_resistance * zero.q;
+  std::vector<bs::ContactResponse> zero_contacts;
+  for (const auto &c : original.contacts)
+    zero_contacts.push_back(bs::contact_response(c, zero.velocity, original.dt));
+  const double rhs = monitor.left(raw_residual(zero, zero_contacts)).norm();
+  const double tolerance = options.absolute_tolerance + options.relative_tolerance * rhs;
+  bs::Options inner = options;
+  inner.relative_tolerance *= .1;
+  inner.absolute_tolerance *= .1;
+  // These are nonlinear geometry corrections of ONE physical time step.
+  // Every solve starts with the original committed tangential history.
+  constexpr int maximum_geometry_iterations = 24;
+  int linear = 0, newton = 0, applications = 1;
+  for (int iteration = 0; iteration < maximum_geometry_iterations; ++iteration) {
+    auto state = SlurryBridgeContactSolver::solve_proximal(
+        corrected, inner, iteration ? &previous : warm);
+    linear += state.linear_iterations;
+    newton += state.newton_iterations;
+    applications += state.mobility_applications;
+    auto endpoint = geometry.advance(original, state.velocity);
+    std::vector<bs::ContactResponse> exact;
+    exact.reserve(original.contacts.size());
+    bool constitutive_ok = true;
+    double gap_error = 0., linear_defect = 0.;
+    for (std::size_t k = 0; k < original.contacts.size(); ++k) {
+      const auto &c = original.contacts[k];
+      const auto uncorrected = bs::contact_response(c, state.velocity, original.dt);
+      const double defect = endpoint.gaps[k] - uncorrected.predicted_gap;
+      corrected.contacts[k].gap = c.gap + defect;
+      auto response = bs::contact_response(c, state.velocity, original.dt, endpoint.gaps[k]);
+      // Compute compression directly from the endpoint to avoid cancelling
+      // h + defect + dt*vn when reporting a very stiff, shallow contact.
+      const double force_error = (response.traction - state.contacts[k].traction).norm();
+      const double force_tolerance = options.absolute_tolerance +
+          options.relative_tolerance * std::max(1., response.traction.norm());
+      constitutive_ok = constitutive_ok && force_error <= force_tolerance;
+      if (response.active || state.contacts[k].active)
+        gap_error = std::max(gap_error, std::abs(endpoint.gaps[k] - state.contacts[k].predicted_gap));
+      linear_defect = std::max(linear_defect, std::abs(defect));
+      exact.push_back(response);
+    }
+    const bs::Vector raw = raw_residual(state, exact);
+    ++applications;
+    const double residual = monitor.left(raw).norm();
+    if (!raw.allFinite() || !std::isfinite(residual))
+      throw std::runtime_error("bridge endpoint correction produced a nonfinite residual");
+    if (constitutive_ok && residual <= tolerance) {
+      state.contacts = std::move(exact);
+      state.residual_norm = residual;
+      state.relative_residual = residual / std::max(rhs, options.absolute_tolerance);
+      state.force_residual_norm = raw.tail(nu).norm();
+      state.mobility_residual_norm = raw.head(nm).norm();
+      state.contact_power = 0.;
+      for (const auto &c : state.contacts)
+        state.contact_power += c.traction.dot(c.relative);
+      state.linear_iterations = linear;
+      state.newton_iterations = newton;
+      state.mobility_applications = applications;
+      out.solution = std::move(state);
+      out.endpoint = std::move(endpoint);
+      out.geometry_iterations = iteration + 1;
+      out.maximum_gap_error = gap_error;
+      out.maximum_linear_gap_defect = linear_defect;
+      return out;
+    }
+    previous = std::move(state);
+  }
+  throw std::runtime_error("bridge endpoint normal-force correction did not converge; reduce timestep (no position/history advance accepted)");
+}
+} // namespace SlurryBridgeStep
+#endif

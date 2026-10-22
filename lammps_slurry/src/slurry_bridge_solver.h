@@ -107,13 +107,16 @@ struct NonlinearFailure : std::runtime_error {
         breakpoint_steps(work.breakpoint_steps), residual(r), tolerance(t) {}
 };
 inline ContactResponse contact_response(const Contact &c, const Vector &u,
-                                        double dt) {
+                                        double dt,
+                                        double endpoint_gap = std::numeric_limits<double>::quiet_NaN()) {
   ContactResponse out;
   out.relative =
       c.Bi * u.segment<6>(6 * c.i) + c.Bj * u.segment<6>(6 * c.j) + c.affine;
   const double vn = c.normal.dot(out.relative);
-  out.predicted_gap = c.gap + dt * vn;
-  const double compression = std::max((c.onset - c.gap) - dt * vn, 0.);
+  out.predicted_gap = std::isnan(endpoint_gap) ? c.gap + dt * vn : endpoint_gap;
+  const double compression = std::isnan(endpoint_gap)
+      ? std::max((c.onset - c.gap) - dt * vn, 0.)
+      : std::max(c.onset - endpoint_gap, 0.);
   out.normal_load = c.kn * compression;
   out.active = out.normal_load > 0.;
   out.normal_energy = .5 * c.kn * compression * compression;

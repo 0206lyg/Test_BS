@@ -10,6 +10,8 @@
 #SBATCH --output=slurry_bridge_%j.out
 
 # New compact-bridge path: no basis or resistance-table generation.
+# Defaults: mesh periodic mobility, linear normal stiffness 100 N/m, 3 nm
+# certified initial surface clearance, and endpoint contact-geometry correction.
 # sbatch lammps_slurry/run_bridge_cpu.sbatch --output runs/ar20_bridge --ar 20 --count 108 --phi 0.24 --steps 100
 set -Eeuo pipefail
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}}"
