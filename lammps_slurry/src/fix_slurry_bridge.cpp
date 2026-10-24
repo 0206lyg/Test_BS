@@ -17,6 +17,7 @@
 #include "slurry_bridge_step.h"
 #include "slurry_bridge_shape.h"
 #include "slurry_cylinder_pair.h"
+#include "slurry_flake_diagnostics.h"
 #include "slurry_compact_bridge.h"
 #include "slurry_history_math.h"
 #include "slurry_periodic_mobility.h"
@@ -29,6 +30,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <filesystem>
+#include <optional>
 #include <iomanip>
 #include <limits>
 #include <map>
@@ -43,6 +46,7 @@ namespace gr = slurry::gr_re2::graphite;
 namespace step = SlurryBridgeStep;
 namespace shape = SlurryBridgeShape;
 namespace cylinder = SlurryCylinderPair;
+namespace fd = SlurryFlakeDiagnostics;
 namespace {
 using V3 = Eigen::Vector3d;
 using M3 = Eigen::Matrix3d;
@@ -87,7 +91,9 @@ struct FixSlurryBridge::Impl {
   double eta = 0, shear = 0, floor = 0, kn = 0, hc = 3e-9, mu = .1, kt = 80;
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
-  std::ofstream csv;
+  std::ofstream csv, flake_channels, flake_bins;
+  bool flake_diagnostics = false;
+  bigint last_diagnostic = -1;
   std::array<double, 40> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
@@ -181,6 +187,32 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "contact_candidates,krylov_dimension,fft_plan_builds,mobility_threads,"
              "preconditioner_symbolic_total,preconditioner_numeric_total,"
              "preconditioner_numeric_reuses_total,monitor_reuses_total\n";
+  }
+  // Read-only diagnostics use the existing history sampling cadence. They
+  // never enter the force/velocity solve and do not change the batch settings.
+  const char *diagnostics = std::getenv("SLURRY_FLAKE_DIAGNOSTICS");
+  p.flake_diagnostics = p.flake && !filename.empty() &&
+      !(diagnostics && !std::strcmp(diagnostics, "0"));
+  if (p.flake_diagnostics && comm->me == 0) {
+    const auto directory = std::filesystem::path(filename).parent_path();
+    p.flake_channels.open(directory / "flake_channels.csv", std::ios::trunc);
+    p.flake_bins.open(directory / "flake_channel_bins.csv", std::ios::trunc);
+    if (!p.flake_channels || !p.flake_bins) {
+      std::fprintf(stderr, "WARNING: flake diagnostic files could not be opened; dynamics continue without diagnostic output.\n");
+      p.flake_diagnostics = false;
+    } else {
+      p.flake_channels << std::setprecision(17);
+      p.flake_bins << std::setprecision(17);
+      p.flake_channels << "step,time_s,strain," << fd::csv_columns()
+          << ",middle_power_W,hydro_particle_power_W,solvent_power_W,contact_power_W,"
+             "stress_power_W,middle_sigma_xz_Pa,hydro_sigma_xz_Pa,contact_sigma_xz_Pa,"
+             "eta_relative,eta_relative_face,eta_relative_rim,eta_relative_middle,"
+             "eta_relative_contact,near_moment_closure_relative,power_closure_relative,"
+             "hydro_stress_closure_Pa,active_contacts,sliding_contacts,contacted_particles,"
+             "normal_load_sum_N,normal_load_max_N,sliding_dissipation_W,gap_floor_m,"
+             "diagnostic_pair_storage_bytes,diagnostic_capture_s,diagnostic_reduce_s\n";
+      p.flake_bins << "step,time_s,strain,bin_kind,bin_label," << fd::csv_columns() << '\n';
+    }
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -354,6 +386,10 @@ void FixSlurryBridge::solve_velocities() {
       for (int i = 0; i < n; ++i)
         for (int k = 0; k < 5; ++k)
           problem.prescribed[11 * i + 6 + k] = -(E.array() * cb::strain_basis()[k].array()).sum();
+      const bool diagnose = p.flake_diagnostics && p.last_diagnostic != update->ntimestep &&
+          (update->ntimestep % p.interval == 0 || update->ntimestep == update->laststep);
+      std::vector<fd::PairRecord> diagnostic_pairs;
+      double diagnostic_capture_s = 0.;
       std::vector<Eigen::Triplet<double>> entries;
       std::vector<PairKey> contact_keys;
       std::vector<V3> contact_displacements;
@@ -384,7 +420,14 @@ void FixSlurryBridge::solve_velocities() {
               gap=shape::gap_result(ci,cj,g);
               cylinder::Options model;
               model.film.eta=1.; model.film.gap_floor=p.floor/length;
-              const auto near=cylinder::evaluate(ci,cj,g,model);
+              std::optional<cylinder::Diagnostics> diagnostic;
+              if (diagnose) diagnostic.emplace();
+              const auto near=cylinder::evaluate(ci,cj,g,model,diagnose ? &*diagnostic : nullptr);
+              if (diagnose && near.cutoff_weight > 0.) {
+                const double t = MPI_Wtime();
+                diagnostic_pairs.push_back(fd::make_pair(i,j,ci,cj,g,*diagnostic,model.film.gap_floor));
+                diagnostic_capture_s += MPI_Wtime() - t;
+              }
               near_resistance=near.resistance; near_active=near.active;
             } else {
               gap=gr::closestEllipsoidGap(bodies[i],bj);
@@ -514,6 +557,9 @@ void FixSlurryBridge::solve_velocities() {
       p.pending.clear();
       int contacts = 0;
       double normal_energy = 0., tangent_energy = 0.;
+      int diagnostic_sliding = 0;
+      double diagnostic_load_sum = 0., diagnostic_load_max = 0., diagnostic_sliding_work = 0.;
+      std::vector<bool> diagnostic_contacted(diagnose ? n : 0, false);
       for (size_t k = 0; k < problem.contacts.size(); ++k) {
         const auto &c = problem.contacts[k];
         const auto &response = result.contacts[k];
@@ -526,6 +572,13 @@ void FixSlurryBridge::solve_velocities() {
         contact_moments.segment<6>(6 * c.j) -= c.Bj.transpose() * response.traction;
         if (response.active) {
           ++contacts;
+          if (diagnose) {
+            diagnostic_contacted[c.i] = diagnostic_contacted[c.j] = true;
+            diagnostic_sliding += response.sliding;
+            diagnostic_sliding_work += response.sliding_work;
+            diagnostic_load_sum += response.normal_load;
+            diagnostic_load_max = std::max(diagnostic_load_max, response.normal_load);
+          }
           History h;
           h.elastic = response.tangent_history;
           h.normal = c.normal;
@@ -546,6 +599,66 @@ void FixSlurryBridge::solve_velocities() {
                    hydro_power = (solvent_power + result.hydro_power) * power_scale,
                    contact_power = result.contact_power * power_scale;
       const double stress_power = p.stress[3] * p.shear * volume * std::pow(length, 3);
+      if (diagnose) {
+        // Diagnostics never feed back into the accepted solution. A failed
+        // diagnostic write disables only diagnostics, not the simulation.
+        try {
+          const double diagnostic_start = MPI_Wtime();
+          fd::Accumulator accumulated(n);
+          for (const auto &pair : diagnostic_pairs) accumulated.add(pair, result.q);
+          const auto &observed = accumulated.total;
+          const Eigen::VectorXd near_moment = problem.near_resistance * result.q;
+          const double middle_power = result.q.dot(result.mid_moment);
+          const double middle_stress = fd::global_shear_moment(result.mid_moment) * stress_scale;
+          const double near_closure =
+              (accumulated.face_moment + accumulated.rim_moment - near_moment).norm() /
+              std::max(near_moment.norm(), 1e-100);
+          const double power_closure =
+              (observed.face_power + observed.rim_power + middle_power - result.hydro_power) /
+              std::max(std::abs(result.hydro_power), 1e-100);
+          const double stress_closure =
+              (observed.face_shear_moment + observed.rim_shear_moment) * stress_scale +
+              middle_stress - p.stress[1];
+          const double time = simulation_time(), strain = std::abs(p.shear) * time;
+          const double eta_denominator = p.eta * p.shear;
+          auto relative_eta = [&](double stress) {
+            return eta_denominator ? stress / eta_denominator : std::numeric_limits<double>::quiet_NaN();
+          };
+          const double force_scale = p.eta * length * length * rate;
+          auto &o = p.flake_channels;
+          o << update->ntimestep << ',' << time << ',' << strain << ',';
+          fd::write_csv_values(o,observed,power_scale,stress_scale,length*rate);
+          o << ',' << middle_power*power_scale << ',' << result.hydro_power*power_scale
+            << ',' << solvent_power*power_scale << ',' << contact_power << ',' << stress_power
+            << ',' << middle_stress << ',' << p.stress[1] << ',' << p.stress[2]
+            << ',' << relative_eta(p.stress[3])
+            << ',' << relative_eta(observed.face_shear_moment*stress_scale)
+            << ',' << relative_eta(observed.rim_shear_moment*stress_scale)
+            << ',' << relative_eta(middle_stress) << ',' << relative_eta(p.stress[2])
+            << ',' << near_closure << ',' << power_closure << ',' << stress_closure
+            << ',' << contacts << ',' << diagnostic_sliding << ','
+            << std::count(diagnostic_contacted.begin(),diagnostic_contacted.end(),true)
+            << ',' << diagnostic_load_sum*force_scale << ',' << diagnostic_load_max*force_scale
+            << ',' << diagnostic_sliding_work/dt*power_scale
+            << ',' << p.floor << ',' << diagnostic_pairs.capacity()*sizeof(fd::PairRecord)
+            << ',' << diagnostic_capture_s << ',' << MPI_Wtime()-diagnostic_start << '\n';
+          auto write_bin = [&](const char *kind,const char *label,const fd::Stats &stats) {
+            p.flake_bins << update->ntimestep << ',' << time << ',' << strain << ',' << kind << ',' << label << ',';
+            fd::write_csv_values(p.flake_bins,stats,power_scale,stress_scale,length*rate);
+            p.flake_bins << '\n';
+          };
+          for (size_t k=0;k<accumulated.by_angle.size();++k)
+            write_bin("angle",fd::angle_labels()[k],accumulated.by_angle[k]);
+          for (size_t k=0;k<accumulated.by_gap.size();++k)
+            write_bin("gap_over_floor",fd::gap_labels()[k],accumulated.by_gap[k]);
+          o.flush(); p.flake_bins.flush();
+          if (!o || !p.flake_bins) throw std::runtime_error("diagnostic CSV write failed");
+          p.last_diagnostic = update->ntimestep;
+        } catch (const std::exception &diagnostic_error) {
+          std::fprintf(stderr,"WARNING: flake diagnostics disabled: %s; dynamics continue.\n",diagnostic_error.what());
+          p.flake_diagnostics = false;
+        }
+      }
       p.diag.fill(0);
       p.diag[0] = p.stress[3];
       p.diag[1] = p.shear ? p.stress[3] / p.shear : std::numeric_limits<double>::quiet_NaN();

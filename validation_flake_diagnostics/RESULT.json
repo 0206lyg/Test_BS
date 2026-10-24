@@ -1,0 +1,95 @@
+{
+  "scope": "Real serial LAMMPS, 108 particles, 2 moving steps; reference FFT/Eigen backend, OMP_NUM_THREADS=1",
+  "final_plugin_sha256": "e8a1725cc6d412df2a7560424228626a7a52715da3257ff41df8ebbb233542ac",
+  "runs": {
+    "flake": {
+      "history_rows_baseline": 3,
+      "history_rows_diagnostic": 3,
+      "history_nonprofile_exact": true,
+      "history_differences": [],
+      "files": {
+        "trajectory.lammpstrj": {
+          "equal": true,
+          "baseline_sha256": "f44fb0b1c26db563cbd050d9232dcd533514bfbca631372489d9581be695d6ab",
+          "diagnostic_sha256": "f44fb0b1c26db563cbd050d9232dcd533514bfbca631372489d9581be695d6ab"
+        },
+        "final.data": {
+          "equal": true,
+          "baseline_sha256": "71320ab3914ce4d1febcef0f45ee1390286991ba0a7ac55d1c4e265b8f31ae05",
+          "diagnostic_sha256": "71320ab3914ce4d1febcef0f45ee1390286991ba0a7ac55d1c4e265b8f31ae05"
+        }
+      },
+      "diagnostic_rows": 3,
+      "bin_rows": 33,
+      "csv_shape_valid": true,
+      "sliding_dissipation_present_nonnegative": true,
+      "sliding_dissipation_W": [
+        3.737250670476263e-15,
+        6.959619240893881e-15,
+        1.4948522660382055e-14
+      ],
+      "max_near_moment_closure_relative": 2.4400905846388943e-09,
+      "max_power_closure_relative": 1.3932866596960847e-10,
+      "max_hydro_stress_closure_Pa": 2.014566291563824e-10,
+      "max_eta_component_sum_error": 2.014566291563824e-10,
+      "all_count_bin_sums_match": true,
+      "max_bin_channel_power_error_W": 1.5651000359584874e-27,
+      "history_eta_exact_to_diagnostic": true
+    },
+    "spheroid": {
+      "history_rows_baseline": 3,
+      "history_rows_diagnostic": 3,
+      "history_nonprofile_exact": true,
+      "history_differences": [],
+      "files": {
+        "trajectory.lammpstrj": {
+          "equal": true,
+          "baseline_sha256": "abf32c1a03078ee2ef2ff2609e0b63a5c83da0e70d4568d5389b79d2c725db53",
+          "diagnostic_sha256": "abf32c1a03078ee2ef2ff2609e0b63a5c83da0e70d4568d5389b79d2c725db53"
+        },
+        "final.data": {
+          "equal": true,
+          "baseline_sha256": "61b697cdfddb4b52c78b38734be050d5e8e656f65692eca29ada3293559c439d",
+          "diagnostic_sha256": "61b697cdfddb4b52c78b38734be050d5e8e656f65692eca29ada3293559c439d"
+        }
+      },
+      "no_flake_channels": true
+    }
+  },
+  "diagnostic_closure_tolerance": 1e-07,
+  "pass": true,
+  "N500": {
+    "shape": "flake",
+    "ar": 20,
+    "phi": 0.24,
+    "steps": 1,
+    "history_nonprofile_exact": true,
+    "trajectory_bytes_equal": true,
+    "final_data_bytes_equal": true,
+    "diagnostic_rows": 2,
+    "max_power_closure_relative": 8.541960987117007e-11,
+    "max_hydro_stress_closure_Pa": 3.1528557542515045e-11,
+    "peak_pair_storage_bytes": 130285568
+  },
+  "unit_tests": {
+    "ctest_passed": [
+      "slurry_bridge_flake",
+      "slurry_flake_diagnostics",
+      "slurry_cylinder_pair",
+      "slurry_flake_layering"
+    ],
+    "layering_python_cases": 5,
+    "matrix_observation_bitwise_equal": true,
+    "self_image_and_affine_slip_tests": true
+  },
+  "model_accuracy_claim": false,
+  "production_backends_rebenchmarked": false,
+  "source_fingerprint": "933f9098d034c7284e91bd2160191cc555f0aff98a953936217b901a9061b148",
+  "baseline_release": "20261023-spheroid-flake-common-run",
+  "baseline_source_fingerprint": "0fcfb013f8cbee8dc68a34e0040347cb530c90da6c54cc8bad6b9998e72ae9bf",
+  "scope_notes": [
+    "Read-only instrumentation and postprocessing; no physical model alteration.",
+    "Serial LAMMPS reference FFT/Eigen locally; production FFTW/MKL configuration unchanged.",
+    "Tiny moving runs test integration invariance, not steady viscosity, physical accuracy or long-run gap robustness."
+  ]
+}

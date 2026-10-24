@@ -28,6 +28,16 @@ struct Options {
   double face_angle_start = .10, face_angle_end = .35; // radians
   double face_area_fraction = .01; // blend only the last 1% of face area
 };
+// Optional observation of the very same evaluation; never changes its model.
+// Raw matrices are copied only when requested, avoiding a second film solve.
+struct Diagnostics {
+  Mat22 film = Mat22::Zero(), rim = Mat22::Zero();
+  double angle = 0., angle_weight = 0., area_weight = 0., cutoff_weight = 0.;
+  double face_weight = 0., area = 0., film_min_gap = 0., film_max_gap = 0.;
+  double minimum_gap = 0., gap_floor = 0.;
+  bool film_evaluated = false, film_active = false, face_enabled = true;
+  bool angle_excluded = false;
+};
 struct Result {
   Mat22 resistance = Mat22::Zero();
   bool active = false, face_active = false;
@@ -76,7 +86,11 @@ inline Mat22 rim_resistance(const cg::Body &a, const cg::Body &b,
 }
 
 inline Result evaluate(const cg::Body &a, const cg::Body &b, const cg::Gap &g,
-                       const Options &o = Options{}) {
+                       const Options &o = Options{}, Diagnostics *diagnostics = nullptr) {
+  if (diagnostics) {
+    *diagnostics = Diagnostics{}; diagnostics->face_enabled=o.face_enabled;
+    diagnostics->minimum_gap=g.gap; diagnostics->gap_floor=o.film.gap_floor;
+  }
   if (!g.converged || g.overlap || !std::isfinite(g.gap) || g.gap < 0.)
     throw std::invalid_argument("Cylinder pair requires certified separated geometry");
   if (!(o.cutoff_end > o.cutoff_start && o.cutoff_start >= 0.) ||
@@ -87,22 +101,37 @@ inline Result evaluate(const cg::Body &a, const cg::Body &b, const cg::Gap &g,
   Result r; r.minimum_gap=g.gap;
   const double a0=std::min(a.radius,b.radius), z=g.gap/a0;
   r.cutoff_weight=1.-smooth_rise((z-o.cutoff_start)/(o.cutoff_end-o.cutoff_start));
+  if (diagnostics) diagnostics->cutoff_weight=r.cutoff_weight;
   if (r.cutoff_weight == 0.) return r;
   const double angle=std::acos(std::clamp(std::abs(a.axis.normalized().dot(b.axis.normalized())),0.,1.));
   const double angle_weight=1.-smooth_rise((angle-o.face_angle_start)/(o.face_angle_end-o.face_angle_start));
+  if (diagnostics) {
+    diagnostics->angle=angle; diagnostics->angle_weight=angle_weight;
+    diagnostics->angle_excluded=angle>=o.face_angle_end;
+  }
   Mat22 film=Mat22::Zero();
   if (angle_weight > 0.) {
     auto options=o.film;
     options.max_face_angle=std::max(options.max_face_angle,o.face_angle_end);
     const auto f=cf::evaluate(a,b,options);
     r.area=f.area;r.pressure_modes=f.modes;
+    if (diagnostics) {
+      diagnostics->film_evaluated=true; diagnostics->film_active=f.active;
+      diagnostics->film=f.resistance; diagnostics->area=f.area;
+      diagnostics->film_min_gap=f.min_gap; diagnostics->film_max_gap=f.max_gap;
+    }
     if (f.active) {
       r.face_weight=angle_weight*smooth_rise(f.area/(o.face_area_fraction*std::acos(-1.)*a0*a0));
       r.face_active=r.face_weight>0. && o.face_enabled;
+      if (diagnostics) {
+        diagnostics->area_weight=smooth_rise(f.area/(o.face_area_fraction*std::acos(-1.)*a0*a0));
+        diagnostics->face_weight=r.face_weight;
+      }
       if (o.face_enabled) film=f.resistance;
     }
   }
   const Mat22 rim=o.film.eta*rim_resistance(a,b,g,o.film.gap_floor,o.rim_radius_factor);
+  if (diagnostics) diagnostics->rim=rim;
   r.resistance=r.cutoff_weight*(r.face_weight*film+(1.-r.face_weight)*rim);
   r.resistance=.5*(r.resistance+r.resistance.transpose()).eval();
   r.active=r.resistance.cwiseAbs().maxCoeff()>0.;
