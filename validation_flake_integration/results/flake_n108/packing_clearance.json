@@ -1,0 +1,12 @@
+{
+  "certified": true,
+  "target_gap_m": 3.0000000000000004e-09,
+  "minimum_surface_gap_m": 3.0003528933593498e-09,
+  "max_clearance_deficit_m": 0,
+  "checked_pair_images": 1369,
+  "nominal_volume_fraction": 0.23999999999999941,
+  "particle_shape": "flake",
+  "maximum_gap_bound_width_m": 2.6513949711209124e-12,
+  "distance_tolerance_not_met": 6,
+  "method": "cylinder_support_lower_bound_all_periodic_images"
+}

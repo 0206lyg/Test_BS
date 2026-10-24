@@ -17,7 +17,7 @@ METRICS = ("eta_Pa_s", "eta_relative", "sigma_xz_Pa", "sigma_solvent_Pa", "sigma
 REQUIRED = ("interval_steps", "interval_start_time_s", "interval_end_time_s", "interval_start_strain", "interval_end_strain") + tuple("interval_mean_"+k for k in METRICS)
 
 
-def read_intervals(path):
+def read_intervals(path, allow_empty=False):
     rows = []
     with Path(path).open(newline="") as stream:
         reader = csv.DictReader(line for line in stream if not line.startswith("#"))
@@ -42,7 +42,7 @@ def read_intervals(path):
                 rows.append(row)
             except (ValueError, KeyError) as error:
                 raise ValueError("Malformed history row {}: {}".format(number, error)) from error
-    if not rows:
+    if not rows and not allow_empty:
         raise ValueError("No positive-time, positive-strain intervals; viscosity needs nonzero shear and completed steps")
     return rows
 

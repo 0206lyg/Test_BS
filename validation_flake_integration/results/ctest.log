@@ -1,0 +1,85 @@
+Test project /workspace/scratch/0520ed9b6708/flake-build
+      Start  1: slurry_matched_hybrid_golden
+      Start  2: slurry_independent_stokes_reference
+ 1/40 Test  #2: slurry_independent_stokes_reference ...   Passed    1.35 sec
+      Start  3: slurry_grand_pair_math
+ 2/40 Test  #3: slurry_grand_pair_math ................   Passed    0.00 sec
+      Start  4: slurry_grand_pair_lookup
+ 3/40 Test  #4: slurry_grand_pair_lookup ..............   Passed    0.00 sec
+      Start  5: slurry_grand_reduced
+ 4/40 Test  #5: slurry_grand_reduced ..................   Passed    0.00 sec
+      Start  6: slurry_grand_system_passivity
+ 5/40 Test  #6: slurry_grand_system_passivity .........   Passed    0.00 sec
+      Start  7: slurry_exact_sparse_lu
+ 6/40 Test  #7: slurry_exact_sparse_lu ................   Passed    0.00 sec
+      Start  8: slurry_exact_jacobian_ilu
+ 7/40 Test  #8: slurry_exact_jacobian_ilu .............   Passed    0.00 sec
+      Start  9: slurry_adaptive_forcing_ilu
+ 8/40 Test  #9: slurry_adaptive_forcing_ilu ...........   Passed    0.00 sec
+      Start 10: slurry_cached_ilu_equivalence
+ 9/40 Test #10: slurry_cached_ilu_equivalence .........   Passed    0.00 sec
+      Start 11: slurry_incomplete_sparse_lu
+10/40 Test #11: slurry_incomplete_sparse_lu ...........   Passed    0.00 sec
+      Start 12: slurry_sparse_preconditioner
+11/40 Test #12: slurry_sparse_preconditioner ..........   Passed    0.13 sec
+      Start 13: slurry_spheroid_lubrication_algebra
+12/40 Test #13: slurry_spheroid_lubrication_algebra ...   Passed    0.00 sec
+      Start 14: slurry_mari_pair_lubrication
+13/40 Test #14: slurry_mari_pair_lubrication ..........   Passed    0.01 sec
+      Start 15: slurry_hydro_analytic_limits
+14/40 Test #15: slurry_hydro_analytic_limits ..........   Passed    0.02 sec
+      Start 16: slurry_packing_gradients
+15/40 Test #16: slurry_packing_gradients ..............   Passed    0.00 sec
+      Start 17: slurry_implicit_resistance_contact
+16/40 Test #17: slurry_implicit_resistance_contact ....   Passed    0.00 sec
+      Start 18: slurry_stress_analytic_limits
+17/40 Test #18: slurry_stress_analytic_limits .........   Passed    0.02 sec
+      Start 19: slurry_history_objectivity
+18/40 Test #19: slurry_history_objectivity ............   Passed    0.00 sec
+      Start 20: slurry_dense_friction_kink
+19/40 Test #20: slurry_dense_friction_kink ............   Passed    0.02 sec
+      Start 21: slurry_dense_friction_stall
+20/40 Test #21: slurry_dense_friction_stall ...........   Passed    0.02 sec
+      Start 22: slurry_dense_friction_kink_lu
+21/40 Test #22: slurry_dense_friction_kink_lu .........   Passed    0.02 sec
+      Start 23: slurry_dense_friction_stall_lu
+22/40 Test #23: slurry_dense_friction_stall_lu ........   Passed    0.02 sec
+      Start 24: slurry_dense_friction_kink_ilu
+23/40 Test #24: slurry_dense_friction_kink_ilu ........   Passed    0.04 sec
+      Start 25: slurry_dense_friction_stall_ilu
+24/40 Test #25: slurry_dense_friction_stall_ilu .......   Passed    0.04 sec
+      Start 26: slurry_compact_bridge
+25/40 Test #26: slurry_compact_bridge .................   Passed    0.00 sec
+      Start 27: slurry_bridge_images
+26/40 Test #27: slurry_bridge_images ..................   Passed    0.00 sec
+      Start 28: slurry_bridge_solver
+27/40 Test #28: slurry_bridge_solver ..................   Passed    0.01 sec
+      Start 29: slurry_bridge_step
+28/40 Test #29: slurry_bridge_step ....................   Passed    0.01 sec
+      Start 30: slurry_bridge_flake
+29/40 Test #30: slurry_bridge_flake ...................   Passed    0.01 sec
+      Start 31: slurry_cylinder_geometry
+30/40 Test #31: slurry_cylinder_geometry ..............   Passed    0.00 sec
+      Start 32: slurry_cylinder_film
+31/40 Test #32: slurry_cylinder_film ..................   Passed    0.01 sec
+      Start 33: slurry_cylinder_pair
+32/40 Test #33: slurry_cylinder_pair ..................   Passed    0.01 sec
+      Start 34: slurry_periodic_mobility
+33/40 Test #34: slurry_periodic_mobility ..............   Passed    0.05 sec
+      Start 35: slurry_periodic_mesh
+34/40 Test  #1: slurry_matched_hybrid_golden ..........   Passed    1.89 sec
+      Start 36: slurry_contact_condensation
+35/40 Test #36: slurry_contact_condensation ...........   Passed    0.01 sec
+      Start 37: slurry_bridge_workspace
+36/40 Test #37: slurry_bridge_workspace ...............   Passed    0.01 sec
+      Start 38: slurry_bridge_tools
+37/40 Test #38: slurry_bridge_tools ...................   Passed    0.72 sec
+      Start 39: slurry_packing_clearance
+38/40 Test #35: slurry_periodic_mesh ..................   Passed    0.83 sec
+      Start 40: slurry_runtime_link_paths
+39/40 Test #39: slurry_packing_clearance ..............   Passed    0.29 sec
+40/40 Test #40: slurry_runtime_link_paths .............   Passed    1.81 sec
+
+100% tests passed out of 40
+
+Total Test time (real) =   4.46 sec

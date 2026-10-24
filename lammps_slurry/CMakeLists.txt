@@ -133,6 +133,10 @@ install(TARGETS slurry LIBRARY DESTINATION lib/lammps/plugins)
 # Geometry-only preparation. This executable does not link to MPI/LAMMPS and
 # its artificial relaxation steps have no physical time interpretation.
 add_executable(slurry_pack src/pack_spheroids.cpp)
+target_include_directories(slurry_pack SYSTEM PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/vendor/eigen3")
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(slurry_pack PRIVATE OpenMP::OpenMP_CXX)
+endif()
 install(TARGETS slurry_pack RUNTIME DESTINATION bin)
 
 # Offline generation only. Runtime finite_gap_fast loads the resulting table;
@@ -277,7 +281,7 @@ if(SLURRY_ENABLE_LU)
     target_link_libraries(slurry PRIVATE OpenMP::OpenMP_CXX)
   endif()
   if(BUILD_TESTING)
-    foreach(BRIDGE_TEST compact_bridge bridge_images bridge_solver bridge_step periodic_mobility periodic_mesh contact_condensation bridge_workspace)
+    foreach(BRIDGE_TEST compact_bridge bridge_images bridge_solver bridge_step bridge_flake cylinder_geometry cylinder_film cylinder_pair periodic_mobility periodic_mesh contact_condensation bridge_workspace)
       if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_${BRIDGE_TEST}.cpp")
         add_executable(slurry_${BRIDGE_TEST}_test tests/test_${BRIDGE_TEST}.cpp)
         target_include_directories(slurry_${BRIDGE_TEST}_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")

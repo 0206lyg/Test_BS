@@ -15,6 +15,8 @@
 #include "slurry_bridge_solver.h"
 #include "slurry_bridge_contact_solver.h"
 #include "slurry_bridge_step.h"
+#include "slurry_bridge_shape.h"
+#include "slurry_cylinder_pair.h"
 #include "slurry_compact_bridge.h"
 #include "slurry_history_math.h"
 #include "slurry_periodic_mobility.h"
@@ -39,6 +41,8 @@ namespace pm = SlurryPeriodic;
 namespace im = SlurryBridgeImages;
 namespace gr = slurry::gr_re2::graphite;
 namespace step = SlurryBridgeStep;
+namespace shape = SlurryBridgeShape;
+namespace cylinder = SlurryCylinderPair;
 namespace {
 using V3 = Eigen::Vector3d;
 using M3 = Eigen::Matrix3d;
@@ -52,16 +56,13 @@ struct History {
 };
 gr::Vec3 arr(const V3 &x) { return {x[0], x[1], x[2]}; }
 V3 vec(const gr::Vec3 &x) { return {x[0], x[1], x[2]}; }
-void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega) {
+void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega, bool flake) {
   auto &b = avec->bonus[atom->ellipsoid[i]];
   double R[3][3], ob[3], lb[3], l[3];
   MathExtra::quat_to_mat(b.quat, R);
   MathExtra::transpose_matvec(R, omega.data(), ob);
-  for (int k = 0; k < 3; ++k)
-    lb[k] = atom->rmass[i] / 5 *
-            (b.shape[(k + 1) % 3] * b.shape[(k + 1) % 3] +
-             b.shape[(k + 2) % 3] * b.shape[(k + 2) % 3]) *
-            ob[k];
+  const auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,flake);
+  for (int k = 0; k < 3; ++k) lb[k] = inertia[k] * ob[k];
   MathExtra::matvec(R, lb, l);
   std::copy(l, l + 3, atom->angmom[i]);
 }
@@ -103,12 +104,13 @@ struct FixSlurryBridge::Impl {
       std::make_shared<bs::detail::SolverWorkspace>();
   bool have_warm = false;
   bool direct_mobility = false;
+  bool flake = false;
 };
 FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     : Fix(lmp, narg, arg), p_(new Impl) {
   if (narg < 7)
     error->all(FLERR, "slurry/bridge requires eta shear_rate gap_floor kn [contact hc mu kt] "
-                      "[spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] [tolerance rtol] [iterations "
+                      "[shape spheroid|flake] [spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] [tolerance rtol] [iterations "
                       "maxit] [history file interval average_start_strain]");
   auto &p = *p_;
   p.eta = utils::numeric(FLERR, arg[3], false, lmp);
@@ -122,6 +124,11 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
       p.mu = utils::numeric(FLERR, arg[k + 2], false, lmp);
       p.kt = utils::numeric(FLERR, arg[k + 3], false, lmp);
       k += 4;
+    } else if (!std::strcmp(arg[k], "shape") && k + 1 < narg) {
+      if (std::strcmp(arg[k+1],"spheroid") && std::strcmp(arg[k+1],"flake"))
+        error->all(FLERR,"slurry/bridge shape must be spheroid or flake");
+      p.flake=!std::strcmp(arg[k+1],"flake");
+      k+=2;
     } else if (!std::strcmp(arg[k], "spectral") && k + 1 < narg) {
       p.spectral = utils::numeric(FLERR, arg[k + 1], false, lmp);
       k += 2;
@@ -249,12 +256,9 @@ void FixSlurryBridge::initial_integrate(int) {
   p.history = p.pending;
   for (int i = 0; i < atom->nlocal; ++i) {
     auto &b = p.avec->bonus[atom->ellipsoid[i]];
-    double inertia[3], wr[3];
-    for (int k = 0; k < 3; ++k)
-      inertia[k] = atom->rmass[i] / 5 *
-                   (b.shape[(k + 1) % 3] * b.shape[(k + 1) % 3] +
-                    b.shape[(k + 2) % 3] * b.shape[(k + 2) % 3]);
-    MathExtra::mq_to_omega(atom->angmom[i], b.quat, inertia, wr);
+    double wr[3];
+    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,p.flake);
+    MathExtra::mq_to_omega(atom->angmom[i], b.quat, inertia.data(), wr);
     V3 w(wr[0], wr[1], wr[2]);
     for (int k = 0; k < 3; ++k)
       atom->x[i][k] += dt * atom->v[i][k];
@@ -264,7 +268,7 @@ void FixSlurryBridge::initial_integrate(int) {
     b.quat[1] = q.x();
     b.quat[2] = q.y();
     b.quat[3] = q.z();
-    store_momentum(atom, p.avec, i, w);
+    store_momentum(atom, p.avec, i, w, p.flake);
   }
 }
 void FixSlurryBridge::solve_velocities() {
@@ -302,7 +306,7 @@ void FixSlurryBridge::solve_velocities() {
       for (const auto &r : records)
         if (std::abs(r.axes[2] - length) > 1e-10 * length ||
             std::abs(r.axes[0] - r.axes[1]) > 1e-10 * r.axes[0] || r.axes[0] < r.axes[2])
-          throw std::runtime_error("bridge supports oblate spheroids with common polar semiaxis c");
+          throw std::runtime_error("bridge supports axisymmetric oblate particles with common polar half-extent c");
       M3 H;
       H << domain->xprd, domain->xy, domain->xz, 0, domain->yprd, domain->yz, 0, 0, domain->zprd;
       H /= length;
@@ -327,6 +331,9 @@ void FixSlurryBridge::solve_velocities() {
             bodies[i].rotation[3 * k + l] = R[k][l];
         }
         middle_bodies[i].x = vec(bodies[i].position);
+        // The common positive periodic mobility uses the existing ellipsoid
+        // representation. For flake this is the explicit matched-spheroid middle/self
+        // approximation; the cylinder surface enters every near/contact term.
         middle_bodies[i].shape = cb::shape(bodies[i], 1.);
       }
       bool same = p.tags.size() == records.size();
@@ -356,9 +363,11 @@ void FixSlurryBridge::solve_velocities() {
       double section = MPI_Wtime();
       for (int i = 0; i < n; ++i)
         for (int j = i; j < n; ++j) {
-          const double ai = *std::max_element(bodies[i].axes.begin(), bodies[i].axes.end()),
-                       aj = *std::max_element(bodies[j].axes.begin(), bodies[j].axes.end());
-          const double rc = ai + aj + std::max(std::min(ai, aj), p.hc / length);
+          const double ai = shape::bounding_radius(bodies[i],p.flake),
+                       aj = shape::bounding_radius(bodies[j],p.flake);
+          const double near_range=p.flake ? std::min(bodies[i].axes[0],bodies[j].axes[0])
+                                          : std::min(ai,aj);
+          const double rc = ai + aj + std::max(near_range, p.hc / length);
           const V3 original = vec(bodies[j].position) - vec(bodies[i].position);
           for (const auto &image : im::images_within(original, H, rc)) {
             if (i == j && !im::positive_image(image.image))
@@ -366,15 +375,29 @@ void FixSlurryBridge::solve_velocities() {
             const V3 d = image.displacement;
             auto bj = bodies[j];
             bj.position = arr(vec(bodies[i].position) + d);
-            const auto gap = gr::closestEllipsoidGap(bodies[i], bj);
+            gr::GapResult gap;
+            Eigen::Matrix<double,22,22> near_resistance;
+            bool near_active=false;
+            if (p.flake) {
+              const auto ci=shape::cylinder(bodies[i]), cj=shape::cylinder(bj);
+              const auto g=shape::cylinder_gap(ci,cj,1e-8*p.floor/length);
+              gap=shape::gap_result(ci,cj,g);
+              cylinder::Options model;
+              model.film.eta=1.; model.film.gap_floor=p.floor/length;
+              const auto near=cylinder::evaluate(ci,cj,g,model);
+              near_resistance=near.resistance; near_active=near.active;
+            } else {
+              gap=gr::closestEllipsoidGap(bodies[i],bj);
+              const auto near=cb::evaluate(bodies[i],bj,gap,1.,1.,p.floor/length);
+              near_resistance=near.resistance; near_active=near.active;
+            }
             min_gap = std::min(min_gap, gap.gap);
             overlap = std::max(overlap, -gap.gap);
-            auto near = cb::evaluate(bodies[i], bj, gap, 1., 1., p.floor / length);
-            if (near.active) {
+            if (near_active) {
               ++active_near;
               for (int r = 0; r < 22; ++r)
                 for (int c = 0; c < 22; ++c) {
-                  double value = near.resistance(r, c);
+                  double value = near_resistance(r, c);
                   if (value != 0)
                     entries.emplace_back(11 * (r < 11 ? i : j) + r % 11,
                                          11 * (c < 11 ? i : j) + c % 11, value);
@@ -476,6 +499,9 @@ void FixSlurryBridge::solve_velocities() {
       geometry.kappa = kappa;
       geometry.ambient_rotation = omega_inf;
       geometry.contact_onset = p.hc / length;
+      geometry.flake = p.flake;
+      geometry.gap_tolerance = 1e-8 * p.floor / length;
+      geometry.enforce_work_balance = p.flake;
       geometry.images = std::move(contact_images);
       auto consistent = step::solve(problem, geometry, options, p.have_warm ? &p.warm : nullptr);
       auto result = std::move(consistent.solution);
@@ -606,7 +632,7 @@ void FixSlurryBridge::solve_velocities() {
     int j = it - records.begin();
     for (int k = 0; k < 3; ++k)
       atom->v[i][k] = physical[6 * j + k];
-    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3));
+    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3), p.flake);
     for (int k = 0; k < 17; ++k)
       array_atom[i][k] = moments[17 * j + k];
   }

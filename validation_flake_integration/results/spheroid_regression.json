@@ -1,0 +1,30 @@
+{
+  "baseline_commit": "5942c63e13f5d86b3684b93eb6f6322f7bfb8b16",
+  "case": {
+    "shape": "spheroid",
+    "ar": 20,
+    "phi": 0.24,
+    "count": 108,
+    "seed": 1729,
+    "steps": 3,
+    "dt": 1e-06,
+    "threads": 1
+  },
+  "rows": 4,
+  "non_profile_history_fields_identical": true,
+  "different_fields": [],
+  "trajectory_identical": true,
+  "final_data_identical": true,
+  "baseline_eta_relative": [
+    5.5163404458778755,
+    5.517797605369612,
+    5.519298393264957,
+    5.520848037954225
+  ],
+  "candidate_eta_relative": [
+    5.5163404458778755,
+    5.517797605369612,
+    5.519298393264957,
+    5.520848037954225
+  ]
+}

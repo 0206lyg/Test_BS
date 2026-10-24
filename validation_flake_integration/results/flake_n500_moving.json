@@ -1,0 +1,79 @@
+{
+  "case": {
+    "shape": "flake",
+    "ar": 20,
+    "phi": 0.24,
+    "count": 500,
+    "seed": 1729,
+    "dt_s": 1e-06,
+    "steps": 3,
+    "threads": 4,
+    "spectral": 2,
+    "roughness_nm": 3,
+    "gap_floor_nm": 1
+  },
+  "exit_code": 0,
+  "plugin_sha256": "35e17cbd2fcd2c1340b6bdf095b74131fd1669898905f1be7b70ae2daa01b005",
+  "steps": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "finite_diagnostics": true,
+  "eta_relative": [
+    4.113560348841816,
+    4.163894387323389,
+    4.215689813408599,
+    4.275841099555505
+  ],
+  "relative_work_balance_error": [
+    7.605921872200124e-09,
+    3.902091146912709e-09,
+    2.3335296363269974e-07,
+    1.617271021643953e-08
+  ],
+  "minimum_actual_endpoint_gap_nm": 2.997976173230436,
+  "maximum_actual_endpoint_overlap_nm": 0.0,
+  "solver_relative_residual": [
+    3.56643319877221e-08,
+    1.6082805490026758e-08,
+    9.401255041332389e-08,
+    7.669470041331752e-10
+  ],
+  "contacts": [
+    22,
+    39,
+    52,
+    60
+  ],
+  "profile_total_s": [
+    12.37333083152771,
+    12.528087854385376,
+    11.611432075500488,
+    11.978477001190186
+  ],
+  "profile_geometry_s": [
+    1.33697509765625,
+    1.2868330478668213,
+    1.256500005722046,
+    1.288588047027588
+  ],
+  "profile_middle_s": [
+    0.6788718700408936,
+    0.18799901008605957,
+    0.20377206802368164,
+    0.2006089687347412
+  ],
+  "profile_solve_s": [
+    10.35660696029663,
+    11.052582025527954,
+    10.150545120239258,
+    10.48856496810913
+  ],
+  "mean_moving_step_profile_s": 12.039332310358683,
+  "maximum_position_change_m": 7.910709767606521e-09,
+  "maximum_quaternion_change": 0.00017312548683557516,
+  "final_strain": 0.00030000000000000003,
+  "steady_viscosity_claimed": false
+}

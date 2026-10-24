@@ -1,0 +1,4 @@
+{
+  "fft": "FFTW",
+  "sparse": "MKL-PARDISO-static-GNU-LP64"
+}

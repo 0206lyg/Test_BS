@@ -1,0 +1,6 @@
+{
+  "particles": 500,
+  "steps": 3,
+  "maximum_quaternion_error_using_cylinder_inertia": 2.603703785810335e-16,
+  "maximum_quaternion_error_if_ellipsoid_inertia_used": 1.4743672694576914e-05
+}

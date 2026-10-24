@@ -1,9 +1,11 @@
-// Geometric preparation only: uniformly grow periodic spheroids and remove
-// Perram--Wertheim overlaps by translation/rotation FIRE relaxation.  The
-// fictitious time, mass and forces here are not slurry dynamics or material
-// properties. A final support-geometry relaxation enforces the mechanical
-// contact clearance without changing the physical axes or volume fraction.
+// Geometric preparation only: uniformly grow periodic particles and remove
+// overlaps by translation/rotation FIRE relaxation. Spheroids retain the
+// Perram--Wertheim objective; flakes use exact cylinder support-plane bounds.
+// The fictitious time, mass and forces are not slurry dynamics or material
+// properties. Final support-geometry relaxation and all-image certification
+// enforce mechanical clearance without changing axes or volume fraction.
 #include "../vendor/gr_re2/ellipsoidGap.h"
+#include "slurry_cylinder_packing.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -17,6 +19,8 @@
 
 namespace {
 namespace gr = slurry::gr_re2::graphite;
+namespace cg = SlurryCylinderGeometry;
+namespace cp = SlurryCylinderPacking;
 using Vec = std::array<double,3>;
 using Quat = std::array<double,4>;
 using Mat = std::array<double,6>; // xx yy zz xy xz yz
@@ -171,6 +175,47 @@ Relaxation relax(std::vector<Particle> &p,double box,double scale,double ratio,d
   });
 }
 
+cg::Body cylinder_body(const Particle &p,double scale,double ratio) {
+  const auto b=body(p,scale,ratio);
+  cg::Body c;
+  c.center={p.x[0],p.x[1],p.x[2]};
+  c.axis={b.rotation[2],b.rotation[5],b.rotation[8]};
+  c.radius=scale;c.half_thickness=scale*ratio;
+  return c;
+}
+struct CylinderCache { cg::V3 normal=cg::V3::Zero(); bool valid=false; };
+Vec components(const cg::V3 &x) { return {x[0],x[1],x[2]}; }
+Evaluation evaluate_cylinders(const std::vector<Particle> &p,double box,double scale,double ratio,
+                              double target,std::vector<CylinderCache> &cache) {
+  Evaluation e;e.force.resize(p.size());e.torque.resize(p.size());
+  std::vector<cg::Body> bodies;for(const auto &particle:p)bodies.push_back(cylinder_body(particle,scale,ratio));
+  const double cutoff=2*scale*std::hypot(1.,ratio)+target;
+  for(std::size_t i=0;i<p.size();++i)for(std::size_t j=i+1;j<p.size();++j) {
+    const Vec r=image(sub(p[j].x,p[i].x),box);
+    if(dot(r,r)>cutoff*cutoff)continue;
+    auto bj=bodies[j];bj.center=bodies[i].center+cg::V3(r[0],r[1],r[2]);
+    auto &warm=cache[i*p.size()+j];
+    if(warm.valid && cp::plane(bodies[i],bj,warm.normal).gap>=target)continue;
+    const auto gap=cp::separating_plane(bodies[i],bj,warm.valid?&warm.normal:nullptr);
+    warm.normal=gap.normal;warm.valid=true;
+    const double delta=std::max(0.,target-gap.gap);
+    if(delta==0.)continue;
+    const Vec f=components(-delta*gap.normal);
+    e.force[i]=add(e.force[i],f);e.force[j]=sub(e.force[j],f);
+    e.torque[i]=add(e.torque[i],cross(components(gap.lever_i),f));
+    e.torque[j]=sub(e.torque[j],cross(components(gap.lever_j),f));
+    e.energy+=.5*delta*delta;e.overlap=std::max(e.overlap,delta);++e.overlap_pairs;
+  }
+  return e;
+}
+Relaxation relax_cylinders(std::vector<Particle> &p,double box,double scale,double ratio,
+                          double target,double tolerance,int maximum) {
+  std::vector<CylinderCache> cache(p.size()*p.size());
+  return relax_with(p,box,scale,tolerance,maximum,[&](const std::vector<Particle> &q) {
+    return evaluate_cylinders(q,box,scale,ratio,target,cache);
+  });
+}
+
 // A support plane gives a rigorous lower bound on the Euclidean surface gap.
 // It is used only to discard pairs which already satisfy the clearance. Pairs
 // exerting a preparation force use the same closest-surface solver as dynamics.
@@ -224,7 +269,9 @@ Evaluation evaluate_clearance(const std::vector<Particle> &p,double box,double r
 }
 struct Certificate {
   double minimum_gap=std::numeric_limits<double>::infinity();
+  double maximum_gap_bound_width=0.;
   std::size_t checked=0;
+  std::size_t distance_tolerance_not_met=0;
   bool certified=false;
 };
 Certificate certify(const std::vector<Particle> &p,double box,double ratio,double target) {
@@ -255,7 +302,52 @@ Certificate certify(const std::vector<Particle> &p,double box,double ratio,doubl
   out.certified=out.minimum_gap>=target;
   return out;
 }
-void write_certificate(const std::string &path,const Certificate &c,double a,double gap,double phi) {
+Certificate certify_cylinders(const std::vector<Particle> &p,double box,double ratio,double target) {
+  Certificate out;
+  std::vector<cg::Body> bodies;for(const auto &particle:p)bodies.push_back(cylinder_body(particle,1.,ratio));
+  const double sphere=std::hypot(1.,ratio);
+  const double tolerance=std::max(1e-11,128*std::numeric_limits<double>::epsilon()*box);
+  auto certified_lower=[&](const cg::Body &a,const cg::Body &b) {
+    const auto gap=cg::closest_gap(a,b,tolerance);
+    if(!gap.converged)++out.distance_tolerance_not_met;
+    if(gap.overlap)return -tolerance;
+    // Clearance certification needs a valid lower bound, not the optimal
+    // distance to a tighter tolerance. Re-evaluate the exact cylinder support
+    // function at the GJK normal even if its primal/dual width has stalled.
+    // A stalled closest-distance solve never becomes an assumed clearance.
+    double lower=cp::plane(a,b,gap.normal).gap;
+    if(lower<target+tolerance)
+      lower=std::max(lower,cp::separating_plane(a,b,&gap.normal).gap);
+    const double rounding=128*std::numeric_limits<double>::epsilon()*
+      (1.+a.center.norm()+b.center.norm()+2*sphere);
+    lower-=rounding;
+    out.maximum_gap_bound_width=std::max(out.maximum_gap_bound_width,
+                                        std::max(0.,gap.gap-lower));
+    return lower;
+  };
+  auto shifted=bodies[0];shifted.center[0]+=box;
+  out.minimum_gap=certified_lower(bodies[0],shifted);
+  for(std::size_t i=0;i<p.size();++i)for(std::size_t j=i;j<p.size();++j) {
+    const cg::V3 d=bodies[j].center-bodies[i].center;
+    const double radius=2*sphere+std::max(target,out.minimum_gap)+tolerance;
+    int lo[3],hi[3];
+    for(int k=0;k<3;++k) {
+      lo[k]=int(std::ceil((-radius-d[k])/box));hi[k]=int(std::floor((radius-d[k])/box));
+    }
+    for(int x=lo[0];x<=hi[0];++x)for(int y=lo[1];y<=hi[1];++y)for(int z=lo[2];z<=hi[2];++z) {
+      if(i==j && (x<0 || (x==0 && y<0) || (x==0 && y==0 && z<=0)))continue;
+      const cg::V3 r=d+box*cg::V3(x,y,z);
+      const double current_radius=2*sphere+std::max(target,out.minimum_gap)+tolerance;
+      if(r.squaredNorm()>current_radius*current_radius)continue;
+      auto bj=bodies[j];bj.center=bodies[i].center+r;
+      out.minimum_gap=std::min(out.minimum_gap,certified_lower(bodies[i],bj));++out.checked;
+    }
+  }
+  out.certified=out.minimum_gap>=target;
+  return out;
+}
+void write_certificate(const std::string &path,const Certificate &c,double a,double gap,double phi,
+                       bool flake=false) {
   if(path.empty())return;
   std::ofstream report(path);if(!report)throw std::runtime_error("Cannot write packing certificate");
   report<<std::setprecision(17)<<"{\n  \"certified\": "<<(c.certified?"true":"false")
@@ -263,7 +355,10 @@ void write_certificate(const std::string &path,const Certificate &c,double a,dou
         <<",\n  \"max_clearance_deficit_m\": "<<std::max(0.,gap-c.minimum_gap*a)
         <<",\n  \"checked_pair_images\": "<<c.checked
         <<",\n  \"nominal_volume_fraction\": "<<phi
-        <<",\n  \"method\": \"ellipsoid_support_gap_all_periodic_images\"\n}\n";
+        <<",\n  \"particle_shape\": \""<<(flake?"flake":"spheroid")<<"\""
+        <<",\n  \"maximum_gap_bound_width_m\": "<<c.maximum_gap_bound_width*a
+        <<",\n  \"distance_tolerance_not_met\": "<<c.distance_tolerance_not_met
+        <<",\n  \"method\": \""<<(flake?"cylinder_support_lower_bound_all_periodic_images":"ellipsoid_support_gap_all_periodic_images")<<"\"\n}\n";
   if(!report)throw std::runtime_error("Failed writing packing certificate");
 }
 struct Options {
@@ -272,6 +367,7 @@ struct Options {
   double contact_gap=3e-9;
   int maximum=20000;
   bool certify_only=false;
+  bool flake=false;
 };
 Options options(int argc,char **argv) {
   Options o;
@@ -288,6 +384,10 @@ Options options(int argc,char **argv) {
     else if(name=="--contact-gap-m")o.contact_gap=std::stod(value);
     else if(name=="--report")o.report=value;
     else if(name=="--certify-only")o.certify_only=std::stoi(value)!=0;
+    else if(name=="--shape") {
+      if(value!="spheroid" && value!="flake")throw std::runtime_error("shape must be spheroid or flake");
+      o.flake=value=="flake";
+    }
     else throw std::runtime_error("Unknown argument "+name);
   }
   if(o.input.empty() || (!o.certify_only && (o.output.empty() || o.history.empty())))
@@ -372,9 +472,36 @@ int self_test() {
   }
   if(worst_clearance_gradient>2e-7)
     throw std::runtime_error("True-gap force/torque finite-difference test failed");
+  // Independent geometric checks for the flake preparation objective. These
+  // checks distinguish a real cylinder from its inscribed spheroid and test
+  // that the certificate rejects insufficient physical clearance.
+  cg::Body ca,cb;ca.radius=cb.radius=1.;ca.half_thickness=cb.half_thickness=.05;
+  cb.center={.8,0.,.11};
+  if(std::abs(cp::separating_plane(ca,cb).gap-.01)>1e-12)
+    throw std::runtime_error("Parallel offset-cylinder support gap failed");
+  cb.center.z()=.095;
+  if(std::abs(cp::separating_plane(ca,cb).gap+.005)>1e-12)
+    throw std::runtime_error("Cylinder overlap preparation objective failed");
+  cb.center={2.03,0.,0.};
+  if(std::abs(cp::separating_plane(ca,cb).gap-.03)>1e-12)
+    throw std::runtime_error("Cylinder side clearance failed");
+  cb.axis=cg::V3(.3,.2,1.).normalized();
+  const cg::V3 normal=cg::V3(.7,-.5,.3).normalized();
+  cb.center.setZero();
+  cb.center=cg::support(ca,normal)-cg::support(cb,-normal)+.012*normal;
+  const auto exact_plane=cp::separating_plane(ca,cb,&normal);
+  if(std::abs(exact_plane.gap-.012)>2e-12)
+    throw std::runtime_error("Oblique cylinder exact-support construction failed");
+  std::vector<Particle> cylinders={{{1.,1.,1.},{1.,0.,0.,0.}},
+                                   {{1.8,1.,1.11},{1.,0.,0.,0.}}};
+  const auto good=certify_cylinders(cylinders,8.,.05,.009);
+  const auto bad=certify_cylinders(cylinders,8.,.05,.011);
+  if(!good.certified || bad.certified || std::abs(good.minimum_gap-.01)>1e-10)
+    throw std::runtime_error("Cylinder periodic surface-clearance certificate failed");
   std::cout<<"PW periodic sphere/oblate tests: maximum gradient residual="<<worst_gradient
            <<", contact optimum residual="<<worst_contact
-           <<", true-gap gradient residual="<<worst_clearance_gradient<<'\n';
+           <<", true-gap gradient residual="<<worst_clearance_gradient
+           <<"; continuous-cylinder support/overlap/periodic-clearance tests passed\n";
   return 0;
 }
 } // namespace
@@ -390,20 +517,22 @@ int main(int argc,char **argv) {
        !std::isfinite(physical_box) || !std::isfinite(a) || !std::isfinite(c))
       throw std::runtime_error("Invalid header; expected N box target_a target_c initial_scale");
     const double box=physical_box/a,ratio=c/a,target_gap=args.contact_gap/a;
-    if(ratio>1)throw std::runtime_error("Packing expects oblate spheroids with target_c<=target_a");
-    if(!args.certify_only && !(box>2*(2+target_gap)))
-      throw std::runtime_error("Packing requires box > 4*target_a+2*contact_gap for unique clearance images");
+    if(ratio>1)throw std::runtime_error("Packing expects oblate particles with target_c<=target_a");
+    const double bounding_radius=args.flake?std::hypot(1.,ratio):1.;
+    if(!args.certify_only && !(box>2*(2*bounding_radius+target_gap)))
+      throw std::runtime_error("Packing requires box > 4*bounding_radius+2*contact_gap for unique clearance images");
     std::vector<Particle> particles(count);
     for(auto &p:particles) {
       for(double &x:p.x)if(!(input>>x) || !std::isfinite(x))throw std::runtime_error("Invalid position");
       for(double &q:p.q)if(!(input>>q))throw std::runtime_error("Invalid quaternion");
       normalize(p.q);for(double &x:p.x){x/=a;x-=box*std::floor(x/box);}
     }
-    const double target_phi=count*4*pi*ratio/(3*box*box*box);
+    const double target_phi=count*(args.flake?2.:4./3.)*pi*ratio/(box*box*box);
     if(args.certify_only) {
       if(scale!=1.)throw std::runtime_error("Certification requires a final configuration with initial_scale=1");
-      const auto certificate=certify(particles,box,ratio,target_gap);
-      write_certificate(args.report,certificate,a,args.contact_gap,target_phi);
+      const auto certificate=args.flake?certify_cylinders(particles,box,ratio,target_gap):
+                                        certify(particles,box,ratio,target_gap);
+      write_certificate(args.report,certificate,a,args.contact_gap,target_phi,args.flake);
       std::cout<<std::setprecision(17)<<"Periodic surface-gap certificate: minimum_gap_m="
                <<certificate.minimum_gap*a<<", target_gap_m="<<args.contact_gap
                <<", checked_pair_images="<<certificate.checked<<", certified="<<certificate.certified<<'\n';
@@ -411,13 +540,18 @@ int main(int argc,char **argv) {
     }
     std::ofstream history(args.history);
     if(!history)throw std::runtime_error("Cannot write growth history");
-    history<<"attempt,status,scale,volume_fraction,max_PW_overlap,overlap_pairs,energy,relax_iterations,max_surface_clearance_deficit_m\n"<<std::setprecision(17);
+    history<<"attempt,status,scale,volume_fraction,"<<(args.flake?"max_support_overlap":"max_PW_overlap")
+           <<",overlap_pairs,energy,relax_iterations,max_surface_clearance_deficit_m\n"<<std::setprecision(17);
     int attempt=0;
     auto record=[&](const char *status,double s,const Relaxation &r) {
       history<<attempt<<','<<status<<','<<s<<','<<target_phi*s*s*s<<','<<r.state.overlap<<','
              <<r.state.overlap_pairs<<','<<r.state.energy<<','<<r.iterations<<",0\n";history.flush();
     };
-    auto initial=relax(particles,box,scale,ratio,args.tolerance,args.maximum);
+    auto grow_relax=[&](std::vector<Particle> &p,double s) {
+      return args.flake?relax_cylinders(p,box,s,ratio,0.,args.tolerance*s,args.maximum):
+                        relax(p,box,s,ratio,args.tolerance,args.maximum);
+    };
+    auto initial=grow_relax(particles,scale);
     record("initial",scale,initial);
     if(!initial.converged)throw std::runtime_error("Initial configuration could not be relaxed");
     double increment=args.growth;int rejected=0;
@@ -429,17 +563,17 @@ int main(int argc,char **argv) {
       // scale changes by its cube root because all three axes grow together.
       const double next=std::min(1.0,scale*std::cbrt(1+increment));
       auto candidate=particles;
-      auto result=relax(candidate,box,next,ratio,args.tolerance,args.maximum);
+      auto result=grow_relax(candidate,next);
       record(result.converged?"accepted":"rejected",next,result);
       if(result.converged) {
         particles=std::move(candidate);scale=next;rejected=0;
         increment=std::min(args.growth,increment*1.25);
-        std::cout<<"  phi="<<target_phi*scale*scale*scale<<", max PW overlap="<<result.state.overlap
+        std::cout<<"  phi="<<target_phi*scale*scale*scale<<", max "<<(args.flake?"support":"PW")<<" overlap="<<result.state.overlap
                  <<", relaxation iterations="<<result.iterations<<std::endl;
       } else {
         increment*=0.5;++rejected;
         std::cout<<"  retry smaller growth after stalled phi="<<target_phi*next*next*next
-                 <<", max PW overlap="<<result.state.overlap<<std::endl;
+                 <<", max "<<(args.flake?"support":"PW")<<" overlap="<<result.state.overlap<<std::endl;
         if(increment<1e-6 || rejected>=16) {
           std::cerr<<"Packing stalled at accepted phi="<<target_phi*scale*scale*scale
                    <<" before target phi="<<target_phi<<". No target configuration was written.\n";
@@ -453,16 +587,19 @@ int main(int argc,char **argv) {
     // rather than starting with a tolerance-sized stored contact compression.
     const double margin=std::max(1e-13/a,128*std::numeric_limits<double>::epsilon()*box);
     std::vector<gr::GapCache> cache(count*count);
-    auto clearance=relax_with(particles,box,1.,margin*.25,args.maximum,
-      [&](const std::vector<Particle> &p) {
-        return evaluate_clearance(p,box,ratio,target_gap+margin,cache);
-      });
-    const auto pw=evaluate(particles,box,1.,ratio);
-    history<<++attempt<<",surface_clearance,1,"<<target_phi<<','<<pw.overlap<<','
+    auto clearance=args.flake?relax_cylinders(particles,box,1.,ratio,target_gap+margin,margin*.25,args.maximum):
+      relax_with(particles,box,1.,margin*.25,args.maximum,
+        [&](const std::vector<Particle> &p) {
+          return evaluate_clearance(p,box,ratio,target_gap+margin,cache);
+        });
+    const double remaining_overlap=args.flake?std::max(0.,clearance.state.overlap-target_gap-margin):
+                                               evaluate(particles,box,1.,ratio).overlap;
+    history<<++attempt<<",surface_clearance,1,"<<target_phi<<','<<remaining_overlap<<','
            <<clearance.state.overlap_pairs<<','<<clearance.state.energy<<','<<clearance.iterations<<','
            <<std::max(0.,clearance.state.overlap-margin)*a<<'\n';history.flush();
-    const auto certificate=certify(particles,box,ratio,target_gap);
-    write_certificate(args.report,certificate,a,args.contact_gap,target_phi);
+    const auto certificate=args.flake?certify_cylinders(particles,box,ratio,target_gap):
+                                      certify(particles,box,ratio,target_gap);
+    write_certificate(args.report,certificate,a,args.contact_gap,target_phi,args.flake);
     if(!clearance.converged || !certificate.certified) {
       std::cerr<<"Surface clearance preparation failed: minimum gap="<<certificate.minimum_gap*a
                <<" m, required="<<args.contact_gap<<" m; no final configuration written.\n";

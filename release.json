@@ -1,19 +1,19 @@
 {
-  "release_id": "20261020-compact-bridge-integration",
-  "status": "COMPACT_BRIDGE_INTEGRATION",
-  "baseline_git_commit": "b8f78900f8c180d6c37e97f1a2682ff40d6bbd0b",
+  "release_id": "20261023-spheroid-flake-common-run",
+  "status": "SPHEROID_FLAKE_COMMON_RUN",
+  "baseline_git_commit": "5942c63e13f5d86b3684b93eb6f6322f7bfb8b16",
   "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
-  "model_stage": "COMPACT_BRIDGE_V4_PERIODIC_LOCAL_TAIL",
-  "details": "validation_bridge/RESULT.json",
+  "model_stage": "COMMON_PERIODIC_MOBILITY_WITH_SHAPE_SPECIFIC_NEAR_FIELD",
+  "details": "validation_flake_integration/README_KO.md",
   "legacy_release": "20261018-pair-quadrature-runtime-fix",
   "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
   "equilibrium_bulk_viscosity_tested": false,
-  "prepare_bridge_sha256": "173a14eb4e83cc67c93a2c7ffb17251d157ec623eb15a87fb0a2d7935c83fb4f",
+  "prepare_bridge_sha256": "e3350bce89a08cf95641544b56f9cc4cb300e6326d68fe153b9bc326d2bebbc9",
   "normal_stiffness_N_m": 100.0,
   "mechanical_contact_gap_m": 3e-09,
   "periodic_mobility_backend": "mesh",
-  "contact_model": "linear normal/tangential springs with Coulomb friction; endpoint gap correction",
-  "initialization": "actual periodic surface gaps certified at mechanical contact onset",
+  "contact_model": "same single-point linear normal/tangential spring Coulomb contact; actual shape endpoint gap",
+  "initialization": "same random insertion and growth/FIRE preparation; actual shape-specific periodic clearance certificate",
   "performance_update": "20261022-fftw-condensed-newton-pardiso",
   "performance_baseline_git_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
   "run_batch": "run_slurry_cpu.sbatch",
@@ -21,5 +21,12 @@
     "fft": "FFTW",
     "sparse_preconditioner": "MKL-PARDISO-static-GNU-LP64",
     "contact_linear_system": "exactly condensed 17N Newton-FGMRES"
-  }
+  },
+  "particle_shapes": [
+    "spheroid",
+    "flake"
+  ],
+  "flake_geometry": "continuous circular cylinder; exact surface clearance",
+  "flake_near_field": "finite-domain Reynolds face films plus positive approximate rim resistance",
+  "flake_middle_self": "matched-spheroid approximation using the same equatorial radius and half-thickness"
 }

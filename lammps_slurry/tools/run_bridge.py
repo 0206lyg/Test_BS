@@ -6,6 +6,7 @@ libraries underneath the running process. Physical flags are passed directly to
 prepare_bridge.py; old table generation is never invoked.
 """
 import argparse
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -48,7 +49,7 @@ def freeze_runtime(root, destination, envfile):
                     raise RuntimeError("A runtime dependency escaped the private copy: {} -> {}".format(soname, resolved))
         runtime_snapshot.verify_runtime_records(list(binaries.values()) + list(libraries.values()) + list(scripts.values()))
         bundle_guard.check_build(root, release, executable, plugin, packer, manifest)
-    identity = {"schema": 1, "model": "compact_bridge_v4_periodic", "source_root": str(root),
+    identity = {"schema": 1, "model": "shape_selected_periodic_bridge", "source_root": str(root),
                 "release": release, "approved_build": approved, "binaries": binaries,
                 "libraries": libraries, "scripts": scripts}
     (destination/"runtime_identity.json").write_text(json.dumps(identity, indent=2, sort_keys=True)+"\n")
@@ -133,6 +134,34 @@ def run_simulation(command, output, environment):
         raise RuntimeError("LAMMPS exited {}; see {}".format(code, output/"console.log"))
 
 
+def summarize_run(runtime, output, parameters, environment):
+    """Report the selected averaging window without inventing missing data."""
+    spec = importlib.util.spec_from_file_location("private_bridge_summary", runtime/"tools/summarize_bridge.py")
+    summary = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(summary)
+    # Validate the complete history before distinguishing a short averaging
+    # window from corrupt/nonfinite rheology data. Invalid data remains fatal.
+    rows = summary.read_intervals(output/"history.csv", allow_empty=True)
+    start = parameters["average_start_strain"]
+    end = rows[-1]["interval_end_strain"] if rows else 0.
+    if not rows or end <= start or not summary.select(rows, start, end):
+        report = {"status": "average_unavailable", "particle_shape": parameters.get("particle_shape", "spheroid"),
+                  "requested_start_strain": start, "recorded_end_strain": end,
+                  "reason": "No complete positive-time, positive-strain intervals in the requested averaging window.",
+                  "stationarity_certified": False}
+        (output/"viscosity_summary.json").write_text(json.dumps(report, indent=2)+"\n")
+        (output/"viscosity_summary.txt").write_text(report["reason"]+"\n")
+        print("Averaging window unavailable; see viscosity_summary.txt", flush=True)
+    else:
+        report = summary.summarize(output/"history.csv", start)
+        report["particle_shape"] = parameters.get("particle_shape", "spheroid")
+        report["model"] = parameters["model"]
+        (output/"viscosity_summary.json").write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False)+"\n")
+        rendered = summary.render(report)
+        (output/"viscosity_summary.txt").write_text(rendered)
+        print(rendered, end="", flush=True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, add_help=False)
     p.add_argument("--help", "-h", action="store_true")
@@ -170,6 +199,9 @@ def main():
         parameters = json.loads(parameters_path.read_text())
         parameters["packer"] = str(runtime/"bin/slurry_pack")
         parameters_path.write_text(json.dumps(parameters, indent=2, sort_keys=True)+"\n")
+        identity["model"] = parameters["model"]
+        identity["particle_shape"] = parameters.get("particle_shape", "spheroid")
+        (runtime/"runtime_identity.json").write_text(json.dumps(identity, indent=2, sort_keys=True)+"\n")
     environment["LD_LIBRARY_PATH"] = str(runtime/"lib")+(":"+environment["LD_LIBRARY_PATH"] if environment.get("LD_LIBRARY_PATH") else "")
     # An immutable input record binds the exact helper/runtime used for this run.
     record = {"arguments": physical, "runtime_identity": "runtime/runtime_identity.json",
@@ -187,6 +219,7 @@ def main():
     print("Run directory: {}".format(output), flush=True)
     print("One process; {} threads; command: {}".format(threads, shlex.join(executable)), flush=True)
     run_simulation(executable, output, environment)
+    summarize_run(runtime, output, parameters, environment)
     print("Run completed: {}".format(output))
     return 0
 

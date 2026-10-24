@@ -8,8 +8,12 @@
 #include "slurry_bridge_contact_solver.h"
 #include "slurry_bridge_images.h"
 #include "../vendor/gr_re2/ellipsoidGap.h"
+#include "slurry_bridge_shape.h"
 #include <Eigen/Geometry>
 #include <set>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <tuple>
 
 namespace SlurryBridgeStep {
@@ -44,6 +48,9 @@ struct Geometry {
   Mat3 lattice = Mat3::Identity(), kappa = Mat3::Zero();
   Vec3 ambient_rotation = Vec3::Zero();
   double contact_onset = 0.;
+  bool flake = false;
+  double gap_tolerance = 1e-10;
+  bool enforce_work_balance = false;
   std::vector<Image> images;
 
   Endpoint advance(const bs::Problem &p, const bs::Vector &velocity,
@@ -73,7 +80,7 @@ struct Geometry {
       const auto &c = p.contacts[k];
       auto second = out.bodies[c.j];
       second.position = array(vector(second.position) + out.lattice * images[k].cast<double>());
-      out.gaps.push_back(gr::closestEllipsoidGap(out.bodies[c.i], second).gap);
+      out.gaps.push_back(SlurryBridgeShape::closest_gap(out.bodies[c.i],second,flake,gap_tolerance).gap);
       if (check_candidates)
         candidates.emplace(c.i, c.j, images[k][0], images[k][1], images[k][2]);
     }
@@ -86,8 +93,8 @@ struct Geometry {
     // bypass the force solve just because it was outside the old near list.
     for (int i = 0; i < p.count; ++i)
       for (int j = i; j < p.count; ++j) {
-        const double ai = *std::max_element(bodies[i].axes.begin(), bodies[i].axes.end());
-        const double aj = *std::max_element(bodies[j].axes.begin(), bodies[j].axes.end());
+        const double ai=SlurryBridgeShape::bounding_radius(bodies[i],flake);
+        const double aj=SlurryBridgeShape::bounding_radius(bodies[j],flake);
         const Vec3 d = vector(out.bodies[j].position) - vector(out.bodies[i].position);
         for (const auto &image : im::images_within(d, out.lattice, ai + aj + onset)) {
           if (i == j && !im::positive_image(image.image))
@@ -96,7 +103,7 @@ struct Geometry {
             continue;
           auto second = out.bodies[j];
           second.position = array(vector(out.bodies[i].position) + image.displacement);
-          if (gr::closestEllipsoidGap(out.bodies[i], second).gap < onset)
+          if (SlurryBridgeShape::closest_gap(out.bodies[i],second,flake,gap_tolerance).gap < onset)
             throw std::runtime_error("bridge endpoint gained an unlisted contact; reduce timestep");
         }
       }
@@ -167,7 +174,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
     std::vector<bs::ContactResponse> exact;
     exact.reserve(original.contacts.size());
     bool constitutive_ok = true;
-    double gap_error = 0., linear_defect = 0.;
+    double gap_error = 0., linear_defect = 0., maximum_force_error = 0.;
     for (std::size_t k = 0; k < original.contacts.size(); ++k) {
       const auto &c = original.contacts[k];
       const auto uncorrected = bs::contact_response(c, state.velocity, original.dt);
@@ -177,6 +184,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       // Compute compression directly from the endpoint to avoid cancelling
       // h + defect + dt*vn when reporting a very stiff, shallow contact.
       const double force_error = (response.traction - state.contacts[k].traction).norm();
+      maximum_force_error=std::max(maximum_force_error,force_error);
       const double force_tolerance = options.absolute_tolerance +
           options.relative_tolerance * std::max(1., response.traction.norm());
       constitutive_ok = constitutive_ok && force_error <= force_tolerance;
@@ -190,7 +198,40 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
     const double residual = monitor.left(raw).norm();
     if (!raw.allFinite() || !std::isfinite(residual))
       throw std::runtime_error("bridge endpoint correction produced a nonfinite residual");
-    if (constitutive_ok && residual <= tolerance) {
+    bool work_ok=true, inner_work_ok=true;
+    if (geometry.enforce_work_balance) {
+      // A contact preload can dominate the norm used to scale the residual.
+      // Check the unscaled force residual's physical work as in the validated
+      // cylinder pilot, so a small norm alone cannot mask an erroneous stress.
+      const double medium=geometry.lattice.determinant()*geometry.kappa.squaredNorm();
+      double contact_power=0., affine_contact_power=0.;
+      for (std::size_t k=0;k<exact.size();++k) {
+        contact_power+=exact[k].traction.dot(exact[k].relative);
+        affine_contact_power+=exact[k].traction.dot(original.contacts[k].affine);
+      }
+      const double input=medium+original.prescribed.dot(state.total_moment)+affine_contact_power;
+      const double work_scale=std::max({std::abs(input),
+          std::abs(medium+state.hydro_power)+std::abs(contact_power),1e-300});
+      const double work_error=std::abs(state.velocity.dot(raw.tail(nu)));
+      const double work_tolerance=std::max(1e-8,options.relative_tolerance)*work_scale;
+      work_ok=work_error<=work_tolerance;
+      // Separate inner algebraic error from the changed endpoint-gap load.
+      // Tightening Krylov/Newton cannot cure the latter; it belongs to the
+      // outer geometry iteration and otherwise drives valid inner solves
+      // below floating-point accuracy.
+      // Only the force block is needed; skip a redundant mobility application.
+      const bs::Vector inner_raw=raw_residual(state,state.contacts,true);
+      const double inner_work_error=std::abs(state.velocity.dot(inner_raw.tail(nu)));
+      inner_work_ok=inner_work_error<=work_tolerance;
+      const char *trace=std::getenv("SLURRY_BRIDGE_TRACE");
+      if (trace && std::strcmp(trace,"0")) {
+        std::fprintf(stderr,"bridge endpoint iteration=%d residual=%.9e tolerance=%.9e work_error=%.9e inner_work_error=%.9e work_tolerance=%.9e force_error=%.9e gap_error=%.9e gap_certificate_tol=%.9e constitutive=%d\n",
+          iteration+1,residual,tolerance,work_error,inner_work_error,work_tolerance,
+          maximum_force_error,gap_error,geometry.gap_tolerance,int(constitutive_ok));
+        std::fflush(stderr);
+      }
+    }
+    if (constitutive_ok && residual <= tolerance && work_ok) {
       state.contacts = std::move(exact);
       state.residual_norm = residual;
       state.relative_residual = residual / std::max(rhs, options.absolute_tolerance);
@@ -208,6 +249,11 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       out.maximum_gap_error = gap_error;
       out.maximum_linear_gap_defect = linear_defect;
       return out;
+    }
+    if (residual<=tolerance && !work_ok && !inner_work_ok) {
+      inner.relative_tolerance*=.1;
+      inner.absolute_tolerance*=.1;
+      inner.linear_relative_tolerance*=.1;
     }
     previous = std::move(state);
   }

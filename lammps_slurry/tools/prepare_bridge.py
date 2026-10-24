@@ -4,7 +4,9 @@
 AR=a/c; full thickness=2c. The hydrodynamic floor max(h,1 nm) and the
 mechanical contact onset are independent. Packing is geometry preparation,
 not physical relaxation; its accepted surface gaps must satisfy the same
-mechanical contact onset. This module never loads a resistance table.
+mechanical contact onset. Spheroids and flat circular cylinders (flake) share
+the seed/growth/relaxation workflow and the same shear driver. This module
+never loads a resistance table.
 """
 import argparse
 import itertools
@@ -18,6 +20,15 @@ import sys
 
 PROJECT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKER = PROJECT.parent / "build/lammps-slurry/slurry_pack"
+
+
+def particle_volume(a, c, shape="spheroid"):
+    """Physical volume; a is radius and c is half the full thickness."""
+    if shape == "spheroid":
+        return 4*math.pi*a*a*c/3
+    if shape == "flake":
+        return 2*math.pi*a*a*c
+    raise ValueError("shape must be spheroid or flake")
 
 
 def write_packing_geometry(path, particles, a, c, box, scale=1.):
@@ -35,7 +46,8 @@ def certify_packing(args, particles, a, c, box, output):
     geometry, report_path = output/"packing.validation", output/"packing_clearance.json"
     write_packing_geometry(geometry, particles, a, c, box)
     target = args.contact_gap_nm*1e-9
-    command = [str(packer), "--input", str(geometry), "--contact-gap-m", str(target),
+    command = [str(packer), "--input", str(geometry), "--shape", args.shape,
+               "--contact-gap-m", str(target),
                "--certify-only", "1", "--report", str(report_path)]
     process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                              universal_newlines=True)
@@ -49,6 +61,11 @@ def certify_packing(args, particles, a, c, box, output):
         raise ValueError("Missing or malformed actual surface-gap certificate") from error
     if not isinstance(report, dict) or report.get("certified") is not True:
         raise ValueError("Geometry packer did not certify the requested contact gap")
+    # A spheroid certificate must never certify a cylinder whose rim extends
+    # outside that spheroid. Older spheroid-only certificates remain readable.
+    reported_shape = report.get("particle_shape", "spheroid")
+    if reported_shape != args.shape:
+        raise ValueError("Geometry packer did not certify the requested particle shape")
     for field in ("target_gap_m", "minimum_surface_gap_m", "max_clearance_deficit_m",
                   "nominal_volume_fraction"):
         value = report.get(field)
@@ -166,14 +183,19 @@ def aligned_particles(count, a, c, box, gap):
 
 
 def random_particles(args, a, c, box, output):
-    if box <= 4*a+2*args.contact_gap_nm*1e-9:
-        raise ValueError("The geometry-only random packer needs L>4a+2*contact_gap. "
+    bounding_radius = math.hypot(a, c) if args.shape == "flake" else a
+    if box <= 4*bounding_radius+2*args.contact_gap_nm*1e-9:
+        raise ValueError("The geometry-only random packer needs L>4*bounding_radius+2*contact_gap. "
                          "This is not the hydrodynamic 3a image limit; use --initialization aligned "
                          "for smaller compatible boxes, or increase --count/lower --phi.")
     packer = args.packer.expanduser().resolve()
     if not packer.is_file() or not os.access(str(packer), os.X_OK):
         raise ValueError("Missing executable geometry packer: {}".format(packer))
     scale = (min(args.initial_phi, args.phi)/args.phi)**(1/3)
+    # Preserve the latest spheroid seed proposal sequence. For flake this PW
+    # test concerns the inscribed spheroid only; the C++ packer first relaxes
+    # all actual-cylinder overlaps at the initial scale, then starts growth.
+    # The seed is never treated as a cylinder clearance certificate.
     rng, particles, attempts = random.Random(args.seed), [], 0
     for index in range(args.count):
         for _ in range(20000):
@@ -194,7 +216,7 @@ def random_particles(args, a, c, box, output):
             raise ValueError("Random seed insertion failed at {}/{}; lower --initial-phi".format(index, args.count))
     seed, final = output/"packing.seed", output/"packing.final"
     write_packing_geometry(seed, particles, a, c, box, scale)
-    command = [str(packer), "--input", str(seed), "--output", str(final),
+    command = [str(packer), "--input", str(seed), "--output", str(final), "--shape", args.shape,
                "--history", str(output/"packing_history.csv"),
                "--growth-fraction", str(args.growth_fraction),
                "--overlap-tolerance", str(args.overlap_tolerance), "--max-relax", str(args.max_relax),
@@ -223,17 +245,26 @@ def random_particles(args, a, c, box, output):
         if not all(0 <= v < box for v in x) or not math.isclose(sum(v*v for v in q), 1., abs_tol=1e-10):
             raise ValueError("Invalid coordinate or quaternion in geometry packer output")
         particles.append((x, q, shape_matrix(q, c/a)))
-    return particles, {"seed_attempts": attempts, "initial_scale": scale}
+    return particles, {"seed_attempts": attempts, "initial_scale": scale,
+                       "seed_proposal": "random positions/quaternions with inscribed-spheroid PW rejection",
+                       "growth_shape": args.shape}
 
 
-def write_data(path, particles, a, c, box, density, shear):
+def write_data(path, particles, a, c, box, density, shear, shape="spheroid"):
     f = lambda v: "{:.17g}".format(v)
-    lines = ["Compact bridge oblate spheroids; SI units; local symmetry axis z", "",
+    # LAMMPS atom_style ellipsoid stores axes and orientation for both shapes.
+    # Its density-to-mass conversion uses ellipsoid volume; multiply only the
+    # storage density so a cylinder retains the requested physical density.
+    storage_density = density*(1.5 if shape == "flake" else 1.)
+    description = ("Compact bridge oblate spheroids; SI units; local symmetry axis z"
+                   if shape == "spheroid" else
+                   "Flat circular cylinders; ellipsoid axes are storage proxies; SI units; symmetry axis z")
+    lines = [description, "",
              "{} atoms".format(len(particles)), "{} ellipsoids".format(len(particles)), "1 atom types", ""]
     lines += ["0 {} {}lo {}hi".format(f(box), axis, axis) for axis in "xyz"]
     lines += ["0 0 0 xy xz yz", "", "Atoms # ellipsoid", ""]
     for i, (x, q, _) in enumerate(particles, 1):
-        lines.append("{} 1 1 {} ".format(i, f(density))+" ".join(map(f, x)))
+        lines.append("{} 1 1 {} ".format(i, f(storage_density))+" ".join(map(f, x)))
     lines += ["", "Ellipsoids", ""]
     for i, (_, q, _) in enumerate(particles, 1):
         lines.append(str(i)+" "+" ".join(map(f, (2*a, 2*a, 2*c, *q))))
@@ -247,6 +278,8 @@ def parser():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, required=True, help="new run directory")
     p.add_argument("--packer", type=Path, default=DEFAULT_PACKER)
+    p.add_argument("--shape", choices=("spheroid", "flake"), default="spheroid",
+                   help="physical particle shape; flake is a continuous flat circular cylinder")
     p.add_argument("--initialization", choices=("random", "aligned"), default="random")
     p.add_argument("--mobility-backend", choices=("mesh", "direct"), default="mesh",
                    help="periodic mobility implementation; direct is a reference/debug option")
@@ -283,20 +316,23 @@ def prepare(args):
     if output.exists():
         raise ValueError("Run directory already exists: {}; choose a new path".format(output))
     c, a = args.thickness_nm*.5e-9, args.ar*args.thickness_nm*.5e-9
-    volume = 4*math.pi*a*a*c/3
+    volume = particle_volume(a, c, args.shape)
     box = (args.count*volume/args.phi)**(1/3)
     output.mkdir(parents=True, exist_ok=False)
     if args.initialization == "aligned":
         particles, packing = aligned_particles(args.count, a, c, box, args.contact_gap_nm*1e-9)
     else:
         particles, packing = random_particles(args, a, c, box, output)
-    worst, checked = verify_packing(particles, a, box, args.overlap_tolerance)
+    # PW is an ellipsoid criterion. Cylinder acceptance is based exclusively
+    # on the following true-cylinder periodic surface-gap certificate.
+    worst, checked = (verify_packing(particles, a, box, args.overlap_tolerance)
+                      if args.shape == "spheroid" else (None, None))
     clearance = certify_packing(args, particles, a, c, box, output)
-    write_data(output/"particles.data", particles, a, c, box, args.density, args.shear_rate)
+    write_data(output/"particles.data", particles, a, c, box, args.density, args.shear_rate, args.shape)
     f = lambda v: "{:.17g}".format(v)
     # Pair zero only supplies LAMMPS communication. Hydro/contact images are
     # enumerated in the fix, independently of this neighbor list's radius.
-    text = '''# Table-free periodic ellipsoid mobility + compact bridge v4
+    text = '''# {model_description}
 plugin load ${slurry_plugin}
 units si
 dimension 3
@@ -311,7 +347,7 @@ neighbor {skin} bin
 neigh_modify every 1 delay 0 check yes
 timestep {dt}
 fix shear all deform 0 xz erate {rate} remap v units box
-fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
+fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} shape {particle_shape} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
 compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
 dump trajectory all custom {interval} trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
 dump_modify trajectory sort id format float %.17g
@@ -320,17 +356,27 @@ thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
 thermo_modify flush yes lost error
 run {steps}
 write_data final.data nocoeff
-'''.format(communication=f(c), skin=f(.2*c), dt=f(args.timestep), rate=f(args.shear_rate), eta=f(args.viscosity),
+'''.format(model_description=("Table-free periodic ellipsoid mobility + compact bridge v4" if args.shape == "spheroid"
+                             else "Flat circular cylinders: Reynolds face films + approximate rim; matched-spheroid periodic mobility"),
+           communication=f(c), skin=f(.2*c), dt=f(args.timestep), rate=f(args.shear_rate), eta=f(args.viscosity),
            floor=f(args.gap_floor_nm*1e-9), kn=f(args.normal_stiffness), hc=f(args.contact_gap_nm*1e-9),
-           mu=f(args.friction), kt=f(args.tangential_stiffness), backend=args.mobility_backend,
+           mu=f(args.friction), kt=f(args.tangential_stiffness), particle_shape=args.shape, backend=args.mobility_backend,
            spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
            slurry_plugin="{slurry_plugin}")
     (output/"in.bridge").write_text(text)
     metadata = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
-    metadata.update({"model": "compact_bridge_v4_periodic", "shear_plane": "xz", "a_m": a, "c_m": c,
+    metadata.update({"model": ("compact_bridge_v4_periodic" if args.shape == "spheroid" else
+                               "cylinder_reynolds_rim_periodic"),
+                     "particle_shape": args.shape, "shear_plane": "xz", "a_m": a, "c_m": c,
                      "box_length_m": box, "particle_volume_m3": volume, "hydro_gap_rule": "max(actual_gap, gap_floor)",
-                     "near_support_center_m": 3*a, "periodic_images": "all images in geometric support; self images included",
+                     "particle_mass_kg": args.density*volume,
+                     "lammps_storage": ("ellipsoid" if args.shape == "spheroid" else
+                                        "ellipsoid axes/orientation proxy; density multiplied by 1.5 for cylinder mass"),
+                     "middle_self_geometry": ("spheroid" if args.shape == "spheroid" else
+                                              "matched spheroid approximation with the same a and c"),
+                     "near_support_center_m": (3*a if args.shape == "spheroid" else 2*math.hypot(a,c)+a),
+                     "periodic_images": "all images in geometric support; self images included",
                      "packing": packing, "packing_max_PW_overlap": worst, "packing_image_checks": checked,
                      "packing_clearance": clearance,
                      "normal_contact_law": "linear spring; normal_stiffness in N/m; no Hertz conversion",
@@ -348,7 +394,8 @@ write_data final.data nocoeff
                      "average_window": "selected strain window; no automatic steady-state certification",
                      "preparation": "geometric contact-clearance preparation; no physical equilibration"})
     (output/"parameters.json").write_text(json.dumps(metadata, indent=2, sort_keys=True)+"\n")
-    print("Prepared {}: N={}, AR={}, phi={}, L/a={:.6g}; no table generation".format(output, args.count, args.ar, args.phi, box/a), flush=True)
+    print("Prepared {}: shape={}, N={}, AR={}, phi={}, L/a={:.6g}; no table generation".format(
+        output, args.shape, args.count, args.ar, args.phi, box/a), flush=True)
     return metadata
 
 

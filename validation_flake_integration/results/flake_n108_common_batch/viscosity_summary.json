@@ -1,0 +1,73 @@
+{
+  "block_relative_SD": 0.06494804901786407,
+  "block_relative_half_window_drift": 0.12035986018235094,
+  "block_stability_check": "failed",
+  "block_stability_tolerance": 0.1,
+  "blocks": [
+    {
+      "coverage_fraction": 0.9999999999999998,
+      "end_strain": 0.0004,
+      "eta_Pa_s": 0.04318740271721817,
+      "intervals": 4,
+      "start_strain": 0.0
+    },
+    {
+      "coverage_fraction": 0.9999999999999999,
+      "end_strain": 0.0008,
+      "eta_Pa_s": 0.046359515844659076,
+      "intervals": 4,
+      "start_strain": 0.0004
+    },
+    {
+      "coverage_fraction": 1.0000000000000004,
+      "end_strain": 0.0012000000000000001,
+      "eta_Pa_s": 0.048262651353051855,
+      "intervals": 4,
+      "start_strain": 0.0008
+    },
+    {
+      "coverage_fraction": 1.0000000000000004,
+      "end_strain": 0.0016,
+      "eta_Pa_s": 0.05028535542994559,
+      "intervals": 4,
+      "start_strain": 0.0012000000000000001
+    },
+    {
+      "coverage_fraction": 1.000000000000001,
+      "end_strain": 0.002,
+      "eta_Pa_s": 0.05076103093243515,
+      "intervals": 4,
+      "start_strain": 0.0016
+    }
+  ],
+  "diagnostics": {
+    "max_abs_force_residual": 1.2211238986373927,
+    "max_abs_max_overlap_m": 0.0,
+    "max_abs_mobility_residual": 0.0016191542843834211,
+    "max_abs_power_balance_error_W": 3.4495828919520125e-19,
+    "mean_sampled_solve_seconds": 0.9146294951438904
+  },
+  "duration_s": 2.0000000000000005e-05,
+  "history": "/workspace/scratch/0520ed9b6708/flake-common-batch-validation/flake/history.csv",
+  "mean": {
+    "eta_Pa_s": 0.04777119125546197,
+    "eta_relative": 4.777119125546197,
+    "sigma_contact_Pa": 0.9619995925832814,
+    "sigma_hydro_Pa": 2.8151195329629153,
+    "sigma_solvent_Pa": 1.0,
+    "sigma_xz_Pa": 4.777119125546197
+  },
+  "model": "cylinder_reynolds_rim_periodic",
+  "particle_shape": "flake",
+  "requested_window": [
+    0.0,
+    0.002
+  ],
+  "scope": "Time-weighted selected-window viscosity. Block stability is descriptive; inspect microstructure and repeat with longer time, timestep and spectral resolution as needed.",
+  "stationarity_certified": false,
+  "used_intervals": 20,
+  "used_window": [
+    0.0,
+    0.002
+  ]
+}

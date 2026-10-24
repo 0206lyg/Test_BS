@@ -12,6 +12,7 @@
 
 # Edit this section, then submit from the slurry repository: sbatch run_slurry_cpu.sbatch
 # Exactly one simulation is launched. No command-line parameters are needed.
+PARTICLE_SHAPE=spheroid               # spheroid or flake (flat circular cylinder)
 AR=2
 PHI=0.24
 COUNT=500
@@ -43,7 +44,7 @@ SPECTRAL_TOLERANCE=1e-8
 SOLVER_TOLERANCE=1e-6
 KRYLOV_ITERATIONS=1000
 
-OUTPUT_DIR=""                         # empty: runs/ar<AR>_phi<PHI>_n<COUNT>_<job ID>
+OUTPUT_DIR=""                         # empty: runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>
 BUILD_ENV=""                          # empty: build/lammps/env.sh
 PREPARE_ONLY=0
 TRACE_SOLVER=0
@@ -54,6 +55,10 @@ if (( $# != 0 )); then
     printf 'Edit the settings in run_slurry_cpu.sbatch, then submit it without arguments.\n' >&2
     exit 2
 fi
+case "$PARTICLE_SHAPE" in
+    spheroid|flake) ;;
+    *) printf 'PARTICLE_SHAPE must be spheroid or flake.\n' >&2; exit 2 ;;
+esac
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}}"
 if [[ "$(basename -- "$SLURRY_BASE")" == lammps_slurry ]]; then
     SLURRY_BASE="$(cd -- "$SLURRY_BASE/.." && pwd)"
@@ -75,7 +80,7 @@ export MKL_NUM_THREADS="$OMP_NUM_THREADS" MKL_DYNAMIC=FALSE OPENBLAS_NUM_THREADS
 export PYTHONUNBUFFERED=1 SLURRY_BRIDGE_TRACE="$TRACE_SOLVER"
 if [[ -z "$OUTPUT_DIR" ]]; then
     SLURRY_RUN_ID="${SLURM_JOB_ID:-local_$(date -u +%Y%m%dT%H%M%SZ)_$$}"
-    OUTPUT_DIR="${SLURRY_RESULTS_ROOT:-$SLURRY_BASE/runs}/ar${AR}_phi${PHI}_n${COUNT}_${SLURRY_RUN_ID}"
+    OUTPUT_DIR="${SLURRY_RESULTS_ROOT:-$SLURRY_BASE/runs}/${PARTICLE_SHAPE}_ar${AR}_phi${PHI}_n${COUNT}_${SLURRY_RUN_ID}"
 elif [[ "$OUTPUT_DIR" != /* ]]; then
     OUTPUT_DIR="$SLURRY_BASE/$OUTPUT_DIR"
 fi
@@ -86,6 +91,7 @@ elif [[ "$BUILD_ENV" != /* ]]; then
 fi
 SLURRY_ARGUMENTS=(
     --output "$OUTPUT_DIR" --build-env "$BUILD_ENV"
+    --shape "$PARTICLE_SHAPE"
     --ar "$AR" --phi "$PHI" --count "$COUNT" --steps "$STEPS"
     --output-interval "$OUTPUT_INTERVAL" --timestep "$TIMESTEP"
     --average-start-strain "$AVERAGE_START_STRAIN"
@@ -106,6 +112,6 @@ elif [[ "$PREPARE_ONLY" != 0 ]]; then
     printf 'PREPARE_ONLY must be 0 or 1.\n' >&2
     exit 2
 fi
-printf 'AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
-    "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
+printf 'SHAPE=%s AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
+    "$PARTICLE_SHAPE" "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" "${SLURRY_ARGUMENTS[@]}"

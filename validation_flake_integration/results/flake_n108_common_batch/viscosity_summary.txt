@@ -1,0 +1,5 @@
+Strain window 0.0 to 0.002; 20 complete intervals, 2e-05 s
+Apparent viscosity = 0.0477711913 Pa s; relative viscosity = 4.77711913
+Mean xz stress = 4.77711913 Pa (solvent 1, hydrodynamic 2.81511953, contact 0.961999593)
+Block stability check: failed (tolerance 0.1)
+Selected-window average; steady state is not automatically certified.

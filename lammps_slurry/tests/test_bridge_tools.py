@@ -83,9 +83,10 @@ class BridgeToolsTest(unittest.TestCase):
             environment.update(PATH=str(stub.parent)+os.pathsep+os.environ["PATH"],
                                SLURRY_ROOT=str(root), SLURM_JOB_ID="12345", SLURM_CPUS_PER_TASK="16",
                                CAPTURE=str(capture))
-            for ar, count in ((2, 500), (5, 123)):
+            for ar, count, shape in ((2, 500, "spheroid"), (5, 123, "flake")):
                 script.write_text(text.replace("AR=2\n", "AR={}\n".format(ar))
-                                  .replace("COUNT=500\n", "COUNT={}\n".format(count)))
+                                  .replace("COUNT=500\n", "COUNT={}\n".format(count))
+                                  .replace("PARTICLE_SHAPE=spheroid", "PARTICLE_SHAPE="+shape))
                 subprocess.run(["bash", str(script)], env=environment, check=True, capture_output=True, text=True)
                 records = [json.loads(line) for line in capture.read_text().splitlines()]
                 self.assertEqual(len(records), 1 if ar == 2 else 2)
@@ -100,6 +101,8 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(supplied, expected)
                 args = prepare.parser().parse_args(arguments)
                 self.assertEqual(args.ar, ar)
+                self.assertEqual(args.shape, shape)
+                self.assertIn(shape+"_ar", str(args.output))
                 self.assertEqual(args.count, count)
                 self.assertEqual(args.phi, .24)
                 self.assertEqual(args.steps, 100000)
@@ -115,11 +118,62 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertEqual(defaults.contact_gap_nm, 3.)
         self.assertEqual(defaults.tangential_stiffness, 80.)
         self.assertEqual(defaults.mobility_backend, "mesh")
+        self.assertEqual(defaults.shape, "spheroid")
         explicit = prepare.parser().parse_args(["--output", "unused", "--normal-stiffness", "250",
                                                 "--contact-gap-nm", "2", "--mobility-backend", "direct"])
         self.assertEqual(explicit.normal_stiffness, 250.)
         self.assertEqual(explicit.contact_gap_nm, 2.)
         self.assertEqual(explicit.mobility_backend, "direct")
+
+    def test_cylinder_volume_mass_and_storage_density(self):
+        a, c, density = 3e-6, 150e-9, 2400.
+        cylinder = prepare.particle_volume(a, c, "flake")
+        spheroid = prepare.particle_volume(a, c, "spheroid")
+        self.assertAlmostEqual(cylinder/spheroid, 1.5)
+        q = (1., 0., 0., 0.)
+        particles = [((1e-5, 1e-5, 1e-5), q, prepare.shape_matrix(q, c/a))]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/"particles.data"
+            prepare.write_data(path, particles, a, c, 2e-5, density, 100., "flake")
+            text = path.read_text()
+            self.assertIn("storage proxies", text)
+            row = text.split("Atoms # ellipsoid\n\n", 1)[1].splitlines()[0].split()
+            storage_density = float(row[3])
+            self.assertEqual(storage_density, 3600.)
+            self.assertAlmostEqual(storage_density*spheroid/(density*cylinder), 1.)
+
+    def test_flake_preparation_uses_cylinder_volume_and_shape_certificate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)/"case"
+            args = prepare.parser().parse_args(["--output", str(output), "--shape", "flake",
+                                                "--initialization", "aligned", "--steps", "0"])
+            with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}), \
+                 mock.patch.object(prepare, "verify_packing", side_effect=AssertionError("PW is not cylinder certification")):
+                record = prepare.prepare(args)
+            self.assertEqual(record["particle_shape"], "flake")
+            self.assertEqual(record["model"], "cylinder_reynolds_rim_periodic")
+            actual_phi = args.count*2*math.pi*record["a_m"]**2*record["c_m"]/record["box_length_m"]**3
+            self.assertAlmostEqual(actual_phi, args.phi, places=12)
+            self.assertIn("shape flake", (output/"in.bridge").read_text())
+            self.assertIsNone(record["packing_max_PW_overlap"])
+            self.assertIn("matched spheroid", record["middle_self_geometry"])
+
+    def test_flake_rejects_spheroid_clearance_certificate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            args = prepare.parser().parse_args(["--output", str(output), "--shape", "flake", "--packer", sys.executable])
+            q = (1., 0., 0., 0.)
+            particles = [((0., 0., 0.), q, prepare.shape_matrix(q, .5))]
+            def certificate(command, **kwargs):
+                self.assertEqual(command[command.index("--shape")+1], "flake")
+                (output/"packing_clearance.json").write_text(json.dumps({
+                    "certified": True, "particle_shape": "spheroid", "target_gap_m": 3e-9,
+                    "minimum_surface_gap_m": 4e-9, "max_clearance_deficit_m": 0.,
+                    "nominal_volume_fraction": args.phi, "checked_pair_images": 1}))
+                return prepare.subprocess.CompletedProcess(command, 0, stdout="")
+            with mock.patch.object(prepare.subprocess, "run", side_effect=certificate):
+                with self.assertRaisesRegex(ValueError, "particle shape"):
+                    prepare.certify_packing(args, particles, 1., .5, 10., output)
 
     def test_small_box_all_images_including_self(self):
         q = (1., 0., 0., 0.)
@@ -196,6 +250,31 @@ class BridgeToolsTest(unittest.TestCase):
             self.assertEqual(float(force_line[7]), 250.)
             self.assertEqual(float(force_line[9]), 2e-9)
 
+    @unittest.skipUnless(TEST_PACKER.is_file(), "compiled packer supplied by CTest")
+    def test_random_flake_preparation_has_physical_phi_and_cylinder_clearance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)/"case"
+            args = prepare.parser().parse_args([
+                "--output", str(output), "--packer", str(TEST_PACKER), "--shape", "flake",
+                "--count", "16", "--ar", "2", "--phi", ".1", "--steps", "0"])
+            record = prepare.prepare(args)
+            self.assertEqual(record["initialization"], "random")
+            self.assertEqual(record["packing_clearance"]["particle_shape"], "flake")
+            self.assertTrue(record["packing_clearance"]["certified"])
+            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 3e-9)
+            self.assertEqual(record["packing_clearance"]["max_clearance_deficit_m"], 0.)
+            self.assertAlmostEqual(record["packing_clearance"]["nominal_volume_fraction"], .1)
+            self.assertIn("shape flake", (output/"in.bridge").read_text())
+            rows = (output/"packing.final").read_text().splitlines()[1:]
+            axes = []
+            for row in rows:
+                w, x, y, z = map(float, row.split()[3:])
+                axes.append((2*(x*z+w*y), 2*(y*z-w*x), 1-2*(x*x+y*y)))
+            # The random path may align physically during packing, but must
+            # never replace the seed with an exactly identical-axis lattice.
+            spread = sum((axis[k]-axes[0][k])**2 for axis in axes for k in range(3))
+            self.assertGreater(spread, 1e-6)
+
     def test_clearance_certificate_must_match_requested_gap(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
@@ -271,6 +350,75 @@ class BridgeToolsTest(unittest.TestCase):
                 summary.summarize(path, start=.1, end=1.)
             with self.assertRaises(ValueError):
                 summary.summarize(path, start=100.)
+
+    def private_summary_runtime(self, output):
+        runtime = output/"runtime"
+        (runtime/"tools").mkdir(parents=True)
+        (runtime/"tools/summarize_bridge.py").write_text((TOOLS/"summarize_bridge.py").read_text())
+        return runtime
+
+    def test_run_summary_reports_valid_short_or_empty_history_without_average(self):
+        for empty in (False, True):
+            with self.subTest(empty=empty), tempfile.TemporaryDirectory() as temporary:
+                output = Path(temporary)
+                runtime = self.private_summary_runtime(output)
+                self.history(output/"history.csv")
+                if empty:
+                    header = (output/"history.csv").read_text().splitlines()[0]
+                    (output/"history.csv").write_text(header+"\n")
+                runner.summarize_run(runtime, output,
+                                     {"average_start_strain": 20., "particle_shape": "flake",
+                                      "model": "cylinder_reynolds_rim_periodic"}, {})
+                report = json.loads((output/"viscosity_summary.json").read_text())
+                self.assertEqual(report["status"], "average_unavailable")
+                self.assertEqual(report["particle_shape"], "flake")
+                self.assertEqual(report["requested_start_strain"], 20.)
+                self.assertEqual(report["recorded_end_strain"], 0. if empty else 8.)
+                self.assertFalse(report["stationarity_certified"])
+                self.assertNotIn("mean", report)
+                self.assertIn("No complete", (output/"viscosity_summary.txt").read_text())
+
+    def test_run_summary_writes_time_weighted_window_and_shape(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            runtime = self.private_summary_runtime(output)
+            self.history(output/"history.csv")
+            runner.summarize_run(runtime, output,
+                                 {"average_start_strain": 0., "particle_shape": "flake",
+                                  "model": "cylinder_reynolds_rim_periodic"}, {})
+            report = json.loads((output/"viscosity_summary.json").read_text())
+            self.assertAlmostEqual(report["mean"]["eta_relative"], 3.5)
+            self.assertAlmostEqual(report["mean"]["sigma_xz_Pa"], 7.)
+            self.assertEqual(report["used_window"], [0., 8.])
+            self.assertEqual(report["used_intervals"], 2)
+            self.assertEqual(report["particle_shape"], "flake")
+            self.assertEqual(report["model"], "cylinder_reynolds_rim_periodic")
+            self.assertFalse(report["stationarity_certified"])
+            self.assertIn("relative viscosity = 3.5", (output/"viscosity_summary.txt").read_text())
+
+    def test_run_summary_rejects_corrupt_history_before_testing_window(self):
+        for corrupt in ("missing_header", "not-a-number", "nan", "inf"):
+            with self.subTest(corrupt=corrupt), tempfile.TemporaryDirectory() as temporary:
+                output = Path(temporary)
+                runtime = self.private_summary_runtime(output)
+                history = output/"history.csv"
+                self.history(history)
+                if corrupt == "missing_header":
+                    history.write_text("strain,eta_relative\n0.1,3.5\n")
+                else:
+                    with history.open(newline="") as stream:
+                        rows = list(csv.DictReader(stream))
+                    rows[0]["interval_mean_eta_relative"] = corrupt
+                    with history.open("w", newline="") as stream:
+                        writer = csv.DictWriter(stream, fieldnames=summary.REQUIRED)
+                        writer.writeheader()
+                        writer.writerows(rows)
+                with self.assertRaises(ValueError):
+                    runner.summarize_run(runtime, output,
+                                         {"average_start_strain": 100., "particle_shape": "flake",
+                                          "model": "cylinder_reynolds_rim_periodic"}, {})
+                self.assertFalse((output/"viscosity_summary.json").exists())
+                self.assertFalse((output/"viscosity_summary.txt").exists())
 
 if __name__ == "__main__":
     unittest.main()

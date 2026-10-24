@@ -1,18 +1,20 @@
-# Test_BS — compact spheroid hydrodynamics
+# Test_BS — spheroid / flake suspension hydrodynamics
 
-현재 실행 모델은 `fix slurry/bridge`입니다. AR을 입력받아 compact lubrication v4, 주기 중거리 mobility, 접촉·마찰을 함께 풀고 입자의 위치·배향과 xz 전단 응력을 계산합니다. 기저나 저항표를 먼저 생성하지 않습니다.
+현재 실행 모델은 `fix slurry/bridge`입니다. `PARTICLE_SHAPE=spheroid|flake`와 AR을 입력받아 형상별 근거리 유체력, 주기 중거리 mobility, 접촉·마찰을 함께 풀고 입자의 위치·배향과 xz 전단 응력을 계산합니다. 기저나 저항표를 먼저 생성하지 않습니다.
 
-실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
+실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `PARTICLE_SHAPE`, `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
 
 ## Overlay 적용과 실행
 
-`slurry` 저장소 디렉토리에서 `unzip -o slurry_speed_overlay_20261022.zip`을 실행합니다.
+`slurry` 저장소 디렉토리에서 `unzip -o slurry_flake_overlay_20261023.zip`을 실행합니다.
 
 `sbatch build_slurry_cpu.sbatch`로 다시 빌드합니다. 빌드 로그의 `Build complete`를 확인한 뒤 `run_slurry_cpu.sbatch` 상단 설정을 편집합니다.
 
-`sbatch run_slurry_cpu.sbatch`로 한 실행을 제출합니다. 기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
+`sbatch run_slurry_cpu.sbatch`로 한 실행을 제출합니다. 기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
 
 ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다.
+
+Flake는 평평한 원형 양면을 가진 연속 원기둥입니다. 같은 무작위 seed·성장·FIRE 준비 절차를 사용하고 실제 원기둥 체적과 간격으로 목표 PHI를 검사합니다. 근거리는 면–면 Reynolds 박막과 근사 가장자리 저항이며, 중거리·고립 입자 응답은 같은 a,c의 spheroid 근사, 접촉은 기존 단일점 Coulomb 법칙입니다. [형상별 차이와 검증 범위](validation_flake_integration/README_KO.md)를 참고하십시오.
 
 ## 계산과 병렬 실행
 

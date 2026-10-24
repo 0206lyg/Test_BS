@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261020-compact-bridge-integration"
+RELEASE_ID = "20261023-spheroid-flake-common-run"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -47,6 +47,11 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/slurry_bridge_workspace.h",
         "lammps_slurry/src/slurry_bridge_contact_solver.h",
         "lammps_slurry/src/slurry_bridge_step.h",
+        "lammps_slurry/src/slurry_bridge_shape.h",
+        "lammps_slurry/src/slurry_cylinder_geometry.h",
+        "lammps_slurry/src/slurry_cylinder_packing.h",
+        "lammps_slurry/src/slurry_cylinder_film.h",
+        "lammps_slurry/src/slurry_cylinder_pair.h",
         "lammps_slurry/src/slurry_bridge_images.h",
         "lammps_slurry/tools/prepare_bridge.py",
         "lammps_slurry/tools/run_bridge.py",

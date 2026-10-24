@@ -1,0 +1,75 @@
+{
+  "baseline_git_commit": "5942c63e13f5d86b3684b93eb6f6322f7bfb8b16",
+  "release": "20261023-spheroid-flake-common-run",
+  "test_status": "PASSED",
+  "ctest": {
+    "passed": 40,
+    "total": 40,
+    "log": "results/ctest.log"
+  },
+  "common_batch_actual_lammps": [
+    {
+      "shape": "flake",
+      "count": 108,
+      "ar": 20,
+      "phi": 0.24,
+      "steps": 20,
+      "final_strain": 0.002,
+      "eta_relative_final": 5.099677556373283,
+      "eta_relative_time_average": 4.777119125546197,
+      "mean_profile_seconds": 0.9146294951438904,
+      "maximum_relative_power_error": 1.8173020403411552e-07,
+      "minimum_endpoint_gap_nm": 2.9972496453189335,
+      "maximum_overlap_m": 0.0,
+      "runtime_private_dependencies_verified": true,
+      "mpi_ranks": 1,
+      "threads": 4,
+      "source_fingerprint": "0fcfb013f8cbee8dc68a34e0040347cb530c90da6c54cc8bad6b9998e72ae9bf",
+      "evidence": "results/flake_n108_common_batch"
+    },
+    {
+      "shape": "spheroid",
+      "count": 108,
+      "ar": 20,
+      "phi": 0.24,
+      "steps": 3,
+      "final_strain": 0.00030000000000000003,
+      "eta_relative_final": 5.520848043797932,
+      "eta_relative_time_average": 5.517812149121207,
+      "mean_profile_seconds": 0.34237194061279297,
+      "maximum_relative_power_error": 1.9680301595892504e-08,
+      "minimum_endpoint_gap_nm": 3.1587384929384066,
+      "maximum_overlap_m": 0.0,
+      "runtime_private_dependencies_verified": true,
+      "mpi_ranks": 1,
+      "threads": 4,
+      "source_fingerprint": "0fcfb013f8cbee8dc68a34e0040347cb530c90da6c54cc8bad6b9998e72ae9bf",
+      "evidence": "results/spheroid_n108_common_batch"
+    }
+  ],
+  "additional_n500_moving": "results/flake_n500_moving.json",
+  "cylinder_mass": "results/cylinder_mass.json",
+  "cylinder_inertia_integration": "results/cylinder_inertia_integration.json",
+  "spheroid_regression": "results/spheroid_regression.json",
+  "spheroid_packing_regression": "results/spheroid_packing_regression.json",
+  "thread_comparison": "results/threads_and_solver.json",
+  "steady_state_viscosity_validated": false,
+  "viscosity_increase_over_spheroid_established": false,
+  "n500_long_run_performance_validated": false,
+  "production_mpi_launch_on_negishi_executed_here": false,
+  "local_runtime": "serial LAMMPS with OpenMP 4 threads, real FFTW and static MKL-PARDISO; the batch was invoked with bash locally",
+  "model_scope": [
+    "continuous circular-cylinder geometry and actual cylinder volume/mass/inertia",
+    "finite-domain Reynolds face films plus positive approximate rim near resistance",
+    "same a,c matched-spheroid middle/self approximation",
+    "existing single-point normal/tangential spring Coulomb law, onset 3nm and hydro floor 1nm unchanged"
+  ],
+  "fixed_failure": {
+    "observed": "same AR20 N108 random case failed at step1",
+    "cause": "cancellation in GJK triangle projection caused endpoint-gap force noise; endpoint work error unnecessarily tightened inner tolerance",
+    "change": "stable orthonormal projection; flake gap precision 1e-8 times floor; distinguish inner-work from endpoint-work errors",
+    "solver_tolerances_relaxed": false,
+    "solver_headers_changed": false
+  },
+  "source_fingerprint": "0fcfb013f8cbee8dc68a34e0040347cb530c90da6c54cc8bad6b9998e72ae9bf"
+}
