@@ -6,6 +6,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import sys
@@ -64,7 +65,8 @@ class BridgeToolsTest(unittest.TestCase):
         source = TOOLS.parents[1]/"run_slurry_cpu.sbatch"
         text = source.read_text()
         self.assertIn("#SBATCH --ntasks=1\n", text)
-        self.assertIn("#SBATCH --hint=nomultithread\n", text)
+        settings_text, separator, runtime_text = text.partition("# End of run settings.")
+        self.assertTrue(separator, "Cannot find the batch settings section")
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)/"source with spaces"
             tools = root/"lammps_slurry/tools"
@@ -84,13 +86,27 @@ class BridgeToolsTest(unittest.TestCase):
                                SLURRY_ROOT=str(root), SLURM_JOB_ID="12345", SLURM_CPUS_PER_TASK="16",
                                CAPTURE=str(capture))
             for ar, count, shape in ((2, 500, "spheroid"), (5, 123, "flake")):
-                configured = (text.replace("AR=2\n", "AR={}\n".format(ar))
-                              .replace("COUNT=500\n", "COUNT={}\n".format(count))
-                              .replace("PARTICLE_SHAPE=spheroid", "PARTICLE_SHAPE="+shape))
-                if shape == "flake":
-                    configured = (configured.replace("ROUGH_HYDRO=1\n", "ROUGH_HYDRO=0\n")
-                                  .replace("ROLLING_FRICTION=0.3\n", "ROLLING_FRICTION=0\n")
-                                  .replace("TWISTING_FRICTION=0.1\n", "TWISTING_FRICTION=0\n"))
+                # Users edit these assignments for each run. Configure only the
+                # temporary test copy by name, independent of their saved values.
+                # Literal replacements such as AR=2 silently miss AR=20.
+                settings = {
+                    "PARTICLE_SHAPE": shape, "AR": ar, "COUNT": count,
+                    "PHI": .24, "STEPS": 100000, "OUTPUT_INTERVAL": 100,
+                    "NORMAL_STIFFNESS": 100, "MOBILITY_BACKEND": "mesh",
+                    "FRICTION": .3, "ROUGH_HYDRO": int(shape == "spheroid"),
+                    "ROLLING_FRICTION": .3 if shape == "spheroid" else 0,
+                    "TWISTING_FRICTION": .1 if shape == "spheroid" else 0,
+                    "ROLLING_LENGTH_MODE": "particle",
+                    "OUTPUT_DIR": '""', "BUILD_ENV": '""',
+                    "PREPARE_ONLY": 0, "TRACE_SOLVER": 0,
+                }
+                configured = settings_text
+                for name, value in settings.items():
+                    configured, replacements = re.subn(
+                        r"(?m)^[ \t]*"+re.escape(name)+r"[ \t]*=[^\n]*$",
+                        lambda match: "{}={}".format(name, value), configured)
+                    self.assertEqual(replacements, 1, "Missing or repeated batch setting: "+name)
+                configured += separator+runtime_text
                 script.write_text(configured)
                 subprocess.run(["bash", str(script)], env=environment, check=True, capture_output=True, text=True)
                 records = [json.loads(line) for line in capture.read_text().splitlines()]
@@ -101,6 +117,7 @@ class BridgeToolsTest(unittest.TestCase):
                 index = arguments.index("--build-env")
                 del arguments[index:index+2]
                 supplied = {arg for arg in arguments if arg.startswith("--")}
+                self.assertEqual(len(supplied), sum(arg.startswith("--") for arg in arguments))
                 expected = {option for action in prepare.parser()._actions for option in action.option_strings
                             if option not in ("-h", "--help", "--packer")}
                 self.assertEqual(supplied, expected)
