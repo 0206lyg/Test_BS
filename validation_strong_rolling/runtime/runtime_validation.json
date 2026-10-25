@@ -1,0 +1,723 @@
+{
+  "all_complete": true,
+  "binary_sha256": {
+    "lammps": "2918f83523225143c34339afeae084b5c652b25ee679ef453e60ba56e9915be1",
+    "liblammps": "96e13801f4d0ea641e0aad7c5f74d6bd9240c833812088b327c9645df2141d62",
+    "plugin": "4ab8ce30aea230404a7c13a0624373e8cc96e2ea81735d7aad73262e28054e48"
+  },
+  "build": {
+    "MPI": "serial stubs",
+    "mobility": "mesh, builtin FFT",
+    "optimization": "-O1",
+    "preconditioner": "Eigen reference backend",
+    "threads_phi24": 2,
+    "threads_phi30": 1
+  },
+  "comparison": "Same production random-growth packing at each phi; no attraction. Base, sliding-only, sliding+strong-rolling.",
+  "comparisons": {
+    "ar20_base200__ar20_sliding200": {
+      "final_relative_viscosity_ratio": 1.0591737733443256,
+      "last_50_or_available_mean_relative_viscosity_ratio": 1.0586518343293487,
+      "last_half_mean_relative_viscosity_ratio": 1.0562237342368594,
+      "matched_initial_particles_sha256": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4",
+      "matched_last_step": 200
+    },
+    "ar20_base200__ar20_strong200": {
+      "final_relative_viscosity_ratio": 1.092326517400313,
+      "last_50_or_available_mean_relative_viscosity_ratio": 1.088826231393818,
+      "last_half_mean_relative_viscosity_ratio": 1.0860704040412164,
+      "matched_initial_particles_sha256": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4",
+      "matched_last_step": 200
+    },
+    "ar20_phi30_base__ar20_phi30_strong": {
+      "final_relative_viscosity_ratio": 1.018987479989237,
+      "last_50_or_available_mean_relative_viscosity_ratio": 1.009695928572962,
+      "last_half_mean_relative_viscosity_ratio": 1.0135190438628652,
+      "matched_initial_particles_sha256": "e8ada5c2454ebcd8a2b5b3cfa36e8b7b6a010a1bd34049713403a0236bc5848d",
+      "matched_last_step": 20
+    },
+    "ar20_sliding200__ar20_strong200": {
+      "final_relative_viscosity_ratio": 1.0313005711530299,
+      "last_50_or_available_mean_relative_viscosity_ratio": 1.0285026635632144,
+      "last_half_mean_relative_viscosity_ratio": 1.02825790487081,
+      "matched_initial_particles_sha256": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4",
+      "matched_last_step": 200
+    }
+  },
+  "input_length_policy": "All cases use explicit physical rolling/twisting lengths; equivalent to the new particle/roughness modes at AR20.",
+  "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+  "lammps_release": "stable_30Sep2026",
+  "limits": [
+    "Short initial transient; no steady-state or jamming-fraction determination.",
+    "N108 cubic boxes are small (L/a approximately 4.2-4.6).",
+    "Random-growth initialization can develop strong nematic order during packing.",
+    "No runtime claim for Negishi FFTW/MKL or MPI production builds."
+  ],
+  "prepare_tool_sha256_at_summary": "667a2fa1da942c13413e6e8854680aaaf5eb0b80e03d8231b3f4a42edfe2d470",
+  "release_at_summary": {
+    "baseline_git_commit": "d6c40ab93b278b7e1809f8c5fc919e96c50204b5",
+    "contact_model": "normal/sliding contact with optional finite load-capped rolling and twisting springs; exact condensed 17N solve",
+    "contact_trial": {
+      "attraction_enabled": false,
+      "basis": "effective nonadhesive particle-scale rolling constraint, not measured graphite torque law",
+      "normal_stiffness_N_m": 100.0,
+      "rolling_friction": 0.3,
+      "rolling_length_definition": "a=AR*thickness/2 for the current equal-size spheroids; explicit positive nm overrides",
+      "rolling_length_mode": "particle",
+      "sliding_friction": 0.3,
+      "tangential_stiffness_N_m": 80.0,
+      "twisting_friction": 0.1,
+      "twisting_length_mode": "roughness"
+    },
+    "details": "docs/STRONG_ROLLING_KO.md",
+    "development_target": {
+      "attraction_reserved_for": "later yielding model",
+      "nonadhesive_jamming_volume_fraction": 0.31,
+      "polydispersity": "active candidate for a separate controlled comparison, not an explanation replacing a test",
+      "target_is_not_calibrated_result": true
+    },
+    "equilibrium_bulk_viscosity_tested": false,
+    "flake_geometry": "continuous circular cylinder; exact surface clearance",
+    "flake_middle_self": "matched-spheroid approximation using the same equatorial radius and half-thickness",
+    "flake_near_field": "finite-domain Reynolds face films plus positive approximate rim resistance",
+    "initialization": "same random insertion and growth/FIRE preparation; actual shape-specific periodic clearance certificate",
+    "legacy_release": "20261025-spheroid-rough-upper",
+    "mechanical_contact_gap_m": 1e-08,
+    "model_stage": "COMMON_PERIODIC_MOBILITY_WITH_SHAPE_SPECIFIC_NEAR_FIELD",
+    "normal_stiffness_N_m": 100.0,
+    "particle_shapes": [
+      "spheroid",
+      "flake"
+    ],
+    "performance_baseline_git_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
+    "performance_update": "20261022-fftw-condensed-newton-pardiso",
+    "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
+    "periodic_mobility_backend": "mesh",
+    "prepare_bridge_sha256": "667a2fa1da942c13413e6e8854680aaaf5eb0b80e03d8231b3f4a42edfe2d470",
+    "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
+    "production_numerics": {
+      "contact_linear_system": "exactly condensed 17N Newton-FGMRES",
+      "fft": "FFTW",
+      "sparse_preconditioner": "MKL-PARDISO-static-GNU-LP64"
+    },
+    "release_id": "20261025-spheroid-strong-rolling",
+    "rough_hydrodynamics": "positive-gap-only hard-core cap-pair tangential/rotation closure; overlap states excluded without renormalization",
+    "rough_trial": {
+      "basis": "geometrically admissible dense upper-range trial, not measured graphite maximum",
+      "coverage_per_surface": 0.78,
+      "footprint_radius_m": 4.5e-08,
+      "height_per_surface_m": 9e-09,
+      "microscopic_floor_m": 1e-09,
+      "static_normal_rough_force": false
+    },
+    "run_batch": "run_slurry_cpu.sbatch",
+    "status": "NONADHESIVE_STRONG_SLIDING_ROLLING_COMPARISON"
+  },
+  "runs": {
+    "ar20_base200": {
+      "AR": 20.0,
+      "artifact_sha256": {
+        "console.log": "186973f2e2e187732c168bfa3b72866b6879cdd91c7999a46acc0a27e74aa59e",
+        "final.data": "d7b506d4e378dabb60506068e7105c48aaf9ce4494aa998609ccc1edb98fb05f",
+        "history.csv": "a1b28729cda8bc4ea1de00eeab068863b69c09cf20f42fd0fe106e16e292caf5",
+        "in.bridge": "83d1074e43641150e70f2663c5789b9e7e9ce00721a6d3e52762b426aa983345",
+        "packing_clearance.json": "75fd6715442a411a7893cec3065ca4bc9766cfcbda1f5fb767ec70491bbec4bf",
+        "parameters.json": "2615fe94a18107917359872b57c1f1f55b99e4f09524c9a7dbd9b614856a64a7",
+        "particles.data": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4"
+      },
+      "box_length_over_a": 4.550827520987487,
+      "complete": true,
+      "contact_degree_final": 1.0925925925925926,
+      "contact_degree_mean_last_50_or_available": 1.0651851851851852,
+      "contacts_final": 59.0,
+      "contacts_initial": 0.0,
+      "contacts_maximum": 59.0,
+      "contacts_mean_last_50_or_available": 57.52,
+      "count": 108,
+      "eta_relative_final": 7.329678341086762,
+      "eta_relative_initial": 5.495039225629088,
+      "eta_relative_mean_last_50_or_available": 7.343375280136024,
+      "eta_relative_mean_last_half": 7.230150420231722,
+      "final_order": {
+        "director": [
+          -0.6173511481178513,
+          0.08853027693440219,
+          -0.7816904438353385
+        ],
+        "nematic_S": 0.865578376715721,
+        "normal_second_moment": [
+          [
+            0.38147341583631167,
+            -0.04781623739068403,
+            0.4123004859115999
+          ],
+          [
+            -0.04781623739068403,
+            0.040640206013313585,
+            -0.0607393764890475
+          ],
+          [
+            0.4123004859115999,
+            -0.0607393764890475,
+            0.5778863781503752
+          ]
+        ]
+      },
+      "friction": 0.1,
+      "initial_order": {
+        "director": [
+          -0.6117992433156646,
+          0.08761929397997792,
+          -0.7861453715444946
+        ],
+        "nematic_S": 0.867859149473746,
+        "normal_second_moment": [
+          [
+            0.37541833455517676,
+            -0.04697907202807433,
+            0.4122730316060065
+          ],
+          [
+            -0.04697907202807433,
+            0.040270115398358765,
+            -0.060587227951967824
+          ],
+          [
+            0.4122730316060065,
+            -0.060587227951967824,
+            0.5843115500464647
+          ]
+        ]
+      },
+      "kn_N_per_m": 100.0,
+      "kt_N_per_m": 80.0,
+      "last_50_or_available_count": 50,
+      "last_50_or_available_step_range": [
+        151,
+        200
+      ],
+      "last_half_step_range": [
+        100,
+        200
+      ],
+      "minimum_gap_nm": 9.99668482139368,
+      "phi": 0.24,
+      "profile_total_s_mean": 1.3097212029926812,
+      "recorded_steps": 200,
+      "recorded_strain": 0.019999999999999997,
+      "relative_power_defect_maximum": 2.934626571869667e-07,
+      "rolling_yield_final": 59.0,
+      "rotation_contact": {
+        "enabled": true,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact",
+        "rolling_friction": 0.1,
+        "rolling_length_m": 4.5000000000000006e-08,
+        "rolling_stiffness_Nm_per_rad": 2.0250000000000005e-13,
+        "twisting_friction": 0.1,
+        "twisting_length_m": 4.5000000000000006e-08,
+        "twisting_stiffness_Nm_per_rad": 1.6200000000000002e-13
+      },
+      "shear_rate_s_inv": 100.0,
+      "solver_relative_residual_maximum": 5.306231388948279e-08,
+      "timestep_s": 1e-06,
+      "twisting_yield_final": 59.0
+    },
+    "ar20_phi30_base": {
+      "AR": 20.0,
+      "artifact_sha256": {
+        "console.log": "315b89ce9a1f48fa65d2a49e59f31478c1c6e7a16068074064cf5a3af988cfa5",
+        "final.data": "cb25fd50467780503b46f422e03d491fccfc22ef9aec93478eb8b156efd4bcba",
+        "history.csv": "1fb12d5c90349a61fbb763b914adc937121373f5267b3acb5a4539b84ee2be52",
+        "in.bridge": "be8ed328c754634dad1880f89f6e1bb0d8d982933d8537181802fc526d25ccf6",
+        "packing_clearance.json": "ebbe1f4e2cd8a8d11d050699b20ccc2d350e643082559e16128525bd897374c5",
+        "parameters.json": "0015108e8ca8606de8ed4bb0e77e1c6f5b1f2f4185840022e1ffdd0514e2dffd",
+        "particles.data": "e8ada5c2454ebcd8a2b5b3cfa36e8b7b6a010a1bd34049713403a0236bc5848d"
+      },
+      "box_length_over_a": 4.224614041022649,
+      "complete": true,
+      "contact_degree_final": 0.18518518518518517,
+      "contact_degree_mean_last_50_or_available": 0.10052910052910054,
+      "contacts_final": 10.0,
+      "contacts_initial": 2.0,
+      "contacts_maximum": 10.0,
+      "contacts_mean_last_50_or_available": 5.428571428571429,
+      "count": 108,
+      "eta_relative_final": 7.906992610693124,
+      "eta_relative_initial": 7.610363929030366,
+      "eta_relative_mean_last_50_or_available": 7.707783846753097,
+      "eta_relative_mean_last_half": 7.771613205264093,
+      "final_order": {
+        "director": [
+          -0.42155142744265295,
+          0.11185883940239805,
+          -0.899878877443298
+        ],
+        "nematic_S": 0.9191353759721865,
+        "normal_second_moment": [
+          [
+            0.18907187922802254,
+            -0.04717115775876061,
+            0.34876434149002405
+          ],
+          [
+            -0.04717115775876061,
+            0.03947949513660108,
+            -0.09059814610334531
+          ],
+          [
+            0.34876434149002405,
+            -0.09059814610334531,
+            0.7714486256353761
+          ]
+        ]
+      },
+      "friction": 0.1,
+      "initial_order": {
+        "director": [
+          -0.42119397844264717,
+          0.11174750938566635,
+          -0.9000600683675261
+        ],
+        "nematic_S": 0.9192213711524426,
+        "normal_second_moment": [
+          [
+            0.18877997930823712,
+            -0.04708903877728794,
+            0.3485729468799081
+          ],
+          [
+            -0.04708903877728794,
+            0.03943215152651821,
+            -0.09053792543366444
+          ],
+          [
+            0.3485729468799081,
+            -0.09053792543366444,
+            0.7717878691652451
+          ]
+        ]
+      },
+      "kn_N_per_m": 100.0,
+      "kt_N_per_m": 80.0,
+      "last_50_or_available_count": 21,
+      "last_50_or_available_step_range": [
+        0,
+        20
+      ],
+      "last_half_step_range": [
+        10,
+        20
+      ],
+      "minimum_gap_nm": 9.998051793605855,
+      "phi": 0.3,
+      "profile_total_s_mean": 2.9664206958952404,
+      "recorded_steps": 20,
+      "recorded_strain": 0.002,
+      "relative_power_defect_maximum": 2.3958561150224954e-09,
+      "rolling_yield_final": 10.0,
+      "rotation_contact": {
+        "enabled": true,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact",
+        "rolling_friction": 0.1,
+        "rolling_length_m": 4.5000000000000006e-08,
+        "rolling_length_mode": "roughness",
+        "rolling_length_source": "explicit_nm",
+        "rolling_stiffness_Nm_per_rad": 2.0250000000000005e-13,
+        "twisting_friction": 0.1,
+        "twisting_length_m": 4.5000000000000006e-08,
+        "twisting_stiffness_Nm_per_rad": 1.6200000000000002e-13
+      },
+      "shear_rate_s_inv": 100.0,
+      "solver_relative_residual_maximum": 4.281593746399537e-09,
+      "timestep_s": 1e-06,
+      "twisting_yield_final": 10.0
+    },
+    "ar20_phi30_strong": {
+      "AR": 20.0,
+      "artifact_sha256": {
+        "console.log": "89980a20aea4e1cde56b3d61b9058983fbaa91e09caee004551edf30d4505de5",
+        "final.data": "3866e95e5e41306ab5c9f34f08a492e8354b56a1a2f5cd1ec5456e10438d6a4e",
+        "history.csv": "3edeb6649f036b3e8eef195069d74a00cbd3c093d0536b46ba2fee82c41b2e1d",
+        "in.bridge": "aae48b8c5fa51ee468d2593b365c079b10037ebbd3d05efd789f11d4e5ac48d0",
+        "packing_clearance.json": "ebbe1f4e2cd8a8d11d050699b20ccc2d350e643082559e16128525bd897374c5",
+        "parameters.json": "4e01eec4a99953ac9d6205322553ef0f8583bb09c6b2974ab4fd70867851b49e",
+        "particles.data": "e8ada5c2454ebcd8a2b5b3cfa36e8b7b6a010a1bd34049713403a0236bc5848d"
+      },
+      "box_length_over_a": 4.224614041022649,
+      "complete": true,
+      "contact_degree_final": 0.18518518518518517,
+      "contact_degree_mean_last_50_or_available": 0.10141093474426809,
+      "contacts_final": 10.0,
+      "contacts_initial": 2.0,
+      "contacts_maximum": 10.0,
+      "contacts_mean_last_50_or_available": 5.476190476190476,
+      "count": 108,
+      "eta_relative_final": 8.057126474663706,
+      "eta_relative_initial": 7.63903707032395,
+      "eta_relative_mean_last_50_or_available": 7.7825179683870465,
+      "eta_relative_mean_last_half": 7.876677985071281,
+      "final_order": {
+        "director": [
+          -0.4215517852115285,
+          0.11186030593927876,
+          -0.8998785275469929
+        ],
+        "nematic_S": 0.9191368584724593,
+        "normal_second_moment": [
+          [
+            0.18907156947876763,
+            -0.04717177419586438,
+            0.348765232660293
+          ],
+          [
+            -0.04717177419586438,
+            0.03947974939567986,
+            -0.09059944256202054
+          ],
+          [
+            0.348765232660293,
+            -0.09059944256202054,
+            0.7714486811255526
+          ]
+        ]
+      },
+      "friction": 0.3,
+      "initial_order": {
+        "director": [
+          -0.42119397844264717,
+          0.11174750938566635,
+          -0.9000600683675261
+        ],
+        "nematic_S": 0.9192213711524426,
+        "normal_second_moment": [
+          [
+            0.18877997930823712,
+            -0.04708903877728794,
+            0.3485729468799081
+          ],
+          [
+            -0.04708903877728794,
+            0.03943215152651821,
+            -0.09053792543366444
+          ],
+          [
+            0.3485729468799081,
+            -0.09053792543366444,
+            0.7717878691652451
+          ]
+        ]
+      },
+      "kn_N_per_m": 100.0,
+      "kt_N_per_m": 80.0,
+      "last_50_or_available_count": 21,
+      "last_50_or_available_step_range": [
+        0,
+        20
+      ],
+      "last_half_step_range": [
+        10,
+        20
+      ],
+      "minimum_gap_nm": 9.998301180401402,
+      "phi": 0.3,
+      "profile_total_s_mean": 3.2833110377902077,
+      "recorded_steps": 20,
+      "recorded_strain": 0.002,
+      "relative_power_defect_maximum": 4.623799039515705e-09,
+      "rolling_yield_final": 10.0,
+      "rotation_contact": {
+        "enabled": true,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact",
+        "rolling_friction": 0.3,
+        "rolling_length_m": 3e-06,
+        "rolling_length_mode": "roughness",
+        "rolling_length_source": "explicit_nm",
+        "rolling_stiffness_Nm_per_rad": 9e-10,
+        "twisting_friction": 0.1,
+        "twisting_length_m": 4.5000000000000006e-08,
+        "twisting_stiffness_Nm_per_rad": 1.6200000000000002e-13
+      },
+      "shear_rate_s_inv": 100.0,
+      "solver_relative_residual_maximum": 1.0268512736524532e-08,
+      "timestep_s": 1e-06,
+      "twisting_yield_final": 10.0
+    },
+    "ar20_sliding200": {
+      "AR": 20.0,
+      "artifact_sha256": {
+        "console.log": "0e0e96f9136a46dbd1c8b7ff53448ac2f78308ee7ab1f87f2b0c8f75d3936317",
+        "final.data": "c4b8c4d36498de398a2446b2101d43487c76c77556d0583ac5724f587d351897",
+        "history.csv": "889bef21c1308632254c25754a35249ba659d2b3d010fca564a94ebd6c836046",
+        "in.bridge": "3436e35451eadfa1a321ca3f0564c7edaa24d44d505cd8fade08c141b164ea2d",
+        "packing_clearance.json": "75fd6715442a411a7893cec3065ca4bc9766cfcbda1f5fb767ec70491bbec4bf",
+        "parameters.json": "818b9301475872091141026d8b86b18e2ddd1347758f4cfae69dc6ddeac8db91",
+        "particles.data": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4"
+      },
+      "box_length_over_a": 4.550827520987487,
+      "complete": true,
+      "contact_degree_final": 1.1111111111111112,
+      "contact_degree_mean_last_50_or_available": 1.0948148148148147,
+      "contacts_final": 60.0,
+      "contacts_initial": 0.0,
+      "contacts_maximum": 60.0,
+      "contacts_mean_last_50_or_available": 59.12,
+      "count": 108,
+      "eta_relative_final": 7.763403065929043,
+      "eta_relative_initial": 5.49503936428898,
+      "eta_relative_mean_last_50_or_available": 7.7740777104847965,
+      "eta_relative_mean_last_half": 7.636656475951348,
+      "final_order": {
+        "director": [
+          -0.6174391544212111,
+          0.08856096991596552,
+          -0.7816174545103018
+        ],
+        "nematic_S": 0.8655410492399929,
+        "normal_second_moment": [
+          [
+            0.3815713710088932,
+            -0.04783723298647032,
+            0.41229724622374664
+          ],
+          [
+            -0.04783723298647032,
+            0.04064606291247582,
+            -0.06075374955699525
+          ],
+          [
+            0.41229724622374664,
+            -0.06075374955699525,
+            0.5777825660786311
+          ]
+        ]
+      },
+      "friction": 0.3,
+      "initial_order": {
+        "director": [
+          -0.6117992433156646,
+          0.08761929397997792,
+          -0.7861453715444946
+        ],
+        "nematic_S": 0.867859149473746,
+        "normal_second_moment": [
+          [
+            0.37541833455517676,
+            -0.04697907202807433,
+            0.4122730316060065
+          ],
+          [
+            -0.04697907202807433,
+            0.040270115398358765,
+            -0.060587227951967824
+          ],
+          [
+            0.4122730316060065,
+            -0.060587227951967824,
+            0.5843115500464647
+          ]
+        ]
+      },
+      "kn_N_per_m": 100.0,
+      "kt_N_per_m": 80.0,
+      "last_50_or_available_count": 50,
+      "last_50_or_available_step_range": [
+        151,
+        200
+      ],
+      "last_half_step_range": [
+        100,
+        200
+      ],
+      "minimum_gap_nm": 9.997280100114706,
+      "phi": 0.24,
+      "profile_total_s_mean": 1.306255287198878,
+      "recorded_steps": 200,
+      "recorded_strain": 0.019999999999999997,
+      "relative_power_defect_maximum": 3.486496584083114e-07,
+      "rolling_yield_final": 60.0,
+      "rotation_contact": {
+        "enabled": true,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact",
+        "rolling_friction": 0.1,
+        "rolling_length_m": 4.5000000000000006e-08,
+        "rolling_stiffness_Nm_per_rad": 2.0250000000000005e-13,
+        "twisting_friction": 0.1,
+        "twisting_length_m": 4.5000000000000006e-08,
+        "twisting_stiffness_Nm_per_rad": 1.6200000000000002e-13
+      },
+      "shear_rate_s_inv": 100.0,
+      "solver_relative_residual_maximum": 9.741225735556002e-08,
+      "timestep_s": 1e-06,
+      "twisting_yield_final": 60.0
+    },
+    "ar20_strong200": {
+      "AR": 20.0,
+      "artifact_sha256": {
+        "console.log": "abe070024fd09cb766387bf6cf8a3ed22075adb735f730925b109e78c886bf52",
+        "final.data": "c2fef28123f02585342f178e7874519188b171129e65285a5c535bd0b314cc08",
+        "history.csv": "6ecfcadda2e59baaf8a8b9c06d6e70fcfc16dd012c1650ff71f71c8cfa9efa35",
+        "in.bridge": "764a6350e85e7bb9f513fcbd85adaf82b607da40f02c532ac31610f2e14207b2",
+        "packing_clearance.json": "75fd6715442a411a7893cec3065ca4bc9766cfcbda1f5fb767ec70491bbec4bf",
+        "parameters.json": "6d4c0a6ef38251932cd30a1eb2f07afea9859cc75031760e9fac856b20d31aa0",
+        "particles.data": "6e8bdd897833425aeb5d97158d4e88c970321a165dec74f157b3c8db6e8cd6e4"
+      },
+      "box_length_over_a": 4.550827520987487,
+      "complete": true,
+      "contact_degree_final": 1.0185185185185186,
+      "contact_degree_mean_last_50_or_available": 0.9996296296296295,
+      "contacts_final": 55.0,
+      "contacts_initial": 0.0,
+      "contacts_maximum": 55.0,
+      "contacts_mean_last_50_or_available": 53.98,
+      "count": 108,
+      "eta_relative_final": 8.006402015983806,
+      "eta_relative_initial": 5.495039198852042,
+      "eta_relative_mean_last_50_or_available": 7.995659631981029,
+      "eta_relative_mean_last_half": 7.852452388179837,
+      "final_order": {
+        "director": [
+          -0.6174036977113563,
+          0.08857971404760656,
+          -0.7816433383018041
+        ],
+        "nematic_S": 0.8657560400323345,
+        "normal_second_moment": [
+          [
+            0.38150772434965813,
+            -0.04785599781718054,
+            0.41241981699444313
+          ],
+          [
+            -0.04785599781718054,
+            0.04063759088411137,
+            -0.06077714451754511
+          ],
+          [
+            0.41241981699444313,
+            -0.06077714451754511,
+            0.5778546847662306
+          ]
+        ]
+      },
+      "friction": 0.3,
+      "initial_order": {
+        "director": [
+          -0.6117992433156646,
+          0.08761929397997792,
+          -0.7861453715444946
+        ],
+        "nematic_S": 0.867859149473746,
+        "normal_second_moment": [
+          [
+            0.37541833455517676,
+            -0.04697907202807433,
+            0.4122730316060065
+          ],
+          [
+            -0.04697907202807433,
+            0.040270115398358765,
+            -0.060587227951967824
+          ],
+          [
+            0.4122730316060065,
+            -0.060587227951967824,
+            0.5843115500464647
+          ]
+        ]
+      },
+      "kn_N_per_m": 100.0,
+      "kt_N_per_m": 80.0,
+      "last_50_or_available_count": 50,
+      "last_50_or_available_step_range": [
+        151,
+        200
+      ],
+      "last_half_step_range": [
+        100,
+        200
+      ],
+      "minimum_gap_nm": 9.997525780412685,
+      "phi": 0.24,
+      "profile_total_s_mean": 1.3483348972168727,
+      "recorded_steps": 200,
+      "recorded_strain": 0.019999999999999997,
+      "relative_power_defect_maximum": 4.2851435852371126e-07,
+      "rolling_yield_final": 48.0,
+      "rotation_contact": {
+        "enabled": true,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact",
+        "rolling_friction": 0.3,
+        "rolling_length_m": 3e-06,
+        "rolling_stiffness_Nm_per_rad": 9.000000000000001e-10,
+        "twisting_friction": 0.1,
+        "twisting_length_m": 4.5000000000000006e-08,
+        "twisting_stiffness_Nm_per_rad": 1.6200000000000002e-13
+      },
+      "shear_rate_s_inv": 100.0,
+      "solver_relative_residual_maximum": 6.677631080352383e-08,
+      "timestep_s": 1e-06,
+      "twisting_yield_final": 54.0
+    }
+  },
+  "source_sha256": {
+    "lammps_slurry/src/fix_slurry_bridge.cpp": "ea5ec0235b77571725ebe42960983b5b9768065b6998ebfd181df3f949336062",
+    "lammps_slurry/src/fix_slurry_bridge.h": "a7fb557f4f6278f7ce88a7e3a83f1495a18b507b918e23f0bb6e1fdc965b9fc0",
+    "lammps_slurry/src/fix_slurry_drag.cpp": "c21abf611b348efca5b4274ddfba40f8ee98c2b63eb63fe83b5428a4d21b10f0",
+    "lammps_slurry/src/fix_slurry_drag.h": "65e907c60c0294f9dde010d8acd59e7f8246382a4d8e4303c4f2773dcec10809",
+    "lammps_slurry/src/fix_slurry_implicit.cpp": "87ef1712249f85a2bfc9d8df3768555de6f248704a02d95bf61db1933cb4f39c",
+    "lammps_slurry/src/fix_slurry_implicit.h": "9ca8fa500063503c8435a0f5ee024297af9b26519399c695e7aa5644e1f59f23",
+    "lammps_slurry/src/pack_spheroids.cpp": "5cd2323334790f71bc95f64496704fd2469693f6b7052f75e2d4f64ded2348a2",
+    "lammps_slurry/src/pair_slurry_spheroid.cpp": "76d2562ec1795b2ae588318d8b253818b0c1b6f516cc61f4e8ba36f51e366b5a",
+    "lammps_slurry/src/pair_slurry_spheroid.h": "b036298845618885b05f014d177b207ed6c44145f168dd9a39f36e4f00745019",
+    "lammps_slurry/src/plugin.cpp": "17bb370aa7a509c9975ea9b69d2aaa0d0524c2cde20c4b7ba12ae897ce51a240",
+    "lammps_slurry/src/slurry_anchor_cache.h": "fb35ae47bee4881c1b0122dad7e51329e08dbab37c820c1152482a7c230f1ed7",
+    "lammps_slurry/src/slurry_bridge_contact_solver.h": "3fbb024f916bfca21d4b1742dc59ff2eb28a171c4767f005558f1988c2b66a91",
+    "lammps_slurry/src/slurry_bridge_images.h": "3124f76645c64e8c2dea2d56a3321b269728301579018bacc0db9d3cd048b973",
+    "lammps_slurry/src/slurry_bridge_shape.h": "a6fd54a2c6175ded69c63fc5c99197e8aa664ca52728d34a42f115f6603fd3e2",
+    "lammps_slurry/src/slurry_bridge_solver.h": "0e158bb5dbd77b5840627b84b0a120078eff247620bf13bc2461c731719e43aa",
+    "lammps_slurry/src/slurry_bridge_step.h": "538c44de599a161c1491bf02057ffad2eeadbdc2423318032d8f34df1adf54f8",
+    "lammps_slurry/src/slurry_bridge_workspace.h": "5f26f433e03bf10675afc00bf9dac9f7b786e82c2ac3bdf9285a95f0ac58a5eb",
+    "lammps_slurry/src/slurry_compact_bridge.h": "730ec168f228a69fe92787b685d122472907af6a86d4fafa63544918bb1dab49",
+    "lammps_slurry/src/slurry_cylinder_film.h": "5d4a0f5eaa598085a9c1839aeb2bcf545da817a61123755ba9fe514bf99f3529",
+    "lammps_slurry/src/slurry_cylinder_geometry.h": "938922294867cf5e420bfa60971651bde87c53e2b226378644148a69ad554103",
+    "lammps_slurry/src/slurry_cylinder_packing.h": "ddaee8aef90df28cc7bbc0e4100cf152eb7f7911d7d4b2d579bbf34a0e09b600",
+    "lammps_slurry/src/slurry_cylinder_pair.h": "1952e3f207f2281a104ad520c95e9639e60a47faeff44e4d95925294ada2324a",
+    "lammps_slurry/src/slurry_eigen_ilu_math.h": "305b7c61ce6f0841f9fa2e4f85b408fff09a19d87e8d4927df475e0b22c533df",
+    "lammps_slurry/src/slurry_eigen_lu_math.h": "0b43b766efde58082db79d35f99ad2c25222753f983269ce784afc838a8d02aa",
+    "lammps_slurry/src/slurry_fft_plans.h": "d06c8b87162e86fe337f8067fa80fea0841cc5f4d6a174ba6193dd4245f101c7",
+    "lammps_slurry/src/slurry_finite_gap_math.h": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+    "lammps_slurry/src/slurry_flake_diagnostics.h": "ea0685893f092f459d6bc1617cdaae25580d18c1ffde9f38cef9c032da04bc63",
+    "lammps_slurry/src/slurry_general_model.cpp": "47bed371fd0555932e31dafe139827add3b9c86246d6c05ebe708d5300d950c9",
+    "lammps_slurry/src/slurry_general_model.h": "60a45a46dc599d2df970bf7f3221d8b6edd1a8c6764392fa0dc6266837e7d9f1",
+    "lammps_slurry/src/slurry_general_near.cpp": "2ce45089dbebf74f156ba7886009d540d93edc56f3372ca5cdbfde04791c84ca",
+    "lammps_slurry/src/slurry_general_near.h": "aa4dd417e416a8284aee5df39631a707e1109cefd48c141371f4a234538a6733",
+    "lammps_slurry/src/slurry_general_outer.cpp": "162b8751c72d03ec432591990124dc57980793d7c5f1fca5a7ce0e8db0ac3962",
+    "lammps_slurry/src/slurry_general_outer.h": "2249ee615db421110d349b8841d3fcbea4d99a35f68133a8d2eaece039328901",
+    "lammps_slurry/src/slurry_general_provider.cpp": "eaed1ba134608cd5a34015f6f22e0744b68430ec3c7234b1dc81de1668aa91c1",
+    "lammps_slurry/src/slurry_general_provider.h": "2cad1bdda3ddff91540d26b2b008633c3c8d4939533f8a2da79a49cc7098c01f",
+    "lammps_slurry/src/slurry_general_types.h": "923ae681b7bcac09e64b17809932c02864126bd79a7e483240ea328d5f011398",
+    "lammps_slurry/src/slurry_grand_pair_lookup.h": "51379d903c620b52324c5b2beeee0adfe8c6ba30b8533cd0a78f8720f258f7eb",
+    "lammps_slurry/src/slurry_grand_pair_math.h": "fe2b593722339c7eb3562527523fc1442cd543ae63e3ceb8732c5b468cbfa167",
+    "lammps_slurry/src/slurry_grand_system_check.h": "396037d6e1347ffa1d5029d135b5f735f2878a183c5aeca7c165211dd38f5fe7",
+    "lammps_slurry/src/slurry_history_math.h": "3f4f1ab549c92138b6c07417263e787d99ef04c7978b65f09ef1efcffb222a94",
+    "lammps_slurry/src/slurry_hydro_math.h": "b2d8edd970e06339a06cb52fc16fde6fced55d9e926eafb736ce8d3775d352e1",
+    "lammps_slurry/src/slurry_implicit_math.h": "49f86f6179620cde908e9a2207e0134176a8cae53d06d9f52ae39405998902cb",
+    "lammps_slurry/src/slurry_objective_film.h": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
+    "lammps_slurry/src/slurry_pair_hydro_math.h": "7765ac59f3265f69629f54e73c50590044a2387e56afd7b50d27b588d4fa468a",
+    "lammps_slurry/src/slurry_periodic_mesh.h": "c99319020e3f7d24c6fa167930df964f6a1803ef37a155ba27d5d0014cd9680a",
+    "lammps_slurry/src/slurry_periodic_mobility.h": "bd372a70e63feee7fd351001e6874b097dbb6f5b061036c0acf94d23bfbb1de5",
+    "lammps_slurry/src/slurry_reference_source17.h": "9e5c79966b2a0322848d0107cf79680dcd2779c5f90be375ce3559e7bc79426a",
+    "lammps_slurry/src/slurry_rough_surface.h": "a2e65e1c7895e943a2798477008a24975a13ec1548e6d8338097f67dcd23357a",
+    "lammps_slurry/src/slurry_scattering_math.h": "1efdb2112ba90b82511e218c13843ed070e3356ebce41d35aeb45889e7c11d8c",
+    "lammps_slurry/src/slurry_scattering_provider.h": "3661ae6fdb75c61be9c1d44a4ef8bce2ffecb9deb286109803e036ed32dab01d",
+    "lammps_slurry/src/slurry_singular_pair.h": "9bbbd0d50043a87ee7e2b98876a05ea1c892b9fa8a4376f5a20d885b0922395e",
+    "lammps_slurry/src/slurry_solver_workspace.h": "128b9beb396fc6cfca965d9d33a8c07f2ebe5f417f6dc3fcfe0c8f02f51ceb34",
+    "lammps_slurry/src/slurry_sparse_math.h": "0e5b2ffd030161dca343d502c0ce8bb8432489aca643843c7c12e0c142f36324",
+    "lammps_slurry/src/slurry_spd_coordinates.h": "9b1a250a51b6cc77061c0c210e63cac173f1455451c8b497ecb9e64a4241961d",
+    "lammps_slurry/src/slurry_spd_coordinates17.h": "3ac110cb0177d4c1bf9b74baeee116357733c174ed8f5d6297aa189de363264a",
+    "lammps_slurry/src/slurry_spd_table.h": "61425c6d3c2b8a756800c353fcb1c4d566d76b49907391abc6d93fb4c97edc38",
+    "lammps_slurry/src/slurry_spd_table17.h": "8f9184990c3d25c8c192480422a36348df39fc1e3e42618ca7018780ef9ec560",
+    "lammps_slurry/src/slurry_spheroid_hydro_math.h": "645930243114a39f966f0ad77e73c0b7b7022460f0f36a7a83e6f4e72ee08954",
+    "lammps_slurry/src/slurry_stress_math.h": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad"
+  }
+}

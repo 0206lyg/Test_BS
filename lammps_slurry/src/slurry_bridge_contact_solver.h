@@ -10,7 +10,7 @@
 namespace SlurryBridgeContactSolver {
 using namespace SlurryBridgeSolver;
 struct Scale {
-  double normal = 1., tangent = 1.;
+  double normal = 1., tangent = 1., rolling = 1., twisting = 1.;
 };
 struct ProximalResponse {
   V3 residual = V3::Zero();
@@ -91,6 +91,97 @@ inline ProximalResponse proximal_response(const Contact &c, const V3 &relative,
         "bridge proximal solver: nonfinite contact response");
   return out;
 }
+// Six-dimensional retained wrench is used only when angular contact laws
+// are enabled. The force-only API and three-dimensional path remain intact.
+struct GeneralizedProximalResponse {
+  V6 residual = V6::Zero();
+  Matrix6 velocity_derivative = Matrix6::Zero();
+  Matrix6 traction_derivative = Matrix6::Identity();
+  Matrix6 traction_inverse = Matrix6::Identity();
+};
+inline GeneralizedProximalResponse proximal_response(
+    const Contact &c, const V6 &relative, const V6 &traction,
+    double dt, const Scale &rho) {
+  GeneralizedProximalResponse out;
+  const auto force = proximal_response(c, V3(relative.head<3>()), V3(traction.head<3>()), dt, rho);
+  out.residual.head<3>() = force.residual;
+  out.velocity_derivative.topLeftCorner<3,3>() = force.velocity_derivative;
+  out.traction_derivative.topLeftCorner<3,3>() = force.traction_derivative;
+  out.traction_inverse.topLeftCorner<3,3>() = force.traction_inverse;
+  const Eigen::Matrix3d nn = c.normal * c.normal.transpose(),
+                        tangent = Eigen::Matrix3d::Identity() - nn;
+  Eigen::Matrix3d angular_jacobian = Eigen::Matrix3d::Zero(),
+                  angular_inverse = Eigen::Matrix3d::Zero();
+  V3 cross = V3::Zero();
+  const double normal = -c.normal.dot(traction.head<3>());
+  auto branch = [&](const Eigen::Matrix3d &projector, const V3 &history,
+                    double stiffness, double coefficient, double scale) {
+    const V3 moment = projector * traction.tail<3>();
+    if (!(c.kn > 0. && stiffness > 0. && coefficient > 0.)) {
+      out.residual.tail<3>() += moment;
+      angular_jacobian += projector;
+      angular_inverse += projector;
+      return;
+    }
+    const double ratio = scale / (stiffness * dt);
+    const V3 y = (1. - ratio) * moment +
+                 scale * (projector * relative.tail<3>() + history / dt);
+    const double length = y.norm(), cap = coefficient * std::max(normal, 0.);
+    if (length <= cap && cap > 0.) {
+      out.residual.tail<3>() += scale * (moment / (stiffness * dt) -
+                                  projector * relative.tail<3>() - history / dt);
+      out.velocity_derivative.bottomRightCorner<3,3>() -= scale * projector;
+      angular_jacobian += ratio * projector;
+      angular_inverse += projector / ratio;
+    } else if (length > 0.) {
+      const V3 d = y / length;
+      const Eigen::Matrix3d dd = d*d.transpose(), orthogonal = projector - dd;
+      const double fraction = cap / length,
+                   eigenvalue = (1. - fraction) + ratio * fraction;
+      out.residual.tail<3>() += moment - cap * d;
+      out.velocity_derivative.bottomRightCorner<3,3>() -= scale * fraction * orthogonal;
+      angular_jacobian += dd + eigenvalue * orthogonal;
+      angular_inverse += dd + orthogonal / eigenvalue;
+      if (normal > 0.) cross += coefficient * d;
+    } else {
+      out.residual.tail<3>() += moment;
+      angular_jacobian += projector;
+      angular_inverse += projector;
+    }
+  };
+  branch(tangent, tangent * c.rolling_history, c.kr,
+         c.mu_roll * c.roll_length, rho.rolling);
+  branch(nn, c.twisting_history * c.normal, c.kw,
+         c.mu_twist * c.twist_length, rho.twisting);
+  out.traction_derivative.bottomRightCorner<3,3>() = angular_jacobian;
+  out.traction_derivative.bottomLeftCorner<3,3>() = cross * c.normal.transpose();
+  out.traction_inverse.bottomRightCorner<3,3>() = angular_inverse;
+  out.traction_inverse.bottomLeftCorner<3,3>() =
+      -angular_inverse * out.traction_derivative.bottomLeftCorner<3,3>() * force.traction_inverse;
+  if (!out.residual.allFinite() || !out.velocity_derivative.allFinite() ||
+      !out.traction_derivative.allFinite() || !out.traction_inverse.allFinite())
+    throw std::runtime_error("bridge proximal solver: nonfinite angular response");
+  return out;
+}
+template<int K> struct ContactTraits;
+template<> struct ContactTraits<3> { using Response = ProximalResponse; };
+template<> struct ContactTraits<6> { using Response = GeneralizedProximalResponse; };
+template<int K> using LocalVector = Eigen::Matrix<double,K,1>;
+template<int K> using LocalMap = Eigen::Matrix<double,K,6>;
+template<int K> inline LocalMap<K> local_contact_map(const Contact &c, bool first) {
+  return generalized_contact_map(c, first).template topRows<K>();
+}
+template<int K> inline LocalVector<K> local_affine(const Contact &c) {
+  LocalVector<K> out = LocalVector<K>::Zero(); out.template head<3>() = c.affine; return out;
+}
+template<int K> inline LocalVector<K> local_wrench(const ContactResponse &r) {
+  return contact_wrench(r).template head<K>();
+}
+template<int K> inline void set_condensed_contact(ContactResponse &r,
+    const Eigen::Matrix<double,K,K> &a) {
+  Matrix6 generalized = Matrix6::Zero(); generalized.template topLeftCorner<K,K>() = a;
+  set_contact_jacobian(r, generalized);
+}
 inline std::vector<Scale> contact_scales(const Problem &p) {
   std::vector<Matrix6> free_mobility(p.count);
   for (int i = 0; i < p.count; ++i) {
@@ -120,6 +211,22 @@ inline std::vector<Scale> contact_scales(const Problem &p) {
       scales[k].normal = 1. / (normal + 1. / (c.kn * p.dt));
     if (c.kt > 0. && c.mu > 0.)
       scales[k].tangent = 1. / (tangent + 1. / (c.kt * p.dt));
+    if (rotation_enabled(c)) {
+      const Map36 ci = generalized_contact_map(c,true).bottomRows<3>(),
+                  cj = generalized_contact_map(c,false).bottomRows<3>();
+      const Eigen::Matrix3d angular = c.i == c.j ? Eigen::Matrix3d::Zero() :
+          Eigen::Matrix3d(ci * free_mobility[c.i] * ci.transpose() +
+                          cj * free_mobility[c.j] * cj.transpose());
+      const double spin = std::max(0., c.normal.dot(angular * c.normal));
+      const double roll = .5 * std::max(0., angular.trace() - spin);
+      if (c.kr > 0. && c.mu_roll > 0. && c.roll_length > 0.)
+        scales[k].rolling = 1. / (roll + 1. / (c.kr * p.dt));
+      if (c.kw > 0. && c.mu_twist > 0. && c.twist_length > 0.)
+        scales[k].twisting = 1. / (spin + 1. / (c.kw * p.dt));
+    }
+    if (!(scales[k].rolling > 0.) || !(scales[k].twisting > 0.) ||
+        !std::isfinite(scales[k].rolling + scales[k].twisting))
+      throw std::runtime_error("bridge proximal solver: invalid angular scale");
     if (!(scales[k].normal > 0.) || !(scales[k].tangent > 0.) ||
         !std::isfinite(scales[k].normal + scales[k].tangent))
       throw std::runtime_error("bridge proximal solver: invalid contact scale");
@@ -132,28 +239,30 @@ inline std::vector<Scale> contact_scales(const Problem &p) {
 // J=[A,B;C,D], B=-contact_map^T and D block diagonal, the Krylov system is
 // (A-B D^-1 C) dx = b_core-B D^-1 b_contact. This reduces its dimension to
 // 17N, even when the broad-phase contact candidate list is much larger.
-struct ContactLinearization {
+template<int K> struct ContactLinearizationT {
+  using Local = LocalVector<K>;
+  using Proximal = typename ContactTraits<K>::Response;
   const Problem &problem;
-  const std::vector<ProximalResponse> &state;
+  const std::vector<Proximal> &state;
   int nm, nu, core;
   std::vector<ContactResponse> condensed;
-  ContactLinearization(const Problem &p,
-                       const std::vector<ProximalResponse> &responses)
+  ContactLinearizationT(const Problem &p,
+                       const std::vector<Proximal> &responses)
       : problem(p), state(responses), nm(11 * p.count), nu(6 * p.count),
         core(nm + nu), condensed(p.contacts.size()) {
     if (state.size() != p.contacts.size())
       throw std::invalid_argument("bridge contact linearization size mismatch");
     for (std::size_t k = 0; k < state.size(); ++k)
-      condensed[k].derivative =
-          -state[k].traction_inverse * state[k].velocity_derivative;
+      set_condensed_contact<K>(condensed[k],
+          Eigen::Matrix<double,K,K>(-state[k].traction_inverse * state[k].velocity_derivative));
   }
   Vector reduce_rhs(const Vector &full) const {
     Vector out = full.head(core);
     for (std::size_t k = 0; k < state.size(); ++k) {
       const auto &c = problem.contacts[k];
-      const V3 load = state[k].traction_inverse * full.segment<3>(core + 3 * k);
-      out.segment<6>(nm + 6 * c.i).noalias() += c.Bi.transpose() * load;
-      out.segment<6>(nm + 6 * c.j).noalias() += c.Bj.transpose() * load;
+      const Local load = state[k].traction_inverse * full.segment<K>(core + K * k);
+      out.segment<6>(nm + 6 * c.i).noalias() += local_contact_map<K>(c, true).transpose() * load;
+      out.segment<6>(nm + 6 * c.j).noalias() += local_contact_map<K>(c, false).transpose() * load;
     }
     return out;
   }
@@ -162,10 +271,10 @@ struct ContactLinearization {
     out.head(core) = increment;
     for (std::size_t k = 0; k < state.size(); ++k) {
       const auto &c = problem.contacts[k];
-      const V3 velocity = c.Bi * increment.segment<6>(nm + 6 * c.i) +
-                          c.Bj * increment.segment<6>(nm + 6 * c.j);
-      out.segment<3>(core + 3 * k) = state[k].traction_inverse *
-          (full_rhs.segment<3>(core + 3 * k) - state[k].velocity_derivative * velocity);
+      const Local velocity = local_contact_map<K>(c, true) * increment.segment<6>(nm + 6 * c.i) +
+                          local_contact_map<K>(c, false) * increment.segment<6>(nm + 6 * c.j);
+      out.segment<K>(core + K * k) = state[k].traction_inverse *
+          (full_rhs.segment<K>(core + K * k) - state[k].velocity_derivative * velocity);
     }
     return out;
   }
@@ -178,23 +287,28 @@ struct ContactLinearization {
         increment.head(nm) + problem.near_resistance * dq, problem.count);
     for (std::size_t k = 0; k < state.size(); ++k) {
       const auto &c = problem.contacts[k];
-      const V3 velocity = c.Bi * du.segment<6>(6 * c.i) + c.Bj * du.segment<6>(6 * c.j),
-               load = condensed[k].derivative * velocity;
-      out.segment<6>(nm + 6 * c.i).noalias() -= c.Bi.transpose() * load;
-      out.segment<6>(nm + 6 * c.j).noalias() -= c.Bj.transpose() * load;
+      const Local velocity = local_contact_map<K>(c, true) * du.segment<6>(6 * c.i) + local_contact_map<K>(c, false) * du.segment<6>(6 * c.j),
+               load = contact_jacobian(condensed[k]).template topLeftCorner<K,K>() * velocity;
+      out.segment<6>(nm + 6 * c.i).noalias() -= local_contact_map<K>(c, true).transpose() * load;
+      out.segment<6>(nm + 6 * c.j).noalias() -= local_contact_map<K>(c, false).transpose() * load;
     }
     return out;
   }
 };
 
-inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
+using ContactLinearization = ContactLinearizationT<3>;
+using GeneralizedContactLinearization = ContactLinearizationT<6>;
+
+template<int K> inline Result solve_proximal_impl(const Problem &p, const Options &opt = Options{},
                              const Result *warm = nullptr) {
+  using Local = LocalVector<K>;
+  using Proximal = typename ContactTraits<K>::Response;
   SlurryBridgeSolver::detail::validate(p, opt);
   if (p.contacts.empty())
     return SlurryBridgeSolver::solve_direct(p, opt, warm);
   const int n = p.count, nm = 11 * n, nu = 6 * n, core = nm + nu,
             nc = int(p.contacts.size());
-  const int dimension = core + 3 * nc;
+  const int dimension = core + K * nc;
   const auto started = std::chrono::steady_clock::now();
   const auto scales = contact_scales(p);
   SlurryBridgeSolver::detail::Preconditioner monitor(p, Vector::Zero(nu), opt.workspace);
@@ -202,13 +316,14 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     Vector out = value;
     for (int k = 0; k < nc; ++k) {
       const auto &c = p.contacts[k];
-      const V3 local = value.segment<3>(core + 3 * k);
-      const V3 normal = c.normal * c.normal.dot(local),
-               tangent = local - normal;
-      const double sn = std::sqrt(scales[k].normal),
-                   st = std::sqrt(scales[k].tangent);
-      out.segment<3>(core + 3 * k) = inverse ? V3(sn * normal + st * tangent)
-                                             : V3(normal / sn + tangent / st);
+      for (int block = 0; block < K / 3; ++block) {
+        const V3 local = value.segment<3>(core + K * k + 3 * block);
+        const V3 normal = c.normal * c.normal.dot(local), tangent = local - normal;
+        const double sn = std::sqrt(block ? scales[k].twisting : scales[k].normal),
+                     st = std::sqrt(block ? scales[k].rolling : scales[k].tangent);
+        out.segment<3>(core + K * k + 3 * block) = inverse ? V3(sn*normal + st*tangent)
+                                                         : V3(normal/sn + tangent/st);
+      }
     }
     return out;
   };
@@ -230,16 +345,16 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     x.segment(nm, nu) = warm->velocity;
   }
   for (int k = 0; k < nc; ++k)
-    x.segment<3>(core + 3 * k) =
-        contact_response(p.contacts[k], x.segment(nm, nu), p.dt).traction;
+    x.segment<K>(core + K * k) =
+        local_wrench<K>(contact_response(p.contacts[k], x.segment(nm, nu), p.dt));
   auto mob = [&](const Vector &value) -> Vector {
     if (value.isZero(0.))
       return Vector::Zero(value.size());
     ++work.mobility_applications;
     return p.mobility(value);
   };
-  std::vector<ProximalResponse> states(nc);
-  auto evaluate = [&](const Vector &value, std::vector<ProximalResponse> *state,
+  std::vector<Proximal> states(nc);
+  auto evaluate = [&](const Vector &value, std::vector<Proximal> *state,
                       const Vector *cached_core = nullptr) -> Vector {
     const Vector u = value.segment(nm, nu),
                  q = SlurryBridgeSolver::detail::embed(u, n) + p.prescribed;
@@ -254,18 +369,18 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
           p.external;
       for (int k = 0; k < nc; ++k) {
         const auto &c = p.contacts[k];
-        const V3 force = value.segment<3>(core + 3 * k);
-        residual.segment<6>(nm + 6 * c.i) -= c.Bi.transpose() * force;
-        residual.segment<6>(nm + 6 * c.j) -= c.Bj.transpose() * force;
+        const Local force = value.segment<K>(core + K * k);
+        residual.segment<6>(nm + 6 * c.i) -= local_contact_map<K>(c, true).transpose() * force;
+        residual.segment<6>(nm + 6 * c.j) -= local_contact_map<K>(c, false).transpose() * force;
       }
     }
     for (int k = 0; k < nc; ++k) {
       const auto &c = p.contacts[k];
-      const V3 velocity = c.Bi * u.segment<6>(6 * c.i) +
-                          c.Bj * u.segment<6>(6 * c.j) + c.affine;
+      const Local velocity = local_contact_map<K>(c, true) * u.segment<6>(6 * c.i) +
+                          local_contact_map<K>(c, false) * u.segment<6>(6 * c.j) + local_affine<K>(c);
       const auto response = proximal_response(
-          c, velocity, value.segment<3>(core + 3 * k), p.dt, scales[k]);
-      residual.segment<3>(core + 3 * k) = response.residual;
+          c, velocity, Local(value.segment<K>(core + K * k)), p.dt, scales[k]);
+      residual.segment<K>(core + K * k) = response.residual;
       if (state)
         (*state)[k] = response;
     }
@@ -279,10 +394,10 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     const Vector u = value.segment(nm, nu);
     for (int k = 0; k < nc; ++k) {
       const auto &c = p.contacts[k];
-      const V3 difference = value.segment<3>(core + 3 * k) -
-                            contact_response(c, u, p.dt).traction;
-      physical.segment<6>(nm + 6 * c.i) += c.Bi.transpose() * difference;
-      physical.segment<6>(nm + 6 * c.j) += c.Bj.transpose() * difference;
+      const Local difference = value.segment<K>(core + K * k) -
+                            local_wrench<K>(contact_response(c, u, p.dt));
+      physical.segment<6>(nm + 6 * c.i) += local_contact_map<K>(c, true).transpose() * difference;
+      physical.segment<6>(nm + 6 * c.j) += local_contact_map<K>(c, false).transpose() * difference;
     }
     return physical;
   };
@@ -341,7 +456,7 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
       polish = true;
       break;
     }
-    const ContactLinearization reduced(p, states);
+    const ContactLinearizationT<K> reduced(p, states);
     SlurryBridgeSolver::detail::CoupledPreconditioner factor(p, reduced.condensed, opt.workspace);
     auto inverse = [&](const Vector &weighted) -> Vector {
       return factor.apply(monitor.inverse_left(weighted));
@@ -359,18 +474,18 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
           -SlurryBridgeSolver::detail::select(direction.head(nm) + near, n);
       for (int k = 0; k < nc; ++k) {
         const auto &c = p.contacts[k];
-        const V3 dt = direction.segment<3>(core + 3 * k);
-        const V3 velocity =
-            c.Bi * du.segment<6>(6 * c.i) + c.Bj * du.segment<6>(6 * c.j);
-        const V3 load =
-            transpose ? V3(-states[k].velocity_derivative.transpose() * dt)
+        const Local dt = direction.segment<K>(core + K * k);
+        const Local velocity =
+            local_contact_map<K>(c, true) * du.segment<6>(6 * c.i) + local_contact_map<K>(c, false) * du.segment<6>(6 * c.j);
+        const Local load =
+            transpose ? Local(-states[k].velocity_derivative.transpose() * dt)
                       : dt;
-        out.segment<6>(nm + 6 * c.i) -= c.Bi.transpose() * load;
-        out.segment<6>(nm + 6 * c.j) -= c.Bj.transpose() * load;
-        out.segment<3>(core + 3 * k) =
+        out.segment<6>(nm + 6 * c.i) -= local_contact_map<K>(c, true).transpose() * load;
+        out.segment<6>(nm + 6 * c.j) -= local_contact_map<K>(c, false).transpose() * load;
+        out.segment<K>(core + K * k) =
             transpose
-                ? V3(-velocity + states[k].traction_derivative.transpose() * dt)
-                : V3(states[k].velocity_derivative * velocity +
+                ? Local(-velocity + states[k].traction_derivative.transpose() * dt)
+                : Local(states[k].velocity_derivative * velocity +
                      states[k].traction_derivative * dt);
       }
       return out;
@@ -484,9 +599,9 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
     for (const auto &c : p.contacts) {
       physical_contacts.push_back(contact_response(c, final_velocity, p.dt));
       physical.segment<6>(nm + 6 * c.i).noalias() -=
-          c.Bi.transpose() * physical_contacts.back().traction;
+          local_contact_map<K>(c, true).transpose() * local_wrench<K>(physical_contacts.back());
       physical.segment<6>(nm + 6 * c.j).noalias() -=
-          c.Bj.transpose() * physical_contacts.back().traction;
+          local_contact_map<K>(c, false).transpose() * local_wrench<K>(physical_contacts.back());
     }
     const double final_norm = monitor.left(physical).norm();
     if (std::isfinite(final_norm) && final_norm <= tolerance) {
@@ -501,7 +616,7 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
       work.hydro_power = work.q.dot(work.total_moment);
       work.contacts = std::move(physical_contacts);
       for (const auto &c : work.contacts)
-        work.contact_power += c.traction.dot(c.relative);
+        work.contact_power += contact_power(c);
       return work;
     }
   }
@@ -546,6 +661,11 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
   result.mobility_applications += work.mobility_applications;
   result.descent_steps += work.descent_steps;
   return result;
+}
+inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
+                             const Result *warm = nullptr) {
+  const bool angular = std::any_of(p.contacts.begin(), p.contacts.end(), rotation_enabled);
+  return angular ? solve_proximal_impl<6>(p, opt, warm) : solve_proximal_impl<3>(p, opt, warm);
 }
 } // namespace SlurryBridgeContactSolver
 #endif

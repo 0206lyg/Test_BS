@@ -84,9 +84,14 @@ class BridgeToolsTest(unittest.TestCase):
                                SLURRY_ROOT=str(root), SLURM_JOB_ID="12345", SLURM_CPUS_PER_TASK="16",
                                CAPTURE=str(capture))
             for ar, count, shape in ((2, 500, "spheroid"), (5, 123, "flake")):
-                script.write_text(text.replace("AR=2\n", "AR={}\n".format(ar))
-                                  .replace("COUNT=500\n", "COUNT={}\n".format(count))
-                                  .replace("PARTICLE_SHAPE=spheroid", "PARTICLE_SHAPE="+shape))
+                configured = (text.replace("AR=2\n", "AR={}\n".format(ar))
+                              .replace("COUNT=500\n", "COUNT={}\n".format(count))
+                              .replace("PARTICLE_SHAPE=spheroid", "PARTICLE_SHAPE="+shape))
+                if shape == "flake":
+                    configured = (configured.replace("ROUGH_HYDRO=1\n", "ROUGH_HYDRO=0\n")
+                                  .replace("ROLLING_FRICTION=0.3\n", "ROLLING_FRICTION=0\n")
+                                  .replace("TWISTING_FRICTION=0.1\n", "TWISTING_FRICTION=0\n"))
+                script.write_text(configured)
                 subprocess.run(["bash", str(script)], env=environment, check=True, capture_output=True, text=True)
                 records = [json.loads(line) for line in capture.read_text().splitlines()]
                 self.assertEqual(len(records), 1 if ar == 2 else 2)
@@ -109,7 +114,11 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(args.output_interval, 100)
                 self.assertEqual(args.normal_stiffness, 100.)
                 self.assertEqual(args.mobility_backend, "mesh")
-                self.assertEqual(args.friction, .1)
+                self.assertEqual(args.friction, .3)
+                self.assertEqual(args.rough_hydro, int(shape == "spheroid"))
+                self.assertEqual(args.rolling_friction, .3 if shape == "spheroid" else 0.)
+                self.assertEqual(args.twisting_friction, .1 if shape == "spheroid" else 0.)
+                self.assertEqual(args.rolling_length_mode, "particle")
                 self.assertIn("12345", str(args.output))
 
     def test_defaults_and_explicit_physical_overrides(self):
@@ -119,11 +128,123 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertEqual(defaults.tangential_stiffness, 80.)
         self.assertEqual(defaults.mobility_backend, "mesh")
         self.assertEqual(defaults.shape, "spheroid")
+        self.assertEqual(defaults.rough_hydro, 0)
+        self.assertEqual(defaults.rolling_friction, 0.)
+        self.assertEqual(defaults.twisting_friction, 0.)
+        self.assertEqual(defaults.rolling_length_mode, "roughness")
+        options, models = prepare.surface_models(defaults)
+        self.assertEqual(options, "")
+        self.assertFalse(models["rough_hydrodynamics"]["enabled"])
+        self.assertFalse(models["rotation_contact"]["enabled"])
         explicit = prepare.parser().parse_args(["--output", "unused", "--normal-stiffness", "250",
                                                 "--contact-gap-nm", "2", "--mobility-backend", "direct"])
         self.assertEqual(explicit.normal_stiffness, 250.)
         self.assertEqual(explicit.contact_gap_nm, 2.)
         self.assertEqual(explicit.mobility_backend, "direct")
+
+    def test_surface_model_preparation_resolves_si_parameters_and_keeps_contact_gap(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)/"case"
+            args = prepare.parser().parse_args([
+                "--output", str(output), "--initialization", "aligned", "--ar", "2",
+                "--count", "1", "--phi", ".01", "--steps", "0",
+                "--normal-stiffness", "1", "--tangential-stiffness", ".8",
+                "--contact-gap-nm", "30", "--rough-hydro", "1",
+                "--rolling-friction", ".1", "--twisting-friction", ".2"])
+            with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}):
+                record = prepare.prepare(args)
+            persisted = json.loads((output/"parameters.json").read_text())
+            self.assertEqual(record["rough_hydrodynamics"], persisted["rough_hydrodynamics"])
+            self.assertEqual(record["rotation_contact"], persisted["rotation_contact"])
+            rough, rotation = record["rough_hydrodynamics"], record["rotation_contact"]
+            self.assertTrue(rough["enabled"])
+            self.assertTrue(rotation["enabled"])
+            self.assertAlmostEqual(rough["height_per_surface_m"]/15e-9, 1.)
+            self.assertAlmostEqual(rough["footprint_radius_m"]/150e-9, 1.)
+            self.assertAlmostEqual(rotation["rolling_stiffness_Nm_per_rad"]/(150e-9)**2, 1.)
+            self.assertEqual(rotation["rolling_length_mode"], "roughness")
+            self.assertEqual(rotation["rolling_length_source"], "rough_footprint_radius")
+            self.assertAlmostEqual(rotation["twisting_stiffness_Nm_per_rad"]/(.8*(150e-9)**2), 1.)
+            self.assertEqual(record["hydro_gap_rule"], "max(actual_gap, gap_floor)")
+            self.assertEqual(record["contact_gap_nm"], 30.)
+            self.assertEqual(record["gap_floor_nm"], 1.)
+            self.assertIn("not measured", record["surface_parameter_basis"])
+            force_line = next(line for line in (output/"in.bridge").read_text().splitlines()
+                              if line.startswith("fix hydro ")).split()
+            index = force_line.index("rough_hydro")
+            actual = list(map(float, force_line[index+1:index+4]))
+            for value, expected in zip(actual, (15e-9, 150e-9, .2)):
+                self.assertAlmostEqual(value/expected, 1.)
+            index = force_line.index("rotation_contact")
+            actual = list(map(float, force_line[index+1:index+7]))
+            expected = (.1, .2, 150e-9, 150e-9, (150e-9)**2, .8*(150e-9)**2)
+            for value, wanted in zip(actual, expected):
+                self.assertAlmostEqual(value/wanted, 1.)
+            self.assertAlmostEqual(float(force_line[force_line.index("contact")+1])/30e-9, 1.)
+
+    def test_surface_model_explicit_parameters_and_independent_switches(self):
+        args = prepare.parser().parse_args([
+            "--output", "unused", "--rough-hydro", "1", "--rough-height-nm", "4",
+            "--rough-width-nm", "40", "--rough-coverage", ".3",
+            "--rolling-friction", ".25", "--twisting-friction", ".5",
+            "--rolling-length-mode", "particle", "--rolling-length-nm", "25", "--twisting-length-nm", "30",
+            "--rolling-stiffness", "1e-15", "--twisting-stiffness", "2e-15"])
+        options, metadata = prepare.surface_models(args)
+        values = options.split()
+        self.assertEqual(values[0], "rough_hydro")
+        self.assertEqual(values[4], "rotation_contact")
+        rotation = metadata["rotation_contact"]
+        self.assertAlmostEqual(rotation["rolling_length_m"]/25e-9, 1.)
+        self.assertEqual(rotation["rolling_length_mode"], "particle")
+        self.assertEqual(rotation["rolling_length_source"], "explicit_nm")
+        self.assertAlmostEqual(rotation["twisting_length_m"]/30e-9, 1.)
+        self.assertEqual(rotation["rolling_stiffness_Nm_per_rad"], 1e-15)
+        self.assertEqual(rotation["twisting_stiffness_Nm_per_rad"], 2e-15)
+        args.rough_hydro = 0
+        self.assertNotIn("rough_hydro", prepare.surface_models(args)[0])
+        self.assertIn("rotation_contact", prepare.surface_models(args)[0])
+        args.rough_hydro, args.rolling_friction, args.twisting_friction = 1, 0., 0.
+        self.assertIn("rough_hydro", prepare.surface_models(args)[0])
+        self.assertNotIn("rotation_contact", prepare.surface_models(args)[0])
+
+    def test_particle_rolling_length_tracks_ar_and_thickness_independently_of_roughness(self):
+        for ar, thickness_nm in ((2., 300.), (20., 300.), (30., 400.)):
+            with self.subTest(ar=ar, thickness_nm=thickness_nm):
+                args = prepare.parser().parse_args([
+                    "--output", "unused", "--ar", str(ar), "--thickness-nm", str(thickness_nm),
+                    "--contact-gap-nm", "10", "--friction", ".3", "--rough-height-nm", "9",
+                    "--rough-width-nm", "45", "--rolling-friction", ".3", "--twisting-friction", ".1",
+                    "--rolling-length-mode", "particle"])
+                options, metadata = prepare.surface_models(args)
+                rotation = metadata["rotation_contact"]
+                radius = .5*ar*thickness_nm*1e-9
+                self.assertAlmostEqual(rotation["rolling_length_m"]/radius, 1.)
+                self.assertEqual(rotation["rolling_length_source"], "particle_major_radius")
+                self.assertAlmostEqual(rotation["rolling_stiffness_Nm_per_rad"]/(100*radius**2), 1.)
+                self.assertAlmostEqual(rotation["twisting_length_m"]/45e-9, 1.)
+                self.assertAlmostEqual(rotation["twisting_stiffness_Nm_per_rad"]/(80*(45e-9)**2), 1.)
+                self.assertEqual(options.split()[0], "rotation_contact")
+                values = list(map(float, options.split()[1:]))
+                for value, expected in zip(values, (.3, .1, radius, 45e-9, 100*radius**2, 80*(45e-9)**2)):
+                    self.assertAlmostEqual(value/expected, 1.)
+
+    def test_invalid_surface_models_fail_before_creating_run_directory(self):
+        cases = ((["--shape", "flake", "--rough-hydro", "1"], "spheroid-only"),
+                 (["--shape", "flake", "--rolling-friction", ".1"], "spheroid-only"),
+                 (["--shape", "flake", "--twisting-friction", ".1"], "spheroid-only"),
+                 (["--rough-hydro", "1", "--contact-gap-nm", "0"], "positive rough height"),
+                 (["--rough-hydro", "1", "--rough-height-nm", "3", "--rough-width-nm", "5"], "at least twice"),
+                 (["--rough-coverage", "1.01"], "between 0 and 1"),
+                 (["--rough-width-nm", "nan"], "finite and nonnegative"),
+                 (["--rolling-friction", "-.1"], "finite and nonnegative"),
+                 (["--twisting-stiffness", "inf"], "finite and nonnegative"))
+        with tempfile.TemporaryDirectory() as temporary:
+            for number, (flags, message) in enumerate(cases):
+                output = Path(temporary)/str(number)
+                args = prepare.parser().parse_args(["--output", str(output)]+flags)
+                with self.subTest(flags=flags), self.assertRaisesRegex(ValueError, message):
+                    prepare.prepare(args)
+                self.assertFalse(output.exists())
 
     def test_cylinder_volume_mass_and_storage_density(self):
         a, c, density = 3e-6, 150e-9, 2400.

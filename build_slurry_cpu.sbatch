@@ -12,7 +12,7 @@
 # Submit from the source root: sbatch build_slurry_cpu.sbatch
 set -Eeuo pipefail
 trap 'printf "LAMMPS build failed at line %s (exit %s).\n" "$LINENO" "$?" >&2' ERR
-readonly SLURRY_LAUNCHER_RELEASE=20261023-spheroid-flake-common-run
+readonly SLURRY_LAUNCHER_RELEASE=20261025-spheroid-strong-rolling
 # Slurm executes a spool copy; an explicit root or submission directory takes
 # precedence. Direct bash execution without Slurm uses this script's directory.
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}}"
@@ -39,4 +39,5 @@ python3 "$SLURRY_BASE/lammps_slurry/tools/bundle_guard.py" check-source \
     --root "$SLURRY_BASE" --expected-release "$SLURRY_LAUNCHER_RELEASE"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/runtime_snapshot.py" build \
     --root "$SLURRY_BASE" -- --jobs "${SLURM_CPUS_PER_TASK:-16}" "$@"
+
 

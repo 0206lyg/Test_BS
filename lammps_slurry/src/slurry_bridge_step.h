@@ -139,8 +139,8 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
     raw.tail(nu) = -bs::detail::select(state.total_moment, original.count) + original.external;
     for (std::size_t k = 0; k < contacts.size(); ++k) {
       const auto &c = original.contacts[k];
-      raw.segment<6>(nm + 6 * c.i) -= c.Bi.transpose() * contacts[k].traction;
-      raw.segment<6>(nm + 6 * c.j) -= c.Bj.transpose() * contacts[k].traction;
+      raw.segment<6>(nm + 6 * c.i) -= bs::generalized_contact_map(c, true).transpose() * bs::contact_wrench(contacts[k]);
+      raw.segment<6>(nm + 6 * c.j) -= bs::generalized_contact_map(c, false).transpose() * bs::contact_wrench(contacts[k]);
     }
     return raw;
   };
@@ -162,9 +162,17 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
   inner.absolute_tolerance *= .1;
   // These are nonlinear geometry corrections of ONE physical time step.
   // Every solve starts with the original committed tangential history.
-  constexpr int maximum_geometry_iterations = 24;
+  constexpr int geometry_iteration_block = 24;
+  // Angular caps couple endpoint compression back to rotation and hence to
+  // the gap. A contracting correction may need more than the legacy fixed
+  // budget. Extend only after measured progress, without relaxing acceptance
+  // or committing any intermediate position/history.
+  const bool angular_contacts = std::any_of(original.contacts.begin(), original.contacts.end(), bs::rotation_enabled);
+  const int maximum_geometry_iterations = angular_contacts ? 144 : geometry_iteration_block;
+  int geometry_iteration_limit = geometry_iteration_block;
+  double checkpoint_error = std::numeric_limits<double>::infinity();
   int linear = 0, newton = 0, applications = 0;
-  for (int iteration = 0; iteration < maximum_geometry_iterations; ++iteration) {
+  for (int iteration = 0; iteration < geometry_iteration_limit; ++iteration) {
     auto state = SlurryBridgeContactSolver::solve_proximal(
         corrected, inner, iteration ? &previous : warm);
     linear += state.linear_iterations;
@@ -174,7 +182,8 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
     std::vector<bs::ContactResponse> exact;
     exact.reserve(original.contacts.size());
     bool constitutive_ok = true;
-    double gap_error = 0., linear_defect = 0., maximum_force_error = 0.;
+    double gap_error = 0., linear_defect = 0., maximum_force_error = 0.,
+           constitutive_error_ratio = 0.;
     for (std::size_t k = 0; k < original.contacts.size(); ++k) {
       const auto &c = original.contacts[k];
       const auto uncorrected = bs::contact_response(c, state.velocity, original.dt);
@@ -183,11 +192,12 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       auto response = bs::contact_response(c, state.velocity, original.dt, endpoint.gaps[k]);
       // Compute compression directly from the endpoint to avoid cancelling
       // h + defect + dt*vn when reporting a very stiff, shallow contact.
-      const double force_error = (response.traction - state.contacts[k].traction).norm();
+      const double force_error = (bs::contact_wrench(response) - bs::contact_wrench(state.contacts[k])).norm();
       maximum_force_error=std::max(maximum_force_error,force_error);
       const double force_tolerance = options.absolute_tolerance +
-          options.relative_tolerance * std::max(1., response.traction.norm());
+          options.relative_tolerance * std::max(1., bs::contact_wrench(response).norm());
       constitutive_ok = constitutive_ok && force_error <= force_tolerance;
+      constitutive_error_ratio = std::max(constitutive_error_ratio, force_error / force_tolerance);
       if (response.active || state.contacts[k].active)
         gap_error = std::max(gap_error, std::abs(endpoint.gaps[k] - state.contacts[k].predicted_gap));
       linear_defect = std::max(linear_defect, std::abs(defect));
@@ -199,6 +209,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
     if (!raw.allFinite() || !std::isfinite(residual))
       throw std::runtime_error("bridge endpoint correction produced a nonfinite residual");
     bool work_ok=true, inner_work_ok=true;
+    double work_error_ratio=0.;
     if (geometry.enforce_work_balance) {
       // A contact preload can dominate the norm used to scale the residual.
       // Check the unscaled force residual's physical work as in the validated
@@ -206,7 +217,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       const double medium=geometry.lattice.determinant()*geometry.kappa.squaredNorm();
       double contact_power=0., affine_contact_power=0.;
       for (std::size_t k=0;k<exact.size();++k) {
-        contact_power+=exact[k].traction.dot(exact[k].relative);
+        contact_power+=bs::contact_power(exact[k]);
         affine_contact_power+=exact[k].traction.dot(original.contacts[k].affine);
       }
       const double input=medium+original.prescribed.dot(state.total_moment)+affine_contact_power;
@@ -215,6 +226,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       const double work_error=std::abs(state.velocity.dot(raw.tail(nu)));
       const double work_tolerance=std::max(1e-8,options.relative_tolerance)*work_scale;
       work_ok=work_error<=work_tolerance;
+      work_error_ratio=work_error/work_tolerance;
       // Separate inner algebraic error from the changed endpoint-gap load.
       // Tightening Krylov/Newton cannot cure the latter; it belongs to the
       // outer geometry iteration and otherwise drives valid inner solves
@@ -239,7 +251,7 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       state.mobility_residual_norm = raw.head(nm).norm();
       state.contact_power = 0.;
       for (const auto &c : state.contacts)
-        state.contact_power += c.traction.dot(c.relative);
+        state.contact_power += bs::contact_power(c);
       state.linear_iterations = linear;
       state.newton_iterations = newton;
       state.mobility_applications = applications;
@@ -250,14 +262,35 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       out.maximum_linear_gap_defect = linear_defect;
       return out;
     }
-    if (residual<=tolerance && !work_ok && !inner_work_ok) {
+    bool refine_algebra = residual<=tolerance && !work_ok && !inner_work_ok;
+    if (constitutive_ok && residual > tolerance) {
+      // Corrected-gap preloads change the inner solver's relative residual
+      // scale. It can accept an unchanged warm root even after the geometry
+      // has converged, while that root misses the ORIGINAL outer tolerance.
+      // Refine only a measured algebraic residual, not a remaining gap defect.
+      bs::Vector inner_raw = raw_residual(state,state.contacts,true);
+      inner_raw.head(nm) = raw.head(nm);
+      refine_algebra = refine_algebra || monitor.left(inner_raw).norm() > .1*tolerance;
+    }
+    if (refine_algebra) {
       inner.relative_tolerance*=.1;
       inner.absolute_tolerance*=.1;
       inner.linear_relative_tolerance*=.1;
     }
+    const double error_ratio = std::max({
+        residual / std::max(tolerance, std::numeric_limits<double>::min()),
+        constitutive_error_ratio, work_error_ratio});
+    if (iteration == 0) checkpoint_error = error_ratio;
+    if (iteration + 1 == geometry_iteration_limit &&
+        geometry_iteration_limit < maximum_geometry_iterations &&
+        error_ratio < .75 * checkpoint_error) {
+      geometry_iteration_limit = std::min(maximum_geometry_iterations,
+          geometry_iteration_limit + geometry_iteration_block);
+      checkpoint_error = error_ratio;
+    }
     previous = std::move(state);
   }
-  throw std::runtime_error("bridge endpoint normal-force correction did not converge; reduce timestep (no position/history advance accepted)");
+  throw std::runtime_error("bridge endpoint force/torque correction did not converge; reduce timestep (no position/history advance accepted)");
 }
 } // namespace SlurryBridgeStep
 #endif

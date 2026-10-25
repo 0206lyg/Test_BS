@@ -283,6 +283,22 @@ def parser():
     p.add_argument("--initialization", choices=("random", "aligned"), default="random")
     p.add_argument("--mobility-backend", choices=("mesh", "direct"), default="mesh",
                    help="periodic mobility implementation; direct is a reference/debug option")
+    p.add_argument("--rough-hydro", type=int, choices=(0, 1), default=0,
+                   help="spheroid-only rough-surface excess tangential resistance; default off")
+    p.add_argument("--rolling-length-mode", choices=("roughness", "particle"), default="roughness",
+                   help="automatic rolling torque arm: rough footprint radius or particle major radius; "
+                        "a positive --rolling-length-nm overrides this choice")
+    for name, default, help_text in (
+            ("rough-height-nm", 0., "cap height per surface; 0 derives contact-gap/2"),
+            ("rough-width-nm", 0., "cap footprint radius; 0 derives 10 times the cap height"),
+            ("rough-coverage", .2, "surface area fraction covered by caps, between 0 and 1"),
+            ("rolling-friction", 0., "dimensionless rolling Coulomb coefficient; 0 disables rolling"),
+            ("twisting-friction", 0., "dimensionless twisting Coulomb coefficient; 0 disables twisting"),
+            ("rolling-length-nm", 0., "rolling torque arm; 0 uses --rolling-length-mode"),
+            ("twisting-length-nm", 0., "twisting torque arm; 0 derives the rough footprint radius"),
+            ("rolling-stiffness", 0., "N m/rad; 0 derives normal-stiffness times rolling length squared"),
+            ("twisting-stiffness", 0., "N m/rad; 0 derives tangential-stiffness times twisting length squared")):
+        p.add_argument("--"+name, type=float, default=default, help=help_text)
     for name, default in (("ar", 20.), ("phi", .24), ("thickness-nm", 300.), ("density", 2400.),
                           ("viscosity", .01), ("shear-rate", 100.), ("gap-floor-nm", 1.),
                           ("contact-gap-nm", 3.), ("friction", .1), ("normal-stiffness", 100.),
@@ -294,6 +310,85 @@ def parser():
                           ("seed", 1729), ("max-relax", 20000), ("iterations", 1000)):
         p.add_argument("--"+name, type=int, default=default)
     return p
+
+
+def surface_models(args):
+    """Resolve optional, explicitly phenomenological spheroid surface models."""
+    names = ("rough_height_nm", "rough_width_nm", "rough_coverage", "rolling_friction",
+             "twisting_friction", "rolling_length_nm", "twisting_length_nm",
+             "rolling_stiffness", "twisting_stiffness")
+    for name in names:
+        value = getattr(args, name)
+        if not math.isfinite(value) or value < 0:
+            raise ValueError(name+" must be finite and nonnegative")
+    if args.rough_coverage > 1:
+        raise ValueError("rough_coverage must be between 0 and 1")
+    rotation = args.rolling_friction > 0 or args.twisting_friction > 0
+    enabled = bool(args.rough_hydro) or rotation
+    metadata = {
+        "rough_hydrodynamics": {"enabled": bool(args.rough_hydro)},
+        "rotation_contact": {"enabled": rotation},
+        "surface_parameter_basis": "exploratory model settings; not measured graphite parameters"}
+    if not enabled:
+        return "", metadata
+    if args.shape != "spheroid":
+        raise ValueError("rough hydrodynamics and rolling/twisting contact are spheroid-only; "
+                         "for flake set --rough-hydro 0 --rolling-friction 0 --twisting-friction 0")
+    height = (args.rough_height_nm if args.rough_height_nm > 0 else args.contact_gap_nm/2)*1e-9
+    if height <= 0:
+        raise ValueError("enabled surface models require a positive rough height; "
+                         "automatic height requires contact_gap_nm > 0")
+    width = args.rough_width_nm*1e-9 if args.rough_width_nm > 0 else 10*height
+    if width < 2*height:
+        raise ValueError("rough_width_nm must be at least twice the resolved rough height")
+    if args.rolling_length_nm > 0:
+        rolling_length = args.rolling_length_nm*1e-9
+        rolling_length_source = "explicit_nm"
+    elif args.rolling_length_mode == "particle":
+        # Current packing uses identical oblate spheroids. For an equal-size
+        # pair the reduced major radius 2*a_i*a_j/(a_i+a_j) is simply a.
+        rolling_length = args.ar*args.thickness_nm*.5e-9
+        rolling_length_source = "particle_major_radius"
+    else:
+        rolling_length = width
+        rolling_length_source = "rough_footprint_radius"
+    twisting_length = args.twisting_length_nm*1e-9 if args.twisting_length_nm > 0 else width
+    kr = (args.rolling_stiffness if args.rolling_stiffness > 0 else
+          args.normal_stiffness*rolling_length**2)
+    kw = (args.twisting_stiffness if args.twisting_stiffness > 0 else
+          args.tangential_stiffness*twisting_length**2)
+    for name, coefficient, stiffness in (("rolling", args.rolling_friction, kr),
+                                          ("twisting", args.twisting_friction, kw)):
+        if coefficient > 0 and (not math.isfinite(stiffness) or stiffness <= 0):
+            raise ValueError(name+" stiffness must resolve to a finite positive value")
+    f = lambda value: "{:.17g}".format(value)
+    options = []
+    if args.rough_hydro:
+        options += ["rough_hydro", f(height), f(width), f(args.rough_coverage)]
+    if rotation:
+        options += ["rotation_contact", f(args.rolling_friction), f(args.twisting_friction),
+                    f(rolling_length), f(twisting_length), f(kr), f(kw)]
+    metadata["rough_hydrodynamics"].update({
+        "height_per_surface_m": height, "footprint_radius_m": width,
+        "coverage": args.rough_coverage,
+        "hydrodynamic_reach_m": 3*height,
+        "microscopic_excess_cutoff_m": height,
+        "gap_floor_m": args.gap_floor_nm*1e-9,
+        "microstate_rule": "exclude overlapping cap pairs and cap penetration into the opposite base; "
+                           "floor only nonnegative microscopic fluid gaps; no density renormalization",
+        "gap_rule": "actual smooth-body gap and cap geometry; microscopic fluid gap uses gap_floor; "
+                    "contact onset is not subtracted from the smooth lubrication gap",
+        "model": "finite-patch hard-core cap-pair tangential and rotational excess; "
+                 "positive shifted inverse microgap cutoff; normal baseline unchanged; "
+                 "dense-roughness correlations are an unresolved closure approximation"})
+    metadata["rotation_contact"].update({
+        "rolling_friction": args.rolling_friction, "twisting_friction": args.twisting_friction,
+        "rolling_length_mode": args.rolling_length_mode,
+        "rolling_length_source": rolling_length_source,
+        "rolling_length_m": rolling_length, "twisting_length_m": twisting_length,
+        "rolling_stiffness_Nm_per_rad": kr, "twisting_stiffness_Nm_per_rad": kw,
+        "model": "elastic Coulomb rolling and twisting torques, active only at contact"})
+    return " "+" ".join(options), metadata
 
 
 def prepare(args):
@@ -312,6 +407,7 @@ def prepare(args):
             raise ValueError(name+" must be a positive integer")
     if min(args.steps, args.seed) < 0:
         raise ValueError("steps and seed must be nonnegative")
+    surface_options, surface_metadata = surface_models(args)
     output = args.output.expanduser().resolve()
     if output.exists():
         raise ValueError("Run directory already exists: {}; choose a new path".format(output))
@@ -347,7 +443,7 @@ neighbor {skin} bin
 neigh_modify every 1 delay 0 check yes
 timestep {dt}
 fix shear all deform 0 xz erate {rate} remap v units box
-fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} shape {particle_shape} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
+fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} shape {particle_shape} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations}{surface_options} history history.csv {interval} {average}
 compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
 dump trajectory all custom {interval} trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
 dump_modify trajectory sort id format float %.17g
@@ -363,9 +459,11 @@ write_data final.data nocoeff
            mu=f(args.friction), kt=f(args.tangential_stiffness), particle_shape=args.shape, backend=args.mobility_backend,
            spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
+           surface_options=surface_options,
            slurry_plugin="{slurry_plugin}")
     (output/"in.bridge").write_text(text)
     metadata = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
+    metadata.update(surface_metadata)
     metadata.update({"model": ("compact_bridge_v4_periodic" if args.shape == "spheroid" else
                                "cylinder_reynolds_rim_periodic"),
                      "particle_shape": args.shape, "shear_plane": "xz", "a_m": a, "c_m": c,

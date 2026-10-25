@@ -32,6 +32,7 @@ namespace detail { struct SolverWorkspace; }
 using Vector = Eigen::VectorXd;
 using Matrix11 = Eigen::Matrix<double, 11, 11>;
 using Matrix6 = Eigen::Matrix<double, 6, 6>;
+using V6 = Eigen::Matrix<double, 6, 1>;
 using Map36 = Eigen::Matrix<double, 3, 6>;
 using V3 = Eigen::Vector3d;
 using Sparse = Eigen::SparseMatrix<double>;
@@ -41,6 +42,11 @@ struct Contact {
   Map36 Bi = Map36::Zero(), Bj = Map36::Zero();
   V3 affine = V3::Zero(), normal = V3::UnitZ(), history = V3::Zero();
   double gap = 0, onset = 0, kn = 0, kt = 0, mu = 0;
+  // Optional finite contact couples. Stiffness has units torque/radian;
+  // caps are mu_* N *_length. Zero defaults reproduce force-only contacts.
+  V3 rolling_history = V3::Zero();
+  double twisting_history = 0., kr = 0., kw = 0., mu_roll = 0., mu_twist = 0.,
+         roll_length = 0., twist_length = 0.;
 };
 struct ContactResponse {
   V3 relative = V3::Zero(), traction = V3::Zero(), tangent_force = V3::Zero();
@@ -48,8 +54,46 @@ struct ContactResponse {
   Eigen::Matrix3d derivative = Eigen::Matrix3d::Zero();
   double predicted_gap = 0, normal_load = 0, normal_energy = 0,
          tangent_energy = 0, sliding_work = 0;
-  bool active = false, sliding = false;
+  V3 relative_rotation = V3::Zero(), torque = V3::Zero(),
+     rolling_history = V3::Zero(), rolling_trial = V3::Zero();
+  double twisting_history = 0., twisting_trial = 0., rolling_energy = 0.,
+         twisting_energy = 0., rolling_work = 0., twisting_work = 0.;
+  Eigen::Matrix3d derivative_rot_velocity = Eigen::Matrix3d::Zero(),
+                  derivative_rotation = Eigen::Matrix3d::Zero();
+  bool active = false, sliding = false, rolling = false, twisting = false;
 };
+inline bool rotation_enabled(const Contact &c) {
+  return (c.kr > 0. && c.mu_roll > 0. && c.roll_length > 0.) ||
+         (c.kw > 0. && c.mu_twist > 0. && c.twist_length > 0.);
+}
+inline Matrix6 generalized_contact_map(const Contact &c, bool first) {
+  Matrix6 out = Matrix6::Zero();
+  out.topRows<3>() = first ? c.Bi : c.Bj;
+  out.bottomRightCorner<3, 3>() =
+      (first ? -1. : 1.) * Eigen::Matrix3d::Identity();
+  return out;
+}
+inline V6 contact_wrench(const ContactResponse &r) {
+  V6 out; out << r.traction, r.torque; return out;
+}
+inline V6 contact_velocity(const ContactResponse &r) {
+  V6 out; out << r.relative, r.relative_rotation; return out;
+}
+inline Matrix6 contact_jacobian(const ContactResponse &r) {
+  Matrix6 out = Matrix6::Zero();
+  out.topLeftCorner<3, 3>() = r.derivative;
+  out.bottomLeftCorner<3, 3>() = r.derivative_rot_velocity;
+  out.bottomRightCorner<3, 3>() = r.derivative_rotation;
+  return out;
+}
+inline void set_contact_jacobian(ContactResponse &r, const Matrix6 &a) {
+  r.derivative = a.topLeftCorner<3, 3>();
+  r.derivative_rot_velocity = a.bottomLeftCorner<3, 3>();
+  r.derivative_rotation = a.bottomRightCorner<3, 3>();
+}
+inline double contact_power(const ContactResponse &r) {
+  return r.traction.dot(r.relative) + r.torque.dot(r.relative_rotation);
+}
 struct Problem {
   int count = 0;
   Apply mobility;
@@ -120,6 +164,7 @@ inline ContactResponse contact_response(const Contact &c, const Vector &u,
   ContactResponse out;
   out.relative =
       c.Bi * u.segment<6>(6 * c.i) + c.Bj * u.segment<6>(6 * c.j) + c.affine;
+  out.relative_rotation = u.segment<3>(6 * c.j + 3) - u.segment<3>(6 * c.i + 3);
   const double vn = c.normal.dot(out.relative);
   out.predicted_gap = std::isnan(endpoint_gap) ? c.gap + dt * vn : endpoint_gap;
   const double compression = std::isnan(endpoint_gap)
@@ -134,28 +179,68 @@ inline ContactResponse contact_response(const Contact &c, const Vector &u,
   const Eigen::Matrix3d tangent = Eigen::Matrix3d::Identity() - nn;
   out.traction = -out.normal_load * c.normal;
   out.derivative = c.kn * dt * nn;
-  if (c.kt <= 0. || c.mu <= 0.)
-    return out;
-  out.trial_history = tangent * (c.history + dt * out.relative);
-  const double ell = out.trial_history.norm(), limit = c.mu * out.normal_load;
-  out.sliding = c.kt * ell > limit;
-  if (out.sliding && ell > 0.) {
-    const V3 direction = out.trial_history / ell;
-    out.tangent_force = limit * direction;
-    // Exact nonsymmetric normal-load derivative, including d(mu*N)/du.
-    out.derivative +=
-        (limit * dt / ell) * (tangent - direction * direction.transpose()) -
-        c.mu * c.kn * dt * direction * c.normal.transpose();
-  } else {
-    out.tangent_force = c.kt * out.trial_history;
-    out.derivative += c.kt * dt * tangent;
+  if (c.kt > 0. && c.mu > 0.) {
+    out.trial_history = tangent * (c.history + dt * out.relative);
+    const double ell = out.trial_history.norm(), limit = c.mu * out.normal_load;
+    out.sliding = c.kt * ell > limit;
+    if (out.sliding && ell > 0.) {
+      const V3 direction = out.trial_history / ell;
+      out.tangent_force = limit * direction;
+      // Exact nonsymmetric normal-load derivative, including d(mu*N)/du.
+      out.derivative +=
+          (limit * dt / ell) * (tangent - direction * direction.transpose()) -
+          c.mu * c.kn * dt * direction * c.normal.transpose();
+    } else {
+      out.tangent_force = c.kt * out.trial_history;
+      out.derivative += c.kt * dt * tangent;
+    }
+    out.traction += out.tangent_force;
+    out.tangent_history = out.tangent_force / c.kt;
+    out.tangent_energy = .5 * c.kt * out.tangent_history.squaredNorm();
+    if (out.sliding)
+      out.sliding_work = std::max(
+          0., out.tangent_force.dot(out.trial_history - out.tangent_history));
   }
-  out.traction += out.tangent_force;
-  out.tangent_history = out.tangent_force / c.kt;
-  out.tangent_energy = .5 * c.kt * out.tangent_history.squaredNorm();
-  if (out.sliding)
-    out.sliding_work = std::max(
-        0., out.tangent_force.dot(out.trial_history - out.tangent_history));
+  // Equal-and-opposite couples resist relative spin only. A common rigid
+  // rotation does not charge either spring. Normal-load derivatives enter
+  // the lower-left block; dropping them would change Newton's equation.
+  if (c.kr > 0. && c.mu_roll > 0. && c.roll_length > 0.) {
+    out.rolling_trial = tangent * (c.rolling_history + dt * out.relative_rotation);
+    const double length = out.rolling_trial.norm();
+    const double coefficient = c.mu_roll * c.roll_length;
+    const double cap = coefficient * out.normal_load;
+    out.rolling = c.kr * length > cap;
+    V3 moment;
+    if (out.rolling && length > 0.) {
+      const V3 d = out.rolling_trial / length;
+      moment = cap * d;
+      out.derivative_rotation += cap * dt / length * (tangent - d * d.transpose());
+      out.derivative_rot_velocity -= coefficient * c.kn * dt * d * c.normal.transpose();
+    } else {
+      moment = c.kr * out.rolling_trial;
+      out.derivative_rotation += c.kr * dt * tangent;
+    }
+    out.torque += moment;
+    out.rolling_history = moment / c.kr;
+    out.rolling_energy = .5 * c.kr * out.rolling_history.squaredNorm();
+    out.rolling_work = std::max(0., moment.dot(out.rolling_trial - out.rolling_history));
+  }
+  if (c.kw > 0. && c.mu_twist > 0. && c.twist_length > 0.) {
+    out.twisting_trial = c.twisting_history + dt * c.normal.dot(out.relative_rotation);
+    const double coefficient = c.mu_twist * c.twist_length;
+    const double cap = coefficient * out.normal_load;
+    const double trial = c.kw * out.twisting_trial;
+    out.twisting = std::abs(trial) > cap;
+    const double moment = std::max(-cap, std::min(cap, trial));
+    out.torque += moment * c.normal;
+    if (out.twisting)
+      out.derivative_rot_velocity -= coefficient * c.kn * dt * std::copysign(1., trial) * nn;
+    else
+      out.derivative_rotation += c.kw * dt * nn;
+    out.twisting_history = moment / c.kw;
+    out.twisting_energy = .5 * c.kw * out.twisting_history * out.twisting_history;
+    out.twisting_work = std::max(0., moment * (out.twisting_trial - out.twisting_history));
+  }
   return out;
 }
 namespace detail {
@@ -226,14 +311,24 @@ struct Preconditioner {
         } else
           stiffness += p.dt * c.kt * tangent;
       }
+      Matrix6 generalized = Matrix6::Zero();
+      generalized.topLeftCorner<3, 3>() = stiffness;
+      generalized.bottomRightCorner<3, 3>() = state.derivative_rotation;
+      if (at_onset && !state.active) {
+        if (c.kr > 0. && c.mu_roll > 0. && c.roll_length > 0.)
+          generalized.bottomRightCorner<3, 3>() += p.dt * c.kr * tangent;
+        if (c.kw > 0. && c.mu_twist > 0. && c.twist_length > 0.)
+          generalized.bottomRightCorner<3, 3>() += p.dt * c.kw * nn;
+      }
+      const Matrix6 bi = generalized_contact_map(c, true), bj = generalized_contact_map(c, false);
       if (c.i == c.j) {
-        const Map36 b = c.Bi + c.Bj;
-        add_block(c.i, c.i, b.transpose() * stiffness * b);
+        const Matrix6 b = bi + bj;
+        add_block(c.i, c.i, b.transpose() * generalized * b);
       } else {
-        add_block(c.i, c.i, c.Bi.transpose() * stiffness * c.Bi);
-        add_block(c.j, c.j, c.Bj.transpose() * stiffness * c.Bj);
-        add_block(c.i, c.j, c.Bi.transpose() * stiffness * c.Bj);
-        add_block(c.j, c.i, c.Bj.transpose() * stiffness * c.Bi);
+        add_block(c.i, c.i, bi.transpose() * generalized * bi);
+        add_block(c.j, c.j, bj.transpose() * generalized * bj);
+        add_block(c.i, c.j, bi.transpose() * generalized * bj);
+        add_block(c.j, c.i, bj.transpose() * generalized * bi);
       }
     }
     Sparse approximate(6 * n, 6 * n);
@@ -290,7 +385,7 @@ struct CoupledPreconditioner {
     Sparse matrix = base_resistance(p, self, workspace);
     std::vector<Eigen::Triplet<double>> entries;
     std::size_t active = 0;
-    for (const auto &response : state) active += !response.derivative.isZero(0.);
+    for (const auto &response : state) active += !contact_jacobian(response).isZero(0.);
     entries.reserve(144 * active);
     auto add = [&](int i, int j, const Matrix6 &block) {
       for (int r = 0; r < 6; ++r)
@@ -300,17 +395,18 @@ struct CoupledPreconditioner {
     };
     for (std::size_t k = 0; k < p.contacts.size(); ++k) {
       const auto &c = p.contacts[k];
-      const auto &derivative = state[k].derivative;
+      const Matrix6 derivative = contact_jacobian(state[k]);
       if (derivative.isZero(0.))
         continue;
+      const Matrix6 bi = generalized_contact_map(c, true), bj = generalized_contact_map(c, false);
       if (c.i == c.j) {
-        const Map36 b = c.Bi + c.Bj;
+        const Matrix6 b = bi + bj;
         add(c.i, c.i, b.transpose() * derivative * b);
       } else {
-        add(c.i, c.i, c.Bi.transpose() * derivative * c.Bi);
-        add(c.i, c.j, c.Bi.transpose() * derivative * c.Bj);
-        add(c.j, c.i, c.Bj.transpose() * derivative * c.Bi);
-        add(c.j, c.j, c.Bj.transpose() * derivative * c.Bj);
+        add(c.i, c.i, bi.transpose() * derivative * bi);
+        add(c.i, c.j, bi.transpose() * derivative * bj);
+        add(c.j, c.i, bj.transpose() * derivative * bi);
+        add(c.j, c.j, bj.transpose() * derivative * bj);
       }
     }
     if (!entries.empty()) {
@@ -449,58 +545,70 @@ contact_line_intervals(const Contact &c, const Vector &u, const Vector &du,
       intervals.emplace_back(onset, upper);
     }
   }
-  if (c.kt <= 0. || c.mu <= 0.)
-    return intervals;
   const Eigen::Matrix3d tangent =
       Eigen::Matrix3d::Identity() - c.normal * c.normal.transpose();
-  const auto xi =
-      (tangent * (c.history + dt * relative)).cast<long double>().eval();
-  const auto dxi = (dt * tangent * direction).cast<long double>().eval();
-  const long double radius = static_cast<long double>(c.mu) * c.kn / c.kt;
-  const long double n = radius * compression, dn = radius * dcompression;
-  const long double a = dxi.squaredNorm() - dn * dn;
-  const long double b = 2.L * (xi.dot(dxi) - n * dn);
-  const long double cc = xi.squaredNorm() - n * n;
-  bool has_yield = false;
-  auto add_root = [&](long double root) {
-    const double value = static_cast<double>(root);
-    if (std::isfinite(value) && value > lower && value < upper &&
-        compression + value * dcompression >= 0.) {
-      cuts.push_back(value);
-      has_yield = true;
+  auto spring_intervals = [&](const V3 &history, const V3 &velocity,
+                              const V3 &increment, double stiffness,
+                              double coefficient) {
+    if (!(stiffness > 0. && coefficient > 0.)) return;
+    const auto xi = (history + dt * velocity).cast<long double>().eval();
+    const auto dxi = (dt * increment).cast<long double>().eval();
+    const long double radius = static_cast<long double>(coefficient) * c.kn / stiffness;
+    const long double n = radius * compression, dn = radius * dcompression;
+    const long double a = dxi.squaredNorm() - dn * dn;
+    const long double b = 2.L * (xi.dot(dxi) - n * dn);
+    const long double cc = xi.squaredNorm() - n * n;
+    bool has_yield = false;
+    auto add_root = [&](long double root) {
+      const double value = static_cast<double>(root);
+      if (std::isfinite(value) && value > lower && value < upper &&
+          compression + value * dcompression >= 0.) {
+        cuts.push_back(value);
+        has_yield = true;
+      }
+    };
+    const long double eps = 64.L * std::numeric_limits<long double>::epsilon();
+    if (std::abs(a) <= eps * (std::abs(b) + std::abs(cc))) {
+      if (b != 0.)
+        add_root(-cc / b);
+    } else {
+      // Algebraically equivalent to b*b-4*a*c, but it retains the tiny
+      // separation of collinear entry/exit roots when ||xi|| >> cap/kt.
+      const long double first = (n * dxi - dn * xi).squaredNorm();
+      const long double second = xi.cross(dxi).squaredNorm();
+      long double discriminant = 4.L * (first - second);
+      const long double roundoff = 4.L * eps * (first + second);
+      if (discriminant >= -roundoff) {
+        discriminant = std::max(0.L, discriminant);
+        const long double q =
+            -.5L * (b + std::copysign(std::sqrt(discriminant), b));
+        if (q != 0.) {
+          add_root(q / a);
+          add_root(cc / q);
+        } else
+          add_root(-b / (2.L * a));
+      }
+    }
+    if (!has_yield)
+      return;
+    std::sort(cuts.begin(), cuts.end());
+    cuts.erase(std::unique(cuts.begin(), cuts.end()), cuts.end());
+    for (std::size_t k = 1; k < cuts.size(); ++k) {
+      const long double midpoint = .5L * (cuts[k - 1] + cuts[k]);
+      const long double load = n + midpoint * dn;
+      if (load > 0. && (xi + midpoint * dxi).squaredNorm() <= load * load)
+        intervals.emplace_back(cuts[k - 1], cuts[k]);
     }
   };
-  const long double eps = 64.L * std::numeric_limits<long double>::epsilon();
-  if (std::abs(a) <= eps * (std::abs(b) + std::abs(cc))) {
-    if (b != 0.)
-      add_root(-cc / b);
-  } else {
-    // Algebraically equivalent to b*b-4*a*c, but it retains the tiny
-    // separation of collinear entry/exit roots when ||xi|| >> cap/kt.
-    const long double first = (n * dxi - dn * xi).squaredNorm();
-    const long double second = xi.cross(dxi).squaredNorm();
-    long double discriminant = 4.L * (first - second);
-    const long double roundoff = 4.L * eps * (first + second);
-    if (discriminant >= -roundoff) {
-      discriminant = std::max(0.L, discriminant);
-      const long double q =
-          -.5L * (b + std::copysign(std::sqrt(discriminant), b));
-      if (q != 0.) {
-        add_root(q / a);
-        add_root(cc / q);
-      } else
-        add_root(-b / (2.L * a));
-    }
-  }
-  if (!has_yield)
-    return intervals;
-  std::sort(cuts.begin(), cuts.end());
-  cuts.erase(std::unique(cuts.begin(), cuts.end()), cuts.end());
-  for (std::size_t k = 1; k < cuts.size(); ++k) {
-    const long double midpoint = .5L * (cuts[k - 1] + cuts[k]);
-    const long double load = n + midpoint * dn;
-    if (load > 0. && (xi + midpoint * dxi).squaredNorm() <= load * load)
-      intervals.emplace_back(cuts[k - 1], cuts[k]);
+  spring_intervals(tangent*c.history, tangent*relative, tangent*direction, c.kt, c.mu);
+  if (rotation_enabled(c)) {
+    const V3 omega = u.segment<3>(6*c.j+3) - u.segment<3>(6*c.i+3),
+             domega = du.segment<3>(6*c.j+3) - du.segment<3>(6*c.i+3);
+    spring_intervals(tangent*c.rolling_history, tangent*omega, tangent*domega,
+                     c.kr, c.mu_roll*c.roll_length);
+    spring_intervals(c.twisting_history*c.normal,
+                     c.normal.dot(omega)*c.normal, c.normal.dot(domega)*c.normal,
+                     c.kw, c.mu_twist*c.twist_length);
   }
   return intervals;
 }
@@ -538,7 +646,11 @@ inline void validate(const Problem &p, const Options &o) {
         std::abs(c.normal.norm() - 1.) > 1e-8 || c.kn < 0. || c.kt < 0. ||
         c.mu < 0. || !std::isfinite(c.kn + c.kt + c.mu + c.gap + c.onset) ||
         !c.Bi.allFinite() || !c.Bj.allFinite() || !c.affine.allFinite() ||
-        !c.history.allFinite())
+        !c.history.allFinite() || !c.rolling_history.allFinite() ||
+        c.kr < 0. || c.kw < 0. || c.mu_roll < 0. || c.mu_twist < 0. ||
+        c.roll_length < 0. || c.twist_length < 0. ||
+        !std::isfinite(c.kr + c.kw + c.mu_roll + c.mu_twist +
+                       c.roll_length + c.twist_length + c.twisting_history))
       throw std::invalid_argument("bridge solver: invalid contact");
 }
 } // namespace detail
@@ -578,9 +690,9 @@ inline Result solve_direct(const Problem &p, const Options &opt,
     for (const auto &c : p.contacts) {
       const auto response = contact_response(c, u, p.dt);
       r.segment<6>(nm + 6 * c.i).noalias() -=
-          c.Bi.transpose() * response.traction;
+          generalized_contact_map(c, true).transpose() * contact_wrench(response);
       r.segment<6>(nm + 6 * c.j).noalias() -=
-          c.Bj.transpose() * response.traction;
+          generalized_contact_map(c, false).transpose() * contact_wrench(response);
       if (state)
         state->push_back(response);
     }
@@ -647,12 +759,12 @@ inline Result solve_direct(const Problem &p, const Options &opt,
       product.tail(nu) = -detail::select(dx.head(nm) + near_product, n);
       for (std::size_t k = 0; k < p.contacts.size(); ++k) {
         const auto &c = p.contacts[k];
-        const V3 dv =
-            c.Bi * du.segment<6>(6 * c.i) + c.Bj * du.segment<6>(6 * c.j);
-        const V3 dc = transpose ? V3(state[k].derivative.transpose() * dv)
-                                : V3(state[k].derivative * dv);
-        product.segment<6>(nm + 6 * c.i).noalias() -= c.Bi.transpose() * dc;
-        product.segment<6>(nm + 6 * c.j).noalias() -= c.Bj.transpose() * dc;
+        const Matrix6 bi = generalized_contact_map(c, true), bj = generalized_contact_map(c, false);
+        const V6 dv = bi * du.segment<6>(6 * c.i) + bj * du.segment<6>(6 * c.j);
+        const Matrix6 derivative = contact_jacobian(state[k]);
+        const V6 dc = transpose ? V6(derivative.transpose() * dv) : V6(derivative * dv);
+        product.segment<6>(nm + 6 * c.i).noalias() -= bi.transpose() * dc;
+        product.segment<6>(nm + 6 * c.j).noalias() -= bj.transpose() * dc;
       }
       return product;
     };
@@ -706,12 +818,21 @@ inline Result solve_direct(const Problem &p, const Options &opt,
             actual.active && c.kt > 0. && c.mu > 0. &&
             std::abs(yield) <=
                 128. * std::numeric_limits<double>::epsilon() * force_scale;
-        if (!normal_kink && !yield_kink)
+        const auto near_yield = [](double a, double b) {
+          return std::abs(a-b) <= 128. * std::numeric_limits<double>::epsilon() * std::max({1.,a,b});
+        };
+        const bool rotation_kink = actual.active && rotation_enabled(c) &&
+            ((c.kr > 0. && near_yield(c.kr * actual.rolling_trial.norm(), c.mu_roll * c.roll_length * actual.normal_load)) ||
+             (c.kw > 0. && near_yield(c.kw * std::abs(actual.twisting_trial), c.mu_twist * c.twist_length * actual.normal_load)));
+        if (!normal_kink && !yield_kink && !rotation_kink)
           continue;
         const auto trial = contact_response(c, trial_u, p.dt);
         if (trial.active != state[k].active ||
-            trial.sliding != state[k].sliding) {
-          state[k].derivative = trial.derivative;
+            trial.sliding != state[k].sliding || trial.rolling != state[k].rolling ||
+            trial.twisting != state[k].twisting) {
+          set_contact_jacobian(state[k], contact_jacobian(trial));
+          state[k].rolling = trial.rolling;
+          state[k].twisting = trial.twisting;
           state[k].active = trial.active;
           state[k].sliding = trial.sliding;
           changed = true;
@@ -801,12 +922,12 @@ inline Result solve_direct(const Problem &p, const Options &opt,
         for (const auto &c : p.contacts) {
           const auto ranges = detail::contact_line_intervals(
               c, u, du, p.dt, baseline_step, upper);
-          const V3 beta = c.Bi * sensitivity.segment<6>(nm + 6 * c.i) +
-                          c.Bj * sensitivity.segment<6>(nm + 6 * c.j);
+          const V6 beta = generalized_contact_map(c,true) * sensitivity.segment<6>(nm + 6 * c.i) +
+                          generalized_contact_map(c,false) * sensitivity.segment<6>(nm + 6 * c.j);
           for (const auto &range : ranges) {
-            const V3 delta =
-                contact_response(c, u + range.second * du, p.dt).traction -
-                contact_response(c, u + range.first * du, p.dt).traction;
+            const V6 delta =
+                contact_wrench(contact_response(c, u + range.second * du, p.dt)) -
+                contact_wrench(contact_response(c, u + range.first * du, p.dt));
             intervals.push_back(
                 {range.first, range.second, beta.norm() * delta.norm()});
           }
@@ -921,7 +1042,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
   out.force_residual_norm = raw.tail(nu).norm();
   out.hydro_power = out.q.dot(out.total_moment);
   for (const auto &c : out.contacts)
-    out.contact_power += c.traction.dot(c.relative);
+    out.contact_power += contact_power(c);
   return out;
 }
 inline Result solve(const Problem &p, const Options &opt = Options{},
@@ -932,7 +1053,7 @@ inline Result solve(const Problem &p, const Options &opt = Options{},
                           warm->mid_moment.allFinite();
   const bool has_friction =
       std::any_of(p.contacts.begin(), p.contacts.end(),
-                  [](const Contact &c) { return c.mu > 0. && c.kt > 0.; });
+                  [](const Contact &c) { return (c.mu > 0. && c.kt > 0.) || rotation_enabled(c); });
   if (!opt.cold_start_continuation || !has_friction)
     return solve_direct(p, opt, warm);
   detail::validate(p, opt);
@@ -988,8 +1109,11 @@ inline Result solve(const Problem &p, const Options &opt = Options{},
     }
   }
   auto stage = [&](double scale, const Result *initial) -> Result {
-    for (std::size_t k = 0; k < trial.contacts.size(); ++k)
+    for (std::size_t k = 0; k < trial.contacts.size(); ++k) {
       trial.contacts[k].kt = scale * p.contacts[k].kt;
+      trial.contacts[k].kr = scale * p.contacts[k].kr;
+      trial.contacts[k].kw = scale * p.contacts[k].kw;
+    }
     Options local = opt;
     local.cold_start_continuation = false;
     local.trace_callback = [&](const IterationTrace &input) {
@@ -1049,16 +1173,25 @@ inline Result solve(const Problem &p, const Options &opt = Options{},
         std::max(0., (b * free_mobility[i] * b.transpose()).trace()));
   };
   for (const auto &c : p.contacts) {
-    if (c.kt <= 0. || c.mu <= 0.)
-      continue;
-    const double stiffness = p.dt * c.kt;
-    if (c.i == c.j) {
-      const double a = norm_map(c.Bi + c.Bj, c.i);
-      row_bound[c.i] += stiffness * a * a;
-    } else {
-      const double a = norm_map(c.Bi, c.i), b = norm_map(c.Bj, c.j);
-      row_bound[c.i] += stiffness * a * (a + b);
-      row_bound[c.j] += stiffness * b * (a + b);
+    auto bound_spring = [&](const Map36 &bi, const Map36 &bj, double stiffness) {
+      if (!(stiffness > 0.)) return;
+      stiffness *= p.dt;
+      if (c.i == c.j) {
+        const double a = norm_map(bi + bj, c.i);
+        row_bound[c.i] += stiffness * a * a;
+      } else {
+        const double a = norm_map(bi, c.i), b = norm_map(bj, c.j);
+        row_bound[c.i] += stiffness * a * (a + b);
+        row_bound[c.j] += stiffness * b * (a + b);
+      }
+    };
+    if (c.mu > 0.) bound_spring(c.Bi, c.Bj, c.kt);
+    if (rotation_enabled(c)) {
+      const Map36 ci = generalized_contact_map(c,true).bottomRows<3>(),
+                  cj = generalized_contact_map(c,false).bottomRows<3>();
+      const double kr = c.mu_roll > 0. && c.roll_length > 0. ? c.kr : 0.,
+                   kw = c.mu_twist > 0. && c.twist_length > 0. ? c.kw : 0.;
+      bound_spring(ci, cj, std::max(kr,kw));
     }
   }
   const double bound = *std::max_element(row_bound.begin(), row_bound.end());

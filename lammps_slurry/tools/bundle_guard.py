@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261023-spheroid-flake-common-run"
+RELEASE_ID = "20261025-spheroid-strong-rolling"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -40,6 +40,7 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/fix_slurry_implicit.cpp",
         "lammps_slurry/src/fix_slurry_bridge.cpp",
         "lammps_slurry/src/slurry_compact_bridge.h",
+        "lammps_slurry/src/slurry_rough_surface.h",
         "lammps_slurry/src/slurry_periodic_mobility.h",
         "lammps_slurry/src/slurry_periodic_mesh.h",
         "lammps_slurry/src/slurry_fft_plans.h",

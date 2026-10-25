@@ -1,18 +1,18 @@
 {
-  "release_id": "20261023-spheroid-flake-common-run",
-  "status": "SPHEROID_FLAKE_COMMON_RUN",
-  "baseline_git_commit": "5942c63e13f5d86b3684b93eb6f6322f7bfb8b16",
+  "release_id": "20261025-spheroid-strong-rolling",
+  "status": "NONADHESIVE_STRONG_SLIDING_ROLLING_COMPARISON",
+  "baseline_git_commit": "d6c40ab93b278b7e1809f8c5fc919e96c50204b5",
   "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
   "model_stage": "COMMON_PERIODIC_MOBILITY_WITH_SHAPE_SPECIFIC_NEAR_FIELD",
-  "details": "validation_flake_integration/README_KO.md",
-  "legacy_release": "20261018-pair-quadrature-runtime-fix",
+  "details": "docs/STRONG_ROLLING_KO.md",
+  "legacy_release": "20261025-spheroid-rough-upper",
   "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
   "equilibrium_bulk_viscosity_tested": false,
-  "prepare_bridge_sha256": "e3350bce89a08cf95641544b56f9cc4cb300e6326d68fe153b9bc326d2bebbc9",
+  "prepare_bridge_sha256": "667a2fa1da942c13413e6e8854680aaaf5eb0b80e03d8231b3f4a42edfe2d470",
   "normal_stiffness_N_m": 100.0,
-  "mechanical_contact_gap_m": 3e-09,
+  "mechanical_contact_gap_m": 1e-08,
   "periodic_mobility_backend": "mesh",
-  "contact_model": "same single-point linear normal/tangential spring Coulomb contact; actual shape endpoint gap",
+  "contact_model": "normal/sliding contact with optional finite load-capped rolling and twisting springs; exact condensed 17N solve",
   "initialization": "same random insertion and growth/FIRE preparation; actual shape-specific periodic clearance certificate",
   "performance_update": "20261022-fftw-condensed-newton-pardiso",
   "performance_baseline_git_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
@@ -28,5 +28,32 @@
   ],
   "flake_geometry": "continuous circular cylinder; exact surface clearance",
   "flake_near_field": "finite-domain Reynolds face films plus positive approximate rim resistance",
-  "flake_middle_self": "matched-spheroid approximation using the same equatorial radius and half-thickness"
+  "flake_middle_self": "matched-spheroid approximation using the same equatorial radius and half-thickness",
+  "rough_hydrodynamics": "positive-gap-only hard-core cap-pair tangential/rotation closure; overlap states excluded without renormalization",
+  "rough_trial": {
+    "height_per_surface_m": 9e-09,
+    "footprint_radius_m": 4.5e-08,
+    "coverage_per_surface": 0.78,
+    "basis": "geometrically admissible dense upper-range trial, not measured graphite maximum",
+    "microscopic_floor_m": 1e-09,
+    "static_normal_rough_force": false
+  },
+  "contact_trial": {
+    "sliding_friction": 0.3,
+    "rolling_friction": 0.3,
+    "rolling_length_mode": "particle",
+    "rolling_length_definition": "a=AR*thickness/2 for the current equal-size spheroids; explicit positive nm overrides",
+    "twisting_friction": 0.1,
+    "twisting_length_mode": "roughness",
+    "normal_stiffness_N_m": 100.0,
+    "tangential_stiffness_N_m": 80.0,
+    "attraction_enabled": false,
+    "basis": "effective nonadhesive particle-scale rolling constraint, not measured graphite torque law"
+  },
+  "development_target": {
+    "nonadhesive_jamming_volume_fraction": 0.31,
+    "target_is_not_calibrated_result": true,
+    "attraction_reserved_for": "later yielding model",
+    "polydispersity": "active candidate for a separate controlled comparison, not an explanation replacing a test"
+  }
 }

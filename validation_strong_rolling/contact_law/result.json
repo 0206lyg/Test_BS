@@ -1,0 +1,65 @@
+{
+  "kn_N_per_m": 100,
+  "kt_N_per_m": 80,
+  "mu_sliding": 0.3,
+  "mu_rolling": 0.3,
+  "rolling_length_m": 3e-06,
+  "rolling_stiffness_Nm_per_rad": 9.000000000000001e-10,
+  "force_cap_at_1nN_N": 3.0000000000002936e-10,
+  "rolling_cap_at_1nN_Nm": 9.00000000000088e-16,
+  "sliding_yield_displacement_at_1nN_m": 3.75e-12,
+  "rolling_yield_angle_at_1nN_rad": 1.0000000000000002e-06,
+  "sliding_cap_ratio": 3,
+  "rolling_cap_ratio": 200,
+  "solver_cases": [
+    {
+      "case": 0,
+      "maximum_absolute_wrench_error": 9.04727681660944e-14,
+      "power_defect": 3.3881317890172014e-21,
+      "relative_residual": 3.8882113979450395e-10,
+      "newton_iterations": 2,
+      "linear_iterations": 3,
+      "sliding": false,
+      "rolling": false,
+      "twisting": false
+    },
+    {
+      "case": 1,
+      "maximum_absolute_wrench_error": 8.881784197001252e-16,
+      "power_defect": 7.73070496506989e-12,
+      "relative_residual": 7.746170382254831e-13,
+      "newton_iterations": 2,
+      "linear_iterations": 2,
+      "sliding": true,
+      "rolling": true,
+      "twisting": true
+    },
+    {
+      "case": 2,
+      "maximum_absolute_wrench_error": 6.217248937900877e-15,
+      "power_defect": 1.8189894035458565e-12,
+      "relative_residual": 4.372788220348216e-14,
+      "newton_iterations": 2,
+      "linear_iterations": 2,
+      "sliding": false,
+      "rolling": true,
+      "twisting": false
+    }
+  ],
+  "status": "passed",
+  "scope": "Constitutive law and controlled two-body diagonal-mobility solve; not bulk viscosity.",
+  "sources_sha256": {
+    "lammps_slurry/src/slurry_bridge_solver.h": "0e158bb5dbd77b5840627b84b0a120078eff247620bf13bc2461c731719e43aa",
+    "lammps_slurry/src/slurry_bridge_contact_solver.h": "3fbb024f916bfca21d4b1742dc59ff2eb28a171c4767f005558f1988c2b66a91",
+    "validation_strong_rolling/contact_law/check.cpp": "edf5b1d78e822d0069e44a9fd54e5b8aa4a195a9d50256b890f43ce55d1322c9"
+  },
+  "nondimensionalization": {
+    "length_m": 1.5e-07,
+    "time_s": 0.01,
+    "viscosity_Pas": 0.01,
+    "force_N": 2.25e-14,
+    "torque_Nm": 3.3749999999999996e-21,
+    "physical_dt_s": 1e-06
+  },
+  "test_environment": "g++ -std=c++17 -O1; Eigen; diagonal identity mobility; no production hydrodynamic/packing model"
+}

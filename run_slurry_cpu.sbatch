@@ -13,7 +13,7 @@
 # Edit this section, then submit from the slurry repository: sbatch run_slurry_cpu.sbatch
 # Exactly one simulation is launched. No command-line parameters are needed.
 PARTICLE_SHAPE=spheroid               # spheroid or flake (flat circular cylinder)
-AR=2
+AR=20
 PHI=0.24
 COUNT=500
 STEPS=100000
@@ -26,10 +26,25 @@ DENSITY=2400
 VISCOSITY=0.01
 SHEAR_RATE=100
 GAP_FLOOR_NM=1
-CONTACT_GAP_NM=3
-FRICTION=0.1
+CONTACT_GAP_NM=10
+FRICTION=0.3
 NORMAL_STIFFNESS=100
 TANGENTIAL_STIFFNESS=80
+
+# Spheroid-only extensions. These are exploratory model parameters, not measured
+# graphite values. Set all three switches/coefficient values to 0 for the old model
+# or before selecting flake. Changing contact onset still changes packing clearance.
+ROUGH_HYDRO=1
+ROLLING_FRICTION=0.3
+TWISTING_FRICTION=0.1
+ROUGH_HEIGHT_NM=9                      # per-surface peak height; independent of mechanical contact onset
+ROUGH_WIDTH_NM=45                      # footprint radius; 5 * height in this upper-range trial
+ROUGH_COVERAGE=0.78                    # dense, geometrically feasible upper-range trial; not a graphite fit
+ROLLING_LENGTH_MODE=particle           # particle: major radius a=AR*thickness/2; roughness: footprint radius
+ROLLING_LENGTH_NM=0                    # positive value overrides ROLLING_LENGTH_MODE
+TWISTING_LENGTH_NM=0                   # 0: rough footprint radius
+ROLLING_STIFFNESS=0                    # 0: NORMAL_STIFFNESS * rolling_length_m^2, N m/rad
+TWISTING_STIFFNESS=0                   # 0: TANGENTIAL_STIFFNESS * twisting_length_m^2, N m/rad
 
 INITIALIZATION=random                 # random or aligned; no automatic switch
 SEED=1729
@@ -100,6 +115,12 @@ SLURRY_ARGUMENTS=(
     --gap-floor-nm "$GAP_FLOOR_NM" --contact-gap-nm "$CONTACT_GAP_NM"
     --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
     --tangential-stiffness "$TANGENTIAL_STIFFNESS"
+    --rough-hydro "$ROUGH_HYDRO" --rough-height-nm "$ROUGH_HEIGHT_NM"
+    --rough-width-nm "$ROUGH_WIDTH_NM" --rough-coverage "$ROUGH_COVERAGE"
+    --rolling-friction "$ROLLING_FRICTION" --twisting-friction "$TWISTING_FRICTION"
+    --rolling-length-mode "$ROLLING_LENGTH_MODE"
+    --rolling-length-nm "$ROLLING_LENGTH_NM" --twisting-length-nm "$TWISTING_LENGTH_NM"
+    --rolling-stiffness "$ROLLING_STIFFNESS" --twisting-stiffness "$TWISTING_STIFFNESS"
     --initialization "$INITIALIZATION" --seed "$SEED" --initial-phi "$INITIAL_PHI"
     --growth-fraction "$GROWTH_FRACTION" --overlap-tolerance "$OVERLAP_TOLERANCE"
     --max-relax "$MAX_RELAX" --mobility-backend "$MOBILITY_BACKEND"
