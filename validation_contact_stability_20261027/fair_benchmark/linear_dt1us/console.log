@@ -1,0 +1,82 @@
+LAMMPS (30 Sep 2026)
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+Reading data file ...
+  triclinic box = (0 0 0) to (8.2352309e-05 8.2352309e-05 8.2352309e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  500 atoms
+  500 ellipsoids
+  reading velocities ...
+  500 velocities
+  read_data CPU = 0.004 seconds
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.8e-06
+  ghost atom cutoff = 4.8e-06
+  binsize = 2.4e-06, bins = 35 35 35
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : si
+  Current step  : 0
+  Time step     : 1e-06
+Per MPI rank memory allocation (min/avg/max) = 5.016 | 5.016 | 5.016 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                    500   2.6442168      0.026442168    1516           0            
+         1   1e-06                500   2.6442049      0.026442049    1516           5            
+         2   2e-06                500   2.6448419      0.026448419    1516           5            
+         3   3e-06                500   2.6452274      0.026452274    1516           5            
+         4   4e-06                500   2.6456119      0.026456119    1516           5            
+         5   5e-06                500   2.6459955      0.026459955    1516           5            
+         6   6e-06                500   2.6463743      0.026463743    1516           5            
+         7   7e-06                500   2.6467447      0.026467447    1516           6            
+         8   8e-06                500   2.6471348      0.026471348    1516           6            
+         9   9e-06                500   2.6475169      0.026475169    1516           6            
+        10   1e-05                500   2.6478922      0.026478922    1516           6            
+        11   1.1e-05              500   2.6482617      0.026482617    1516           6            
+        12   1.2e-05              500   2.6486262      0.026486262    1516           6            
+        13   1.3e-05              500   2.6489864      0.026489864    1516           6            
+        14   1.4e-05              500   2.6493408      0.026493408    1516           6            
+        15   1.5e-05              500   2.6496904      0.026496904    1516           6            
+        16   1.6e-05              500   2.6500358      0.026500358    1516           7            
+        17   1.7e-05              500   2.6504231      0.026504231    1516           7            
+        18   1.8e-05              500   2.6507932      0.026507932    1516           7            
+        19   1.9e-05              500   2.6511614      0.026511614    1516           7            
+        20   2e-05                500   2.6515279      0.026515279    1516           7            
+Loop time of 148.937 on 1 procs for 20 steps with 500 atoms
+
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 8.7322e-05 | 8.7322e-05 | 8.7322e-05 |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00034221 | 0.00034221 | 0.00034221 |   0.0 |  0.00
+Output  | 0.00071148 | 0.00071148 | 0.00071148 |   0.0 |  0.00
+Modify  | 148.94     | 148.94     | 148.94     |   0.0 |100.00
+Other   |            | 0.000262   |            |       |  0.00
+
+Nlocal:            500 ave         500 max         500 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            190 ave         190 max         190 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:02:42

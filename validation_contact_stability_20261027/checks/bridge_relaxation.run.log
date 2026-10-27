@@ -1,0 +1,2 @@
+dt=1e-6 s implicit spring factors 0.0160171 0.0126191; explicit energy factors 3652.18 5966.74
+finite prestretch, high-friction cap independence, energy decay and exact-ODE convergence passed; error ratio 1.97393

@@ -1,0 +1,136 @@
+{
+  "rows": 21,
+  "last_step": 20,
+  "time_s": {
+    "min": 0.0,
+    "max": 1.9999999999999998e-05,
+    "last": 1.9999999999999998e-05,
+    "nonfinite": 0
+  },
+  "strain": {
+    "min": 0.0,
+    "max": 0.002,
+    "last": 0.002,
+    "nonfinite": 0
+  },
+  "eta_relative": {
+    "min": 2.6442049151046163,
+    "max": 2.651527908262121,
+    "last": 2.651527908262121,
+    "nonfinite": 0
+  },
+  "sigma_xz_Pa": {
+    "min": 2.6442049151046163,
+    "max": 2.651527908262121,
+    "last": 2.651527908262121,
+    "nonfinite": 0
+  },
+  "max_overlap_m": {
+    "min": 0.0,
+    "max": 1.1855797031490312e-10,
+    "last": 1.1855797031490312e-10,
+    "nonfinite": 0
+  },
+  "actual_endpoint_overlap_m": {
+    "min": 4.966631263592092e-12,
+    "max": 1.2471281138148882e-10,
+    "last": 1.2471281138148882e-10,
+    "nonfinite": 0
+  },
+  "contacts": {
+    "min": 0.0,
+    "max": 7.0,
+    "last": 7.0,
+    "nonfinite": 0
+  },
+  "rolling_yield_contacts": {
+    "min": 0.0,
+    "max": 5.0,
+    "last": 3.0,
+    "nonfinite": 0
+  },
+  "solver_relative_residual": {
+    "min": 6.489737086189509e-08,
+    "max": 9.105657968006978e-08,
+    "last": 8.065555318741713e-08,
+    "nonfinite": 0
+  },
+  "force_residual": {
+    "min": 4.7421673649544094e-07,
+    "max": 1.014732203899615e-05,
+    "last": 1.8376267221453377e-06,
+    "nonfinite": 0
+  },
+  "mobility_residual": {
+    "min": 6.491826233724737e-06,
+    "max": 9.143161887477147e-06,
+    "last": 8.089263168527284e-06,
+    "nonfinite": 0
+  },
+  "linear_iterations": {
+    "min": 12.0,
+    "max": 30.0,
+    "last": 17.0,
+    "nonfinite": 0
+  },
+  "newton_iterations": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "geometry_iterations": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "continuation_stages": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "continuation_retries": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "profile_total_s": {
+    "min": 5.392765045166016,
+    "max": 13.19871187210083,
+    "last": 7.382116079330444,
+    "nonfinite": 0
+  },
+  "hydro_dissipation_W": {
+    "min": 1.4768024069046948e-10,
+    "max": 1.4786671854516973e-10,
+    "last": 1.4786671854516973e-10,
+    "nonfinite": 0
+  },
+  "power_balance_error_W": {
+    "min": -1.2509617332366614e-21,
+    "max": 2.1192356953850912e-19,
+    "last": 1.812148400818344e-21,
+    "nonfinite": 0
+  },
+  "stress_power_W": {
+    "min": 1.4768026197117682e-10,
+    "max": 1.4808925506461515e-10,
+    "last": 1.4808925506461515e-10,
+    "nonfinite": 0
+  },
+  "overlap_radius_fraction": 2.963949257872578e-05,
+  "endpoint_overlap_radius_fraction": 3.1178202845372205e-05,
+  "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/fixture_ar1_k0.3",
+  "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_linear_O3.so",
+  "plugin_sha256": "b1b6342256aec6ea5d7fde727316f716ab71bd9ad9c2e417a6f73fa8698d3a54",
+  "initial_particles_sha256": "8c1b0d7a065f13b38c17f179b7e6130722f6defdd7840ea53e051ffd49e98cc8",
+  "steps": 20,
+  "dt": 1e-06,
+  "threads": 1,
+  "backend": "mesh",
+  "returncode": 0,
+  "wall_seconds": 162.17967475700425
+}

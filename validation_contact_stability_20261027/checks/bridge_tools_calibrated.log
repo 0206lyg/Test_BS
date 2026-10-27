@@ -1,0 +1,56 @@
+.....simulation failed
+.Prepared /tmp/tmpsm1l5bct/1.0: shape=spheroid, N=1, AR=1.0, phi=0.01, L/a=7.4822; no table generation
+Prepared /tmp/tmpsm1l5bct/2.0: shape=spheroid, N=1, AR=2.0, phi=0.01, L/a=5.93863; no table generation
+Prepared /tmp/tmpsm1l5bct/5.0: shape=spheroid, N=1, AR=5.0, phi=0.01, L/a=4.37562; no table generation
+.Prepared /tmp/tmpay0dhl4v/case: shape=spheroid, N=500, AR=2.0, phi=0.24, L/a=16.3408; no table generation
+....Geometric growth: N=16, target phi=0.1, initial phi=0.05
+  phi=0.051, max PW overlap=0, relaxation iterations=0
+  phi=0.05202, max PW overlap=0, relaxation iterations=0
+  phi=0.0530604, max PW overlap=0, relaxation iterations=0
+  phi=0.054121608, max PW overlap=0, relaxation iterations=0
+  phi=0.05520404016, max PW overlap=0, relaxation iterations=0
+  phi=0.05630812096, max PW overlap=0, relaxation iterations=0
+  phi=0.05743428338, max PW overlap=0, relaxation iterations=0
+  phi=0.05858296905, max PW overlap=0, relaxation iterations=0
+  phi=0.05975462843, max PW overlap=0, relaxation iterations=0
+  phi=0.060949721, max PW overlap=0, relaxation iterations=26
+  phi=0.06216871542, max PW overlap=0, relaxation iterations=26
+  phi=0.06341208973, max PW overlap=0, relaxation iterations=26
+  phi=0.06468033152, max PW overlap=0, relaxation iterations=26
+  phi=0.06597393815, max PW overlap=0, relaxation iterations=26
+  phi=0.06729341692, max PW overlap=0, relaxation iterations=26
+  phi=0.06863928525, max PW overlap=0, relaxation iterations=26
+  phi=0.07001207096, max PW overlap=0, relaxation iterations=26
+  phi=0.07141231238, max PW overlap=0, relaxation iterations=26
+  phi=0.07284055863, max PW overlap=0, relaxation iterations=26
+  phi=0.0742973698, max PW overlap=0, relaxation iterations=26
+  phi=0.07578331719, max PW overlap=0, relaxation iterations=26
+  phi=0.07729898354, max PW overlap=0, relaxation iterations=26
+  phi=0.07884496321, max PW overlap=0, relaxation iterations=26
+  phi=0.08042186247, max PW overlap=0, relaxation iterations=26
+  phi=0.08203029972, max PW overlap=0, relaxation iterations=26
+  phi=0.08367090572, max PW overlap=0, relaxation iterations=27
+  phi=0.08534432383, max PW overlap=0, relaxation iterations=27
+  phi=0.08705121031, max PW overlap=0, relaxation iterations=27
+  phi=0.08879223451, max PW overlap=0, relaxation iterations=27
+  phi=0.09056807921, max PW overlap=0, relaxation iterations=27
+  phi=0.09237944079, max PW overlap=0, relaxation iterations=27
+  phi=0.09422702961, max PW overlap=0, relaxation iterations=27
+  phi=0.0961115702, max PW overlap=0, relaxation iterations=27
+  phi=0.0980338016, max PW overlap=0, relaxation iterations=27
+  phi=0.09999447763, max PW overlap=0, relaxation iterations=30
+  phi=0.1, max PW overlap=0, relaxation iterations=0
+Reached target phi=0.1; minimum periodic surface gap=4.581503252e-09 m, clearance iterations=0; preparation is geometric, not physical equilibration.
+Prepared /tmp/tmpm8kk66f0/case: shape=spheroid, N=16, AR=2.0, phi=0.1, L/a=6.94586; no table generation
+....Averaging window unavailable; see viscosity_summary.txt
+Averaging window unavailable; see viscosity_summary.txt
+.Strain window 0.0 to 8.0; 2 complete intervals, 4 s
+Apparent viscosity = 3.5 Pa s; relative viscosity = 3.5
+Mean xz stress = 7 Pa (solvent 2, hydrodynamic 5, contact 0)
+Block stability check: insufficient_block_coverage (tolerance 0.1)
+Selected-window average; steady state is not automatically certified.
+.......
+----------------------------------------------------------------------
+Ran 23 tests in 0.672s
+
+OK

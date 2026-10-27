@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "preserved_custom_ar_count": true,
+  "idempotent": true,
+  "settings": {
+    "NORMAL_STIFFNESS": "0.3",
+    "TANGENTIAL_STIFFNESS": "0.24",
+    "ROLLING_STIFFNESS": "0.24",
+    "TIMESTEP": "2.5e-6",
+    "STEPS": "40000",
+    "OUTPUT_INTERVAL": "40"
+  }
+}

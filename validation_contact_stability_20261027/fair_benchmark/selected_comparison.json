@@ -1,0 +1,134 @@
+{
+  "comparison": "same N500 fixture, kn=0.3 N/m, 20us physical time, sequential one-thread execution",
+  "runs": [
+    {
+      "name": "linear_dt1us",
+      "plugin": "libslurry_linear_O3.so",
+      "dt_s": 1e-06,
+      "steps": 20,
+      "returncode": 0,
+      "wall_s": 162.2289000249948,
+      "child_user_s": 161.885899,
+      "child_system_s": 0.333149,
+      "child_cpu_s": 162.219048,
+      "rows": 21,
+      "final_time_s": 1.9999999999999998e-05,
+      "metrics": {
+        "eta_relative": {
+          "initial": 2.644216844914856,
+          "final": 2.651527908262121,
+          "min": 2.6442049151046163,
+          "max": 2.651527908262121,
+          "max_adjacent_change": 0.0006369507072436775
+        },
+        "sigma_contact_Pa": {
+          "initial": 0.0,
+          "final": 0.004380711715500505,
+          "min": 0.0,
+          "max": 0.004380711715500505,
+          "max_adjacent_change": 0.0003406864760220564
+        },
+        "max_overlap_m": {
+          "initial": 0.0,
+          "final": 1.1855797031490312e-10,
+          "min": 0.0,
+          "max": 1.1855797031490312e-10,
+          "max_adjacent_change": 6.141302797857415e-12
+        },
+        "actual_endpoint_overlap_m": {
+          "initial": 4.966631263592092e-12,
+          "final": 1.2471281138148882e-10,
+          "min": 4.966631263592092e-12,
+          "max": 1.2471281138148882e-10,
+          "max_adjacent_change": 6.154841068362079e-12
+        },
+        "solver_relative_residual": {
+          "initial": 6.489737086189509e-08,
+          "final": 8.065555318741713e-08,
+          "min": 6.489737086189509e-08,
+          "max": 9.105657968006978e-08,
+          "max_adjacent_change": 2.6159208818174697e-08
+        },
+        "contacts": {
+          "initial": 0.0,
+          "final": 7.0,
+          "min": 0.0,
+          "max": 7.0,
+          "max_adjacent_change": 5.0
+        },
+        "profile_total_sum_s": 162.12901854515076
+      },
+      "cpu_relative_to_linear": 1.0,
+      "wall_relative_to_linear": 1.0
+    },
+    {
+      "name": "pc_dt2p5us",
+      "plugin": "libslurry_author_pc_v2.so",
+      "dt_s": 2.5e-06,
+      "steps": 8,
+      "returncode": 0,
+      "wall_s": 126.46838768100133,
+      "child_user_s": 126.18164300000001,
+      "child_system_s": 0.267809,
+      "child_cpu_s": 126.44945200000001,
+      "rows": 9,
+      "final_time_s": 2e-05,
+      "metrics": {
+        "eta_relative": {
+          "initial": 2.644216844914858,
+          "final": 2.651569500055298,
+          "min": 2.644216844914858,
+          "max": 2.651569500055298,
+          "max_adjacent_change": 0.0009655895505167322
+        },
+        "sigma_contact_Pa": {
+          "initial": 0.0,
+          "final": 0.004417566295772028,
+          "min": 0.0,
+          "max": 0.004417566295772028,
+          "max_adjacent_change": 0.0006290406844398242
+        },
+        "max_overlap_m": {
+          "initial": 0.0,
+          "final": 1.1945565591364725e-10,
+          "min": 0.0,
+          "max": 1.1945565591364725e-10,
+          "max_adjacent_change": 1.542675216636978e-11
+        },
+        "actual_endpoint_overlap_m": {
+          "initial": 1.367233542337587e-11,
+          "final": 1.3496350629793597e-10,
+          "min": 1.367233542337587e-11,
+          "max": 1.3496350629793597e-10,
+          "max_adjacent_change": 1.5507850385176878e-11
+        },
+        "solver_relative_residual": {
+          "initial": 8.553520966972005e-08,
+          "final": 7.739073863843814e-08,
+          "min": 7.739073863843814e-08,
+          "max": 9.311581443792655e-08,
+          "max_adjacent_change": 1.3792473931152071e-08
+        },
+        "contacts": {
+          "initial": 0.0,
+          "final": 7.0,
+          "min": 0.0,
+          "max": 7.0,
+          "max_adjacent_change": 5.0
+        },
+        "profile_total_sum_s": 126.38630080223083
+      },
+      "cpu_relative_to_linear": 0.7794981758245803,
+      "wall_relative_to_linear": 0.779567559550217
+    }
+  ],
+  "pc_cpu_fraction": 0.7794981758245803,
+  "pc_speedup": 1.2828766391174236,
+  "pc_cpu_reduction_percent": 22.050182417541976,
+  "final_percent_differences_pc_vs_euler": {
+    "eta_relative": 0.0015685972245549351,
+    "sigma_contact_Pa": 0.8412920699875759,
+    "max_overlap_m": 0.7571701812706388
+  },
+  "excluded": "PC5us excluded from method selection due to independent contact transient accuracy result."
+}
