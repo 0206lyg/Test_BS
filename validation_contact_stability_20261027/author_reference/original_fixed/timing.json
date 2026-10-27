@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "wall_seconds": 6.048612496000715,
+  "maxrss_kb": 11096,
+  "command": [
+    "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+    "-f",
+    "-r",
+    "1h",
+    "../n500_ar1.dat",
+    "params.txt"
+  ],
+  "threads": 1
+}

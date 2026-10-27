@@ -1,0 +1,14 @@
+{
+  "source_data": "/workspace/scratch/af0f332bc475/linear_validation/ar1_n500_fixture/particles.data",
+  "a_m": 4e-06,
+  "eta_Pa_s": 0.01,
+  "gamma_dot_s_inv": 100,
+  "original_kn_N_m": 100,
+  "original_kt_N_m": 80,
+  "original_kr_N_m": 80,
+  "k_hydro_scale_N_m": 7.539822368615503e-05,
+  "dimensionless_kn": 1326291.1924324613,
+  "dimensionless_kt": 1061032.953945969,
+  "coordinates_permutation": "none; both shear xz",
+  "stokes_lubrication": "authors reference; differs from Test_BS FFT+compact_bridge"
+}

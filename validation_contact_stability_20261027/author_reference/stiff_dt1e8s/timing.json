@@ -1,0 +1,6 @@
+{
+  "status": "intentionally_interrupted_130",
+  "wall_seconds": null,
+  "reason": "Parent prioritized approved numerical stiffness reduction after large-stiffness two-cycle was demonstrated; no full-strain claim.",
+  "threads": 1
+}

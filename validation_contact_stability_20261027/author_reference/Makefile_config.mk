@@ -1,0 +1,9 @@
+DSFMT_RNG = no
+UseMetis = no
+install_dir = /tmp/lfdem-bin
+CXX = g++
+SUITESPARSE_ROOT = /tmp/suitesparse_lfdem_ref
+CXXFLAGS_EXTRA =
+Blas_Linking_Flags = /usr/lib/x86_64-linux-gnu/libblas.so.3
+Lapack_Linking_Flags = /usr/lib/x86_64-linux-gnu/liblapack.so.3
+Extra_Linking_Flags =
