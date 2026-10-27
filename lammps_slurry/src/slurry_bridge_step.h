@@ -1,11 +1,12 @@
 #ifndef SLURRY_BRIDGE_STEP_H
 #define SLURRY_BRIDGE_STEP_H
 
-// Endpoint-consistent normal penalty for the first-order bridge integrator.
-// Hydrodynamics, contact normals and tangential kinematics remain frozen at
-// the beginning of the step. Only the normal compression uses the ACTUAL
-// translated/rotated endpoint geometry. No particle position is projected.
+// Shared endpoint geometry and reference integrators. Production uses the
+// explicit Heun stages in fix_slurry_bridge.cpp. The one-stage explicit and
+// implicit routines below remain numerical comparison utilities. No path
+// projects particle positions.
 #include "slurry_bridge_contact_solver.h"
+#include "slurry_bridge_linear_solver.h"
 #include "slurry_bridge_images.h"
 #include "../vendor/gr_re2/ellipsoidGap.h"
 #include "slurry_bridge_shape.h"
@@ -113,10 +114,33 @@ struct Geometry {
 
 struct Result {
   bs::Result solution;
+  // Explicit-history path only: these histories belong to the next state;
+  // solution.contacts always contains the CURRENT force-balance loads.
+  std::vector<bs::ContactResponse> next_contacts;
   Endpoint endpoint;
   int geometry_iterations = 0;
   double maximum_gap_error = 0., maximum_linear_gap_defect = 0.;
 };
+
+inline Result solve_linear(const bs::Problem &problem, const Geometry &geometry,
+                           const bs::Options &options = bs::Options{},
+                           const bs::Result *warm = nullptr) {
+  Result out;
+  out.solution = SlurryBridgeLinearSolver::solve(problem, options, warm);
+  // A single kinematic evaluation supplies the next normal load for the
+  // history cap. It does not correct/re-solve the current force balance.
+  // Newly encountered contacts are processed at the next velocity stage.
+  out.endpoint = geometry.advance(problem, out.solution.velocity, false);
+  out.next_contacts = SlurryBridgeLinearSolver::advance_contacts(
+      problem, out.solution, out.endpoint.gaps);
+  for (std::size_t k = 0; k < problem.contacts.size(); ++k) {
+    const double predicted = problem.contacts[k].gap + problem.dt *
+        problem.contacts[k].normal.dot(out.solution.contacts[k].relative);
+    out.maximum_linear_gap_defect = std::max(out.maximum_linear_gap_defect,
+        std::abs(out.endpoint.gaps[k] - predicted));
+  }
+  return out;
+}
 
 inline Result solve(const bs::Problem &original, const Geometry &geometry,
                     const bs::Options &options = bs::Options{},

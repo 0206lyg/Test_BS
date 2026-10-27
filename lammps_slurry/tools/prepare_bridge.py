@@ -289,17 +289,17 @@ def parser():
             ("lubrication-epsilon", .001, "dimensionless additive gap regularization, normalized by D/2"),
             ("friction", 10., "sliding Coulomb coefficient; 10 is a strong-friction trial, not a graphite fit"),
             ("rolling-friction", 10., "rolling Coulomb coefficient; 0 disables rolling resistance"),
-            ("normal-stiffness", 100., "normal spring stiffness in N/m"),
-            ("tangential-stiffness", 80., "sliding spring stiffness in N/m"),
-            ("rolling-stiffness", 80., "rolling quasi-force spring stiffness in N/m; not N m/rad")):
+            ("normal-stiffness", .3, "normal spring stiffness in N/m"),
+            ("tangential-stiffness", .24, "sliding spring stiffness in N/m"),
+            ("rolling-stiffness", .24, "rolling quasi-force spring stiffness in N/m; not N m/rad")):
         p.add_argument("--"+name, type=float, default=default, help=help_text)
     for name, default in (("phi", .24), ("density", 2400.),
-                          ("viscosity", .01), ("shear-rate", 100.), ("timestep", 1e-6),
+                          ("viscosity", .01), ("shear-rate", 100.), ("timestep", 2.5e-6),
                           ("average-start-strain", 5.), ("initial-phi", .05),
                           ("growth-fraction", .02), ("overlap-tolerance", 1e-6),
                           ("tolerance", 1e-6), ("spectral", 2.), ("spectral-tolerance", 1e-8)):
         p.add_argument("--"+name, type=float, default=default)
-    for name, default in (("count", 500), ("steps", 100000), ("output-interval", 100),
+    for name, default in (("count", 500), ("steps", 40000), ("output-interval", 40),
                           ("seed", 1729), ("max-relax", 20000), ("iterations", 1000)):
         p.add_argument("--"+name, type=int, default=default)
     return p
@@ -420,8 +420,11 @@ write_data final.data nocoeff
                      "packing": packing, "packing_max_PW_overlap": worst, "packing_image_checks": checked,
                      "packing_clearance": clearance,
                      "normal_contact_law": "linear spring; normal_stiffness in N/m; no Hertz conversion",
+                     "contact_stiffness_role": "numerical penalty; validate overlap and stiffness dependence for each case",
+                     "maximum_overlap_fraction_criterion": .05,
+                     "overlap_fraction_reference": "minimum particle semiaxis; sphere radius for AR1",
                      "initial_surface_gap_target_m": 0.,
-                     "step_geometry": "endpoint actual-gap correction with frozen-geometry implicit force solves",
+                     "step_geometry": "explicit Heun predictor-corrector; two linear current/predicted-state force solves",
                      "spectral_tolerance_scope": "Fourier truncation only; not a total mobility or mesh error bound",
                      "mesh_numerics": ({"window_support": 10, "gaussian_alpha": .6,
                                          "quadrature_order": "automatic from wave-number/particle-size bound",

@@ -45,14 +45,14 @@ The near model retains the previous surface-point moment maps, finite-distance c
 
 ## Surface sliding and rolling
 
-Contact onset is h=0. For the actual end-of-step gap,
+Contact onset is h=0. For the current-state gap,
 
 ```
-Fn = kn * max(-h_endpoint,0)
+Fn = kn * max(-h_current,0)
 |Ft| <= mu_s * Fn
 ```
 
-No positive-gap shell, rough hydrodynamic excess, repulsion barrier, contact dashpot or twisting spring is active. Sliding uses the existing tangential displacement spring and Coulomb return map. Its numerical stiffness kt has units N/m. At noncompressive separation all sliding and rolling history is discarded. An implicitly predicted overlap can create a contact within a step that starts at positive gap; it is the endpoint overlap that supplies the normal load.
+No positive-gap shell, rough hydrodynamic excess, repulsion barrier, contact dashpot or twisting spring is active. Sliding uses the existing tangential displacement spring and Coulomb return map. Its numerical stiffness kt has units N/m. At noncompressive separation all sliding and rolling history is discarded. A new overlap becomes a contact at the next velocity stage, with initially unstretched sliding and rolling springs. No future overlap enters the current velocity solve.
 
 Singh's rolling quasi-force spring has stiffness kr in N/m. Let aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j). Here every reference radius is D/2, hence aij=D/2 independently of AR. The angular-history implementation uses
 
@@ -64,17 +64,15 @@ M_trial = K_theta * theta_tangent
 
 This is equivalent to the quasi-force rolling representation for a frozen contact normal. Relative angular motion parallel to the normal produces no rolling torque. The two particles receive opposite resisting couples. Existing objective history transport follows common rotation and changes of contact normal. Using volume-equivalent aij for nonspherical particles is an explicit extension of the sphere law, not a shape-friction mapping established by the cited papers.
 
-Default kn=100, kt=80, kr=80 N/m; mu_s=mu_r=10. These are trial numerical parameters. They are neither measured graphite coefficients nor demonstrated infinite-friction limits for every AR. Stiffness, timestep and friction saturation require separate convergence tests. The launcher permits mu_s=0 and/or mu_r=0 to disable either friction branch.
+Default kn=0.3, kt=0.24, kr=0.24 N/m; mu_s=mu_r=10. These are trial numerical parameters. They are neither measured graphite coefficients nor demonstrated infinite-friction limits for every AR. Stiffness, timestep and friction saturation require separate convergence tests. The launcher permits mu_s=0 and/or mu_r=0 to disable either friction branch.
 
 ## Coupled solve and integration
 
-The system solves M*g_mid=q, q=P*u+qE and P^T(g_mid+Rnear*q)=F_contact. When rolling is enabled, the retained contact unknown is a six-component force/couple wrench. The solver uses semismooth Newton with matrix-free right FGMRES and local contact-block condensation. The production sparse preconditioner uses oneMKL PARDISO; a reference Eigen backend exists for tests. Physical acceptance is checked against the original contact return map and hydrodynamic equations, not only the augmented residual.
+Production uses explicit Heun predictor–corrector. Each stage solves M*g_mid=q, q=P*u+qE and P^T(g_mid+Rnear*q)=F_external+F_contact with known stage geometry and histories. The predictor rebuilds the same compact near operator and periodic FFT mobility. Two matrix-free mixed FGMRES solves replace nonlinear contact/endpoint iterations. The production preconditioner uses MKL-PARDISO; the local reference uses Eigen.
 
-A nonlinear endpoint correction updates the contact compression to agree with trial Euler translation, quaternion rotation and lattice shear. Fn and normal energy are evaluated from that actual endpoint gap. Every correction starts from the original committed history. Hydro matrices, normals and sliding maps remain evaluated at the beginning of the first-order step. No position projection or automatic timestep subdivision is introduced. Failure of force/mobility convergence, gap consistency or unlisted new-contact detection aborts the advance rather than silently accepting it.
+Translation includes the average total (affine plus nonaffine) velocity; quaternion rotation uses the average angular velocity. Corrected sliding/rolling histories start from the original committed history, with predicted rates transported into its contact frame. Only the corrected history is committed. Instantaneous output velocities remain distinct from the prepared average integration velocities. No position projection or hidden physical substeps are introduced.
 
-Each periodic contact keeps its own history. Predicted physical image displacement identifies history after wrapping or a lattice flip. History is committed only on a genuine position advance, not during `run 0`, setup or residual evaluation.
-
-LAMMPS owns periodic geometry via `fix deform 0 xz erate ... remap v`, defined before this fix. Supported runs are constant-volume xz shear, periodic 3D SI ellipsoid atoms and `pair_style zero`. This fix advances positions and orientations itself and must not be combined with another integrator.
+The default time step is 2.5e-6 s. The numerical spring constants and time step were selected together using overlap, temporal refinement and a matched single-thread timing comparison. See [the stability report](CONTACT_STABILITY_UPDATE.md) for scope and limitations.
 
 ## Stress, power and output
 
@@ -87,6 +85,6 @@ eta_app = sigma_xz / shear_rate
 
 No extra near hydrodynamic virial is added. Contact couples enter rotational balance and contact power. The symmetric shear stress uses the force virial above. `stress_power_W` and `hydro_dissipation_W + contact_power_W` are reported independently; their difference is a consistency diagnostic. Contact power includes elastic storage/release and is not purely plastic dissipation.
 
-The CSV retains normal and sliding elastic energies and adds/retains rolling yield count, rolling elastic energy, rolling plastic dissipation and rolling contact power. Obsolete rough-hydro and twisting columns are removed. Force and mobility residual norms use the stated nondimensional coordinates, not SI newtons. Solver acceptance uses its configured relative norm.
+The CSV reports current normal, sliding and rolling energies and current contact power at time_s. Endpoint gaps and rolling projection count/work refer to the prepared next step identified by next_step_end_time_s. rolling_plastic_dissipation_W is corrected projection work divided by that step duration; next_step_rolling_projection_work_J reports the work directly. contact_gap_consistency_m is NaN because implicit endpoint-force consistency is not imposed. Linear gap defect is computed from actual corrected geometry. Solver residual diagnostics take the larger of both linear stages. Newton and continuation counters are zero.
 
 Averages include every committed timestep, excluding step-zero output. Selecting an averaging window does not establish stationarity. `final.data` stores geometry, not friction histories, so it is not a physical history-preserving restart.

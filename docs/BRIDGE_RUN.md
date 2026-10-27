@@ -1,13 +1,14 @@
 # Slurry 실행
 
-실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 앞부분의 `AR`, `PHI`, `COUNT`, `STEPS` 등을 직접 수정한 뒤 인수 없이 제출합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기본값은 AR2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. `PREPARE_ONLY=1`이면 입자와 검증된 runtime·입력만 준비하며 LAMMPS를 실행하지 않습니다.
+실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 앞부분의 `AR`, `PHI`, `COUNT`, `STEPS` 등을 직접 수정한 뒤 인수 없이 제출합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기본값은 AR2, φ=0.24, 입자 500개, 40000 step, 기록 간격 40 step입니다. `PREPARE_ONLY=1`이면 입자와 검증된 runtime·입력만 준비하며 LAMMPS를 실행하지 않습니다.
 
 ## 적용·빌드·제출
 
-저장소 디렉토리에서 overlay를 적용한 뒤 기존 빌드 스크립트로 **다시 빌드**합니다. `slurry/bridge`의 위치 인자와 접촉 옵션이 바뀌었으므로 이전 plugin을 그대로 사용할 수 없습니다.
+저장소 디렉토리에서 overlay와 선택한 수치 설정을 적용한 뒤 기존 빌드 스크립트로 **다시 빌드**합니다. 이번 변경은 기존 입력 형식을 유지하지만, 새 적분기를 사용하려면 plugin을 다시 만들어야 합니다.
 
 ```bash
-unzip -o slurry_mari_singh_overlay_20261027.zip
+unzip -o slurry_contact_stability_overlay_20261027.zip
+python3 apply_contact_settings.py
 sbatch build_slurry_cpu.sbatch
 ```
 
@@ -49,9 +50,9 @@ h_{\rm reg}=\max(h,0)+\epsilon a_{\rm ref}.
 | `LUBRICATION_EPSILON` | `--lubrication-epsilon` | 0.001, 무차원 |
 | `FRICTION` | `--friction` | μs=10, 무차원 |
 | `ROLLING_FRICTION` | `--rolling-friction` | μr=10, 무차원 |
-| `NORMAL_STIFFNESS` | `--normal-stiffness` | 100 N/m |
-| `TANGENTIAL_STIFFNESS` | `--tangential-stiffness` | 80 N/m |
-| `ROLLING_STIFFNESS` | `--rolling-stiffness` | 80 **N/m**, rolling quasi-force 강성 |
+| `NORMAL_STIFFNESS` | `--normal-stiffness` | 0.3 N/m |
+| `TANGENTIAL_STIFFNESS` | `--tangential-stiffness` | 0.24 N/m |
+| `ROLLING_STIFFNESS` | `--rolling-stiffness` | 0.24 **N/m**, rolling quasi-force 강성 |
 
 법선력은 실제 겹침 `max(-h,0)`에 대한 선형 스프링입니다. Sliding과 rolling 마찰은 실제 접촉에서만 작용합니다. Rolling의 기준 길이는 Singh의 `a_ij=2*a_i*a_j/(a_i+a_j)`에 nominal radius를 넣은 값이며, 현재 단분산에서는 `a_ij=a_ref`입니다. 내부 각도 스프링 강성으로 환산하면 `kr*a_ref^2` N·m/rad입니다. **이전 `--rolling-stiffness`의 N·m/rad 수치를 현재 N/m 옵션에 그대로 넣으면 안 됩니다.** μr=0이면 rolling 저항이 꺼집니다.
 
@@ -69,13 +70,13 @@ h_{\rm reg}=\max(h,0)+\epsilon a_{\rm ref}.
 
 `MOBILITY_BACKEND=direct`는 같은 Fourier 합의 직접 합산 기준 경로이며 밀집 행렬 LU solver가 아닙니다. 기본값 `mesh`를 유지하면서 해상도 수렴을 검사할 수 있습니다. `SPECTRAL=2`가 기본 중거리 해상도이며, `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값입니다. 격자 보간·표면 구적·고파수 상호작용 생략을 포함한 전체 오차를 뜻하지 않습니다.
 
-Solver는 접촉력도 비선형 미지수로 유지하는 semismooth Newton과 right FGMRES를 사용합니다. 선형 Newton 단계에서는 국소 접촉 증분을 정확히 제거하고 원래 접촉 법칙의 물리 잔차로 최종 수렴을 검사합니다. `SOLVER_TOLERANCE`가 그 상대 허용오차이며, `KRYLOV_ITERATIONS`는 한 선형계의 반복 상한입니다.
+현재 적분기는 explicit Heun predictor–corrector입니다. 현재 배치와 예측 배치에서 각각 접촉력을 고정하고 선형 17N 힘·mobility 방정식을 FGMRES로 풉니다. `SOLVER_TOLERANCE`는 각 선형계의 상대 물리 잔차 허용오차이며, `KRYLOV_ITERATIONS`는 한 선형계의 반복 상한입니다. Newton 접촉 반복과 강성 continuation은 production에서 실행하지 않습니다.
 
-`TRACE_SOLVER=1`로 바꾸면 Newton/선형 반복과 시간이 출력됩니다. Line search에 사용하는 `merit`가 감소하는 도중 원래 방정식의 `residual`은 일시적으로 커질 수 있으며, 최종 허용오차는 원래 물리 잔차에 적용합니다. CSV의 전체 Newton/Krylov 반복 수와 `mobility_applications`에는 실제 방정식 검증 비용도 포함됩니다.
+`TRACE_SOLVER=1`로 바꾸면 두 선형 단계의 잔차·반복 수와 시간이 출력됩니다. CSV의 선형 반복 수와 `mobility_applications`는 두 단계를 합산하고, 잔차는 두 단계 중 큰 값을 기록합니다. Newton·continuation·geometry 반복 수는 0입니다.
 
-한 step의 접촉력은 실제 Euler 이동·quaternion 회전·전단 격자 갱신 후 gap으로 계산한 압축량과 일치할 때만 수락합니다. 내부 보정 반복은 물리 시간을 추가로 진행하거나 접선 이력을 중복 누적하지 않습니다. 유한 스프링이므로 동역학 중의 작은 실제 겹침은 허용합니다. 물리적 겹침을 모두 없애는 hard wall로 바꾸지 않습니다.
+위치와 quaternion은 두 단계의 평균 속도로 갱신합니다. Sliding·rolling 이력은 원래 이력에서 시작하여 객관적으로 수송한 두 단계의 변형률을 사다리꼴 적분하고, 보정된 끝점의 법선 하중으로 Coulomb 제한을 적용합니다. 예측 이력은 임시 값이며 실제 이동에 사용할 보정 이력만 한 번 반영합니다. 숨은 물리 substep이나 위치 projection은 없습니다. 수치 강성은 실제 겹침이 구형의 반지름 또는 oblate 입자의 최소 반축의 5% 미만인지 확인하며 선택합니다. [안정성·방법 선택 기록](CONTACT_STABILITY_UPDATE.md)의 짧은 검증 범위와 수렴 한계를 참고하십시오.
 
-기본 매질 점도는 0.01 Pa·s, xz 전단률은 100 s⁻¹, timestep은 1e-6 s입니다. AR에 따른 발산 농도를 비교하려면 같은 크기·epsilon·전단 조건에서 다음을 확인해야 합니다.
+기본 매질 점도는 0.01 Pa·s, xz 전단률은 100 s⁻¹, timestep은 2.5e-6 s입니다. `apply_contact_settings.py`는 강성 세 개와 timestep을 바꾸고 기존 총 물리시간 및 출력 시간 간격에 맞춰 step 수와 기록 간격을 조정합니다. AR·농도·출력 경로 등 나머지 설정은 보존합니다. AR에 따른 발산 농도를 비교하려면 같은 크기·epsilon·전단 조건에서 다음을 확인해야 합니다.
 
 - μs와 μr를 더 높였을 때 점도·접촉 통계 변화가 작아지는지 확인하여 강한 마찰의 포화를 판단합니다.
 - Timestep을 줄이고 kn, kt, kr를 높이며 점도와 실제 겹침의 수렴을 검사합니다. 강성 단위는 모두 N/m입니다.
@@ -85,7 +86,7 @@ Solver는 접촉력도 비선형 미지수로 유지하는 semismooth Newton과 
 
 ## 출력과 점도 평균
 
-`parameters.json`은 nominal diameter, reference radius, 실제 축 길이, regularization 길이와 rolling 단위를 보존합니다. `history.csv`는 응력·점도와 solver 진단을 기록합니다. `actual_endpoint_min_gap_m`, `actual_endpoint_overlap_m`, `contact_gap_consistency_m`, `geometry_iterations`, `normal_elastic_energy_J`, `tangential_elastic_energy_J`는 해당 출력 시점에서 다음 이동을 위해 구한 상태의 진단입니다. `min_gap_m`은 현재 위치의 gap입니다. Rolling 항은 `rolling_yield_contacts`, `rolling_elastic_energy_J`, `rolling_plastic_dissipation_W`, `rolling_contact_power_W`로 확인합니다.
+`parameters.json`은 nominal diameter, reference radius, 실제 축 길이, regularization 길이와 rolling 단위를 보존합니다. `history.csv`의 응력·점도·에너지·접촉 power와 `min_gap_m`은 `time_s`의 현재 상태입니다. `actual_endpoint_min_gap_m`, `actual_endpoint_overlap_m`, `linear_gap_defect_m`, `rolling_yield_contacts`와 rolling projection work는 `next_step_end_time_s`로 표시한 다음 이동 끝점의 진단입니다. `next_step_rolling_projection_work_J`는 그 이동의 work이고 `rolling_plastic_dissipation_W`는 work를 timestep으로 나눈 값입니다. Implicit 끝점 힘 일치 조건을 강제하지 않으므로 `contact_gap_consistency_m`은 NaN입니다. 순간 입자 속도는 현재 힘·응력과 같은 단계의 값이며, 실제 이동에 사용할 평균 속도는 별도로 보관합니다.
 
 ```bash
 python3 lammps_slurry/tools/summarize_bridge.py \
@@ -117,7 +118,8 @@ STF5 기저의 순서는 `diag(1,-1,0)/sqrt(2)`, `diag(1,1,-2)/sqrt(6)`, 대칭 
 plugin load ${slurry_plugin}
 # units/box/particles 설정 후:
 fix shear all deform 0 xz erate 100 remap v units box
-fix hydro all slurry/bridge 0.01 100 8e-6 0.001 100 contact 10 80 rolling 10 80 shape spheroid mobility_backend mesh spectral 2 spectral_tolerance 1e-8 history history.csv 100 5
+fix hydro all slurry/bridge 0.01 100 8e-6 0.001 0.3 contact 10 0.24 rolling 10 0.24 shape spheroid mobility_backend mesh spectral 2 spectral_tolerance 1e-8 history history.csv 40 5
+timestep 2.5e-6
 ```
 
 필수 숫자 인자는 순서대로 `eta`, `shear_rate`, `nominal_diameter_m`, `epsilon`, `kn_N_per_m`입니다. `contact` 뒤에는 μs, kt를, `rolling` 뒤에는 μr, kr를 넣습니다. 현재 모델은 단분산 volume-equivalent diameter를 사용하며 각 입자가 해당 D와 AR 범위에 맞아야 합니다.

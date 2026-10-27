@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261027-contact-globalization"
+RELEASE_ID = "20261027-calibrated-linear-contact"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -47,6 +47,7 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/slurry_bridge_solver.h",
         "lammps_slurry/src/slurry_bridge_workspace.h",
         "lammps_slurry/src/slurry_bridge_contact_solver.h",
+        "lammps_slurry/src/slurry_bridge_linear_solver.h",
         "lammps_slurry/src/slurry_bridge_step.h",
         "lammps_slurry/src/slurry_bridge_shape.h",
         "lammps_slurry/src/slurry_cylinder_geometry.h",

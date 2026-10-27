@@ -1,5 +1,7 @@
 # Mari/Singh convention overlay — 2026-10-27
 
+> **Historical, superseded release record.** The installation commands, spring defaults, implicit solver behavior and AR5 time-step advice below describe the earlier Mari/Singh overlay. For the current explicit Heun release, use [CONTACT_STABILITY_UPDATE.md](CONTACT_STABILITY_UPDATE.md) and [BRIDGE_RUN.md](BRIDGE_RUN.md): kn=0.3, kt=kr=0.24 N/m and dt=2.5e-6 s. The hydrodynamic/contact conventions documented here remain relevant; the old stability results do not validate the current integrator.
+
 Base: `0206lyg/Test_BS`, `main`, commit `4a0a1ea66e02e7d46d64d1bec9602e8cb141897e`.
 
 This overlay removes the positive-gap mechanical contact layer and rough-surface hydrodynamic addition from the active spheroid runtime. It implements Mari-style additive lubrication regularization and Singh-style sliding/rolling contact. Existing nonspherical near and periodic hydrodynamic approximations remain; the result must not be described as an exact reproduction of either spherical paper.

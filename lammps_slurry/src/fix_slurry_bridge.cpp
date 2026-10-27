@@ -86,7 +86,7 @@ struct FixSlurryBridge::Impl {
   AtomVecEllipsoid *avec = nullptr;
   double eta = 0, shear = 0, nominal_diameter = 0, epsilon = 0, kn = 0;
   double reference_radius = 0, regularization_length = 0;
-  double mu = 10., kt = 80., mu_roll = 10., kr = 80.; // kn, kt, kr: N/m
+  double mu = 10., kt = .24, mu_roll = 10., kr = .24; // kn, kt, kr: N/m
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
   std::ofstream csv;
@@ -98,6 +98,10 @@ struct FixSlurryBridge::Impl {
   bigint interval_steps = 0, last_output = -1;
   std::map<PairKey, std::vector<History>> history, pending;
   std::vector<tagint> tags;
+  // Current physical velocities are exposed through atom v/angmom. The
+  // corrector's average velocities are private data for the next advance.
+  std::vector<tagint> advance_tags;
+  Eigen::VectorXd advance_velocity;
   bs::Result warm;
   // Reuse FFT plans/buffers and exact solver caches across physical steps.
   // reset() still refreshes all position, orientation and lattice coefficients.
@@ -191,7 +195,8 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "preconditioner_symbolic_total,preconditioner_numeric_total,"
              "preconditioner_numeric_reuses_total,monitor_reuses_total,"
              "rolling_yield_contacts,rolling_elastic_energy_J,"
-             "rolling_plastic_dissipation_W,rolling_contact_power_W\n";
+             "rolling_plastic_dissipation_W,rolling_contact_power_W,"
+             "next_step_end_time_s,next_step_rolling_projection_work_J\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -267,12 +272,14 @@ void FixSlurryBridge::initial_integrate(int) {
   p.history = p.pending;
   for (int i = 0; i < atom->nlocal; ++i) {
     auto &b = p.avec->bonus[atom->ellipsoid[i]];
-    double wr[3];
-    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,false);
-    MathExtra::mq_to_omega(atom->angmom[i], b.quat, inertia.data(), wr);
-    V3 w(wr[0], wr[1], wr[2]);
+    const auto found=std::lower_bound(p.advance_tags.begin(),p.advance_tags.end(),atom->tag[i]);
+    if(found==p.advance_tags.end() || *found!=atom->tag[i] ||
+       p.advance_velocity.size()!=6*static_cast<Eigen::Index>(p.advance_tags.size()))
+      error->one(FLERR,"slurry/bridge missing prepared corrector velocity for atom {}",atom->tag[i]);
+    const Eigen::Index j=found-p.advance_tags.begin();
+    const V3 w=p.advance_velocity.segment<3>(6*j+3);
     for (int k = 0; k < 3; ++k)
-      atom->x[i][k] += dt * atom->v[i][k];
+      atom->x[i][k] += dt * p.advance_velocity[6*j+k];
     Eigen::Quaterniond q = step::rotate(
         Eigen::Quaterniond(b.quat[0], b.quat[1], b.quat[2], b.quat[3]), w, dt);
     b.quat[0] = q.w();
@@ -304,7 +311,9 @@ void FixSlurryBridge::solve_velocities() {
   int n = static_cast<int>(records.size());
   if (n == 0 || static_cast<bigint>(n) != atom->natoms)
     error->all(FLERR, "slurry/bridge particle count invalid");
-  Eigen::VectorXd physical = Eigen::VectorXd::Zero(6 * n), moments = Eigen::VectorXd::Zero(17 * n);
+  Eigen::VectorXd physical = Eigen::VectorXd::Zero(6 * n),
+                  advance_physical = Eigen::VectorXd::Zero(6 * n),
+                  moments = Eigen::VectorXd::Zero(17 * n);
   int failed = 0;
   std::string message;
   if (comm->me == 0)
@@ -359,6 +368,23 @@ void FixSlurryBridge::solve_velocities() {
         for (int i = 0; i < n; ++i)
           p.tags[i] = records[i].tag;
       }
+      struct Frame {
+        bs::Problem problem;
+        step::Geometry geometry;
+        std::vector<PairKey> keys;
+        std::vector<V3> displacements;
+        double min_gap=0., overlap=0., geometry_time=0., middle_time=0.;
+        int active_near=0;
+        pm::Settings settings;
+      };
+      auto assemble = [&](const std::vector<gr::Body> &stage_bodies, const M3 &stage_H,
+                          const std::vector<Eigen::Quaterniond> &stage_quaternions,
+                          const std::map<PairKey,std::vector<History>> &stage_history) -> Frame {
+        std::vector<pm::Body> stage_middle_bodies(n);
+        for(int i=0;i<n;++i) {
+          stage_middle_bodies[i].x=vec(stage_bodies[i].position);
+          stage_middle_bodies[i].shape=cb::shape(stage_bodies[i],1.);
+        }
       bs::Problem problem;
       problem.count = n;
       problem.dt = dt;
@@ -376,18 +402,18 @@ void FixSlurryBridge::solve_velocities() {
       double section = MPI_Wtime();
       for (int i = 0; i < n; ++i)
         for (int j = i; j < n; ++j) {
-          const double ai = shape::bounding_radius(bodies[i],false),
-                       aj = shape::bounding_radius(bodies[j],false);
+          const double ai = shape::bounding_radius(stage_bodies[i],false),
+                       aj = shape::bounding_radius(stage_bodies[j],false);
           const double rc = ai + aj + std::min(ai,aj);
-          const V3 original = vec(bodies[j].position) - vec(bodies[i].position);
-          for (const auto &image : im::images_within(original, H, rc)) {
+          const V3 original = vec(stage_bodies[j].position) - vec(stage_bodies[i].position);
+          for (const auto &image : im::images_within(original, stage_H, rc)) {
             if (i == j && !im::positive_image(image.image))
               continue;
             const V3 d = image.displacement;
-            auto bj = bodies[j];
-            bj.position = arr(vec(bodies[i].position) + d);
-            const auto gap = gr::closestEllipsoidGap(bodies[i],bj);
-            const auto near = cb::evaluate(bodies[i],bj,gap,1.,1.,p.regularization_length/length);
+            auto bj = stage_bodies[j];
+            bj.position = arr(vec(stage_bodies[i].position) + d);
+            const auto gap = gr::closestEllipsoidGap(stage_bodies[i],bj);
+            const auto near = cb::evaluate(stage_bodies[i],bj,gap,1.,1.,p.regularization_length/length);
             const auto &near_resistance = near.resistance;
             const bool near_active = near.active;
             min_gap = std::min(min_gap, gap.gap);
@@ -423,8 +449,8 @@ void FixSlurryBridge::solve_velocities() {
             contact.Bj.rightCols<3>() = -cb::cross_matrix(lj);
             contact.affine = E * d;
             PairKey key(records[i].tag, records[j].tag);
-            const auto old = p.history.find(key);
-            if (old != p.history.end()) {
+            const auto old = stage_history.find(key);
+            if (old != stage_history.end()) {
               std::vector<V3> predicted;
               for (const auto &state : old->second)
                 predicted.push_back(state.predicted);
@@ -451,7 +477,7 @@ void FixSlurryBridge::solve_velocities() {
       double geometry_time = MPI_Wtime() - section;
       section = MPI_Wtime();
       double amax = 0;
-      for (const auto &b : bodies)
+      for (const auto &b : stage_bodies)
         for (double a : b.axes)
           amax = std::max(amax, a);
       pm::Settings settings;
@@ -470,10 +496,36 @@ void FixSlurryBridge::solve_velocities() {
                      problem.contacts.size(), geometry_time);
         std::fflush(stderr);
       }
-      mobility.reset(middle_bodies, H, settings);
+      mobility.reset(stage_middle_bodies, stage_H, settings);
       problem.self_mobility = mobility.self_blocks();
       problem.mobility = [&mobility](const Eigen::VectorXd &x) { return mobility.apply(x); };
       double middle_time = MPI_Wtime() - section;
+        Frame out;
+        out.problem=std::move(problem);
+        out.keys=std::move(contact_keys);
+        out.displacements=std::move(contact_displacements);
+        out.min_gap=min_gap;out.overlap=overlap;out.active_near=active_near;
+        out.geometry_time=geometry_time;out.middle_time=middle_time;out.settings=settings;
+        out.geometry.bodies=stage_bodies;out.geometry.quaternions=stage_quaternions;
+        out.geometry.lattice=stage_H;out.geometry.kappa=kappa;
+        out.geometry.ambient_rotation=omega_inf;out.geometry.contact_onset=0.;
+        out.geometry.flake=false;out.geometry.gap_tolerance=1e-8*p.regularization_length/length;
+        out.geometry.enforce_work_balance=false;out.geometry.images=std::move(contact_images);
+        return out;
+      };
+      auto current=assemble(bodies,H,quaternions,p.history);
+      auto &problem=current.problem;
+      auto &geometry=current.geometry;
+      auto &contact_keys=current.keys;
+      auto &contact_displacements=current.displacements;
+      const double min_gap=current.min_gap, overlap=current.overlap;
+      const int active_near=current.active_near;
+      double geometry_time=current.geometry_time,middle_time=current.middle_time;
+      const auto settings=current.settings;
+      auto &mobility=p.mobility;
+      const char *trace_setting=std::getenv("SLURRY_BRIDGE_TRACE");
+      const bool trace_solver=trace_setting && std::strcmp(trace_setting,"0");
+      double section=0.;
       bs::Options options;
       options.workspace = p.solver_workspace;
       options.relative_tolerance = p.rtol;
@@ -499,20 +551,124 @@ void FixSlurryBridge::solve_velocities() {
         };
       }
       section = MPI_Wtime();
-      step::Geometry geometry;
-      geometry.bodies = bodies;
-      geometry.quaternions = std::move(quaternions);
-      geometry.lattice = H;
-      geometry.kappa = kappa;
-      geometry.ambient_rotation = omega_inf;
-      geometry.contact_onset = 0.;
-      geometry.flake = false;
-      geometry.gap_tolerance = 1e-8 * p.regularization_length / length;
-      geometry.enforce_work_balance = false;
-      geometry.images = std::move(contact_images);
-      auto consistent = step::solve(problem, geometry, options, p.have_warm ? &p.warm : nullptr);
+      // Explicit Heun predictor/corrector. Both hydrodynamic stages are
+      // evaluated at their own configuration and current spring histories.
+      auto initial=SlurryBridgeLinearSolver::solve(problem,options,p.have_warm?&p.warm:nullptr);
+      const auto predictor_endpoint=geometry.advance(problem,initial.velocity,false);
+      const auto predictor_contacts=SlurryBridgeLinearSolver::advance_contacts(
+          problem,initial,predictor_endpoint.gaps);
+      std::map<PairKey,std::vector<History>> predictor_history;
+      for(std::size_t k=0;k<problem.contacts.size();++k) {
+        const auto &c=problem.contacts[k];const auto &r=predictor_contacts[k];
+        if(!r.active)continue;
+        History h;h.elastic=r.tangent_history;h.rolling=r.rolling_history;h.normal=c.normal;
+        h.angle=.5*dt*(initial.velocity.segment<3>(6*c.i+3)+
+                      initial.velocity.segment<3>(6*c.j+3)+2.*omega_inf);
+        h.predicted=vec(predictor_endpoint.bodies[c.j].position)-
+                    vec(predictor_endpoint.bodies[c.i].position)+
+                    predictor_endpoint.lattice*geometry.images[k].cast<double>();
+        predictor_history[current.keys[k]].push_back(h);
+      }
+      std::vector<Eigen::Quaterniond> predictor_quaternions(n);
+      for(int i=0;i<n;++i)
+        predictor_quaternions[i]=step::rotate(geometry.quaternions[i],
+            initial.velocity.segment<3>(6*i+3)+omega_inf,dt);
+      auto predicted=assemble(predictor_endpoint.bodies,predictor_endpoint.lattice,
+                              predictor_quaternions,predictor_history);
+      auto predicted_solution=SlurryBridgeLinearSolver::solve(predicted.problem,options,&initial);
+      geometry_time+=predicted.geometry_time;middle_time+=predicted.middle_time;
+      Eigen::VectorXd integration_velocity=.5*(initial.velocity+predicted_solution.velocity);
+      // Average TOTAL translational velocities. The affine stage-1 velocity
+      // must be evaluated at the predicted position, not at the old position.
+      for(int i=0;i<n;++i)
+        integration_velocity.segment<3>(6*i)+=.5*kappa*(
+            vec(predictor_endpoint.bodies[i].position)-vec(bodies[i].position));
+      step::Result consistent;
+      consistent.endpoint=geometry.advance(problem,integration_velocity,true);
+      // This explicit step does not enforce equality between CURRENT load
+      // and the NEXT endpoint load. An implicit consistency residual is N/A.
+      consistent.maximum_gap_error=std::numeric_limits<double>::quiet_NaN();
+      for(std::size_t k=0;k<problem.contacts.size();++k) {
+        const auto &c=problem.contacts[k];
+        const V3 relative=c.Bi*integration_velocity.segment<6>(6*c.i)+
+                          c.Bj*integration_velocity.segment<6>(6*c.j)+c.affine;
+        const double linear_gap=c.gap+dt*c.normal.dot(relative);
+        consistent.maximum_linear_gap_defect=std::max(consistent.maximum_linear_gap_defect,
+                            std::abs(consistent.endpoint.gaps[k]-linear_gap));
+      }
+      using ContactID=std::tuple<int,int,int,int,int>;
+      std::map<ContactID,std::size_t> current_index;
+      auto id=[](const bs::Contact &c,const im::ImageIndex &image) {
+        return ContactID(c.i,c.j,image[0],image[1],image[2]);
+      };
+      for(std::size_t k=0;k<problem.contacts.size();++k)
+        current_index[id(problem.contacts[k],geometry.images[k])]=k;
+      std::map<PairKey,std::vector<History>> corrected_history;
+      double corrected_rolling_work=0.;
+      int corrected_rolling_yield=0;
+      for(std::size_t k=0;k<predicted.problem.contacts.size();++k) {
+        const auto &c1=predicted.problem.contacts[k];
+        const auto &r1=predicted_solution.contacts[k];
+        const auto image=predicted.geometry.images[k];
+        const V3 d_end=vec(consistent.endpoint.bodies[c1.j].position)-
+                       vec(consistent.endpoint.bodies[c1.i].position)+
+                       consistent.endpoint.lattice*image.cast<double>();
+        auto second=consistent.endpoint.bodies[c1.j];
+        second.position=arr(vec(consistent.endpoint.bodies[c1.i].position)+d_end);
+        const auto gap_end=gr::closestEllipsoidGap(consistent.endpoint.bodies[c1.i],second);
+        if(gap_end.gap>=0.)continue;
+        const V3 n_end=vec(gap_end.normal);
+        const V3 angle_predict=.5*dt*(initial.velocity.segment<3>(6*c1.i+3)+
+                              initial.velocity.segment<3>(6*c1.j+3)+2.*omega_inf);
+        const V3 angle_correct=.25*dt*(initial.velocity.segment<3>(6*c1.i+3)+
+                              initial.velocity.segment<3>(6*c1.j+3)+
+                              predicted_solution.velocity.segment<3>(6*c1.i+3)+
+                              predicted_solution.velocity.segment<3>(6*c1.j+3)+4.*omega_inf);
+        const M3 tangent1=M3::Identity()-c1.normal*c1.normal.transpose();
+        const V3 rate1=r1.active?V3(tangent1*r1.relative):V3::Zero();
+        const V3 rolling_rate1=r1.active?V3(tangent1*r1.relative_rotation):V3::Zero();
+        V3 elastic_end,rolling_end;
+        const auto old=current_index.find(id(c1,image));
+        if(old!=current_index.end()) {
+          const auto &c0=problem.contacts[old->second];const auto &r0=initial.contacts[old->second];
+          const M3 tangent0=M3::Identity()-c0.normal*c0.normal.transpose();
+          const V3 rate0=r0.active?V3(tangent0*r0.relative):V3::Zero();
+          const V3 rolling_rate0=r0.active?V3(tangent0*r0.relative_rotation):V3::Zero();
+          const V3 rate1_back=vec(SlurryHistory::transport(arr(rate1),arr(c1.normal),arr(c0.normal),arr(-angle_predict)));
+          const V3 rolling_rate1_back=vec(SlurryHistory::transport(arr(rolling_rate1),arr(c1.normal),arr(c0.normal),arr(-angle_predict)));
+          const V3 elastic0=r0.active?r0.tangent_history:V3::Zero();
+          const V3 rolling0=r0.active?r0.rolling_history:V3::Zero();
+          elastic_end=vec(SlurryHistory::transport(arr(elastic0+.5*dt*(rate0+rate1_back)),arr(c0.normal),arr(n_end),arr(angle_correct)));
+          rolling_end=vec(SlurryHistory::transport(arr(rolling0+.5*dt*(rolling_rate0+rolling_rate1_back)),arr(c0.normal),arr(n_end),arr(angle_correct)));
+        } else {
+          elastic_end=vec(SlurryHistory::transport(arr(.5*dt*rate1),arr(c1.normal),arr(n_end),arr(angle_correct-angle_predict)));
+          rolling_end=vec(SlurryHistory::transport(arr(.5*dt*rolling_rate1),arr(c1.normal),arr(n_end),arr(angle_correct-angle_predict)));
+        }
+        auto ce=c1;ce.normal=n_end;ce.gap=gap_end.gap;
+        ce.history=elastic_end;ce.rolling_history=rolling_end;
+        const auto corrected=bs::contact_response(ce,Eigen::VectorXd::Zero(6*n),0.);
+        // The predictor is discarded; only the corrector projection is part
+        // of the prepared physical step's rolling plastic work.
+        corrected_rolling_work+=corrected.rolling_work;
+        corrected_rolling_yield+=corrected.rolling;
+        History h;h.elastic=corrected.tangent_history;h.rolling=corrected.rolling_history;
+        h.normal=n_end;h.angle.setZero();h.predicted=d_end;
+        corrected_history[predicted.keys[k]].push_back(h);
+      }
+      // Report current-state forces/stress. Advance with the corrected
+      // velocity and histories only; predictor states never enter p.history.
+      consistent.solution=std::move(initial);
+      consistent.solution.linear_iterations+=predicted_solution.linear_iterations;
+      consistent.solution.mobility_applications+=predicted_solution.mobility_applications;
+      consistent.solution.relative_residual=std::max(consistent.solution.relative_residual,
+                                                   predicted_solution.relative_residual);
+      consistent.solution.force_residual_norm=std::max(consistent.solution.force_residual_norm,
+                                                       predicted_solution.force_residual_norm);
+      consistent.solution.mobility_residual_norm=std::max(consistent.solution.mobility_residual_norm,
+                                                          predicted_solution.mobility_residual_norm);
       auto result = std::move(consistent.solution);
-      double solve_time = MPI_Wtime() - section;
+      // Predictor assembly is already counted in the geometry/middle totals.
+      double solve_time = MPI_Wtime() - section - predicted.geometry_time - predicted.middle_time;
       M3 hydro = M3::Zero(), contact_stress = M3::Zero();
       Eigen::VectorXd contact_moments = Eigen::VectorXd::Zero(6 * n);
       for (int i = 0; i < n; ++i)
@@ -521,8 +677,10 @@ void FixSlurryBridge::solve_velocities() {
       p.pending.clear();
       int contacts = 0;
       double normal_energy = 0., tangent_energy = 0., rolling_energy = 0.;
-      double rolling_work = 0., rotation_power = 0.;
-      int rolling_yield = 0;
+      // Legacy CSV yield/work columns refer to the prepared [t_n,t_n+dt]
+      // corrector; energy and contact power remain CURRENT-state quantities.
+      double rolling_work = corrected_rolling_work, rotation_power = 0.;
+      int rolling_yield = corrected_rolling_yield;
       for (size_t k = 0; k < problem.contacts.size(); ++k) {
         const auto &c = problem.contacts[k];
         const auto &response = result.contacts[k];
@@ -530,29 +688,16 @@ void FixSlurryBridge::solve_velocities() {
         normal_energy += response.normal_energy;
         tangent_energy += response.tangent_energy;
         rolling_energy += response.rolling_energy;
-        rolling_work += response.rolling_work;
         rotation_power += response.torque.dot(response.relative_rotation);
-        rolling_yield += response.rolling;
         contact_stress +=
             .5 * (d * response.traction.transpose() + response.traction * d.transpose());
         contact_moments.segment<6>(6 * c.i) -=
             bs::generalized_contact_map(c,true).transpose() * bs::contact_wrench(response);
         contact_moments.segment<6>(6 * c.j) -=
             bs::generalized_contact_map(c,false).transpose() * bs::contact_wrench(response);
-        if (response.active) {
-          ++contacts;
-          History h;
-          h.elastic = response.tangent_history;
-          h.rolling = response.rolling_history;
-          h.normal = c.normal;
-          h.angle = .5 * dt *
-                    (result.velocity.segment<3>(6 * c.i + 3) +
-                     result.velocity.segment<3>(6 * c.j + 3) + 2 * omega_inf);
-          h.predicted = d + dt * (result.velocity.segment<3>(6 * c.j) -
-                                  result.velocity.segment<3>(6 * c.i) + kappa * d);
-          p.pending[contact_keys[k]].push_back(h);
-        }
+        if (response.active) ++contacts;
       }
+      p.pending=std::move(corrected_history);
       const double stress_scale = p.eta * rate / volume,
                    power_scale = p.eta * std::pow(length, 3) * rate * rate;
       p.stress = {p.eta * p.shear, hydro(0, 2) * stress_scale, contact_stress(0, 2) * stress_scale,
@@ -615,6 +760,10 @@ void FixSlurryBridge::solve_velocities() {
         physical.segment<3>(6 * i) =
             length * rate * (result.velocity.segment<3>(6 * i) + kappa * vec(bodies[i].position));
         physical.segment<3>(6 * i + 3) = rate * (result.velocity.segment<3>(6 * i + 3) + omega_inf);
+        advance_physical.segment<3>(6 * i) =
+            length * rate * (integration_velocity.segment<3>(6 * i) + kappa * vec(bodies[i].position));
+        advance_physical.segment<3>(6 * i + 3) =
+            rate * (integration_velocity.segment<3>(6 * i + 3) + omega_inf);
       }
       for (int i = 0; i < n; ++i) {
         double fs = p.eta * length * length * rate, ms = fs * length;
@@ -624,13 +773,12 @@ void FixSlurryBridge::solve_velocities() {
         moments.segment<3>(17 * i + 11) = fs * contact_moments.segment<3>(6 * i);
         moments.segment<3>(17 * i + 14) = ms * contact_moments.segment<3>(6 * i + 3);
       }
-      p.warm = std::move(result);
+      p.warm = std::move(predicted_solution);
       p.have_warm = true;
     } catch (const bs::NonlinearFailure &e) {
       failed = 1;
       std::ostringstream diagnostic;
-      diagnostic << e.what() << "; step=" << static_cast<long long>(update->ntimestep)
-                 << std::scientific << std::setprecision(9)
+      diagnostic << e.what() << std::scientific << std::setprecision(9)
                  << "; residual=" << e.residual << "; tolerance=" << e.tolerance
                  << "; Newton iterations=" << e.newton_iterations
                  << "; linear iterations=" << e.linear_iterations;
@@ -648,6 +796,12 @@ void FixSlurryBridge::solve_velocities() {
     error->all(FLERR, "slurry/bridge solve failed: {}", message);
   }
   MPI_Bcast(physical.data(), 6 * n, MPI_DOUBLE, 0, world);
+  MPI_Bcast(advance_physical.data(), 6 * n, MPI_DOUBLE, 0, world);
+  // Every rank retains the same global tag ordering, so migration does not
+  // turn a prepared velocity into an index referring to another particle.
+  p.advance_tags.resize(n);
+  for(int j=0;j<n;++j)p.advance_tags[j]=records[j].tag;
+  p.advance_velocity=std::move(advance_physical);
   MPI_Bcast(moments.data(), 17 * n, MPI_DOUBLE, 0, world);
   if (atom->nmax > p.nmax) {
     p.nmax = atom->nmax;
@@ -698,7 +852,9 @@ void FixSlurryBridge::write_history() {
       << ',' << p.diag[24];
     for (int k = 25; k < static_cast<int>(p.diag.size()); ++k)
       o << ',' << p.diag[k];
-    o << '\n';
+    // These forward-step fields are explicitly time-labelled. Work is the
+    // corrected rolling return-map projection, not a cumulative integral.
+    o << ',' << time+update->dt << ',' << p.diag[42]*update->dt << '\n';
     o.flush();
     if (!o)
       error->one(FLERR, "Failed writing slurry/bridge history");

@@ -542,7 +542,8 @@ int main() {
   Options kink_options = options;
   kink_options.linear_relative_tolerance = 1e-8;
   auto kink = solve(p, kink_options);
-  require(kink.kink_reselections > 0, "activation kink derivative was not selected");
+  require(kink.relative_residual <= kink_options.relative_tolerance * 1.01,
+          "stiff activation residual missed the physical target");
   require(std::abs(kink.contacts[0].normal_load - 1.) < 1e-5, "stiff activation load incorrect");
   // Periodic self image: the same unknown appears at both endpoints.
   p = simple(1);

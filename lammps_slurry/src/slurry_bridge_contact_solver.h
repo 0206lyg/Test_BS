@@ -535,8 +535,14 @@ template<int K> inline Result solve_proximal_impl(const Problem &p, const Option
         if (!std::isfinite(candidate_norm))
           throw std::runtime_error(
               "bridge proximal solver: nonfinite trial norm");
-        if (candidate_norm < norm &&
-            weighted.squaredNorm() <= norm * norm + 2e-4 * alpha * slope) {
+        const bool sufficient_decrease = candidate_norm < norm &&
+            weighted.squaredNorm() <= norm * norm + 2e-4 * alpha * slope;
+        // Retained tractions are auxiliary variables. Never reject a trial
+        // velocity/moment that already solves the original constitutive
+        // force balance solely because its proxy tractions are not updated.
+        const bool physical_root = !sufficient_decrease &&
+            monitor.left(original_residual(candidate, candidate_raw)).norm() <= tolerance;
+        if (sufficient_decrease || physical_root) {
           x = candidate;
           raw = candidate_raw;
           residual = weighted;

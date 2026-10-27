@@ -1,19 +1,19 @@
 {
-  "release_id": "20261027-contact-globalization",
-  "status": "MARI_REGULARIZATION_SINGH_CONTACT_ON_OBLATE_SPHEROIDS",
+  "release_id": "20261027-calibrated-linear-contact",
+  "status": "SHORT_AR1_N500_HEUN_AND_PAIR_REFINEMENT_PASSED",
   "baseline_git_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
   "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
-  "prepare_bridge_sha256": "6a4dd819edf1f8cd52563a6083b6530a89337f03926ae938875089f3448d08af",
-  "details": "docs/CONTACT_SOLVER_UPDATE.md",
-  "legacy_release": "20261027-mari-singh-spheroid-contact",
+  "prepare_bridge_sha256": "733fb464b66c5288b9a58e076c3d0fb3e387a6b4269f53abc7426f9183898b27",
+  "details": "docs/CONTACT_STABILITY_UPDATE.md",
+  "legacy_release": "20261027-contact-globalization",
   "model_stage": "RETAINED_SPHEROID_HYDRODYNAMICS_WITH_SURFACE_SLIDING_AND_ROLLING",
   "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
   "periodic_mobility_backend": "mesh",
   "production_numerics": {
     "fft": "FFTW",
     "sparse_preconditioner": "MKL-PARDISO-static-GNU-LP64",
-    "contact_linear_system": "exactly condensed 17N Newton-FGMRES",
-    "contact_nonlinear_solver": "retained-wrench Newton-FGMRES with adaptive tangential/rolling/twisting stiffness continuation rescue; original target residual gate"
+    "contact_linear_system": "two 17N linear FGMRES stages with fixed stage contact forces",
+    "contact_nonlinear_solver": "none; explicit Heun predictor-corrector with objective history transport"
   },
   "run_batch": "run_slurry_cpu.sbatch",
   "particle_shapes": [
@@ -30,18 +30,28 @@
   "lubrication_regularization_m": 4e-09,
   "lubrication_gap_rule": "max(actual_signed_gap,0)+epsilon*reference_radius",
   "mechanical_contact_gap_m": 0.0,
-  "contact_model": "Actual endpoint overlap with normal/sliding springs and Singh rolling quasi-force spring; no twisting, rough-hydro excess, repulsion barrier or dashpot",
+  "contact_model": "Current-stage overlap/sliding/rolling forces; objective Heun histories; no implicit contact or endpoint-force iteration",
   "contact_trial": {
     "sliding_friction": 10.0,
     "rolling_friction": 10.0,
-    "normal_stiffness_N_m": 100.0,
-    "tangential_stiffness_N_m": 80.0,
-    "rolling_stiffness_N_m": 80.0,
+    "normal_stiffness_N_m": 0.3,
+    "tangential_stiffness_N_m": 0.24,
+    "rolling_stiffness_N_m": 0.24,
     "rolling_length_definition": "aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j); monodisperse aij=D/2",
     "rolling_angular_stiffness_definition": "kr_N_per_m*aij^2",
-    "basis": "strong-friction numerical trial; not measured graphite coefficients or a demonstrated saturation limit"
+    "basis": "numerical contact penalties; overlap below 5% and case-specific stiffness/time-step refinement required"
   },
   "initialization": "geometric random insertion and growth/FIRE or aligned preparation; actual spheroid periodic clearance >=0",
   "equilibrium_bulk_viscosity_tested": false,
-  "scope": "Regularization and contact conventions extended to spheroids; full hydrodynamic operator is not an exact Mari/Singh LF-DEM reproduction"
+  "scope": "Regularization and contact conventions extended to spheroids; full hydrodynamic operator is not an exact Mari/Singh LF-DEM reproduction",
+  "default_timestep_stability_passed": true,
+  "timestep_stability_report": "docs/CONTACT_STABILITY_UPDATE.md",
+  "validation_scope": "AR1 N500 through 120 microseconds; AR1/2/5 two-particle time refinement; not long-strain certification",
+  "integration": {
+    "method": "Heun predictor-corrector",
+    "default_timestep_s": 2.5e-06,
+    "default_steps": 40000,
+    "default_output_interval": 40,
+    "default_total_strain": 10.0
+  }
 }

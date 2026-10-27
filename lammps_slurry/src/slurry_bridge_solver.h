@@ -711,6 +711,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
       !std::isfinite(norm))
     throw std::runtime_error(
         "bridge solver: nonfinite weighted residual or tolerance");
+  std::vector<double> merit_history(1, norm * norm);
   for (int iteration = 0;
        norm > tolerance && iteration < opt.maximum_newton_iterations;
        ++iteration) {
@@ -781,72 +782,23 @@ inline Result solve_direct(const Problem &p, const Options &opt,
     }
     const double linear_target = forcing * norm;
     double achieved_linear_residual = std::numeric_limits<double>::quiet_NaN();
-    Vector dx;
-    for (int reselection = 0; reselection < 8; ++reselection) {
-      detail::CoupledPreconditioner pre(p, state, opt.workspace);
-      auto inverse = [&](const Vector &value) -> Vector {
-        return pre.apply(monitor.inverse_left(value));
-      };
-      const auto linear =
-          detail::fgmres(jacobian, inverse, -residual, linear_target, opt);
-      out.linear_iterations += linear.iterations;
-      trace.linear_iterations += linear.iterations;
-      achieved_linear_residual = linear.residual;
-      dx = linear.x;
-      bool changed = false;
-      // At a unilateral/yield kink, select the generalized derivative from
-      // the proposed direction before backtracking. Residuals always use
-      // the exact return map; this probe never changes contact history.
-      const double probe = 1e-7 / std::max(1., dx.tail(nu).norm());
-      const Vector trial_u = x.tail(nu) + probe * dx.tail(nu);
-      for (std::size_t k = 0; k < p.contacts.size(); ++k) {
-        const auto &c = p.contacts[k];
-        const auto &actual = out.contacts[k];
-        const double gap_scale =
-            std::max({1., std::abs(c.gap), std::abs(c.onset),
-                      std::abs(actual.predicted_gap)});
-        const double yield =
-            c.kt * actual.trial_history.norm() - c.mu * actual.normal_load;
-        const double force_scale =
-            std::max({1., c.kt * actual.trial_history.norm(),
-                      c.mu * actual.normal_load});
-        const bool normal_kink =
-            std::abs((c.onset - c.gap) -
-                     p.dt * c.normal.dot(actual.relative)) <=
-            128. * std::numeric_limits<double>::epsilon() * gap_scale;
-        const bool yield_kink =
-            actual.active && c.kt > 0. && c.mu > 0. &&
-            std::abs(yield) <=
-                128. * std::numeric_limits<double>::epsilon() * force_scale;
-        const auto near_yield = [](double a, double b) {
-          return std::abs(a-b) <= 128. * std::numeric_limits<double>::epsilon() * std::max({1.,a,b});
-        };
-        const bool rotation_kink = actual.active && rotation_enabled(c) &&
-            ((c.kr > 0. && near_yield(c.kr * actual.rolling_trial.norm(), c.mu_roll * c.roll_length * actual.normal_load)) ||
-             (c.kw > 0. && near_yield(c.kw * std::abs(actual.twisting_trial), c.mu_twist * c.twist_length * actual.normal_load)));
-        if (!normal_kink && !yield_kink && !rotation_kink)
-          continue;
-        const auto trial = contact_response(c, trial_u, p.dt);
-        if (trial.active != state[k].active ||
-            trial.sliding != state[k].sliding || trial.rolling != state[k].rolling ||
-            trial.twisting != state[k].twisting) {
-          set_contact_jacobian(state[k], contact_jacobian(trial));
-          state[k].rolling = trial.rolling;
-          state[k].twisting = trial.twisting;
-          state[k].active = trial.active;
-          state[k].sliding = trial.sliding;
-          changed = true;
-          ++out.kink_reselections;
-        }
-      }
-      if (!changed)
-        break;
-      if (reselection == 7)
-        throw NonlinearFailure(
-            "bridge solver: inconsistent contact kink directions", out, norm,
-            tolerance);
-    }
+    // A generalized derivative at the current iterate is sufficient for a
+    // semismooth Newton step. Requiring its active set to agree with the
+    // unknown step direction before globalization can cycle at a kink even
+    // when the original equations have a root. Evaluate the actual return
+    // map in the line search instead of treating that cycle as failure.
+    detail::CoupledPreconditioner pre(p, state, opt.workspace);
+    auto inverse = [&](const Vector &value) -> Vector {
+      return pre.apply(monitor.inverse_left(value));
+    };
+    const auto linear =
+        detail::fgmres(jacobian, inverse, -residual, linear_target, opt);
+    out.linear_iterations += linear.iterations;
+    trace.linear_iterations += linear.iterations;
+    achieved_linear_residual = linear.residual;
+    const Vector dx = linear.x;
     const double initial_norm = norm, newton_step_norm = dx.norm();
+    const double reference_merit = *std::max_element(merit_history.begin(), merit_history.end());
     const Vector newton_raw_directional = raw_jacobian(dx);
     const Vector newton_directional = monitor.left(newton_raw_directional);
     const double newton_slope = residual.dot(newton_directional);
@@ -891,8 +843,7 @@ inline Result solve_direct(const Problem &p, const Options &opt,
         best_trial_norm = std::min(best_trial_norm, last_trial_norm);
         last_step = step;
         const bool acceptable =
-            (last_trial_norm < norm &&
-             trial.squaredNorm() <= norm * norm + 2e-4 * step * slope) ||
+            (trial.squaredNorm() <= reference_merit + 2e-4 * step * slope) ||
             last_trial_norm <= tolerance;
         if (acceptable && last_trial_norm < best_norm) {
           best_step = step;
@@ -1014,6 +965,8 @@ inline Result solve_direct(const Problem &p, const Options &opt,
     if (!std::isfinite(norm))
       throw std::runtime_error(
           "bridge solver: nonfinite accepted weighted residual");
+    merit_history.push_back(norm * norm);
+    if (merit_history.size() > 8) merit_history.erase(merit_history.begin());
     state = out.contacts;
     trace.residual = norm;
     trace.merit_residual = norm;

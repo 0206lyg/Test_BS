@@ -1,5 +1,6 @@
 # Test_BS — spheroid suspension hydrodynamics
 
+
 현재 실행 모델은 `fix slurry/bridge`입니다. **체적 등가 직경 D를 고정한 oblate spheroid**의 AR, 체적분율, sliding·rolling 마찰을 바꾸며 입자의 위치·배향과 xz 전단 응력을 계산합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기저나 저항표를 먼저 생성하지 않습니다.
 
 현재 모델은 Mari의 무차원 lubrication regularization과 Singh의 sliding·rolling 접촉 법칙을 사용합니다. 기존 spheroid 근거리 bridge 및 주기 중거리 mobility는 유지하므로, 유체 연산자 전체가 Mari의 구형 입자 모델과 같다는 뜻은 아닙니다. **Graphite의 발산 농도 φJ≈0.30 또는 상대점도 100을 재현했다고 주장하는 변경이 아닙니다.**
@@ -11,7 +12,8 @@
 저장소 디렉토리에서 다음 명령으로 적용하고 **반드시 다시 빌드**합니다. 수정한 solver를 사용하려면 새 소스에서 plugin을 다시 만들어야 합니다. 이번 solver 변경은 기존 실행 입력 형식을 유지합니다.
 
 ```bash
-unzip -o slurry_solver_overlay_20261027.zip
+unzip -o slurry_contact_stability_overlay_20261027.zip
+python3 apply_contact_settings.py
 sbatch build_slurry_cpu.sbatch
 ```
 
@@ -21,7 +23,7 @@ sbatch build_slurry_cpu.sbatch
 sbatch run_slurry_cpu.sbatch
 ```
 
-기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
+기본값은 AR=2, φ=0.24, 입자 500개, 40000 step, 기록 간격 40 step입니다. 실행 결과는 기본적으로 `runs/spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
 
 ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다. 과거 flake 관련 소스와 검증 기록이 남아 있어도 현재 실행기의 flake 선택은 지원되지 않습니다.
 
@@ -43,9 +45,9 @@ V=\frac{\pi D^3}{6},\qquad a_{\rm ref}=D/2.
 | `LUBRICATION_EPSILON` | 0.001 | D/2로 정규화한 무차원 gap 추가량 |
 | `FRICTION` | 10 | sliding Coulomb 계수 μs |
 | `ROLLING_FRICTION` | 10 | rolling Coulomb 계수 μr |
-| `NORMAL_STIFFNESS` | 100 | 법선 스프링 강성, N/m |
-| `TANGENTIAL_STIFFNESS` | 80 | sliding 스프링 강성, N/m |
-| `ROLLING_STIFFNESS` | 80 | rolling quasi-force 스프링 강성, **N/m** |
+| `NORMAL_STIFFNESS` | 0.3 | 법선 스프링 강성, N/m |
+| `TANGENTIAL_STIFFNESS` | 0.24 | sliding 스프링 강성, N/m |
+| `ROLLING_STIFFNESS` | 0.24 | rolling quasi-force 스프링 강성, **N/m** |
 
 Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`는 과거의 N·m/rad 값과 단위가 다르며, 현재 단분산 설정에서 대응하는 각도 스프링 강성은 `ROLLING_STIFFNESS*a_ref^2`입니다. 기존 두께, 절대 gap floor, 양의 접촉 shell, rough-hydrodynamics, rolling length, twisting 설정은 실행 옵션에서 제거했습니다.
 
@@ -53,9 +55,11 @@ Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`�
 
 ## 계산과 병렬 실행
 
-중거리는 ellipsoid 형상함수를 유지하는 particle–mesh FFT이며 FFTW를 사용합니다. 격자 분배를 병렬화하고 FFT 계획·작업 버퍼를 재사용합니다. 접촉력을 독립적인 비선형 변수로 유지하는 Newton–FGMRES에서 접촉 증분을 블록 소거해 선형계 크기를 줄이고, PARDISO 전처리기의 행렬 구조 분석과 재사용 가능한 분해를 보존합니다. 최종 수렴은 원래 힘·mobility 방정식으로 검사합니다.
+중거리는 ellipsoid 형상함수를 유지하는 particle–mesh FFT이며 FFTW를 사용합니다. 현재 배치와 예측 배치에서 고정된 접촉력으로 **선형 17N 힘·mobility 방정식을 각각 한 번씩** 풉니다. Heun predictor–corrector로 위치·배향·sliding·rolling 이력을 갱신하며, Newton 접촉 반복과 강성 continuation은 production에서 실행하지 않습니다. PARDISO는 희소 전처리기에 사용합니다.
 
-접촉 Newton 반복이 정체하거나 line search가 실패하면, 같은 시간단계의 고정된 위치·배향·접촉 이력에서 **적응형 강성 연속화(adaptive stiffness continuation)**로 다시 풉니다. 법선 강성과 마찰계수는 고정하고 sliding·rolling 스프링 강성을 중간 계산에서 점차 원래 값으로 복원합니다. 중간 해는 초기 추정값으로만 사용하며, 원래 강성 및 원래 잔차 기준을 통과한 최종 해만 시간 적분에 사용합니다. 수렴한 warm start에는 추가 반복을 강제하지 않습니다. [solver 변경과 검증](docs/CONTACT_SOLVER_UPDATE.md)을 참고하십시오.
+선택한 수치 강성은 `kn=0.3`, `kt=kr=0.24 N/m`, 시간간격은 `2.5e-6 s`입니다. 마찰계수 `mu_s=mu_r=10`은 유지합니다. `apply_contact_settings.py`는 실행 스크립트의 다른 설정을 보존하며 기존 총 물리시간과 출력 시간 간격에 맞춰 `STEPS`와 `OUTPUT_INTERVAL`을 조정합니다. 기본 0.1 s 계산은 40000 step입니다.
+
+AR1 N500의 기존 실패 시간 62 microseconds를 지나 120 microseconds까지 통과했고, 최대 겹침은 반지름의 약 0.0202%였습니다. 동일 1 thread 비교에서는 dt 1 microsecond 단일 선형 풀이보다 선택한 Heun 설정의 CPU 시간이 22.05% 적었습니다. 이는 짧은 검증 결과이며 장기 안정성 또는 정상상태 점도의 검증이 아닙니다. [변경·검증 기록](docs/CONTACT_STABILITY_UPDATE.md), [저항계수 차이](docs/HYDRO_COEFFICIENT_AUDIT.md)를 참고하십시오.
 
 **전체 밀집 행렬을 만들어 직접 푸는 방식은 사용하지 않습니다.** 배치의 `MOBILITY_BACKEND=direct`는 검증용 Fourier 직접 합산을 뜻하며 밀집 직접 solver가 아닙니다. 기본값은 `mesh`입니다.
 
@@ -65,7 +69,7 @@ Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`�
 
 ## 출력과 해석
 
-기본 매질 점도는 0.01 Pa·s, 전단률은 100 s⁻¹, timestep은 1e-6 s입니다. `SPECTRAL=2`는 저비용 중거리 근사이며 4 또는 8과 비교하여 해상도 영향을 검사할 수 있습니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
+기본 매질 점도는 0.01 Pa·s, 전단률은 100 s⁻¹, timestep은 2.5e-6 s입니다. `SPECTRAL=2`는 저비용 중거리 근사이며 4 또는 8과 비교하여 해상도 영향을 검사할 수 있습니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
 
 `parameters.json`에는 D, a_ref, 실제 축 길이, lubrication 정규화와 rolling 강성 단위를 기록합니다. `history.csv`는 매질·유체·접촉 응력과 순간 점도, 매 시간단계에 누적한 평균, 소산, solver 잔차 및 비용을 출력합니다. `trajectory.lammpstrj`는 입자별 유체력·토크·stresslet과 접촉력·토크를 별도로 출력합니다. 평균창은 `AVERAGE_START_STRAIN`으로 지정합니다. `final.data`는 기하 저장이며 마찰 이력을 보존하는 restart가 아닙니다.
 
@@ -75,6 +79,6 @@ Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`�
 - [주기 중거리의 근사와 해상도](docs/PERIODIC_MIDDLE.md)
 - [이전 FFT·접촉 변경과 검증 기록](docs/FFT_CONTACT_UPDATE.md)
 
-이전 solver에서는 AR5 접촉 입자쌍의 `TIMESTEP=1e-6` 실행이 실패했습니다. 수정 solver는 같은 입력으로 AR1/2/5 각각 100 step을 direct 및 FFTW mesh에서 통과했습니다. 이전 실패 기록은 [기존 실행 검증 기록](validation_mari_singh/REPORT.md)에 보존하며, 새 결과는 [solver 변경 기록](docs/CONTACT_SOLVER_UPDATE.md)에 정리합니다. 이 수렴 성공은 시간간격에 대한 물리량의 수렴 검사를 대신하지 않습니다.
+최대 겹침 5% 미만은 수치 강성 선택 기준입니다. AR1에서는 반지름, oblate spheroid에서는 가장 작은 반축을 기준으로 평가합니다. 농도·형상·응력 조건을 바꿀 때는 겹침뿐 아니라 강성과 시간간격에 대한 점도·접촉응력 의존성을 함께 확인해야 합니다. 이력 없는 geometry 파일은 물리적 restart가 아닙니다.
 
 기존 검증 폴더의 결과는 해당 소스 버전과 조건에서 얻은 기록입니다. 짧은 실행 검사나 kernel 시간만으로 정상상태 점도 또는 전체 실행 속도를 판정하지 않습니다.
