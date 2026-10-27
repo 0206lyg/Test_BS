@@ -1,0 +1,10 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/fixture_ar1_k0.3",
+  "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_linear_O3.so",
+  "plugin_sha256": "b1b6342256aec6ea5d7fde727316f716ab71bd9ad9c2e417a6f73fa8698d3a54",
+  "initial_particles_sha256": "8c1b0d7a065f13b38c17f179b7e6130722f6defdd7840ea53e051ffd49e98cc8",
+  "steps": 120,
+  "dt": 1e-06,
+  "threads": 2,
+  "backend": "mesh"
+}

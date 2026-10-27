@@ -1,0 +1,125 @@
+{
+  "rows": 49,
+  "last_step": 48,
+  "time_s": {
+    "min": 0.0,
+    "max": 0.00012000000000000002,
+    "last": 0.00012000000000000002,
+    "nonfinite": 0
+  },
+  "strain": {
+    "min": 0.0,
+    "max": 0.012000000000000002,
+    "last": 0.012000000000000002,
+    "nonfinite": 0
+  },
+  "eta_relative": {
+    "min": 2.644216844914858,
+    "max": 2.676667622707072,
+    "last": 2.676667622707072,
+    "nonfinite": 0
+  },
+  "sigma_xz_Pa": {
+    "min": 2.644216844914858,
+    "max": 2.676667622707072,
+    "last": 2.676667622707072,
+    "nonfinite": 0
+  },
+  "max_overlap_m": {
+    "min": 0.0,
+    "max": 7.895040390719643e-10,
+    "last": 7.895040390719643e-10,
+    "nonfinite": 0
+  },
+  "actual_endpoint_overlap_m": {
+    "min": 1.367233542337587e-11,
+    "max": 8.06920969549818e-10,
+    "last": 8.06920969549818e-10,
+    "nonfinite": 0
+  },
+  "contacts": {
+    "min": 0.0,
+    "max": 14.0,
+    "last": 14.0,
+    "nonfinite": 0
+  },
+  "solver_relative_residual": {
+    "min": 6.473439355853419e-08,
+    "max": 9.94776374594389e-08,
+    "last": 8.747223010357689e-08,
+    "nonfinite": 0
+  },
+  "force_residual": {
+    "min": 1.0092004330479885e-08,
+    "max": 4.669098128595397e-06,
+    "last": 2.19559803263628e-06,
+    "nonfinite": 0
+  },
+  "mobility_residual": {
+    "min": 5.877877529366427e-06,
+    "max": 9.940037484643984e-06,
+    "last": 8.808971883464524e-06,
+    "nonfinite": 0
+  },
+  "linear_iterations": {
+    "min": 26.0,
+    "max": 44.0,
+    "last": 26.0,
+    "nonfinite": 0
+  },
+  "newton_iterations": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "geometry_iterations": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "continuation_stages": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "continuation_retries": {
+    "min": 0.0,
+    "max": 0.0,
+    "last": 0.0,
+    "nonfinite": 0
+  },
+  "hydro_dissipation_W": {
+    "min": 1.476809280455503e-10,
+    "max": 1.49070798242067e-10,
+    "last": 1.49070798242067e-10,
+    "nonfinite": 0
+  },
+  "power_balance_error_W": {
+    "min": -3.547932895066083e-21,
+    "max": 2.1192372463487397e-19,
+    "last": -1.3408631555840194e-21,
+    "nonfinite": 0
+  },
+  "stress_power_W": {
+    "min": 1.4768092825747402e-10,
+    "max": 1.4949332159285698e-10,
+    "last": 1.4949332159285698e-10,
+    "nonfinite": 0
+  },
+  "overlap_radius_fraction": 0.00019737600976799108,
+  "endpoint_overlap_radius_fraction": 0.00020173024238745452,
+  "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/fixture_ar1_k0.3",
+  "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v1.so",
+  "plugin_sha256": "fe53e5ac7bcd91a76ec7acea5e888543f98e9512aa0a411912d45feadc6505d8",
+  "initial_particles_sha256": "8c1b0d7a065f13b38c17f179b7e6130722f6defdd7840ea53e051ffd49e98cc8",
+  "steps": 48,
+  "dt": 2.5e-06,
+  "threads": 1,
+  "backend": "mesh",
+  "returncode": 0,
+  "wall_seconds": 679.5964410699962,
+  "provenance_note": "PC v1 physical trajectory; defective projection/gap/timing diagnostics excluded. Final production uses PC v2 diagnostics."
+}

@@ -1,0 +1,110 @@
+LAMMPS (30 Sep 2026)
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+Reading data file ...
+  triclinic box = (0 0 0) to (8.2352309e-05 8.2352309e-05 8.2352309e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  500 atoms
+  500 ellipsoids
+  reading velocities ...
+  500 velocities
+  read_data CPU = 0.005 seconds
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.8e-06
+  ghost atom cutoff = 4.8e-06
+  binsize = 2.4e-06, bins = 35 35 35
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : si
+  Current step  : 0
+  Time step     : 2.5e-06
+Per MPI rank memory allocation (min/avg/max) = 5.016 | 5.016 | 5.016 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                    500   2.6442168      0.026442168    1516           0            
+         1   2.5e-06              500   2.6450299      0.026450299    1516           5            
+         2   5e-06                500   2.6459955      0.026459955    1516           5            
+         3   7.5e-06              500   2.6469508      0.026469508    1516           6            
+         4   1e-05                500   2.6478928      0.026478928    1516           6            
+         5   1.25e-05             500   2.6488078      0.026488078    1516           6            
+         6   1.5e-05              500   2.649692       0.02649692     1516           7            
+         7   1.75e-05             500   2.6506409      0.026506409    1516           7            
+         8   2e-05                500   2.6515695      0.026515695    1516           7            
+         9   2.25e-05             500   2.652491       0.02652491     1516           7            
+        10   2.5e-05              500   2.6534092      0.026534092    1516           7            
+        11   2.75e-05             500   2.6543184      0.026543184    1516           7            
+        12   3e-05                500   2.6551886      0.026551886    1516           7            
+        13   3.25e-05             500   2.6559973      0.026559973    1516           8            
+        14   3.5e-05              500   2.6567428      0.026567428    1517           8            
+        15   3.75e-05             500   2.6574311      0.026574311    1517           8            
+        16   4e-05                500   2.6580844      0.026580844    1517           9            
+        17   4.25e-05             500   2.6587428      0.026587428    1517           9            
+        18   4.5e-05              500   2.659373       0.02659373     1517           9            
+        19   4.75e-05             500   2.6599827      0.026599827    1517           9            
+        20   5e-05                500   2.660577       0.02660577     1517           9            
+        21   5.25e-05             500   2.6611811      0.026611811    1517           10           
+        22   5.5e-05              500   2.6617812      0.026617812    1517           10           
+        23   5.75e-05             500   2.6623493      0.026623493    1517           10           
+        24   6e-05                500   2.6628838      0.026628838    1517           10           
+        25   6.25e-05             500   2.6634396      0.026634396    1517           11           
+        26   6.5e-05              500   2.6641371      0.026641371    1516           12           
+        27   6.75e-05             500   2.6648225      0.026648225    1516           12           
+        28   7e-05                500   2.6654914      0.026654914    1516           12           
+        29   7.25e-05             500   2.6661348      0.026661348    1516           12           
+        30   7.5e-05              500   2.6668108      0.026668108    1516           13           
+        31   7.75e-05             500   2.6674958      0.026674958    1516           14           
+        32   8e-05                500   2.6682333      0.026682333    1516           14           
+        33   8.25e-05             500   2.6689345      0.026689345    1516           14           
+        34   8.5e-05              500   2.6696092      0.026696092    1516           14           
+        35   8.75e-05             500   2.6702639      0.026702639    1516           14           
+        36   9e-05                500   2.6709031      0.026709031    1516           14           
+        37   9.25e-05             500   2.6715298      0.026715298    1516           14           
+        38   9.5e-05              500   2.6721215      0.026721215    1516           14           
+        39   9.75e-05             500   2.6726651      0.026726651    1516           14           
+        40   0.0001               500   2.6731754      0.026731754    1516           14           
+        41   0.0001025            500   2.6736615      0.026736615    1516           14           
+        42   0.000105             500   2.6741253      0.026741253    1516           14           
+        43   0.0001075            500   2.6745725      0.026745725    1514           14           
+        44   0.00011              500   2.6750071      0.026750071    1514           14           
+        45   0.0001125            500   2.6754319      0.026754319    1514           14           
+        46   0.000115             500   2.6758493      0.026758493    1514           14           
+        47   0.0001175            500   2.6762608      0.026762608    1514           14           
+        48   0.00012              500   2.6766676      0.026766676    1514           14           
+Loop time of 654.473 on 1 procs for 48 steps with 500 atoms
+
+99.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00020545 | 0.00020545 | 0.00020545 |   0.0 |  0.00
+Neigh   | 0.00041626 | 0.00041626 | 0.00041626 |   0.0 |  0.00
+Comm    | 0.00076065 | 0.00076065 | 0.00076065 |   0.0 |  0.00
+Output  | 0.0016287  | 0.0016287  | 0.0016287  |   0.0 |  0.00
+Modify  | 654.47     | 654.47     | 654.47     |   0.0 |100.00
+Other   |            | 0.0005757  |            |       |  0.00
+
+Nlocal:            500 ave         500 max         500 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            191 ave         191 max         191 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 4
+Dangerous builds = 0
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:11:19
