@@ -1,0 +1,35 @@
+{
+  "release_id": "20261027-mari-singh-spheroid-contact",
+  "requires": "slurry_mari_singh_overlay_20261027.zip applied to base 4a0a1ea66e02e7d46d64d1bec9602e8cb141897e",
+  "scope": "Release metadata, build launcher ID, regression tests only; no run settings or force-law changes",
+  "files": [
+    {
+      "path": "build_slurry_cpu.sbatch",
+      "sha256": "d184234232dd413499055de27026f77e6b06a18c7db106d24efc3f78bfd9be85"
+    },
+    {
+      "path": "release.json",
+      "sha256": "ca3c08f95e2d3e347f46eb3a0f66b36cda6bafd5b11cc5001e4e63ccc5aac073"
+    },
+    {
+      "path": "lammps_slurry/tools/bundle_guard.py",
+      "sha256": "05a804428aeaaa9101e15ef613c725f6a02c6690cc63ffe488657274573e9be9"
+    },
+    {
+      "path": "lammps_slurry/CMakeLists.txt",
+      "sha256": "413f56d1d3a93ad181e13760e13ab7808065abfd58cf913a07fae4d8cb9db525"
+    },
+    {
+      "path": "lammps_slurry/tests/test_bundle_guard.py",
+      "sha256": "e0d01f35542b68cab573913e7582e70261f2b278f74c323e367ee46be0245516"
+    },
+    {
+      "path": "validation_mari_singh/RELEASE_FIX.md",
+      "sha256": "d270ca823d4c36ddc5b629be36e09565c53acd1a64b56eff94f6bab3fabacbe2"
+    },
+    {
+      "path": "validation_mari_singh/release_fix_ctest.log",
+      "sha256": "85d2589048d78cdc0bf69b2b104eb4192a77b31cdf6cf344f67b3a4496b65833"
+    }
+  ]
+}

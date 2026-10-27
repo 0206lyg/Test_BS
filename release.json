@@ -1,59 +1,46 @@
 {
-  "release_id": "20261025-spheroid-strong-rolling",
-  "status": "NONADHESIVE_STRONG_SLIDING_ROLLING_COMPARISON",
-  "baseline_git_commit": "d6c40ab93b278b7e1809f8c5fc919e96c50204b5",
+  "release_id": "20261027-mari-singh-spheroid-contact",
+  "status": "MARI_REGULARIZATION_SINGH_CONTACT_ON_OBLATE_SPHEROIDS",
+  "baseline_git_commit": "4a0a1ea66e02e7d46d64d1bec9602e8cb141897e",
   "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
-  "model_stage": "COMMON_PERIODIC_MOBILITY_WITH_SHAPE_SPECIFIC_NEAR_FIELD",
-  "details": "docs/STRONG_ROLLING_KO.md",
-  "legacy_release": "20261025-spheroid-rough-upper",
+  "prepare_bridge_sha256": "6a4dd819edf1f8cd52563a6083b6530a89337f03926ae938875089f3448d08af",
+  "details": "docs/MARI_SINGH_OVERLAY.md",
+  "legacy_release": "20261025-spheroid-strong-rolling",
+  "model_stage": "RETAINED_SPHEROID_HYDRODYNAMICS_WITH_SURFACE_SLIDING_AND_ROLLING",
   "periodic_middle": "Gaussian periodic low-frequency sum plus analytic isolated high-frequency tail; omitted high-frequency cross interactions",
-  "equilibrium_bulk_viscosity_tested": false,
-  "prepare_bridge_sha256": "667a2fa1da942c13413e6e8854680aaaf5eb0b80e03d8231b3f4a42edfe2d470",
-  "normal_stiffness_N_m": 100.0,
-  "mechanical_contact_gap_m": 1e-08,
   "periodic_mobility_backend": "mesh",
-  "contact_model": "normal/sliding contact with optional finite load-capped rolling and twisting springs; exact condensed 17N solve",
-  "initialization": "same random insertion and growth/FIRE preparation; actual shape-specific periodic clearance certificate",
-  "performance_update": "20261022-fftw-condensed-newton-pardiso",
-  "performance_baseline_git_commit": "2476215eb6da89c978cdd602e44f47cd0f10881a",
-  "run_batch": "run_slurry_cpu.sbatch",
   "production_numerics": {
     "fft": "FFTW",
     "sparse_preconditioner": "MKL-PARDISO-static-GNU-LP64",
     "contact_linear_system": "exactly condensed 17N Newton-FGMRES"
   },
+  "run_batch": "run_slurry_cpu.sbatch",
   "particle_shapes": [
-    "spheroid",
-    "flake"
+    "spheroid"
   ],
-  "flake_geometry": "continuous circular cylinder; exact surface clearance",
-  "flake_near_field": "finite-domain Reynolds face films plus positive approximate rim resistance",
-  "flake_middle_self": "matched-spheroid approximation using the same equatorial radius and half-thickness",
-  "rough_hydrodynamics": "positive-gap-only hard-core cap-pair tangential/rotation closure; overlap states excluded without renormalization",
-  "rough_trial": {
-    "height_per_surface_m": 9e-09,
-    "footprint_radius_m": 4.5e-08,
-    "coverage_per_surface": 0.78,
-    "basis": "geometrically admissible dense upper-range trial, not measured graphite maximum",
-    "microscopic_floor_m": 1e-09,
-    "static_normal_rough_force": false
-  },
+  "supported_aspect_ratio": [
+    1.0,
+    5.0
+  ],
+  "nominal_volume_equivalent_diameter_m": 8e-06,
+  "reference_radius_m": 4e-06,
+  "computational_length_m": 4e-06,
+  "lubrication_epsilon": 0.001,
+  "lubrication_regularization_m": 4e-09,
+  "lubrication_gap_rule": "max(actual_signed_gap,0)+epsilon*reference_radius",
+  "mechanical_contact_gap_m": 0.0,
+  "contact_model": "Actual endpoint overlap with normal/sliding springs and Singh rolling quasi-force spring; no twisting, rough-hydro excess, repulsion barrier or dashpot",
   "contact_trial": {
-    "sliding_friction": 0.3,
-    "rolling_friction": 0.3,
-    "rolling_length_mode": "particle",
-    "rolling_length_definition": "a=AR*thickness/2 for the current equal-size spheroids; explicit positive nm overrides",
-    "twisting_friction": 0.1,
-    "twisting_length_mode": "roughness",
+    "sliding_friction": 10.0,
+    "rolling_friction": 10.0,
     "normal_stiffness_N_m": 100.0,
     "tangential_stiffness_N_m": 80.0,
-    "attraction_enabled": false,
-    "basis": "effective nonadhesive particle-scale rolling constraint, not measured graphite torque law"
+    "rolling_stiffness_N_m": 80.0,
+    "rolling_length_definition": "aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j); monodisperse aij=D/2",
+    "rolling_angular_stiffness_definition": "kr_N_per_m*aij^2",
+    "basis": "strong-friction numerical trial; not measured graphite coefficients or a demonstrated saturation limit"
   },
-  "development_target": {
-    "nonadhesive_jamming_volume_fraction": 0.31,
-    "target_is_not_calibrated_result": true,
-    "attraction_reserved_for": "later yielding model",
-    "polydispersity": "active candidate for a separate controlled comparison, not an explanation replacing a test"
-  }
+  "initialization": "geometric random insertion and growth/FIRE or aligned preparation; actual spheroid periodic clearance >=0",
+  "equilibrium_bulk_viscosity_tested": false,
+  "scope": "Regularization and contact conventions extended to spheroids; full hydrodynamic operator is not an exact Mari/Singh LF-DEM reproduction"
 }
