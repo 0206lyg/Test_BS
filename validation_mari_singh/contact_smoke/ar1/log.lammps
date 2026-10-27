@@ -1,0 +1,84 @@
+LAMMPS (30 Sep 2026)
+# deterministic contact integration fixture, not production packing
+plugin load /workspace/scratch/0520ed9b6708/mari_build/plugin-build/libslurry.so
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (2.4e-05 2.4e-05 2.4e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  2 ellipsoids
+  reading velocities ...
+  2 velocities
+  read_data CPU = 0.000 seconds
+comm_modify vel yes
+pair_style zero 3.9999999999999998e-06
+pair_coeff * *
+neighbor 7.9999999999999996e-07 bin
+neigh_modify every 1 delay 0 check yes
+timestep 1e-6
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge .01 100 8e-6 .001 100 contact 10 80 rolling 10 80 shape spheroid mobility_backend direct spectral 2 spectral_tolerance 1e-8 tolerance 1e-6 iterations 1000 history history.csv 1 0
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 5
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.8e-06
+  ghost atom cutoff = 4.8e-06
+  binsize = 2.4e-06, bins = 10 10 10
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.785 | 4.785 | 4.785 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                      2   1.1668579      0.011668579    1              1            
+         1   1e-06                  2   1.1644614      0.011644614    1              1            
+         2   2e-06                  2   1.1628911      0.011628911    1              1            
+         3   3e-06                  2   1.1618631      0.011618631    1              1            
+         4   4e-06                  2   1.1611905      0.011611905    1              1            
+         5   5e-06                  2   1.1607509      0.011607509    1              1            
+Loop time of 0.0685951 on 1 procs for 5 steps with 2 atoms
+
+100.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5.509e-06  | 5.509e-06  | 5.509e-06  |   0.0 |  0.01
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 2.0492e-05 | 2.0492e-05 | 2.0492e-05 |   0.0 |  0.03
+Output  | 0.00011444 | 0.00011444 | 0.00011444 |   0.0 |  0.17
+Modify  | 0.068419   | 0.068419   | 0.068419   |   0.0 | 99.74
+Other   |            | 3.572e-05  |            |       |  0.05
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+write_data final.data nocoeff
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:00:00

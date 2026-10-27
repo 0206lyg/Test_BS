@@ -1,4 +1,5 @@
-// Compact v4 lubrication + periodic 11-mode mobility + implicit rough contact.
+// Additively regularized spheroid lubrication + periodic mobility + surface contact.
+// Mari gap convention and Singh sliding/rolling law; no positive-gap contact shell.
 // This fix owns overdamped integration; no inertial integrator is used.
 #include "fix_slurry_bridge.h"
 #include "atom.h"
@@ -16,10 +17,7 @@
 #include "slurry_bridge_contact_solver.h"
 #include "slurry_bridge_step.h"
 #include "slurry_bridge_shape.h"
-#include "slurry_cylinder_pair.h"
-#include "slurry_flake_diagnostics.h"
 #include "slurry_compact_bridge.h"
-#include "slurry_rough_surface.h"
 #include "slurry_history_math.h"
 #include "slurry_periodic_mobility.h"
 #include "update.h"
@@ -31,8 +29,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <filesystem>
-#include <optional>
 #include <iomanip>
 #include <limits>
 #include <map>
@@ -46,9 +42,6 @@ namespace im = SlurryBridgeImages;
 namespace gr = slurry::gr_re2::graphite;
 namespace step = SlurryBridgeStep;
 namespace shape = SlurryBridgeShape;
-namespace cylinder = SlurryCylinderPair;
-namespace fd = SlurryFlakeDiagnostics;
-namespace rough = SlurryRoughSurface;
 namespace {
 using V3 = Eigen::Vector3d;
 using M3 = Eigen::Matrix3d;
@@ -60,16 +53,15 @@ using PairKey = std::pair<tagint, tagint>;
 struct History {
   V3 predicted, elastic, normal, angle;
   V3 rolling = V3::Zero();
-  double twisting = 0.;
 };
 gr::Vec3 arr(const V3 &x) { return {x[0], x[1], x[2]}; }
 V3 vec(const gr::Vec3 &x) { return {x[0], x[1], x[2]}; }
-void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega, bool flake) {
+void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega) {
   auto &b = avec->bonus[atom->ellipsoid[i]];
   double R[3][3], ob[3], lb[3], l[3];
   MathExtra::quat_to_mat(b.quat, R);
   MathExtra::transpose_matvec(R, omega.data(), ob);
-  const auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,flake);
+  const auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,false);
   for (int k = 0; k < 3; ++k) lb[k] = inertia[k] * ob[k];
   MathExtra::matvec(R, lb, l);
   std::copy(l, l + 3, atom->angmom[i]);
@@ -92,15 +84,13 @@ std::vector<Record> gather(const std::vector<Record> &local, MPI_Comm world, int
 } // namespace
 struct FixSlurryBridge::Impl {
   AtomVecEllipsoid *avec = nullptr;
-  double eta = 0, shear = 0, floor = 0, kn = 0, hc = 3e-9, mu = .1, kt = 80;
-  rough::Options rough_options;
-  double mu_roll = 0., mu_twist = 0., roll_length = 0., twist_length = 0., kr = 0., kw = 0.;
+  double eta = 0, shear = 0, nominal_diameter = 0, epsilon = 0, kn = 0;
+  double reference_radius = 0, regularization_length = 0;
+  double mu = 10., kt = 80., mu_roll = 10., kr = 80.; // kn, kt, kr: N/m
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
-  std::ofstream csv, flake_channels, flake_bins;
-  bool flake_diagnostics = false;
-  bigint last_diagnostic = -1;
-  std::array<double, 51> diag{};
+  std::ofstream csv;
+  std::array<double, 44> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
   long double selected_integral = 0;
@@ -116,46 +106,36 @@ struct FixSlurryBridge::Impl {
       std::make_shared<bs::detail::SolverWorkspace>();
   bool have_warm = false;
   bool direct_mobility = false;
-  bool flake = false;
 };
 FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     : Fix(lmp, narg, arg), p_(new Impl) {
-  if (narg < 7)
-    error->all(FLERR, "slurry/bridge requires eta shear_rate gap_floor kn [contact hc mu kt] "
-                      "[shape spheroid|flake] [spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] [tolerance rtol] [iterations "
-                      "maxit] [history file interval average_start_strain]");
+  if (narg < 8)
+    error->all(FLERR, "slurry/bridge requires eta shear_rate nominal_diameter epsilon kn "
+                      "[contact mu_s kt] [rolling mu_r kr_N_per_m] [shape spheroid] "
+                      "[spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] "
+                      "[tolerance rtol] [iterations maxit] [history file interval average_start_strain]");
   auto &p = *p_;
   p.eta = utils::numeric(FLERR, arg[3], false, lmp);
   p.shear = utils::numeric(FLERR, arg[4], false, lmp);
-  p.floor = utils::numeric(FLERR, arg[5], false, lmp);
-  p.kn = utils::numeric(FLERR, arg[6], false, lmp);
+  p.nominal_diameter = utils::numeric(FLERR, arg[5], false, lmp);
+  p.epsilon = utils::numeric(FLERR, arg[6], false, lmp);
+  p.kn = utils::numeric(FLERR, arg[7], false, lmp);
+  p.reference_radius = .5 * p.nominal_diameter;
+  p.regularization_length = p.epsilon * p.reference_radius;
   std::string filename;
-  for (int k = 7; k < narg;) {
-    if (!std::strcmp(arg[k], "contact") && k + 3 < narg) {
-      p.hc = utils::numeric(FLERR, arg[k + 1], false, lmp);
-      p.mu = utils::numeric(FLERR, arg[k + 2], false, lmp);
-      p.kt = utils::numeric(FLERR, arg[k + 3], false, lmp);
-      k += 4;
-    } else if (!std::strcmp(arg[k], "rough_hydro") && k + 3 < narg) {
-      p.rough_options.enabled = true;
-      p.rough_options.height = utils::numeric(FLERR, arg[k+1], false, lmp);
-      p.rough_options.width = utils::numeric(FLERR, arg[k+2], false, lmp);
-      p.rough_options.coverage = utils::numeric(FLERR, arg[k+3], false, lmp);
-      p.rough_options.gap_floor = p.floor;
-      k += 4;
-    } else if (!std::strcmp(arg[k], "rotation_contact") && k + 6 < narg) {
-      p.mu_roll = utils::numeric(FLERR, arg[k+1], false, lmp);
-      p.mu_twist = utils::numeric(FLERR, arg[k+2], false, lmp);
-      p.roll_length = utils::numeric(FLERR, arg[k+3], false, lmp);
-      p.twist_length = utils::numeric(FLERR, arg[k+4], false, lmp);
-      p.kr = utils::numeric(FLERR, arg[k+5], false, lmp);
-      p.kw = utils::numeric(FLERR, arg[k+6], false, lmp);
-      k += 7;
+  for (int k = 8; k < narg;) {
+    if (!std::strcmp(arg[k], "contact") && k + 2 < narg) {
+      p.mu = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      p.kt = utils::numeric(FLERR, arg[k + 2], false, lmp);
+      k += 3;
+    } else if (!std::strcmp(arg[k], "rolling") && k + 2 < narg) {
+      p.mu_roll = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      p.kr = utils::numeric(FLERR, arg[k + 2], false, lmp);
+      k += 3;
     } else if (!std::strcmp(arg[k], "shape") && k + 1 < narg) {
-      if (std::strcmp(arg[k+1],"spheroid") && std::strcmp(arg[k+1],"flake"))
-        error->all(FLERR,"slurry/bridge shape must be spheroid or flake");
-      p.flake=!std::strcmp(arg[k+1],"flake");
-      k+=2;
+      if (std::strcmp(arg[k+1],"spheroid"))
+        error->all(FLERR,"slurry/bridge surface-contact model requires shape spheroid");
+      k += 2;
     } else if (!std::strcmp(arg[k], "spectral") && k + 1 < narg) {
       p.spectral = utils::numeric(FLERR, arg[k + 1], false, lmp);
       k += 2;
@@ -181,23 +161,15 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     } else
       error->all(FLERR, "Unknown or incomplete slurry/bridge option: {}", arg[k]);
   }
-  if (!(p.eta > 0 && p.floor > 0 && p.kn > 0 && p.hc >= 0 && p.mu >= 0 && p.kt >= 0 &&
+  if (!(p.eta > 0 && p.nominal_diameter > 0 && p.epsilon > 0 && p.kn > 0 &&
+        p.mu >= 0 && p.kt >= 0 && p.mu_roll >= 0 && p.kr >= 0 &&
         p.spectral > 0 && p.spectral_tol > 0 && p.spectral_tol < 1 && p.rtol > 0 && p.rtol < 1 &&
         p.maxit > 0 && p.interval > 0 && p.avg_start >= 0) ||
-      !std::isfinite(p.eta + p.shear + p.floor + p.kn + p.hc + p.mu + p.kt + p.spectral +
-                     p.spectral_tol + p.rtol + p.avg_start) ||
-      (p.mu > 0 && p.kt == 0))
+      !std::isfinite(p.eta + p.shear + p.nominal_diameter + p.epsilon + p.kn + p.mu + p.kt +
+                     p.mu_roll + p.kr + p.spectral + p.spectral_tol + p.rtol + p.avg_start) ||
+      !(p.regularization_length > 0 && std::isfinite(p.regularization_length)) ||
+      (p.mu > 0 && p.kt == 0) || (p.mu_roll > 0 && p.kr == 0))
     error->all(FLERR, "Invalid slurry/bridge material or numerical parameter");
-  if (!(p.mu_roll >= 0. && p.mu_twist >= 0. && p.roll_length >= 0. &&
-        p.twist_length >= 0. && p.kr >= 0. && p.kw >= 0.) ||
-      !std::isfinite(p.mu_roll+p.mu_twist+p.roll_length+p.twist_length+p.kr+p.kw) ||
-      (p.mu_roll > 0. && !(p.kr > 0. && p.roll_length > 0.)) ||
-      (p.mu_twist > 0. && !(p.kw > 0. && p.twist_length > 0.)))
-    error->all(FLERR, "Invalid slurry/bridge rotational contact parameter");
-  if (p.flake && (p.rough_options.enabled || p.mu_roll > 0. || p.mu_twist > 0.))
-    error->all(FLERR, "Rough hydrodynamics and rotational contacts currently require shape spheroid");
-  try { rough::validate(p.rough_options); }
-  catch (const std::exception &e) { error->all(FLERR, "Invalid rough_hydro parameters: {}", e.what()); }
   if (!filename.empty() && comm->me == 0) {
     p.csv.open(filename, std::ios::trunc);
     if (!p.csv)
@@ -218,36 +190,8 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "contact_candidates,krylov_dimension,fft_plan_builds,mobility_threads,"
              "preconditioner_symbolic_total,preconditioner_numeric_total,"
              "preconditioner_numeric_reuses_total,monitor_reuses_total,"
-             "rough_hydro_pairs,rough_hydro_dissipation_W,rough_hydro_sigma_xz_Pa,"
-             "rolling_yield_contacts,twisting_yield_contacts,rolling_elastic_energy_J,"
-             "twisting_elastic_energy_J,rolling_plastic_dissipation_W,"
-             "twisting_plastic_dissipation_W,rotational_contact_power_W,rough_geometry_s\n";
-  }
-  // Read-only diagnostics use the existing history sampling cadence. They
-  // never enter the force/velocity solve and do not change the batch settings.
-  const char *diagnostics = std::getenv("SLURRY_FLAKE_DIAGNOSTICS");
-  p.flake_diagnostics = p.flake && !filename.empty() &&
-      !(diagnostics && !std::strcmp(diagnostics, "0"));
-  if (p.flake_diagnostics && comm->me == 0) {
-    const auto directory = std::filesystem::path(filename).parent_path();
-    p.flake_channels.open(directory / "flake_channels.csv", std::ios::trunc);
-    p.flake_bins.open(directory / "flake_channel_bins.csv", std::ios::trunc);
-    if (!p.flake_channels || !p.flake_bins) {
-      std::fprintf(stderr, "WARNING: flake diagnostic files could not be opened; dynamics continue without diagnostic output.\n");
-      p.flake_diagnostics = false;
-    } else {
-      p.flake_channels << std::setprecision(17);
-      p.flake_bins << std::setprecision(17);
-      p.flake_channels << "step,time_s,strain," << fd::csv_columns()
-          << ",middle_power_W,hydro_particle_power_W,solvent_power_W,contact_power_W,"
-             "stress_power_W,middle_sigma_xz_Pa,hydro_sigma_xz_Pa,contact_sigma_xz_Pa,"
-             "eta_relative,eta_relative_face,eta_relative_rim,eta_relative_middle,"
-             "eta_relative_contact,near_moment_closure_relative,power_closure_relative,"
-             "hydro_stress_closure_Pa,active_contacts,sliding_contacts,contacted_particles,"
-             "normal_load_sum_N,normal_load_max_N,sliding_dissipation_W,gap_floor_m,"
-             "diagnostic_pair_storage_bytes,diagnostic_capture_s,diagnostic_reduce_s\n";
-      p.flake_bins << "step,time_s,strain,bin_kind,bin_label," << fd::csv_columns() << '\n';
-    }
+             "rolling_yield_contacts,rolling_elastic_energy_J,"
+             "rolling_plastic_dissipation_W,rolling_contact_power_W\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -324,7 +268,7 @@ void FixSlurryBridge::initial_integrate(int) {
   for (int i = 0; i < atom->nlocal; ++i) {
     auto &b = p.avec->bonus[atom->ellipsoid[i]];
     double wr[3];
-    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,p.flake);
+    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,false);
     MathExtra::mq_to_omega(atom->angmom[i], b.quat, inertia.data(), wr);
     V3 w(wr[0], wr[1], wr[2]);
     for (int k = 0; k < 3; ++k)
@@ -335,7 +279,7 @@ void FixSlurryBridge::initial_integrate(int) {
     b.quat[1] = q.x();
     b.quat[2] = q.y();
     b.quat[3] = q.z();
-    store_momentum(atom, p.avec, i, w, p.flake);
+    store_momentum(atom, p.avec, i, w);
   }
 }
 void FixSlurryBridge::solve_velocities() {
@@ -365,15 +309,19 @@ void FixSlurryBridge::solve_velocities() {
   std::string message;
   if (comm->me == 0)
     try {
-      double length = records.front().axes[2], rate = std::max(std::abs(p.shear), 1.);
+      const double length = p.reference_radius, rate = std::max(std::abs(p.shear), 1.);
       for (const auto &r : records)
         for (double a : r.axes)
           if (!(a > 0))
             throw std::runtime_error("non-positive shape axis");
-      for (const auto &r : records)
-        if (std::abs(r.axes[2] - length) > 1e-10 * length ||
-            std::abs(r.axes[0] - r.axes[1]) > 1e-10 * r.axes[0] || r.axes[0] < r.axes[2])
-          throw std::runtime_error("bridge supports axisymmetric oblate particles with common polar half-extent c");
+      for (const auto &r : records) {
+        const double volume_radius = std::cbrt(r.axes[0]*r.axes[1]*r.axes[2]);
+        const double aspect = r.axes[0]/r.axes[2];
+        if (std::abs(volume_radius-length) > 1e-8*length ||
+            std::abs(r.axes[0]-r.axes[1]) > 1e-10*r.axes[0] ||
+            aspect < 1.-1e-12 || aspect > 5.+1e-12)
+          throw std::runtime_error("bridge requires oblate spheroids with AR 1..5 and volume-equivalent diameter matching nominal_diameter");
+      }
       M3 H;
       H << domain->xprd, domain->xy, domain->xz, 0, domain->yprd, domain->yz, 0, 0, domain->zprd;
       H /= length;
@@ -398,9 +346,7 @@ void FixSlurryBridge::solve_velocities() {
             bodies[i].rotation[3 * k + l] = R[k][l];
         }
         middle_bodies[i].x = vec(bodies[i].position);
-        // The common positive periodic mobility uses the existing ellipsoid
-        // representation. For flake this is the explicit matched-spheroid middle/self
-        // approximation; the cylinder surface enters every near/contact term.
+        // Retain the existing positive periodic ellipsoid mobility approximation.
         middle_bodies[i].shape = cb::shape(bodies[i], 1.);
       }
       bool same = p.tags.size() == records.size();
@@ -421,17 +367,6 @@ void FixSlurryBridge::solve_velocities() {
       for (int i = 0; i < n; ++i)
         for (int k = 0; k < 5; ++k)
           problem.prescribed[11 * i + 6 + k] = -(E.array() * cb::strain_basis()[k].array()).sum();
-      const bool diagnose = p.flake_diagnostics && p.last_diagnostic != update->ntimestep &&
-          (update->ntimestep % p.interval == 0 || update->ntimestep == update->laststep);
-      std::vector<fd::PairRecord> diagnostic_pairs;
-      double diagnostic_capture_s = 0.;
-      struct RoughPair { int i, j; rough::Mat22 resistance; };
-      std::vector<RoughPair> rough_pairs;
-      double rough_geometry_time = 0.;
-      rough::Options rough_options = p.rough_options;
-      rough_options.height /= length;
-      rough_options.width /= length;
-      rough_options.gap_floor = p.floor / length;
       std::vector<Eigen::Triplet<double>> entries;
       std::vector<PairKey> contact_keys;
       std::vector<V3> contact_displacements;
@@ -441,12 +376,9 @@ void FixSlurryBridge::solve_velocities() {
       double section = MPI_Wtime();
       for (int i = 0; i < n; ++i)
         for (int j = i; j < n; ++j) {
-          const double ai = shape::bounding_radius(bodies[i],p.flake),
-                       aj = shape::bounding_radius(bodies[j],p.flake);
-          const double near_range=p.flake ? std::min(bodies[i].axes[0],bodies[j].axes[0])
-                                          : std::min(ai,aj);
-          const double rough_range = rough_options.enabled ? 3.*rough_options.height : 0.;
-          const double rc = ai + aj + std::max({near_range, p.hc / length, rough_range});
+          const double ai = shape::bounding_radius(bodies[i],false),
+                       aj = shape::bounding_radius(bodies[j],false);
+          const double rc = ai + aj + std::min(ai,aj);
           const V3 original = vec(bodies[j].position) - vec(bodies[i].position);
           for (const auto &image : im::images_within(original, H, rc)) {
             if (i == j && !im::positive_image(image.image))
@@ -454,39 +386,10 @@ void FixSlurryBridge::solve_velocities() {
             const V3 d = image.displacement;
             auto bj = bodies[j];
             bj.position = arr(vec(bodies[i].position) + d);
-            gr::GapResult gap;
-            Eigen::Matrix<double,22,22> near_resistance;
-            bool near_active=false;
-            if (p.flake) {
-              const auto ci=shape::cylinder(bodies[i]), cj=shape::cylinder(bj);
-              const auto g=shape::cylinder_gap(ci,cj,1e-8*p.floor/length);
-              gap=shape::gap_result(ci,cj,g);
-              cylinder::Options model;
-              model.film.eta=1.; model.film.gap_floor=p.floor/length;
-              std::optional<cylinder::Diagnostics> diagnostic;
-              if (diagnose) diagnostic.emplace();
-              const auto near=cylinder::evaluate(ci,cj,g,model,diagnose ? &*diagnostic : nullptr);
-              if (diagnose && near.cutoff_weight > 0.) {
-                const double t = MPI_Wtime();
-                diagnostic_pairs.push_back(fd::make_pair(i,j,ci,cj,g,*diagnostic,model.film.gap_floor));
-                diagnostic_capture_s += MPI_Wtime() - t;
-              }
-              near_resistance=near.resistance; near_active=near.active;
-            } else {
-              gap=gr::closestEllipsoidGap(bodies[i],bj);
-              const auto near=cb::evaluate(bodies[i],bj,gap,1.,1.,p.floor/length);
-              near_resistance=near.resistance; near_active=near.active;
-              if (rough_options.enabled && gap.gap < 3.*rough_options.height) {
-                const double t = MPI_Wtime();
-                const auto extra = rough::evaluate(bodies[i],bj,gap,near,1.,rough_options);
-                rough_geometry_time += MPI_Wtime() - t;
-                if (extra.active) {
-                  near_resistance += extra.resistance;
-                  near_active = true;
-                  rough_pairs.push_back({i,j,extra.resistance});
-                }
-              }
-            }
+            const auto gap = gr::closestEllipsoidGap(bodies[i],bj);
+            const auto near = cb::evaluate(bodies[i],bj,gap,1.,1.,p.regularization_length/length);
+            const auto &near_resistance = near.resistance;
+            const bool near_active = near.active;
             min_gap = std::min(min_gap, gap.gap);
             overlap = std::max(overlap, -gap.gap);
             if (near_active) {
@@ -504,17 +407,15 @@ void FixSlurryBridge::solve_velocities() {
             contact.j = j;
             contact.normal = vec(gap.normal);
             contact.gap = gap.gap;
-            contact.onset = p.hc / length;
+            contact.onset = 0.; // actual surface overlap, never a positive-gap shell
             contact.kn = p.kn / (p.eta * length * rate);
             contact.kt = p.kt / (p.eta * length * rate);
             contact.mu = p.mu;
             contact.mu_roll = p.mu_roll;
-            contact.mu_twist = p.mu_twist;
-            contact.roll_length = p.roll_length / length;
-            contact.twist_length = p.twist_length / length;
+            // Singh a_ij=2*a_i*a_j/(a_i+a_j); monodisperse nominal radii give a_ij=a_ref.
+            contact.roll_length = p.reference_radius / length;
             const double torque_scale = p.eta * std::pow(length,3) * rate;
-            contact.kr = p.kr / torque_scale;
-            contact.kw = p.kw / torque_scale;
+            contact.kr = p.kr * p.reference_radius * p.reference_radius / torque_scale;
             V3 li = .5 * (vec(gap.leverI) + d + vec(gap.leverJ)), lj = li - d;
             contact.Bi.leftCols<3>() = -M3::Identity();
             contact.Bi.rightCols<3>() = cb::cross_matrix(li);
@@ -536,7 +437,6 @@ void FixSlurryBridge::solve_velocities() {
                 contact.rolling_history = vec(SlurryHistory::transport(arr(match.sign * h.rolling),
                                                                arr(match.sign * h.normal),
                                                                arr(contact.normal), arr(h.angle)));
-                contact.twisting_history = h.twisting;
               }
             }
             problem.contacts.push_back(contact);
@@ -605,10 +505,10 @@ void FixSlurryBridge::solve_velocities() {
       geometry.lattice = H;
       geometry.kappa = kappa;
       geometry.ambient_rotation = omega_inf;
-      geometry.contact_onset = p.hc / length;
-      geometry.flake = p.flake;
-      geometry.gap_tolerance = 1e-8 * p.floor / length;
-      geometry.enforce_work_balance = p.flake;
+      geometry.contact_onset = 0.;
+      geometry.flake = false;
+      geometry.gap_tolerance = 1e-8 * p.regularization_length / length;
+      geometry.enforce_work_balance = false;
       geometry.images = std::move(contact_images);
       auto consistent = step::solve(problem, geometry, options, p.have_warm ? &p.warm : nullptr);
       auto result = std::move(consistent.solution);
@@ -620,12 +520,9 @@ void FixSlurryBridge::solve_velocities() {
           hydro -= result.total_moment[11 * i + 6 + k] * cb::strain_basis()[k];
       p.pending.clear();
       int contacts = 0;
-      double normal_energy = 0., tangent_energy = 0., rolling_energy = 0., twisting_energy = 0.;
-      double rolling_work = 0., twisting_work = 0., rotation_power = 0.;
-      int rolling_yield = 0, twisting_yield = 0;
-      int diagnostic_sliding = 0;
-      double diagnostic_load_sum = 0., diagnostic_load_max = 0., diagnostic_sliding_work = 0.;
-      std::vector<bool> diagnostic_contacted(diagnose ? n : 0, false);
+      double normal_energy = 0., tangent_energy = 0., rolling_energy = 0.;
+      double rolling_work = 0., rotation_power = 0.;
+      int rolling_yield = 0;
       for (size_t k = 0; k < problem.contacts.size(); ++k) {
         const auto &c = problem.contacts[k];
         const auto &response = result.contacts[k];
@@ -633,12 +530,9 @@ void FixSlurryBridge::solve_velocities() {
         normal_energy += response.normal_energy;
         tangent_energy += response.tangent_energy;
         rolling_energy += response.rolling_energy;
-        twisting_energy += response.twisting_energy;
         rolling_work += response.rolling_work;
-        twisting_work += response.twisting_work;
         rotation_power += response.torque.dot(response.relative_rotation);
         rolling_yield += response.rolling;
-        twisting_yield += response.twisting;
         contact_stress +=
             .5 * (d * response.traction.transpose() + response.traction * d.transpose());
         contact_moments.segment<6>(6 * c.i) -=
@@ -647,17 +541,9 @@ void FixSlurryBridge::solve_velocities() {
             bs::generalized_contact_map(c,false).transpose() * bs::contact_wrench(response);
         if (response.active) {
           ++contacts;
-          if (diagnose) {
-            diagnostic_contacted[c.i] = diagnostic_contacted[c.j] = true;
-            diagnostic_sliding += response.sliding;
-            diagnostic_sliding_work += response.sliding_work;
-            diagnostic_load_sum += response.normal_load;
-            diagnostic_load_max = std::max(diagnostic_load_max, response.normal_load);
-          }
           History h;
           h.elastic = response.tangent_history;
           h.rolling = response.rolling_history;
-          h.twisting = response.twisting_history;
           h.normal = c.normal;
           h.angle = .5 * dt *
                     (result.velocity.segment<3>(6 * c.i + 3) +
@@ -676,76 +562,6 @@ void FixSlurryBridge::solve_velocities() {
                    hydro_power = (solvent_power + result.hydro_power) * power_scale,
                    contact_power = result.contact_power * power_scale;
       const double stress_power = p.stress[3] * p.shear * volume * std::pow(length, 3);
-      double rough_power = 0.;
-      M3 rough_stress = M3::Zero();
-      for (const auto &pair : rough_pairs) {
-        Eigen::Matrix<double,22,1> qpair;
-        qpair << result.q.segment<11>(11*pair.i), result.q.segment<11>(11*pair.j);
-        const Eigen::Matrix<double,22,1> moment = pair.resistance * qpair;
-        rough_power += qpair.dot(moment);
-        for (int k=0;k<5;++k)
-          rough_stress -= (moment[6+k]+moment[17+k])*cb::strain_basis()[k];
-      }
-      if (diagnose) {
-        // Diagnostics never feed back into the accepted solution. A failed
-        // diagnostic write disables only diagnostics, not the simulation.
-        try {
-          const double diagnostic_start = MPI_Wtime();
-          fd::Accumulator accumulated(n);
-          for (const auto &pair : diagnostic_pairs) accumulated.add(pair, result.q);
-          const auto &observed = accumulated.total;
-          const Eigen::VectorXd near_moment = problem.near_resistance * result.q;
-          const double middle_power = result.q.dot(result.mid_moment);
-          const double middle_stress = fd::global_shear_moment(result.mid_moment) * stress_scale;
-          const double near_closure =
-              (accumulated.face_moment + accumulated.rim_moment - near_moment).norm() /
-              std::max(near_moment.norm(), 1e-100);
-          const double power_closure =
-              (observed.face_power + observed.rim_power + middle_power - result.hydro_power) /
-              std::max(std::abs(result.hydro_power), 1e-100);
-          const double stress_closure =
-              (observed.face_shear_moment + observed.rim_shear_moment) * stress_scale +
-              middle_stress - p.stress[1];
-          const double time = simulation_time(), strain = std::abs(p.shear) * time;
-          const double eta_denominator = p.eta * p.shear;
-          auto relative_eta = [&](double stress) {
-            return eta_denominator ? stress / eta_denominator : std::numeric_limits<double>::quiet_NaN();
-          };
-          const double force_scale = p.eta * length * length * rate;
-          auto &o = p.flake_channels;
-          o << update->ntimestep << ',' << time << ',' << strain << ',';
-          fd::write_csv_values(o,observed,power_scale,stress_scale,length*rate);
-          o << ',' << middle_power*power_scale << ',' << result.hydro_power*power_scale
-            << ',' << solvent_power*power_scale << ',' << contact_power << ',' << stress_power
-            << ',' << middle_stress << ',' << p.stress[1] << ',' << p.stress[2]
-            << ',' << relative_eta(p.stress[3])
-            << ',' << relative_eta(observed.face_shear_moment*stress_scale)
-            << ',' << relative_eta(observed.rim_shear_moment*stress_scale)
-            << ',' << relative_eta(middle_stress) << ',' << relative_eta(p.stress[2])
-            << ',' << near_closure << ',' << power_closure << ',' << stress_closure
-            << ',' << contacts << ',' << diagnostic_sliding << ','
-            << std::count(diagnostic_contacted.begin(),diagnostic_contacted.end(),true)
-            << ',' << diagnostic_load_sum*force_scale << ',' << diagnostic_load_max*force_scale
-            << ',' << diagnostic_sliding_work/dt*power_scale
-            << ',' << p.floor << ',' << diagnostic_pairs.capacity()*sizeof(fd::PairRecord)
-            << ',' << diagnostic_capture_s << ',' << MPI_Wtime()-diagnostic_start << '\n';
-          auto write_bin = [&](const char *kind,const char *label,const fd::Stats &stats) {
-            p.flake_bins << update->ntimestep << ',' << time << ',' << strain << ',' << kind << ',' << label << ',';
-            fd::write_csv_values(p.flake_bins,stats,power_scale,stress_scale,length*rate);
-            p.flake_bins << '\n';
-          };
-          for (size_t k=0;k<accumulated.by_angle.size();++k)
-            write_bin("angle",fd::angle_labels()[k],accumulated.by_angle[k]);
-          for (size_t k=0;k<accumulated.by_gap.size();++k)
-            write_bin("gap_over_floor",fd::gap_labels()[k],accumulated.by_gap[k]);
-          o.flush(); p.flake_bins.flush();
-          if (!o || !p.flake_bins) throw std::runtime_error("diagnostic CSV write failed");
-          p.last_diagnostic = update->ntimestep;
-        } catch (const std::exception &diagnostic_error) {
-          std::fprintf(stderr,"WARNING: flake diagnostics disabled: %s; dynamics continue.\n",diagnostic_error.what());
-          p.flake_diagnostics = false;
-        }
-      }
       p.diag.fill(0);
       p.diag[0] = p.stress[3];
       p.diag[1] = p.shear ? p.stress[3] / p.shear : std::numeric_limits<double>::quiet_NaN();
@@ -787,17 +603,10 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[37] = p.solver_workspace->coupled_numeric_factorizations;
       p.diag[38] = p.solver_workspace->coupled_numeric_reuses;
       p.diag[39] = p.solver_workspace->monitor_reuses;
-      p.diag[40] = rough_pairs.size();
-      p.diag[41] = rough_power * power_scale;
-      p.diag[42] = rough_stress(0,2) * stress_scale;
-      p.diag[43] = rolling_yield;
-      p.diag[44] = twisting_yield;
-      p.diag[45] = rolling_energy * energy_scale;
-      p.diag[46] = twisting_energy * energy_scale;
-      p.diag[47] = rolling_work / dt * power_scale;
-      p.diag[48] = twisting_work / dt * power_scale;
-      p.diag[49] = rotation_power * power_scale;
-      p.diag[50] = rough_geometry_time;
+      p.diag[40] = rolling_yield;
+      p.diag[41] = rolling_energy * energy_scale;
+      p.diag[42] = rolling_work / dt * power_scale;
+      p.diag[43] = rotation_power * power_scale;
       p.diag[16] = geometry_time;
       p.diag[17] = middle_time;
       p.diag[18] = solve_time;
@@ -843,7 +652,7 @@ void FixSlurryBridge::solve_velocities() {
     int j = it - records.begin();
     for (int k = 0; k < 3; ++k)
       atom->v[i][k] = physical[6 * j + k];
-    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3), p.flake);
+    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3));
     for (int k = 0; k < 17; ++k)
       array_atom[i][k] = moments[17 * j + k];
   }

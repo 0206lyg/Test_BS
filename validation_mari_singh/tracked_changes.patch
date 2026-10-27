@@ -1,0 +1,2298 @@
+diff --git a/README.md b/README.md
+index d92735b..b5b6adb 100644
+--- a/README.md
++++ b/README.md
+@@ -1,20 +1,55 @@
+-# Test_BS — spheroid / flake suspension hydrodynamics
++# Test_BS — spheroid suspension hydrodynamics
+ 
+-현재 실행 모델은 `fix slurry/bridge`입니다. `PARTICLE_SHAPE=spheroid|flake`와 AR을 입력받아 형상별 근거리 유체력, 주기 중거리 mobility, 접촉·마찰을 함께 풀고 입자의 위치·배향과 xz 전단 응력을 계산합니다. 기저나 저항표를 먼저 생성하지 않습니다.
++현재 실행 모델은 `fix slurry/bridge`입니다. **체적 등가 직경 D를 고정한 oblate spheroid**의 AR, 체적분율, sliding·rolling 마찰을 바꾸며 입자의 위치·배향과 xz 전단 응력을 계산합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기저나 저항표를 먼저 생성하지 않습니다.
+ 
+-실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `PARTICLE_SHAPE`, `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
++이번 overlay는 Mari의 무차원 lubrication regularization과 Singh의 sliding·rolling 접촉 법칙을 적용합니다. 기존 spheroid 근거리 bridge 및 주기 중거리 mobility는 유지하므로, 유체 연산자 전체가 Mari의 구형 입자 모델과 같다는 뜻은 아닙니다. **Graphite의 발산 농도 φJ≈0.30 또는 상대점도 100을 재현했다고 주장하는 변경이 아닙니다.**
++
++실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
+ 
+ ## Overlay 적용과 실행
+ 
+-`slurry` 저장소 디렉토리에서 `unzip -o slurry_flake_overlay_20261023.zip`을 실행합니다.
++저장소 디렉토리에서 다음 명령으로 적용하고 **반드시 다시 빌드**합니다. `slurry/bridge`의 입력 형식이 바뀌었으므로 이전 plugin과 새 입력을 함께 사용할 수 없습니다.
++
++```bash
++unzip -o slurry_mari_singh_overlay_20261027.zip
++sbatch build_slurry_cpu.sbatch
++```
++
++빌드 로그의 `Build complete`를 확인한 뒤 `run_slurry_cpu.sbatch` 상단 설정을 편집하고 제출합니다.
++
++```bash
++sbatch run_slurry_cpu.sbatch
++```
++
++기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
++
++ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다. 과거 flake 관련 소스와 검증 기록이 남아 있어도 현재 실행기의 flake 선택은 지원되지 않습니다.
+ 
+-`sbatch build_slurry_cpu.sbatch`로 다시 빌드합니다. 빌드 로그의 `Build complete`를 확인한 뒤 `run_slurry_cpu.sbatch` 상단 설정을 편집합니다.
++## 입자 크기와 접촉 설정
+ 
+-`sbatch run_slurry_cpu.sbatch`로 한 실행을 제출합니다. 기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
++`NOMINAL_DIAMETER_UM=8`은 두께나 장축 직경이 아니라 **체적 등가 직경**입니다. AR=a/c일 때 semiaxis는 다음과 같으며, AR을 바꿔도 입자 체적과 기준 반경은 고정됩니다.
+ 
+-ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다.
++\[
++a=\frac{D}{2}\mathrm{AR}^{1/3},\qquad
++c=\frac{D}{2}\mathrm{AR}^{-2/3},\qquad
++V=\frac{\pi D^3}{6},\qquad a_{\rm ref}=D/2.
++\]
+ 
+-Flake는 평평한 원형 양면을 가진 연속 원기둥입니다. 같은 무작위 seed·성장·FIRE 준비 절차를 사용하고 실제 원기둥 체적과 간격으로 목표 PHI를 검사합니다. 근거리는 면–면 Reynolds 박막과 근사 가장자리 저항이며, 중거리·고립 입자 응답은 같은 a,c의 spheroid 근사, 접촉은 기존 단일점 Coulomb 법칙입니다. [형상별 차이와 검증 범위](validation_flake_integration/README_KO.md)를 참고하십시오.
++`LUBRICATION_EPSILON=0.001`은 Mari의 **반경 정규화**를 사용합니다. 스칼라 lubrication gap은 `max(actual_gap,0)+epsilon*a_ref`이며 D=8 μm에서는 추가 정규화 길이가 **4 nm**입니다. 이것은 표면의 4 nm 두께 roughness층이나 접촉 시작 간격이 아닙니다. 실제 gap이 음수가 되어 입자가 약하게 겹칠 때 접촉 스프링과 마찰이 작용하며, 초기배치는 실제 gap ≥ 0을 인증합니다.
++
++| 배치 설정 | 기본값 | 의미 |
++| --- | --- | --- |
++| `NOMINAL_DIAMETER_UM` | 8 | 체적 등가 직경, μm |
++| `LUBRICATION_EPSILON` | 0.001 | D/2로 정규화한 무차원 gap 추가량 |
++| `FRICTION` | 10 | sliding Coulomb 계수 μs |
++| `ROLLING_FRICTION` | 10 | rolling Coulomb 계수 μr |
++| `NORMAL_STIFFNESS` | 100 | 법선 스프링 강성, N/m |
++| `TANGENTIAL_STIFFNESS` | 80 | sliding 스프링 강성, N/m |
++| `ROLLING_STIFFNESS` | 80 | rolling quasi-force 스프링 강성, **N/m** |
++
++Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`는 과거의 N·m/rad 값과 단위가 다르며, 현재 단분산 설정에서 대응하는 각도 스프링 강성은 `ROLLING_STIFFNESS*a_ref^2`입니다. 기존 두께, 절대 gap floor, 양의 접촉 shell, rough-hydrodynamics, rolling length, twisting 설정은 실행 옵션에서 제거했습니다.
++
++μs=μr=10은 강한 마찰의 **시험 시작값**입니다. 포화한계나 측정된 graphite 계수로 확정한 값이 아닙니다. AR별 φJ를 비교하기 전에 마찰계수 증가에 대한 포화, timestep 및 법선·접선·rolling 강성에 대한 수렴, 실제 겹침 크기를 확인해야 합니다. Solver 잔차가 작다는 것만으로 유한 스프링의 물리적 오차나 정상상태 점도의 수렴이 보장되지는 않습니다.
+ 
+ ## 계산과 병렬 실행
+ 
+@@ -26,17 +61,18 @@ Flake는 평평한 원형 양면을 가진 연속 원기둥입니다. 같은 무
+ 
+ 프로덕션 빌드에는 GCC/OpenMP, FFTW 개발 파일과 **static oneMKL LP64/GNU-thread 라이브러리**가 필요합니다. `build_slurry_cpu.sbatch`는 Negishi의 `fftw`, `intel-mkl` 모듈을 추가로 불러옵니다. 사이트의 모듈 이름이 다를 때는 `SLURRY_FFTW_MODULE`, `SLURRY_MKL_MODULE`을 지정합니다. 필요한 최적화 라이브러리가 없으면 느린 backend로 자동 전환하지 않고 빌드에서 원인을 알립니다. MKL은 정적으로 링크하고 FFTW 등 연결 라이브러리는 실행별 private runtime에 보관합니다.
+ 
+-## 물성·출력
++## 출력과 해석
+ 
+-기본 물성은 두께 300 nm, 매질 점도 0.01 Pa·s, 유체 gap floor 1 nm, 접촉 시작 간격 3 nm, 법선 강성 **100 N/m**, 접선 강성 80 N/m, 마찰계수 0.1입니다. 표면 기하는 실제 간격을 사용하며 스칼라 gap 함수에만 floor를 적용합니다. 기본 전단률은 100 s⁻¹, timestep은 1e-6 s입니다.
++기본 매질 점도는 0.01 Pa·s, 전단률은 100 s⁻¹, timestep은 1e-6 s입니다. `SPECTRAL=2`는 저비용 중거리 근사이며 4 또는 8과 비교하여 해상도 영향을 검사할 수 있습니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
+ 
+-초기배치는 실제 주기 표면 gap이 3 nm 이상임을 인증하며, 접촉력은 실제 위치·배향 갱신 후의 gap과 일치하도록 보정합니다. `SPECTRAL=2`는 저비용 중거리 근사입니다. 4 또는 8은 생략한 고파수 입자 간 상호작용의 영향을 줄이는 설정입니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
+-
+-`history.csv`는 매질·유체·접촉 응력과 순간 점도, 매 시간단계에 누적한 평균, 소산, solver 잔차 및 비용을 출력합니다. `trajectory.lammpstrj`는 입자별 유체력·토크·stresslet과 접촉력·토크를 별도로 출력합니다. 평균창은 배치의 `AVERAGE_START_STRAIN`으로 지정합니다. `final.data`는 기하 저장이며 마찰 이력을 보존하는 restart가 아닙니다.
++`parameters.json`에는 D, a_ref, 실제 축 길이, lubrication 정규화와 rolling 강성 단위를 기록합니다. `history.csv`는 매질·유체·접촉 응력과 순간 점도, 매 시간단계에 누적한 평균, 소산, solver 잔차 및 비용을 출력합니다. `trajectory.lammpstrj`는 입자별 유체력·토크·stresslet과 접촉력·토크를 별도로 출력합니다. 평균창은 `AVERAGE_START_STRAIN`으로 지정합니다. `final.data`는 기하 저장이며 마찰 이력을 보존하는 restart가 아닙니다.
+ 
+ - [실행·출력·점도 평균](docs/BRIDGE_RUN.md)
++- [Mari/Singh 변경의 과학적 범위와 확인 사항](docs/MARI_SINGH_OVERLAY.md)
+ - [연결식·단위·접촉·응력 구현 명세](docs/COMPACT_BRIDGE_MODEL.md)
+ - [주기 중거리의 근사와 해상도](docs/PERIODIC_MIDDLE.md)
+ - [이전 FFT·접촉 변경과 검증 기록](docs/FFT_CONTACT_UPDATE.md)
+ 
++AR5의 접촉 입자쌍 검사에서는 `TIMESTEP=1e-6`이 수렴하지 않았고 `1e-7`에서 통과했습니다. AR5 시험에는 `TIMESTEP=1e-7`을 사용하고, 기본 총 strain 10을 유지하려면 `STEPS=1000000`으로 함께 변경하십시오. 실제 다입자계에서는 별도의 시간간격 수렴 검사가 필요합니다. [실행 검증 기록](validation_mari_singh/REPORT.md)에 실패 조건도 포함합니다.
++
+ 기존 검증 폴더의 결과는 해당 소스 버전과 조건에서 얻은 기록입니다. 짧은 실행 검사나 kernel 시간만으로 정상상태 점도 또는 전체 실행 속도를 판정하지 않습니다.
+diff --git a/docs/BRIDGE_RUN.md b/docs/BRIDGE_RUN.md
+index cae5968..48db9d0 100644
+--- a/docs/BRIDGE_RUN.md
++++ b/docs/BRIDGE_RUN.md
+@@ -1,38 +1,99 @@
+ # Slurry 실행
+ 
+-실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 앞부분의 `PARTICLE_SHAPE=spheroid|flake`, `AR`, `PHI`, `COUNT`, `STEPS` 등을 직접 수정한 뒤 인수 없이 제출합니다. 기본값은 AR2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. `PREPARE_ONLY=1`이면 입자와 입력만 준비하며 LAMMPS를 실행하지 않습니다.
++실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 앞부분의 `AR`, `PHI`, `COUNT`, `STEPS` 등을 직접 수정한 뒤 인수 없이 제출합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기본값은 AR2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. `PREPARE_ONLY=1`이면 입자와 검증된 runtime·입력만 준비하며 LAMMPS를 실행하지 않습니다.
+ 
+-기존 빌드 스크립트로 새 소스를 빌드한 뒤 실행합니다. 현재 소스와 실행 파일이 빌드 기록과 일치해야 합니다. 실행기는 해당 실행의 프로그램과 공유 라이브러리를 `runtime/`에 복사한 뒤 입자 준비와 LAMMPS를 시작합니다.
++## 적용·빌드·제출
+ 
+-빌드 제출: `sbatch build_slurry_cpu.sbatch`
++저장소 디렉토리에서 overlay를 적용한 뒤 기존 빌드 스크립트로 **다시 빌드**합니다. `slurry/bridge`의 위치 인자와 접촉 옵션이 바뀌었으므로 이전 plugin을 그대로 사용할 수 없습니다.
+ 
+-빌드 완료 후 실행 제출: `sbatch run_slurry_cpu.sbatch`
++```bash
++unzip -o slurry_mari_singh_overlay_20261027.zip
++sbatch build_slurry_cpu.sbatch
++```
++
++빌드 로그의 `Build complete`를 확인하고 `run_slurry_cpu.sbatch` 상단 설정을 편집한 뒤 제출합니다.
++
++```bash
++sbatch run_slurry_cpu.sbatch
++```
++
++현재 소스와 실행 파일이 빌드 기록과 일치해야 합니다. 실행기는 해당 실행의 프로그램, 공유 라이브러리와 준비 스크립트를 `runtime/`에 복사한 뒤 입자 준비와 LAMMPS를 시작합니다. 빌드·소스를 나중에 변경해도 이미 시작한 실행이 다른 라이브러리로 바뀌지 않도록 합니다.
+ 
+-`OUTPUT_DIR`를 비워두면 `runs/ar2_phi0.24_n500_<job ID>`처럼 실행마다 별도 폴더가 생깁니다. `OUTPUT_DIR`에 직접 새 경로를 지정할 수도 있습니다. 상대 경로는 저장소 최상위 기준입니다. 기존 실행 폴더에는 덮어쓰지 않습니다. `BUILD_ENV`를 비워두면 `build/lammps/env.sh`의 빌드를 사용합니다.
++`OUTPUT_DIR`를 비워두면 `runs/spheroid_ar2_phi0.24_n500_<job ID>/`처럼 실행마다 별도 폴더가 생깁니다. `OUTPUT_DIR`에 직접 새 경로를 지정할 수도 있습니다. 상대 경로는 저장소 최상위 기준입니다. 기존 실행 폴더에는 덮어쓰지 않습니다. `BUILD_ENV`를 비워두면 `build/lammps/env.sh`의 빌드를 사용합니다.
+ 
+ 자원 기본 요청은 **1 node, MPI 1 rank, 물리 코어 16개, RAM 96 GB**입니다. 코어 수는 파일 상단의 `#SBATCH --cpus-per-task`에서 바꿉니다. Python 실행기는 한 번만 실행하며, MPI 빌드일 때 LAMMPS 하나를 `mpirun -np 1 --map-by slot:PE=<할당 코어 수> --bind-to core --report-bindings`로 시작합니다. 실행 실패 후 다른 명령으로 재시도하지 않습니다. `console.log`에서 MPI 바인딩을 확인하고 `launch.json`에서 실제 명령과 스레드 설정을 확인할 수 있습니다. 실행 배치 파일을 `mpirun`이나 다중 task `srun`으로 감싸지 않습니다.
+ 
+-현재 경로는 `fix slurry/bridge`를 사용합니다. 근거리에는 spheroid의 compact bridge v4 또는 flake의 면–면 Reynolds 박막·가장자리 근사, 중거리에는 ellipsoid 형상함수를 유지하는 FFTW particle–mesh 연산을 사용합니다. `MOBILITY_BACKEND=direct`는 같은 Fourier 합의 직접 합산 기준 경로이며 밀집 행렬 LU solver가 아닙니다. 유한 간격의 모델 선택과 중거리 해상도는 별도 수렴 항목입니다.
++Negishi의 기본 빌드 모듈은 Python, GCC/OpenMP, OpenMPI, CMake, FFTW 및 static oneMKL입니다. 사이트 모듈 이름이 다르면 `SLURRY_PYTHON_MODULE`, `SLURRY_GCC_MODULE`, `SLURRY_MPI_MODULE`, `SLURRY_CMAKE_MODULE`, `SLURRY_FFTW_MODULE`, `SLURRY_MKL_MODULE`을 지정합니다. 최적화 라이브러리가 없는 경우 빌드는 느린 backend로 자동 전환하지 않습니다.
++
++## 크기·regularization·마찰
++
++`NOMINAL_DIAMETER_UM=8`은 **체적 등가 직경 D=8 μm**입니다. 두께 또는 장축 직경을 8 μm로 고정하는 설정이 아닙니다. AR=a/c에서 equatorial semiaxis a와 polar semiaxis c는
++
++\[
++a=(D/2)\mathrm{AR}^{1/3},\qquad c=(D/2)\mathrm{AR}^{-2/3}
++\]
++
++이며, 입자 체적 `4*pi*a*a*c/3 = pi*D^3/6`은 AR에 무관합니다. 기준 반경과 계산 정규화 길이는 `a_ref=D/2=4 μm`입니다. 생성한 입자의 실제 축 길이와 이 정의를 `parameters.json`에 기록합니다. Fix는 입력 spheroid의 체적 등가 반경이 지정한 a_ref와 일치하는지도 검사합니다.
++
++`LUBRICATION_EPSILON=0.001`은 Mari의 **반경 정규화**를 따릅니다. 실제 표면 gap을 h라 할 때 스칼라 lubrication 함수에 넣는 길이는
++
++\[
++h_{\rm reg}=\max(h,0)+\epsilon a_{\rm ref}.
++\]
++
++따라서 D=8 μm에서 추가 regularization 길이는 **4 nm**이며 AR을 바꿔도 유지됩니다. `epsilon*D=8 nm`를 쓰는 정의가 아닙니다. 표면 기하와 접촉 판정은 실제 h를 사용합니다. 이 길이는 명시적인 표면 roughness층이나 양의 gap에서 마찰을 켜는 shell이 아닙니다.
+ 
+-solver는 접촉력도 비선형 미지수로 유지하는 semismooth Newton과 right FGMRES를 사용합니다. 선형 Newton 단계에서는 국소 접촉 증분을 정확히 제거하고, 원래 접촉 법칙의 물리 잔차로 최종 수렴을 검사합니다. `SOLVER_TOLERANCE`가 그 상대 허용오차이며, `KRYLOV_ITERATIONS`는 한 선형계의 반복 상한입니다.
++| 배치 설정 | CLI | 기본값·단위 |
++| --- | --- | --- |
++| `NOMINAL_DIAMETER_UM` | `--nominal-diameter-um` | 8 μm |
++| `LUBRICATION_EPSILON` | `--lubrication-epsilon` | 0.001, 무차원 |
++| `FRICTION` | `--friction` | μs=10, 무차원 |
++| `ROLLING_FRICTION` | `--rolling-friction` | μr=10, 무차원 |
++| `NORMAL_STIFFNESS` | `--normal-stiffness` | 100 N/m |
++| `TANGENTIAL_STIFFNESS` | `--tangential-stiffness` | 80 N/m |
++| `ROLLING_STIFFNESS` | `--rolling-stiffness` | 80 **N/m**, rolling quasi-force 강성 |
+ 
+-`TRACE_SOLVER=1`로 바꾸면 Newton/선형 반복과 시간이 출력됩니다. line search에 사용하는 `merit`가 감소하는 도중 원래 방정식의 `residual`은 일시적으로 커질 수 있으며, 최종 허용오차는 원래 물리 잔차에 적용합니다. CSV의 전체 Newton/Krylov 반복 수와 `mobility_applications`에는 실제 방정식 검증 비용도 포함됩니다.
++법선력은 실제 겹침 `max(-h,0)`에 대한 선형 스프링입니다. Sliding과 rolling 마찰은 실제 접촉에서만 작용합니다. Rolling의 기준 길이는 Singh의 `a_ij=2*a_i*a_j/(a_i+a_j)`에 nominal radius를 넣은 값이며, 현재 단분산에서는 `a_ij=a_ref`입니다. 내부 각도 스프링 강성으로 환산하면 `kr*a_ref^2` N·m/rad입니다. **이전 `--rolling-stiffness`의 N·m/rad 수치를 현재 N/m 옵션에 그대로 넣으면 안 됩니다.** μr=0이면 rolling 저항이 꺼집니다.
++
++현재 기본 μs=μr=10은 강한 마찰의 시험값이며 무한대 또는 포화한계가 검증된 값이 아닙니다. 그 자체로 graphite 실험 계수나 φJ≈0.30을 보장하지 않습니다.
++
++다음 설정은 실행 옵션에서 제거했으며 예전 입력을 주면 오류로 알립니다: `--thickness-nm`, `--gap-floor-nm`, `--contact-gap-nm`, 모든 `--rough-*`, `--rolling-length-mode`, `--rolling-length-nm`, 모든 `--twisting-*`. 새 실행 경로에는 rough-hydrodynamics 추가항이나 twisting 접촉 스프링이 없습니다. Flake는 이 겹침 기반 접촉 모델을 지원하지 않으므로 선택할 수 없습니다.
++
++## 초기배치와 solver
+ 
+ `INITIALIZATION=random`은 기하 전용 성장 packer를 사용합니다. `aligned`는 대칭축이 z인 정렬 격자이며 평형화된 무작위 미세구조를 뜻하지 않습니다. 요청한 초기화 방식이 실패했다고 다른 방식으로 자동 전환하지 않습니다.
+ 
+-주요 기본값은 두께 300 nm, 매질 점도 0.01 Pa·s, xz 전단률 100 s⁻¹, `max(actual_gap,1 nm)` 유체 간격, 접촉 시작 간격 3 nm, 법선 강성 100 N/m, 접선 강성 80 N/m, 마찰계수 0.1입니다. `--gap-floor-nm`과 `--contact-gap-nm`는 서로 독립적입니다. `--spectral 2`가 기본 중거리 해상도입니다. `--spectral-tolerance 1e-8`은 Fourier 절단 허용값이며 격자 보간·표면 구적·고파수 상호작용 생략을 포함한 전체 오차가 아닙니다.
++두 초기화 방식 모두 입력을 쓰기 전 실제 주기 표면 gap이 **0 이상**임을 인증합니다. `packing_clearance.json`의 `target_gap_m`은 0이고 `minimum_surface_gap_m`도 0 이상이어야 합니다. 3 nm 또는 다른 양의 접촉 여유를 강제로 넣지 않습니다. 입자 크기와 상자 크기는 유지합니다. 무작위 성장 packer는 `L>4a`를 필요로 하며, 이 조건은 유체력의 제한이 아닙니다. 근거리 유체력 검사는 `3a` 범위의 모든 주기 이미지와 자기 이미지를 사용하며 `L>6a` 제한은 없습니다.
++
++현재 유체 연산자는 spheroid의 compact bridge 근거리와 ellipsoid 형상함수를 유지하는 FFTW particle–mesh 중거리입니다. **Mari/Singh의 regularization·접촉 관례를 적용했어도 전체 유체 연산자를 Mari의 구형 입자 모델로 교체한 것은 아닙니다.** 비구형 입자에 대한 rolling 기준 길이 선택 역시 이 실행 모델의 명시적인 확장입니다. 자세한 범위는 [Mari/Singh 변경 명세](MARI_SINGH_OVERLAY.md)를 참고하십시오.
++
++`MOBILITY_BACKEND=direct`는 같은 Fourier 합의 직접 합산 기준 경로이며 밀집 행렬 LU solver가 아닙니다. 기본값 `mesh`를 유지하면서 해상도 수렴을 검사할 수 있습니다. `SPECTRAL=2`가 기본 중거리 해상도이며, `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값입니다. 격자 보간·표면 구적·고파수 상호작용 생략을 포함한 전체 오차를 뜻하지 않습니다.
++
++Solver는 접촉력도 비선형 미지수로 유지하는 semismooth Newton과 right FGMRES를 사용합니다. 선형 Newton 단계에서는 국소 접촉 증분을 정확히 제거하고 원래 접촉 법칙의 물리 잔차로 최종 수렴을 검사합니다. `SOLVER_TOLERANCE`가 그 상대 허용오차이며, `KRYLOV_ITERATIONS`는 한 선형계의 반복 상한입니다.
++
++`TRACE_SOLVER=1`로 바꾸면 Newton/선형 반복과 시간이 출력됩니다. Line search에 사용하는 `merit`가 감소하는 도중 원래 방정식의 `residual`은 일시적으로 커질 수 있으며, 최종 허용오차는 원래 물리 잔차에 적용합니다. CSV의 전체 Newton/Krylov 반복 수와 `mobility_applications`에는 실제 방정식 검증 비용도 포함됩니다.
+ 
+-근거리 이미지 검사는 spheroid의 경우 `3a`, flake의 경우 원기둥 경계반경 `sqrt(a²+c²)`에 따른 충분한 범위의 모든 이미지와 자기 이미지를 사용합니다. `L>6a` 제한은 없습니다. 무작위 성장·간격 정리 packer는 spheroid는 `L>4a+2h_c`, flake는 `L>4sqrt(a²+c²)+2h_c`를 필요로 하며, 이 조건은 유체력의 제한이 아닙니다. 정렬·무작위 초기화 모두 입력을 쓰기 전 실제 표면 gap을 검사합니다. `packing_clearance.json`의 `minimum_surface_gap_m`이 요청한 접촉 시작 간격 이상이어야 합니다. 입자 크기와 상자 크기는 유지합니다.
++한 step의 접촉력은 실제 Euler 이동·quaternion 회전·전단 격자 갱신 후 gap으로 계산한 압축량과 일치할 때만 수락합니다. 내부 보정 반복은 물리 시간을 추가로 진행하거나 접선 이력을 중복 누적하지 않습니다. 유한 스프링이므로 동역학 중의 작은 실제 겹침은 허용합니다. 물리적 겹침을 모두 없애는 hard wall로 바꾸지 않습니다.
+ 
+-한 step의 접촉력은 실제 Euler 이동·quaternion 회전·전단 격자 갱신 후 gap으로 계산한 압축량과 일치할 때만 수락합니다. 내부 보정 반복은 물리 시간을 추가로 진행하거나 접선 이력을 중복 누적하지 않습니다. CSV의 `actual_endpoint_min_gap_m`, `contact_gap_consistency_m`, `geometry_iterations`, `normal_elastic_energy_J`, `tangential_elastic_energy_J`는 해당 출력 시점에서 다음 이동을 위해 구한 상태의 진단입니다. `min_gap_m`은 현재 위치의 gap입니다. 유한 스프링이므로 모든 하중에서의 비침투를 강제하는 hard wall은 아닙니다.
++기본 매질 점도는 0.01 Pa·s, xz 전단률은 100 s⁻¹, timestep은 1e-6 s입니다. AR에 따른 발산 농도를 비교하려면 같은 크기·epsilon·전단 조건에서 다음을 확인해야 합니다.
++
++- μs와 μr를 더 높였을 때 점도·접촉 통계 변화가 작아지는지 확인하여 강한 마찰의 포화를 판단합니다.
++- Timestep을 줄이고 kn, kt, kr를 높이며 점도와 실제 겹침의 수렴을 검사합니다. 강성 단위는 모두 N/m입니다.
++- 중거리 해상도, 입자 수, seed와 평균 strain 창에 따른 결과 변화를 확인합니다.
++
++이는 필요한 검증 항목이며, 기본 설정에 대해 이미 수행한 φJ 검증을 뜻하지 않습니다. 작은 solver 잔차와 작은 물리적 spring 오차는 별개의 요구입니다.
++
++## 출력과 점도 평균
++
++`parameters.json`은 nominal diameter, reference radius, 실제 축 길이, regularization 길이와 rolling 단위를 보존합니다. `history.csv`는 응력·점도와 solver 진단을 기록합니다. `actual_endpoint_min_gap_m`, `actual_endpoint_overlap_m`, `contact_gap_consistency_m`, `geometry_iterations`, `normal_elastic_energy_J`, `tangential_elastic_energy_J`는 해당 출력 시점에서 다음 이동을 위해 구한 상태의 진단입니다. `min_gap_m`은 현재 위치의 gap입니다. Rolling 항은 `rolling_yield_contacts`, `rolling_elastic_energy_J`, `rolling_plastic_dissipation_W`, `rolling_contact_power_W`로 확인합니다.
+ 
+ ```bash
+ python3 lammps_slurry/tools/summarize_bridge.py \
+-  runs/ar20_bridge_random/history.csv --start-strain 5 \
+-  --blocks 5 --output runs/ar20_bridge_random/viscosity_summary.json
++  runs/spheroid_ar2_phi0.24_n500_JOB_ID/history.csv --start-strain 5 \
++  --blocks 5 --output runs/spheroid_ar2_phi0.24_n500_JOB_ID/viscosity_summary.json
+ ```
+ 
+-평균은 출력 순간의 값들을 단순 평균하지 않고 매 시간단계에 누적한 interval mean을 시간 가중합니다. 지정한 strain 창 안에 완전히 들어오는 구간만 사용하며, 빈 창은 오류로 알립니다. 블록 평균의 상대 표준편차와 전·후반 차이를 출력하지만 정상상태를 자동으로 인증하지는 않습니다. `sigma_hydro_Pa`에는 계산기가 정의한 유체 응력을 이미 반영하므로 LAMMPS pair virial을 다시 더하지 않습니다.
++위 경로의 `JOB_ID`는 실제 실행 폴더 이름으로 바꿉니다. 평균은 출력 순간의 값들을 단순 평균하지 않고 매 시간단계에 누적한 interval mean을 시간 가중합니다. 지정한 strain 창 안에 완전히 들어오는 구간만 사용합니다. 독립 요약 명령의 빈 창은 오류이며, 실행기의 자동 요약은 사용 가능한 평균이 없다고 기록합니다. 블록 평균의 상대 표준편차와 전·후반 차이를 출력하지만 정상상태를 자동으로 인증하지는 않습니다. `sigma_hydro_Pa`에는 계산기가 정의한 유체 응력을 이미 반영하므로 LAMMPS pair virial을 다시 더하지 않습니다.
+ 
+ `run_bridge.py --prepare-only`로 검증된 runtime과 입력만 만들 수 있습니다. `--help`는 준비·물성·해상도 옵션 전체를 출력합니다. `final.data`는 마지막 기하를 보존하지만 마찰 이력이 포함된 재시작 파일은 아닙니다.
+ 
+@@ -48,15 +109,17 @@ python3 lammps_slurry/tools/summarize_bridge.py \
+ 
+ STF5 기저의 순서는 `diag(1,-1,0)/sqrt(2)`, `diag(1,1,-2)/sqrt(6)`, 대칭 xy/xz/yz이며 비대각 기저의 두 성분은 각각 `1/sqrt(2)`입니다. Stresslet은 on-fluid 부호이므로 `sigma_hydro_Pa`와 직접 같은 부호라고 해석하거나 다시 합산하지 않습니다.
+ 
+-직접 LAMMPS 입력을 작성할 때는 `fix deform`를 `slurry/bridge`보다 먼저 정의하고 xz 전단에 `remap v`를 사용해야 합니다. 현재 구현은 `deform 0`과 일정 전단률을 요구합니다. 생성기는 이 조건을 자동으로 적용합니다.
++## 직접 LAMMPS 입력을 작성할 때
++
++`fix deform`를 `slurry/bridge`보다 먼저 정의하고 xz 전단에 `remap v`를 사용해야 합니다. 현재 구현은 `deform 0`과 일정 전단률을 요구합니다. 생성기는 이 조건을 자동으로 적용합니다.
+ 
+ ```lammps
+ plugin load ${slurry_plugin}
+ # units/box/particles 설정 후:
+ fix shear all deform 0 xz erate 100 remap v units box
+-fix hydro all slurry/bridge 0.01 100 1e-9 100 contact 3e-9 0.1 80 mobility_backend mesh spectral 2 spectral_tolerance 1e-8 history history.csv 100 5
++fix hydro all slurry/bridge 0.01 100 8e-6 0.001 100 contact 10 80 rolling 10 80 shape spheroid mobility_backend mesh spectral 2 spectral_tolerance 1e-8 history history.csv 100 5
+ ```
+ 
+-입력의 `${slurry_plugin}` 참조 자체에는 따옴표를 붙이지 않습니다. 실행기는 `-var` 값에 경로를 감싼 실제 큰따옴표를 넣어 공백이 있는 경로도 처리합니다. 일반 실행에는 위 launch script를 사용하면 됩니다.
++필수 숫자 인자는 순서대로 `eta`, `shear_rate`, `nominal_diameter_m`, `epsilon`, `kn_N_per_m`입니다. `contact` 뒤에는 μs, kt를, `rolling` 뒤에는 μr, kr를 넣습니다. 현재 모델은 단분산 volume-equivalent diameter를 사용하며 각 입자가 해당 D와 AR 범위에 맞아야 합니다.
+ 
+-Flake의 실제 원기둥 체적·질량·관성, 간격 인증, 중거리 근사 범위는 [형상별 공통 실행 안내](../validation_flake_integration/README_KO.md)에 정리했습니다. Flake의 실제 표면 겹침은 위치·마찰 이력을 갱신하기 전에 거부합니다.
++입력의 `${slurry_plugin}` 참조 자체에는 따옴표를 붙이지 않습니다. 실행기는 `-var` 값에 경로를 감싼 실제 큰따옴표를 넣어 공백이 있는 경로도 처리합니다. 일반 실행에는 위 launch script를 사용하면 됩니다.
+diff --git a/docs/COMPACT_BRIDGE_MODEL.md b/docs/COMPACT_BRIDGE_MODEL.md
+index 2070f4f..339f8ab 100644
+--- a/docs/COMPACT_BRIDGE_MODEL.md
++++ b/docs/COMPACT_BRIDGE_MODEL.md
+@@ -1,74 +1,82 @@
+-# Compact bridge v4 implementation contract
++# Spheroid bridge implementation contract — 2026-10-27
+ 
+-`fix slurry/bridge` is a separate LAMMPS integrator. The near model accepted on 2026-10-20 is retained. The periodic middle approximation is documented separately in [PERIODIC_MIDDLE.md](PERIODIC_MIDDLE.md); it is not an exact periodic Stokes solver.
++The active `fix slurry/bridge` uses Mari-style additive lubrication regularization and the Singh sliding/rolling contact law, extended to oblate spheroids. Its compact near hydrodynamics and periodic ellipsoid mobility remain approximations; this is not the complete spherical LF-DEM operator of either paper. See [MARI_SINGH_OVERLAY.md](MARI_SINGH_OVERLAY.md) for provenance, scope and validation.
+ 
+-## Coordinates and units
++## Geometry, coordinates and units
+ 
+-For every particle the numerical variables are
+-`q=(U-u_inf, Omega-Omega_inf, -E_inf[STF5])` after nondimensionalization by the common polar semiaxis `c` and rate `max(abs(shear_rate),1/s)`. The 11 conjugate moments act **on the fluid**. In SI, force, torque/stresslet scales are respectively `eta*c^2*rate` and `eta*c^3*rate`. Shape semiaxes are `(AR*c,AR*c,c)` in the particle frame, with an arbitrary quaternion. The implementation permits different ARs at a common c.
++The supported shape is an oblate spheroid with AR=a/c between 1 and 5. The nominal diameter D is interpreted as volume-equivalent: a=(D/2) AR^(1/3), c=(D/2) AR^(-2/3). Thus V=pi D^3/6 is independent of AR. Default D=8 micrometers. This diameter interpretation is a modeling choice; it does not infer a three-dimensional size distribution from a projected image.
+ 
+-The STF basis is orthonormal: `(xx-yy)/sqrt(2)`, `(xx+yy-2zz)/sqrt(6)`, symmetric xy, xz, yz, with each off-diagonal entry `1/sqrt(2)`. This basis is shared by the near matrix, periodic mobility, mixed solver, output, and stress calculation.
++The fixed normalization length is L=D/2, not the polar semiaxis. The rate scale is s=max(abs(shear_rate),1/s). Each particle has q=(U-u_inf, Omega-Omega_inf, -E_inf[STF5]) in normalized coordinates. The 11 conjugate moments act on the fluid. Force, torque/stresslet and power scales are eta L^2 s, eta L^3 s and eta L^3 s^2. The code checks that every particle has the prescribed volume-equivalent diameter.
+ 
+-## Near connection
++The STF basis is orthonormal: (xx-yy)/sqrt(2), (xx+yy-2zz)/sqrt(6), symmetric xy, xz, yz, with each off-diagonal entry 1/sqrt(2). The same basis is used throughout the hydrodynamic solve and stress calculation.
+ 
+-The exact convex support geometry computes the actual signed gap, contact points, normal, and local curvature. Only scalar gap functions use `he=max(h,hfloor)`, default 1 nm. No surface positions or curvatures are moved to the floor.
++## Regularized near hydrodynamics
+ 
+-In the local 11-dimensional relative coordinates, the retained singular terms are `alpha=a0/he`, `v=b*log1p(ell_t/he)`, `C_log=C*log1p(ell_t/he)`. The normal component is separated from the remaining ten coordinates. The positive completion is
++Convex support geometry computes the signed surface gap h, contact points, normal and local curvature. Negative h is the shallow penetration used by the finite-stiffness contact penalty. Neither the geometry nor the contact onset is shifted by a roughness layer.
++
++Scalar resistance functions use
++
++```
++ell_reg = epsilon * (D/2)
++h_eff = max(h,0) + ell_reg
++```
++
++Default epsilon=0.001 gives ell_reg=4 nm at D=8 micrometers. Mari's dimensionless gap is 2h/(a_i+a_j); equal reference radii therefore use h/(D/2), not h/D. The additive rule differs from the old hard floor max(h,h_floor), including for positive gaps smaller than ell_reg. During shallow overlap, scalar resistance stays at its contact limit while actual geometry is retained.
++
++In the local 11-dimensional relative coordinates, retained terms are alpha=a0/h_eff, v=b log1p(ell_t/h_eff), C_log=C log1p(ell_t/h_eff). The normal coordinate is separated from the other ten coordinates. Positive completion is
+ 
+ ```
+ Delta = positive_part(v*v^T/alpha - C_log)
+ Hplus = [[alpha, v^T], [v, C_log+Delta]]
+ ```
+ 
+-The completion is evaluated in the fixed nondimensional coordinates using `c`, not an arbitrary instantaneous contact length. It preserves the retained formal singular coefficients before applying the floor. The normal-normal subleading logarithmic coefficient remains omitted, as in the accepted model; this is not a complete reconstruction of every Claeys–Brady coefficient.
++This finite completion uses the fixed reference L=D/2. Changing L changes that finite model, so the shift from the previous L=c is an intentional model change as well as a normalization change. The normal-normal subleading logarithm remains omitted.
+ 
+-The contact-centred homothetic curvature ellipse is maximized inside both projected particle regions. Its depth is `ell_n`, its short semiaxis `Lp=sqrt(ell_n/lambda_max)`. The log reference remains `ell_t=min(c, all four local curvature radii)`. With `D_nn=ell_n/(he+ell_n)` and all other diagonal entries one,
++The contact-centred curvature ellipse fits inside both projected particles. Its depth is ell_n and its short semiaxis is Lp. The log reference is ell_t=min(polar semiaxes, local curvature radii). With D_nn=ell_n/(h_eff+ell_n) and other diagonal entries one,
+ 
+ ```
+-Hbridge = w(he/Lp) D Hplus D
++Hbridge = w(max(h,0)/Lp) D Hplus D
+ Rnear_pair = B^T Hbridge B
+ ```
+ 
+-`w=1` up to 0.1 and zero from 1; between them the quintic is evaluated stably as `(1-t)^3*(1+3t+6t^2)`, `t=(he/Lp-0.1)/0.9`. This near correction contains no isolated-particle drag. The positive completion, ellipse, and switch are explicit finite-distance model choices. The geometric ellipse cusp and positive-part kink found in the previous audit are retained.
++The quintic switch w is one below 0.1 and zero from 1. Its support uses the actual nonnegative gap, so regularization does not move the outer geometric support. Pair matrices are symmetric positive semidefinite by construction. All periodic images within ai+aj+min(ai,aj), where ai and aj are the largest semiaxes, are enumerated; one representative of each self-image pair is included. This is support of the near correction, not a cutoff of all hydrodynamics.
+ 
+-All images within `ai+aj+min(ai,aj)` are enumerated. Equal sizes give the proven near support radius `3a`. For `i<j` every admissible lattice vector is included; for `i=j`, one of ±image is included and its complete 22×22 matrix is assembled onto the same 11 unknowns. This preserves the congruence/PSD property. The center radius is a support of this near model, not a cutoff of physical hydrodynamics.
++The near model retains the previous surface-point moment maps, finite-distance completion, curvature patch and taper. Coordinate-rotation covariance is tested; these tests do not prove an exact finite-gap rigid-body null mode or an exact Stokes solution. Periodic middle hydrodynamics is documented in [PERIODIC_MIDDLE.md](PERIODIC_MIDDLE.md).
+ 
+-## Velocity and contact solve
++## Surface sliding and rolling
+ 
+-The system solves `M*g_mid=q`, `q=P*u+qE`, and
++Contact onset is h=0. For the actual end-of-step gap,
+ 
+ ```
+-P^T(g_mid + Rnear*q) = F_contact
++Fn = kn * max(-h_endpoint,0)
++|Ft| <= mu_s * Fn
+ ```
+ 
+-The production solver retains three traction components per periodic contact in addition to the `11N+6N` hydrodynamic variables. It uses a force-variable semismooth Newton method with right FGMRES. This changes the nonlinear solution variables, not the contact law or the accepted near/middle model. There is no nested many-body mobility inverse.
++No positive-gap shell, rough hydrodynamic excess, repulsion barrier, contact dashpot or twisting spring is active. Sliding uses the existing tangential displacement spring and Coulomb return map. Its numerical stiffness kt has units N/m. At noncompressive separation all sliding and rolling history is discarded. An implicitly predicted overlap can create a contact within a step that starts at positive gap; it is the endpoint overlap that supplies the normal load.
+ 
+-For each contact, write the traction as `-N*n+T`, with tangential `T`, relative normal/tangential velocities `vn,vt`, and committed tangential spring history `xi`. The equivalent proximal equations are
++Singh's rolling quasi-force spring has stiffness kr in N/m. Let aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j). Here every reference radius is D/2, hence aij=D/2 independently of AR. The angular-history implementation uses
+ 
+ ```
+-N = max(0, N - rho_n*(vn + (gap-onset)/dt + N/(kn*dt)))
+-T = project_disk(T + rho_t*(vt + xi/dt - T/(kt*dt)), mu*max(N,0))
++K_theta = kr * aij^2
++M_trial = K_theta * theta_tangent
++|M_roll| <= mu_r * Fn * aij
+ ```
+ 
+-The normal and tangential scales are positive scalars. Each combines isolated-particle relative mobility with spring compliance: `rho_n=1/(n^T W n+1/(kn*dt))` and `rho_t=1/(trace((I-n*n^T)W)/2+1/(kt*dt))`. Zero stiffness or friction is handled explicitly before taking reciprocals. These equations have exactly the same roots as the frozen-geometry backward-Euler normal penalty and elastic/Coulomb return map. Retaining the contact force changes the off-root line search; it avoids forcing the search to locate a narrow sticking interval only in velocity space. It does not change the physical stiffness.
+-
+-The preconditioner analytically eliminates each local three-component contact block, then factors the sparse `6N` Schur matrix `A+P^T D^-1 P`. For the mesh backend, `D` contains positive isolated continuum mobility blocks; the direct reference uses the discrete self blocks. This approximation is confined to the preconditioner and does not alter the physical mobility. The complete nonsymmetric contact derivative, including the normal-load dependence of friction, is retained. SparseLU handles this nonsymmetric matrix. The global mobility remains matrix-free, with one mobility product per Jacobian application.
+-
+-The augmented nonlinear merit uses a fixed weighted norm. FGMRES uses the same norm and a bounded inexact-Newton forcing term, at most 0.05, to avoid oversolving early linear systems. Backtracking checks the actual augmented residual and its directional derivative; a Jacobian-transpose Cauchy step is available if the Newton line search fails. Linear hydrodynamic products are reused exactly during backtracking, and the full residual is reevaluated at every accepted iterate.
++This is equivalent to the quasi-force rolling representation for a frozen contact normal. Relative angular motion parallel to the normal produces no rolling torque. The two particles receive opposite resisting couples. Existing objective history transport follows common rotation and changes of contact normal. Using volume-equivalent aij for nonspherical particles is an explicit extension of the sphere law, not a shape-friction mapping established by the cited papers.
+ 
+-Acceptance is independently checked using the **original** contact return map and original hydrodynamic equations at the user's tolerance. The retained auxiliary tractions do not supply the reported contact forces or spring histories. A final call to the original formulation verifies or polishes that physical state. Physical residuals may temporarily increase while the augmented merit decreases; only the final physical residual controls acceptance. No continuation parameter or environment variable is required by the production path. The older stiffness-continuation implementation remains a lower-level regression/reference path and is not used silently.
++Default kn=100, kt=80, kr=80 N/m; mu_s=mu_r=10. These are trial numerical parameters. They are neither measured graphite coefficients nor demonstrated infinite-friction limits for every AR. Stiffness, timestep and friction saturation require separate convergence tests. The launcher permits mu_s=0 and/or mu_r=0 to disable either friction branch.
+ 
+-The production default is the same linear contact law with `kn=100 N/m`, `kt=80 N/m`, `mu=0.1`, and `onset=3 nm`. A nonlinear endpoint correction wraps the frozen-geometry solves: trial Euler translation, quaternion rotation and lattice shear produce the actual endpoint gap. The inner contact gap is offset until its predicted compression agrees with that endpoint. Final force and normal energy are evaluated directly as `N=kn*max(onset-h_endpoint,0)` and `Un=N*N/(2*kn)`. Every correction uses the original committed tangential history. Both contactwise force consistency and the complete force/mobility residual must pass before a state is accepted. Hydrodynamics, normals and tangential velocity maps remain evaluated at the beginning of the first-order step. No Hertz law, stress activation barrier or position projection is introduced.
++## Coupled solve and integration
+ 
+-`solver_relative_residual` is the final endpoint-corrected physical-equation residual. Newton/Krylov counts and `mobility_applications` include all geometry corrections and final verification/polish. `SLURRY_BRIDGE_TRACE=1` prints `prox_*` and `polish_*` phases, physical `residual`, augmented `merit`, and timing. It changes no physical parameters. Nonfinite residuals, linear failures, an unlisted new endpoint contact, or failure to converge within 24 geometry corrections stop before committing that pending advance. Automatic timestep subdivision is not implemented.
++The system solves M*g_mid=q, q=P*u+qE and P^T(g_mid+Rnear*q)=F_contact. When rolling is enabled, the retained contact unknown is a six-component force/couple wrench. The solver uses semismooth Newton with matrix-free right FGMRES and local contact-block condensation. The production sparse preconditioner uses oneMKL PARDISO; a reference Eigen backend exists for tests. Physical acceptance is checked against the original contact return map and hydrodynamic equations, not only the augmented residual.
+ 
+-The contact force acts at a common midpoint. Its velocity uses the actual center displacement and levers, including the affine contribution `E*d`. Each periodic contact has its own history. After a committed step its predicted physical image displacement identifies the history after periodic wrapping or a lattice flip; reversed self-image representatives reverse the normal and elastic vector. History is committed only during a genuine position advance, never during `run 0`, setup, or residual evaluations.
++A nonlinear endpoint correction updates the contact compression to agree with trial Euler translation, quaternion rotation and lattice shear. Fn and normal energy are evaluated from that actual endpoint gap. Every correction starts from the original committed history. Hydro matrices, normals and sliding maps remain evaluated at the beginning of the first-order step. No position projection or automatic timestep subdivision is introduced. Failure of force/mobility convergence, gap consistency or unlisted new-contact detection aborts the advance rather than silently accepting it.
+ 
+-LAMMPS owns the periodic geometry through `fix deform 0 xz erate ... remap v`, defined before this fix. The bridge advances physical velocities and quaternions once; `remap x` is rejected because it would apply affine displacement twice. The current fix supports constant-volume xz shear, periodic 3D, SI ellipsoid atoms, and `pair_style zero`. It cannot be combined with another integrator or slurry force fix. Position/orientation updates are first order; implicit contact does not remove the need to resolve geometric motion with the timestep.
++Each periodic contact keeps its own history. Predicted physical image displacement identifies history after wrapping or a lattice flip. History is committed only on a genuine position advance, not during `run 0`, setup or residual evaluation.
+ 
+-## Stress and power
++LAMMPS owns periodic geometry via `fix deform 0 xz erate ... remap v`, defined before this fix. Supported runs are constant-volume xz shear, periodic 3D SI ellipsoid atoms and `pair_style zero`. This fix advances positions and orientations itself and must not be combined with another integrator.
+ 
+-The reported symmetric stresses are
++## Stress, power and output
+ 
+ ```
+ sigma_H = -sum(S_on_fluid)/V
+@@ -77,8 +85,8 @@ sigma = 2*eta*E + sigma_H + sigma_C
+ eta_app = sigma_xz / shear_rate
+ ```
+ 
+-No extra hydrodynamic pair virial is added: the near strain-conjugate moment already carries its lever contribution. The code independently reports `stress_power=V*sigma_xz*shear_rate` and `hydro_dissipation + contact_power`. Contact power includes elastic energy change and can have either sign during relaxation; it is not frictional dissipation alone. `hydro_dissipation_W` includes the solvent term. Their difference is a power-balance diagnostic, not a Stokes-accuracy estimate.
++No extra near hydrodynamic virial is added. Contact couples enter rotational balance and contact power. The symmetric shear stress uses the force virial above. `stress_power_W` and `hydro_dissipation_W + contact_power_W` are reported independently; their difference is a consistency diagnostic. Contact power includes elastic storage/release and is not purely plastic dissipation.
+ 
+-Per-particle hydrodynamic force/torque and contact force/torque are output separately. Their sum should agree with the accepted force-balance residual. The raw force and mobility residual columns are norms in the stated nondimensional variables; they are not SI newtons or a relative error. The solver's accepted residual is measured in fixed preconditioned coordinates with the configured tolerance.
++The CSV retains normal and sliding elastic energies and adds/retains rolling yield count, rolling elastic energy, rolling plastic dissipation and rolling contact power. Obsolete rough-hydro and twisting columns are removed. Force and mobility residual norms use the stated nondimensional coordinates, not SI newtons. Solver acceptance uses its configured relative norm.
+ 
+-Time averages use every committed timestep. Initial output at step zero is not included in the average. `--average-start-strain` selects an averaging window; it does not establish stationarity. `final.data` stores geometry, not tangential contact history; restarting a physical trajectory from that file is not supported as a history-preserving restart in this version.
++Averages include every committed timestep, excluding step-zero output. Selecting an averaging window does not establish stationarity. `final.data` stores geometry, not friction histories, so it is not a physical history-preserving restart.
+diff --git a/lammps_slurry/CMakeLists.txt b/lammps_slurry/CMakeLists.txt
+index cf24f7f..89358c5 100644
+--- a/lammps_slurry/CMakeLists.txt
++++ b/lammps_slurry/CMakeLists.txt
+@@ -289,11 +289,7 @@ if(SLURRY_ENABLE_LU)
+         if(OpenMP_CXX_FOUND)
+           target_link_libraries(slurry_${BRIDGE_TEST}_test PRIVATE OpenMP::OpenMP_CXX)
+         endif()
+-        if(BRIDGE_TEST STREQUAL "compact_bridge")
+-          add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/compact_bridge_v4.dat")
+-        else()
+-          add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test)
+-        endif()
++        add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test)
+       endif()
+     endforeach()
+   endif()
+diff --git a/lammps_slurry/src/fix_slurry_bridge.cpp b/lammps_slurry/src/fix_slurry_bridge.cpp
+index 43aed49..6a3a858 100644
+--- a/lammps_slurry/src/fix_slurry_bridge.cpp
++++ b/lammps_slurry/src/fix_slurry_bridge.cpp
+@@ -1,4 +1,5 @@
+-// Compact v4 lubrication + periodic 11-mode mobility + implicit rough contact.
++// Additively regularized spheroid lubrication + periodic mobility + surface contact.
++// Mari gap convention and Singh sliding/rolling law; no positive-gap contact shell.
+ // This fix owns overdamped integration; no inertial integrator is used.
+ #include "fix_slurry_bridge.h"
+ #include "atom.h"
+@@ -16,10 +17,7 @@
+ #include "slurry_bridge_contact_solver.h"
+ #include "slurry_bridge_step.h"
+ #include "slurry_bridge_shape.h"
+-#include "slurry_cylinder_pair.h"
+-#include "slurry_flake_diagnostics.h"
+ #include "slurry_compact_bridge.h"
+-#include "slurry_rough_surface.h"
+ #include "slurry_history_math.h"
+ #include "slurry_periodic_mobility.h"
+ #include "update.h"
+@@ -31,8 +29,6 @@
+ #include <cstdlib>
+ #include <cstring>
+ #include <fstream>
+-#include <filesystem>
+-#include <optional>
+ #include <iomanip>
+ #include <limits>
+ #include <map>
+@@ -46,9 +42,6 @@ namespace im = SlurryBridgeImages;
+ namespace gr = slurry::gr_re2::graphite;
+ namespace step = SlurryBridgeStep;
+ namespace shape = SlurryBridgeShape;
+-namespace cylinder = SlurryCylinderPair;
+-namespace fd = SlurryFlakeDiagnostics;
+-namespace rough = SlurryRoughSurface;
+ namespace {
+ using V3 = Eigen::Vector3d;
+ using M3 = Eigen::Matrix3d;
+@@ -60,16 +53,15 @@ using PairKey = std::pair<tagint, tagint>;
+ struct History {
+   V3 predicted, elastic, normal, angle;
+   V3 rolling = V3::Zero();
+-  double twisting = 0.;
+ };
+ gr::Vec3 arr(const V3 &x) { return {x[0], x[1], x[2]}; }
+ V3 vec(const gr::Vec3 &x) { return {x[0], x[1], x[2]}; }
+-void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega, bool flake) {
++void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega) {
+   auto &b = avec->bonus[atom->ellipsoid[i]];
+   double R[3][3], ob[3], lb[3], l[3];
+   MathExtra::quat_to_mat(b.quat, R);
+   MathExtra::transpose_matvec(R, omega.data(), ob);
+-  const auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,flake);
++  const auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,false);
+   for (int k = 0; k < 3; ++k) lb[k] = inertia[k] * ob[k];
+   MathExtra::matvec(R, lb, l);
+   std::copy(l, l + 3, atom->angmom[i]);
+@@ -92,15 +84,13 @@ std::vector<Record> gather(const std::vector<Record> &local, MPI_Comm world, int
+ } // namespace
+ struct FixSlurryBridge::Impl {
+   AtomVecEllipsoid *avec = nullptr;
+-  double eta = 0, shear = 0, floor = 0, kn = 0, hc = 3e-9, mu = .1, kt = 80;
+-  rough::Options rough_options;
+-  double mu_roll = 0., mu_twist = 0., roll_length = 0., twist_length = 0., kr = 0., kw = 0.;
++  double eta = 0, shear = 0, nominal_diameter = 0, epsilon = 0, kn = 0;
++  double reference_radius = 0, regularization_length = 0;
++  double mu = 10., kt = 80., mu_roll = 10., kr = 80.; // kn, kt, kr: N/m
+   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
+   int maxit = 1200, interval = 100, nmax = 0;
+-  std::ofstream csv, flake_channels, flake_bins;
+-  bool flake_diagnostics = false;
+-  bigint last_diagnostic = -1;
+-  std::array<double, 51> diag{};
++  std::ofstream csv;
++  std::array<double, 44> diag{};
+   std::array<double, 4> stress{};
+   std::array<long double, 4> interval_stress{};
+   long double selected_integral = 0;
+@@ -116,46 +106,36 @@ struct FixSlurryBridge::Impl {
+       std::make_shared<bs::detail::SolverWorkspace>();
+   bool have_warm = false;
+   bool direct_mobility = false;
+-  bool flake = false;
+ };
+ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
+     : Fix(lmp, narg, arg), p_(new Impl) {
+-  if (narg < 7)
+-    error->all(FLERR, "slurry/bridge requires eta shear_rate gap_floor kn [contact hc mu kt] "
+-                      "[shape spheroid|flake] [spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] [tolerance rtol] [iterations "
+-                      "maxit] [history file interval average_start_strain]");
++  if (narg < 8)
++    error->all(FLERR, "slurry/bridge requires eta shear_rate nominal_diameter epsilon kn "
++                      "[contact mu_s kt] [rolling mu_r kr_N_per_m] [shape spheroid] "
++                      "[spectral xi_a] [spectral_tolerance tol] [mobility_backend mesh|direct] "
++                      "[tolerance rtol] [iterations maxit] [history file interval average_start_strain]");
+   auto &p = *p_;
+   p.eta = utils::numeric(FLERR, arg[3], false, lmp);
+   p.shear = utils::numeric(FLERR, arg[4], false, lmp);
+-  p.floor = utils::numeric(FLERR, arg[5], false, lmp);
+-  p.kn = utils::numeric(FLERR, arg[6], false, lmp);
++  p.nominal_diameter = utils::numeric(FLERR, arg[5], false, lmp);
++  p.epsilon = utils::numeric(FLERR, arg[6], false, lmp);
++  p.kn = utils::numeric(FLERR, arg[7], false, lmp);
++  p.reference_radius = .5 * p.nominal_diameter;
++  p.regularization_length = p.epsilon * p.reference_radius;
+   std::string filename;
+-  for (int k = 7; k < narg;) {
+-    if (!std::strcmp(arg[k], "contact") && k + 3 < narg) {
+-      p.hc = utils::numeric(FLERR, arg[k + 1], false, lmp);
+-      p.mu = utils::numeric(FLERR, arg[k + 2], false, lmp);
+-      p.kt = utils::numeric(FLERR, arg[k + 3], false, lmp);
+-      k += 4;
+-    } else if (!std::strcmp(arg[k], "rough_hydro") && k + 3 < narg) {
+-      p.rough_options.enabled = true;
+-      p.rough_options.height = utils::numeric(FLERR, arg[k+1], false, lmp);
+-      p.rough_options.width = utils::numeric(FLERR, arg[k+2], false, lmp);
+-      p.rough_options.coverage = utils::numeric(FLERR, arg[k+3], false, lmp);
+-      p.rough_options.gap_floor = p.floor;
+-      k += 4;
+-    } else if (!std::strcmp(arg[k], "rotation_contact") && k + 6 < narg) {
+-      p.mu_roll = utils::numeric(FLERR, arg[k+1], false, lmp);
+-      p.mu_twist = utils::numeric(FLERR, arg[k+2], false, lmp);
+-      p.roll_length = utils::numeric(FLERR, arg[k+3], false, lmp);
+-      p.twist_length = utils::numeric(FLERR, arg[k+4], false, lmp);
+-      p.kr = utils::numeric(FLERR, arg[k+5], false, lmp);
+-      p.kw = utils::numeric(FLERR, arg[k+6], false, lmp);
+-      k += 7;
++  for (int k = 8; k < narg;) {
++    if (!std::strcmp(arg[k], "contact") && k + 2 < narg) {
++      p.mu = utils::numeric(FLERR, arg[k + 1], false, lmp);
++      p.kt = utils::numeric(FLERR, arg[k + 2], false, lmp);
++      k += 3;
++    } else if (!std::strcmp(arg[k], "rolling") && k + 2 < narg) {
++      p.mu_roll = utils::numeric(FLERR, arg[k + 1], false, lmp);
++      p.kr = utils::numeric(FLERR, arg[k + 2], false, lmp);
++      k += 3;
+     } else if (!std::strcmp(arg[k], "shape") && k + 1 < narg) {
+-      if (std::strcmp(arg[k+1],"spheroid") && std::strcmp(arg[k+1],"flake"))
+-        error->all(FLERR,"slurry/bridge shape must be spheroid or flake");
+-      p.flake=!std::strcmp(arg[k+1],"flake");
+-      k+=2;
++      if (std::strcmp(arg[k+1],"spheroid"))
++        error->all(FLERR,"slurry/bridge surface-contact model requires shape spheroid");
++      k += 2;
+     } else if (!std::strcmp(arg[k], "spectral") && k + 1 < narg) {
+       p.spectral = utils::numeric(FLERR, arg[k + 1], false, lmp);
+       k += 2;
+@@ -181,23 +161,15 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
+     } else
+       error->all(FLERR, "Unknown or incomplete slurry/bridge option: {}", arg[k]);
+   }
+-  if (!(p.eta > 0 && p.floor > 0 && p.kn > 0 && p.hc >= 0 && p.mu >= 0 && p.kt >= 0 &&
++  if (!(p.eta > 0 && p.nominal_diameter > 0 && p.epsilon > 0 && p.kn > 0 &&
++        p.mu >= 0 && p.kt >= 0 && p.mu_roll >= 0 && p.kr >= 0 &&
+         p.spectral > 0 && p.spectral_tol > 0 && p.spectral_tol < 1 && p.rtol > 0 && p.rtol < 1 &&
+         p.maxit > 0 && p.interval > 0 && p.avg_start >= 0) ||
+-      !std::isfinite(p.eta + p.shear + p.floor + p.kn + p.hc + p.mu + p.kt + p.spectral +
+-                     p.spectral_tol + p.rtol + p.avg_start) ||
+-      (p.mu > 0 && p.kt == 0))
++      !std::isfinite(p.eta + p.shear + p.nominal_diameter + p.epsilon + p.kn + p.mu + p.kt +
++                     p.mu_roll + p.kr + p.spectral + p.spectral_tol + p.rtol + p.avg_start) ||
++      !(p.regularization_length > 0 && std::isfinite(p.regularization_length)) ||
++      (p.mu > 0 && p.kt == 0) || (p.mu_roll > 0 && p.kr == 0))
+     error->all(FLERR, "Invalid slurry/bridge material or numerical parameter");
+-  if (!(p.mu_roll >= 0. && p.mu_twist >= 0. && p.roll_length >= 0. &&
+-        p.twist_length >= 0. && p.kr >= 0. && p.kw >= 0.) ||
+-      !std::isfinite(p.mu_roll+p.mu_twist+p.roll_length+p.twist_length+p.kr+p.kw) ||
+-      (p.mu_roll > 0. && !(p.kr > 0. && p.roll_length > 0.)) ||
+-      (p.mu_twist > 0. && !(p.kw > 0. && p.twist_length > 0.)))
+-    error->all(FLERR, "Invalid slurry/bridge rotational contact parameter");
+-  if (p.flake && (p.rough_options.enabled || p.mu_roll > 0. || p.mu_twist > 0.))
+-    error->all(FLERR, "Rough hydrodynamics and rotational contacts currently require shape spheroid");
+-  try { rough::validate(p.rough_options); }
+-  catch (const std::exception &e) { error->all(FLERR, "Invalid rough_hydro parameters: {}", e.what()); }
+   if (!filename.empty() && comm->me == 0) {
+     p.csv.open(filename, std::ios::trunc);
+     if (!p.csv)
+@@ -218,36 +190,8 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
+              "contact_candidates,krylov_dimension,fft_plan_builds,mobility_threads,"
+              "preconditioner_symbolic_total,preconditioner_numeric_total,"
+              "preconditioner_numeric_reuses_total,monitor_reuses_total,"
+-             "rough_hydro_pairs,rough_hydro_dissipation_W,rough_hydro_sigma_xz_Pa,"
+-             "rolling_yield_contacts,twisting_yield_contacts,rolling_elastic_energy_J,"
+-             "twisting_elastic_energy_J,rolling_plastic_dissipation_W,"
+-             "twisting_plastic_dissipation_W,rotational_contact_power_W,rough_geometry_s\n";
+-  }
+-  // Read-only diagnostics use the existing history sampling cadence. They
+-  // never enter the force/velocity solve and do not change the batch settings.
+-  const char *diagnostics = std::getenv("SLURRY_FLAKE_DIAGNOSTICS");
+-  p.flake_diagnostics = p.flake && !filename.empty() &&
+-      !(diagnostics && !std::strcmp(diagnostics, "0"));
+-  if (p.flake_diagnostics && comm->me == 0) {
+-    const auto directory = std::filesystem::path(filename).parent_path();
+-    p.flake_channels.open(directory / "flake_channels.csv", std::ios::trunc);
+-    p.flake_bins.open(directory / "flake_channel_bins.csv", std::ios::trunc);
+-    if (!p.flake_channels || !p.flake_bins) {
+-      std::fprintf(stderr, "WARNING: flake diagnostic files could not be opened; dynamics continue without diagnostic output.\n");
+-      p.flake_diagnostics = false;
+-    } else {
+-      p.flake_channels << std::setprecision(17);
+-      p.flake_bins << std::setprecision(17);
+-      p.flake_channels << "step,time_s,strain," << fd::csv_columns()
+-          << ",middle_power_W,hydro_particle_power_W,solvent_power_W,contact_power_W,"
+-             "stress_power_W,middle_sigma_xz_Pa,hydro_sigma_xz_Pa,contact_sigma_xz_Pa,"
+-             "eta_relative,eta_relative_face,eta_relative_rim,eta_relative_middle,"
+-             "eta_relative_contact,near_moment_closure_relative,power_closure_relative,"
+-             "hydro_stress_closure_Pa,active_contacts,sliding_contacts,contacted_particles,"
+-             "normal_load_sum_N,normal_load_max_N,sliding_dissipation_W,gap_floor_m,"
+-             "diagnostic_pair_storage_bytes,diagnostic_capture_s,diagnostic_reduce_s\n";
+-      p.flake_bins << "step,time_s,strain,bin_kind,bin_label," << fd::csv_columns() << '\n';
+-    }
++             "rolling_yield_contacts,rolling_elastic_energy_J,"
++             "rolling_plastic_dissipation_W,rolling_contact_power_W\n";
+   }
+   peratom_flag = 1;
+   size_peratom_cols = 17;
+@@ -324,7 +268,7 @@ void FixSlurryBridge::initial_integrate(int) {
+   for (int i = 0; i < atom->nlocal; ++i) {
+     auto &b = p.avec->bonus[atom->ellipsoid[i]];
+     double wr[3];
+-    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,p.flake);
++    auto inertia=shape::principal_inertia(atom->rmass[i],b.shape,false);
+     MathExtra::mq_to_omega(atom->angmom[i], b.quat, inertia.data(), wr);
+     V3 w(wr[0], wr[1], wr[2]);
+     for (int k = 0; k < 3; ++k)
+@@ -335,7 +279,7 @@ void FixSlurryBridge::initial_integrate(int) {
+     b.quat[1] = q.x();
+     b.quat[2] = q.y();
+     b.quat[3] = q.z();
+-    store_momentum(atom, p.avec, i, w, p.flake);
++    store_momentum(atom, p.avec, i, w);
+   }
+ }
+ void FixSlurryBridge::solve_velocities() {
+@@ -365,15 +309,19 @@ void FixSlurryBridge::solve_velocities() {
+   std::string message;
+   if (comm->me == 0)
+     try {
+-      double length = records.front().axes[2], rate = std::max(std::abs(p.shear), 1.);
++      const double length = p.reference_radius, rate = std::max(std::abs(p.shear), 1.);
+       for (const auto &r : records)
+         for (double a : r.axes)
+           if (!(a > 0))
+             throw std::runtime_error("non-positive shape axis");
+-      for (const auto &r : records)
+-        if (std::abs(r.axes[2] - length) > 1e-10 * length ||
+-            std::abs(r.axes[0] - r.axes[1]) > 1e-10 * r.axes[0] || r.axes[0] < r.axes[2])
+-          throw std::runtime_error("bridge supports axisymmetric oblate particles with common polar half-extent c");
++      for (const auto &r : records) {
++        const double volume_radius = std::cbrt(r.axes[0]*r.axes[1]*r.axes[2]);
++        const double aspect = r.axes[0]/r.axes[2];
++        if (std::abs(volume_radius-length) > 1e-8*length ||
++            std::abs(r.axes[0]-r.axes[1]) > 1e-10*r.axes[0] ||
++            aspect < 1.-1e-12 || aspect > 5.+1e-12)
++          throw std::runtime_error("bridge requires oblate spheroids with AR 1..5 and volume-equivalent diameter matching nominal_diameter");
++      }
+       M3 H;
+       H << domain->xprd, domain->xy, domain->xz, 0, domain->yprd, domain->yz, 0, 0, domain->zprd;
+       H /= length;
+@@ -398,9 +346,7 @@ void FixSlurryBridge::solve_velocities() {
+             bodies[i].rotation[3 * k + l] = R[k][l];
+         }
+         middle_bodies[i].x = vec(bodies[i].position);
+-        // The common positive periodic mobility uses the existing ellipsoid
+-        // representation. For flake this is the explicit matched-spheroid middle/self
+-        // approximation; the cylinder surface enters every near/contact term.
++        // Retain the existing positive periodic ellipsoid mobility approximation.
+         middle_bodies[i].shape = cb::shape(bodies[i], 1.);
+       }
+       bool same = p.tags.size() == records.size();
+@@ -421,17 +367,6 @@ void FixSlurryBridge::solve_velocities() {
+       for (int i = 0; i < n; ++i)
+         for (int k = 0; k < 5; ++k)
+           problem.prescribed[11 * i + 6 + k] = -(E.array() * cb::strain_basis()[k].array()).sum();
+-      const bool diagnose = p.flake_diagnostics && p.last_diagnostic != update->ntimestep &&
+-          (update->ntimestep % p.interval == 0 || update->ntimestep == update->laststep);
+-      std::vector<fd::PairRecord> diagnostic_pairs;
+-      double diagnostic_capture_s = 0.;
+-      struct RoughPair { int i, j; rough::Mat22 resistance; };
+-      std::vector<RoughPair> rough_pairs;
+-      double rough_geometry_time = 0.;
+-      rough::Options rough_options = p.rough_options;
+-      rough_options.height /= length;
+-      rough_options.width /= length;
+-      rough_options.gap_floor = p.floor / length;
+       std::vector<Eigen::Triplet<double>> entries;
+       std::vector<PairKey> contact_keys;
+       std::vector<V3> contact_displacements;
+@@ -441,12 +376,9 @@ void FixSlurryBridge::solve_velocities() {
+       double section = MPI_Wtime();
+       for (int i = 0; i < n; ++i)
+         for (int j = i; j < n; ++j) {
+-          const double ai = shape::bounding_radius(bodies[i],p.flake),
+-                       aj = shape::bounding_radius(bodies[j],p.flake);
+-          const double near_range=p.flake ? std::min(bodies[i].axes[0],bodies[j].axes[0])
+-                                          : std::min(ai,aj);
+-          const double rough_range = rough_options.enabled ? 3.*rough_options.height : 0.;
+-          const double rc = ai + aj + std::max({near_range, p.hc / length, rough_range});
++          const double ai = shape::bounding_radius(bodies[i],false),
++                       aj = shape::bounding_radius(bodies[j],false);
++          const double rc = ai + aj + std::min(ai,aj);
+           const V3 original = vec(bodies[j].position) - vec(bodies[i].position);
+           for (const auto &image : im::images_within(original, H, rc)) {
+             if (i == j && !im::positive_image(image.image))
+@@ -454,39 +386,10 @@ void FixSlurryBridge::solve_velocities() {
+             const V3 d = image.displacement;
+             auto bj = bodies[j];
+             bj.position = arr(vec(bodies[i].position) + d);
+-            gr::GapResult gap;
+-            Eigen::Matrix<double,22,22> near_resistance;
+-            bool near_active=false;
+-            if (p.flake) {
+-              const auto ci=shape::cylinder(bodies[i]), cj=shape::cylinder(bj);
+-              const auto g=shape::cylinder_gap(ci,cj,1e-8*p.floor/length);
+-              gap=shape::gap_result(ci,cj,g);
+-              cylinder::Options model;
+-              model.film.eta=1.; model.film.gap_floor=p.floor/length;
+-              std::optional<cylinder::Diagnostics> diagnostic;
+-              if (diagnose) diagnostic.emplace();
+-              const auto near=cylinder::evaluate(ci,cj,g,model,diagnose ? &*diagnostic : nullptr);
+-              if (diagnose && near.cutoff_weight > 0.) {
+-                const double t = MPI_Wtime();
+-                diagnostic_pairs.push_back(fd::make_pair(i,j,ci,cj,g,*diagnostic,model.film.gap_floor));
+-                diagnostic_capture_s += MPI_Wtime() - t;
+-              }
+-              near_resistance=near.resistance; near_active=near.active;
+-            } else {
+-              gap=gr::closestEllipsoidGap(bodies[i],bj);
+-              const auto near=cb::evaluate(bodies[i],bj,gap,1.,1.,p.floor/length);
+-              near_resistance=near.resistance; near_active=near.active;
+-              if (rough_options.enabled && gap.gap < 3.*rough_options.height) {
+-                const double t = MPI_Wtime();
+-                const auto extra = rough::evaluate(bodies[i],bj,gap,near,1.,rough_options);
+-                rough_geometry_time += MPI_Wtime() - t;
+-                if (extra.active) {
+-                  near_resistance += extra.resistance;
+-                  near_active = true;
+-                  rough_pairs.push_back({i,j,extra.resistance});
+-                }
+-              }
+-            }
++            const auto gap = gr::closestEllipsoidGap(bodies[i],bj);
++            const auto near = cb::evaluate(bodies[i],bj,gap,1.,1.,p.regularization_length/length);
++            const auto &near_resistance = near.resistance;
++            const bool near_active = near.active;
+             min_gap = std::min(min_gap, gap.gap);
+             overlap = std::max(overlap, -gap.gap);
+             if (near_active) {
+@@ -504,17 +407,15 @@ void FixSlurryBridge::solve_velocities() {
+             contact.j = j;
+             contact.normal = vec(gap.normal);
+             contact.gap = gap.gap;
+-            contact.onset = p.hc / length;
++            contact.onset = 0.; // actual surface overlap, never a positive-gap shell
+             contact.kn = p.kn / (p.eta * length * rate);
+             contact.kt = p.kt / (p.eta * length * rate);
+             contact.mu = p.mu;
+             contact.mu_roll = p.mu_roll;
+-            contact.mu_twist = p.mu_twist;
+-            contact.roll_length = p.roll_length / length;
+-            contact.twist_length = p.twist_length / length;
++            // Singh a_ij=2*a_i*a_j/(a_i+a_j); monodisperse nominal radii give a_ij=a_ref.
++            contact.roll_length = p.reference_radius / length;
+             const double torque_scale = p.eta * std::pow(length,3) * rate;
+-            contact.kr = p.kr / torque_scale;
+-            contact.kw = p.kw / torque_scale;
++            contact.kr = p.kr * p.reference_radius * p.reference_radius / torque_scale;
+             V3 li = .5 * (vec(gap.leverI) + d + vec(gap.leverJ)), lj = li - d;
+             contact.Bi.leftCols<3>() = -M3::Identity();
+             contact.Bi.rightCols<3>() = cb::cross_matrix(li);
+@@ -536,7 +437,6 @@ void FixSlurryBridge::solve_velocities() {
+                 contact.rolling_history = vec(SlurryHistory::transport(arr(match.sign * h.rolling),
+                                                                arr(match.sign * h.normal),
+                                                                arr(contact.normal), arr(h.angle)));
+-                contact.twisting_history = h.twisting;
+               }
+             }
+             problem.contacts.push_back(contact);
+@@ -605,10 +505,10 @@ void FixSlurryBridge::solve_velocities() {
+       geometry.lattice = H;
+       geometry.kappa = kappa;
+       geometry.ambient_rotation = omega_inf;
+-      geometry.contact_onset = p.hc / length;
+-      geometry.flake = p.flake;
+-      geometry.gap_tolerance = 1e-8 * p.floor / length;
+-      geometry.enforce_work_balance = p.flake;
++      geometry.contact_onset = 0.;
++      geometry.flake = false;
++      geometry.gap_tolerance = 1e-8 * p.regularization_length / length;
++      geometry.enforce_work_balance = false;
+       geometry.images = std::move(contact_images);
+       auto consistent = step::solve(problem, geometry, options, p.have_warm ? &p.warm : nullptr);
+       auto result = std::move(consistent.solution);
+@@ -620,12 +520,9 @@ void FixSlurryBridge::solve_velocities() {
+           hydro -= result.total_moment[11 * i + 6 + k] * cb::strain_basis()[k];
+       p.pending.clear();
+       int contacts = 0;
+-      double normal_energy = 0., tangent_energy = 0., rolling_energy = 0., twisting_energy = 0.;
+-      double rolling_work = 0., twisting_work = 0., rotation_power = 0.;
+-      int rolling_yield = 0, twisting_yield = 0;
+-      int diagnostic_sliding = 0;
+-      double diagnostic_load_sum = 0., diagnostic_load_max = 0., diagnostic_sliding_work = 0.;
+-      std::vector<bool> diagnostic_contacted(diagnose ? n : 0, false);
++      double normal_energy = 0., tangent_energy = 0., rolling_energy = 0.;
++      double rolling_work = 0., rotation_power = 0.;
++      int rolling_yield = 0;
+       for (size_t k = 0; k < problem.contacts.size(); ++k) {
+         const auto &c = problem.contacts[k];
+         const auto &response = result.contacts[k];
+@@ -633,12 +530,9 @@ void FixSlurryBridge::solve_velocities() {
+         normal_energy += response.normal_energy;
+         tangent_energy += response.tangent_energy;
+         rolling_energy += response.rolling_energy;
+-        twisting_energy += response.twisting_energy;
+         rolling_work += response.rolling_work;
+-        twisting_work += response.twisting_work;
+         rotation_power += response.torque.dot(response.relative_rotation);
+         rolling_yield += response.rolling;
+-        twisting_yield += response.twisting;
+         contact_stress +=
+             .5 * (d * response.traction.transpose() + response.traction * d.transpose());
+         contact_moments.segment<6>(6 * c.i) -=
+@@ -647,17 +541,9 @@ void FixSlurryBridge::solve_velocities() {
+             bs::generalized_contact_map(c,false).transpose() * bs::contact_wrench(response);
+         if (response.active) {
+           ++contacts;
+-          if (diagnose) {
+-            diagnostic_contacted[c.i] = diagnostic_contacted[c.j] = true;
+-            diagnostic_sliding += response.sliding;
+-            diagnostic_sliding_work += response.sliding_work;
+-            diagnostic_load_sum += response.normal_load;
+-            diagnostic_load_max = std::max(diagnostic_load_max, response.normal_load);
+-          }
+           History h;
+           h.elastic = response.tangent_history;
+           h.rolling = response.rolling_history;
+-          h.twisting = response.twisting_history;
+           h.normal = c.normal;
+           h.angle = .5 * dt *
+                     (result.velocity.segment<3>(6 * c.i + 3) +
+@@ -676,76 +562,6 @@ void FixSlurryBridge::solve_velocities() {
+                    hydro_power = (solvent_power + result.hydro_power) * power_scale,
+                    contact_power = result.contact_power * power_scale;
+       const double stress_power = p.stress[3] * p.shear * volume * std::pow(length, 3);
+-      double rough_power = 0.;
+-      M3 rough_stress = M3::Zero();
+-      for (const auto &pair : rough_pairs) {
+-        Eigen::Matrix<double,22,1> qpair;
+-        qpair << result.q.segment<11>(11*pair.i), result.q.segment<11>(11*pair.j);
+-        const Eigen::Matrix<double,22,1> moment = pair.resistance * qpair;
+-        rough_power += qpair.dot(moment);
+-        for (int k=0;k<5;++k)
+-          rough_stress -= (moment[6+k]+moment[17+k])*cb::strain_basis()[k];
+-      }
+-      if (diagnose) {
+-        // Diagnostics never feed back into the accepted solution. A failed
+-        // diagnostic write disables only diagnostics, not the simulation.
+-        try {
+-          const double diagnostic_start = MPI_Wtime();
+-          fd::Accumulator accumulated(n);
+-          for (const auto &pair : diagnostic_pairs) accumulated.add(pair, result.q);
+-          const auto &observed = accumulated.total;
+-          const Eigen::VectorXd near_moment = problem.near_resistance * result.q;
+-          const double middle_power = result.q.dot(result.mid_moment);
+-          const double middle_stress = fd::global_shear_moment(result.mid_moment) * stress_scale;
+-          const double near_closure =
+-              (accumulated.face_moment + accumulated.rim_moment - near_moment).norm() /
+-              std::max(near_moment.norm(), 1e-100);
+-          const double power_closure =
+-              (observed.face_power + observed.rim_power + middle_power - result.hydro_power) /
+-              std::max(std::abs(result.hydro_power), 1e-100);
+-          const double stress_closure =
+-              (observed.face_shear_moment + observed.rim_shear_moment) * stress_scale +
+-              middle_stress - p.stress[1];
+-          const double time = simulation_time(), strain = std::abs(p.shear) * time;
+-          const double eta_denominator = p.eta * p.shear;
+-          auto relative_eta = [&](double stress) {
+-            return eta_denominator ? stress / eta_denominator : std::numeric_limits<double>::quiet_NaN();
+-          };
+-          const double force_scale = p.eta * length * length * rate;
+-          auto &o = p.flake_channels;
+-          o << update->ntimestep << ',' << time << ',' << strain << ',';
+-          fd::write_csv_values(o,observed,power_scale,stress_scale,length*rate);
+-          o << ',' << middle_power*power_scale << ',' << result.hydro_power*power_scale
+-            << ',' << solvent_power*power_scale << ',' << contact_power << ',' << stress_power
+-            << ',' << middle_stress << ',' << p.stress[1] << ',' << p.stress[2]
+-            << ',' << relative_eta(p.stress[3])
+-            << ',' << relative_eta(observed.face_shear_moment*stress_scale)
+-            << ',' << relative_eta(observed.rim_shear_moment*stress_scale)
+-            << ',' << relative_eta(middle_stress) << ',' << relative_eta(p.stress[2])
+-            << ',' << near_closure << ',' << power_closure << ',' << stress_closure
+-            << ',' << contacts << ',' << diagnostic_sliding << ','
+-            << std::count(diagnostic_contacted.begin(),diagnostic_contacted.end(),true)
+-            << ',' << diagnostic_load_sum*force_scale << ',' << diagnostic_load_max*force_scale
+-            << ',' << diagnostic_sliding_work/dt*power_scale
+-            << ',' << p.floor << ',' << diagnostic_pairs.capacity()*sizeof(fd::PairRecord)
+-            << ',' << diagnostic_capture_s << ',' << MPI_Wtime()-diagnostic_start << '\n';
+-          auto write_bin = [&](const char *kind,const char *label,const fd::Stats &stats) {
+-            p.flake_bins << update->ntimestep << ',' << time << ',' << strain << ',' << kind << ',' << label << ',';
+-            fd::write_csv_values(p.flake_bins,stats,power_scale,stress_scale,length*rate);
+-            p.flake_bins << '\n';
+-          };
+-          for (size_t k=0;k<accumulated.by_angle.size();++k)
+-            write_bin("angle",fd::angle_labels()[k],accumulated.by_angle[k]);
+-          for (size_t k=0;k<accumulated.by_gap.size();++k)
+-            write_bin("gap_over_floor",fd::gap_labels()[k],accumulated.by_gap[k]);
+-          o.flush(); p.flake_bins.flush();
+-          if (!o || !p.flake_bins) throw std::runtime_error("diagnostic CSV write failed");
+-          p.last_diagnostic = update->ntimestep;
+-        } catch (const std::exception &diagnostic_error) {
+-          std::fprintf(stderr,"WARNING: flake diagnostics disabled: %s; dynamics continue.\n",diagnostic_error.what());
+-          p.flake_diagnostics = false;
+-        }
+-      }
+       p.diag.fill(0);
+       p.diag[0] = p.stress[3];
+       p.diag[1] = p.shear ? p.stress[3] / p.shear : std::numeric_limits<double>::quiet_NaN();
+@@ -787,17 +603,10 @@ void FixSlurryBridge::solve_velocities() {
+       p.diag[37] = p.solver_workspace->coupled_numeric_factorizations;
+       p.diag[38] = p.solver_workspace->coupled_numeric_reuses;
+       p.diag[39] = p.solver_workspace->monitor_reuses;
+-      p.diag[40] = rough_pairs.size();
+-      p.diag[41] = rough_power * power_scale;
+-      p.diag[42] = rough_stress(0,2) * stress_scale;
+-      p.diag[43] = rolling_yield;
+-      p.diag[44] = twisting_yield;
+-      p.diag[45] = rolling_energy * energy_scale;
+-      p.diag[46] = twisting_energy * energy_scale;
+-      p.diag[47] = rolling_work / dt * power_scale;
+-      p.diag[48] = twisting_work / dt * power_scale;
+-      p.diag[49] = rotation_power * power_scale;
+-      p.diag[50] = rough_geometry_time;
++      p.diag[40] = rolling_yield;
++      p.diag[41] = rolling_energy * energy_scale;
++      p.diag[42] = rolling_work / dt * power_scale;
++      p.diag[43] = rotation_power * power_scale;
+       p.diag[16] = geometry_time;
+       p.diag[17] = middle_time;
+       p.diag[18] = solve_time;
+@@ -843,7 +652,7 @@ void FixSlurryBridge::solve_velocities() {
+     int j = it - records.begin();
+     for (int k = 0; k < 3; ++k)
+       atom->v[i][k] = physical[6 * j + k];
+-    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3), p.flake);
++    store_momentum(atom, p.avec, i, physical.segment<3>(6 * j + 3));
+     for (int k = 0; k < 17; ++k)
+       array_atom[i][k] = moments[17 * j + k];
+   }
+diff --git a/lammps_slurry/src/slurry_compact_bridge.h b/lammps_slurry/src/slurry_compact_bridge.h
+index 77cb845..7e02fe5 100644
+--- a/lammps_slurry/src/slurry_compact_bridge.h
++++ b/lammps_slurry/src/slurry_compact_bridge.h
+@@ -1,14 +1,19 @@
+ #ifndef SLURRY_COMPACT_BRIDGE_H
+ #define SLURRY_COMPACT_BRIDGE_H
+ 
+-// Validated compact lubrication connection, model v4 (2026-10-20).
++// Compact lubrication connection with Mari-style additive regularization.
+ // This is an explicit finite-gap approximation, not an exact Stokes solution.
+ // The normal-normal subleading logarithm is deliberately omitted.
+ // q_i = (U_i, Omega_i, e_i), e_i = -E_i, with orthonormal STF coordinates.
+ // The returned matrix maps physical q to ON-FLUID (F,T,strain-conjugate S).
+-// Geometry uses the actual surface gap; only scalar gap functions use max(h,hfloor).
++// Geometry uses the actual signed surface gap. Scalar resistance functions use
++// max(h,0)+regularization_length; that length is NOT a contact-onset distance.
++// The compact support uses max(h,0), so the regularization does not move its
++// geometric outer boundary. Shallow penalty overlap uses the contact-limit
++// scalar resistance while retaining the actual surface points and normal.
+ // The Schur completion is evaluated in coordinates nondimensionalized by L;
+-// changing L changes that finite, explicitly chosen model. Use L=c=150 nm.
++// changing L changes that finite, explicitly chosen model. The runtime uses the
++// fixed nominal radius, independent of AR, as L.
+ 
+ #include "../vendor/gr_re2/ellipsoidGap.h"
+ #include <Eigen/Dense>
+@@ -259,10 +264,12 @@ inline Mat11 center_map(const Mat3 &Q, const Vec3 &lever) {
+ } // namespace detail
+ 
+ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResult &gap, double eta,
+-                       double reference_length, double gap_floor, bool diagnostics = false) {
+-  if (!(eta > 0 && reference_length > 0 && gap_floor > 0) || !std::isfinite(eta) ||
+-      !std::isfinite(reference_length) || !std::isfinite(gap_floor) || !std::isfinite(gap.gap))
+-    throw std::invalid_argument("compact bridge needs finite eta,L,hfloor > 0 and finite gap");
++                       double reference_length, double regularization_length,
++                       bool diagnostics = false) {
++  if (!(eta > 0 && reference_length > 0 && regularization_length > 0) || !std::isfinite(eta) ||
++      !std::isfinite(reference_length) || !std::isfinite(regularization_length) ||
++      !std::isfinite(gap.gap))
++    throw std::invalid_argument("compact bridge needs finite eta,L,regularization_length > 0 and finite gap");
+   const double length = reference_length;
+   const Mat3 Ai = shape(bi, length), Aj = shape(bj, length);
+   const Vec3 n = vector(gap.normal).normalized(), li = vector(gap.leverI) / length,
+@@ -279,14 +286,15 @@ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResu
+   const double Lp = std::sqrt(ell_n / el.eigenvalues()[1]);
+   if (!(ell_n > 0 && Lp > 0))
+     throw std::runtime_error("non-positive curvature patch");
+-  const double he = std::max(gap.gap, gap_floor) / length;
++  const double physical_gap = std::max(gap.gap, 0.) / length;
++  const double he = physical_gap + regularization_length / length;
+   Result out;
+   out.gap = gap.gap;
+   out.effective_gap = he * length;
+   out.ell_n = ell_n * length;
+   out.ell_t = z.ell * length;
+   out.patch_width = Lp * length;
+-  out.weight = compact_weight(he / Lp);
++  out.weight = compact_weight(physical_gap / Lp);
+   out.normal_scale = ell_n / (he + ell_n);
+   out.active = out.weight > 0;
+   if (!out.active)
+@@ -336,8 +344,9 @@ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResu
+   return out;
+ }
+ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, double eta, double reference_length,
+-                       double gap_floor, gr::GapCache *cache = nullptr) {
+-  return evaluate(bi, bj, gr::closestEllipsoidGap(bi, bj, cache), eta, reference_length, gap_floor);
++                       double regularization_length, gr::GapCache *cache = nullptr) {
++  return evaluate(bi, bj, gr::closestEllipsoidGap(bi, bj, cache), eta, reference_length,
++                  regularization_length);
+ }
+ 
+ // Guaranteed compact support radius for bodies with maximum semiaxes ai,aj.
+diff --git a/lammps_slurry/tests/test_bridge_step.cpp b/lammps_slurry/tests/test_bridge_step.cpp
+index 8432406..bd7e746 100644
+--- a/lammps_slurry/tests/test_bridge_step.cpp
++++ b/lammps_slurry/tests/test_bridge_step.cpp
+@@ -47,11 +47,136 @@ bs::Contact contact(double gap, double onset, double stiffness, double separatio
+   c.Bj.rightCols<3>() = cross;
+   return c;
+ }
++
++// Construct pairs from analytic ellipsoid support points, independently of
++// the gap optimizer. Small negative offsets test signed penetration depth;
++// the intersecting surfaces themselves have zero unsigned distance.
++void check_signed_spheroid_gap() {
++  namespace gr = slurry::gr_re2::graphite;
++  const double radius = 4e-6; // Fixed 8 micrometre volume-equivalent diameter.
++  for (double ar : {1., 2., 2.09, 3., 5.}) {
++    const double a = radius * std::cbrt(ar), c = a / ar;
++    for (int orientation = 0; orientation < 12; ++orientation) {
++      gr::Body first, second;
++      first.axes = second.axes = {a, a, c};
++      first.rotation = gr::rotationIncrement({.11*orientation, -.17, .23});
++      second.rotation = gr::rotationIncrement({-.27, .07*orientation, -.31});
++      const auto n = gr::normalized(gr::Vec3{std::sin(.7*orientation+.2),
++                                            std::cos(.9*orientation+.3), .4});
++      const auto qi = gr::rotatedDiagonal(first.rotation, {a*a,a*a,c*c});
++      const auto qj = gr::rotatedDiagonal(second.rotation, {a*a,a*a,c*c});
++      const auto qin = gr::mul(qi,n), qjn = gr::mul(qj,n);
++      const auto pi = gr::scale(qin,1./std::sqrt(gr::dot(n,qin)));
++      const auto pj = gr::scale(qjn,-1./std::sqrt(gr::dot(n,qjn)));
++      for (double gap : {8e-9, 0., -1e-10, -4e-9}) {
++        second.position = gr::add(gr::sub(pi,pj),gr::scale(n,gap));
++        const auto actual = gr::closestEllipsoidGap(first,second);
++        require(std::abs(actual.gap-gap)<5e-12*a,
++                "AR 1-5 signed spheroid gap differs from exact support construction");
++        require(gr::norm(gr::sub(actual.normal,n))<2e-9,
++                "AR 1-5 shallow-overlap normal differs from exact support construction");
++        require(gr::norm(gr::sub(gr::sub(second.position,actual.leverI),
++                                gr::sub(gr::scale(actual.normal,actual.gap),actual.leverJ)))<1e-10*a,
++                "signed-gap support points do not close along the returned normal");
++        // The same answer must survive a change of length units.
++        auto scaled_first = first, scaled_second = second;
++        for (int k=0;k<3;++k) {
++          scaled_first.axes[k] /= radius;
++          scaled_second.axes[k] /= radius;
++          scaled_second.position[k] /= radius;
++        }
++        const auto scaled = gr::closestEllipsoidGap(scaled_first,scaled_second);
++        require(std::abs(scaled.gap*radius-actual.gap)<5e-12*a,
++                "signed gap depends on metre versus reference-radius units");
++      }
++    }
++  }
++}
++
++void check_surface_zero_contact() {
++  const double aij=4e-6, kr_force=80., dt=1e-6, overlap=1e-9;
++  auto c=contact(-overlap,0.,100.,8e-6-overlap);
++  c.kt=80.; c.mu=.7; c.mu_roll=.4; c.roll_length=aij;
++  c.kr=kr_force*aij*aij;
++  c.history=Vec3(1e-9,0.,0.);
++  c.rolling_history=Vec3(0.,1e-4,0.);
++  auto zero=bs::Vector::Zero(12).eval();
++  for (double gap : {8e-9, 1e-15, 0.}) {
++    const auto response=bs::contact_response(c,zero,dt,gap);
++    require(!response.active && response.normal_load==0. &&
++            response.traction.isZero() && response.torque.isZero() &&
++            response.tangent_history.isZero() && response.rolling_history.isZero(),
++            "surface-zero law retained force, torque or spring history without overlap");
++  }
++  c.history.setZero(); c.rolling_history.setZero();
++  const auto normal=bs::contact_response(c,zero,dt,-overlap);
++  require(std::abs(normal.normal_load-100.*overlap)<1e-22,
++          "surface-zero normal force is not kn times the actual overlap");
++  require(normal.active && normal.traction.dot(c.normal)<0.,
++          "negative gap must produce a repulsive normal penalty");
++
++  // Singh's quasi-force spring has displacement units and torque aij*n x F.
++  // The solver instead stores angular history, so its stiffness is kr*aij^2.
++  bs::Vector rolling=zero;
++  rolling.segment<3>(9)=Vec3(.7,-.2,.6);
++  const auto elastic=bs::contact_response(c,rolling,dt,-overlap);
++  const Vec3 psi=aij*dt*elastic.relative_rotation.cross(c.normal);
++  const Vec3 expected=aij*c.normal.cross(kr_force*psi);
++  require(!elastic.rolling && (elastic.torque-expected).norm()<1e-28,
++          "angular rolling spring differs from Singh's quasi-force formulation");
++  require(std::abs(elastic.rolling_energy-.5*kr_force*psi.squaredNorm())<1e-33,
++          "rolling spring energy changed under angular-history normalization");
++
++  rolling[6]=1.; rolling[9]=1e5;
++  const auto yielded=bs::contact_response(c,rolling,dt,-overlap);
++  require(yielded.sliding && yielded.rolling,
++          "large sliding and rolling trial motions failed to reach Coulomb caps");
++  require(std::abs(yielded.tangent_force.norm()-c.mu*yielded.normal_load)<1e-22 &&
++          std::abs(yielded.torque.norm()-c.mu_roll*aij*yielded.normal_load)<1e-28,
++          "sliding or rolling cap differs from mu_s*Fn or mu_r*aij*Fn");
++  const bs::V6 force_i=-bs::generalized_contact_map(c,true).transpose()*bs::contact_wrench(yielded);
++  const bs::V6 force_j=-bs::generalized_contact_map(c,false).transpose()*bs::contact_wrench(yielded);
++  require((force_i.head<3>()+force_j.head<3>()).norm()<1e-25 &&
++          yielded.torque.dot(yielded.relative_rotation)>0.,
++          "contact signs do not give opposite forces and resist relative rolling");
++
++  bs::Vector common=zero;
++  common.segment<3>(3)=common.segment<3>(9)=Vec3(.7,-.2,.6);
++  require(bs::contact_response(c,common,dt,-overlap).torque.isZero(),
++          "common rigid rotation incorrectly charged the rolling spring");
++  bs::Vector twist=zero; twist[11]=100.;
++  require(bs::contact_response(c,twist,dt,-overlap).torque.isZero(),
++          "rolling-only model incorrectly resists twisting about the normal");
++
++}
++
+ int main() {
++  check_signed_spheroid_gap();
++  check_surface_zero_contact();
+   bs::Options options;
+   options.relative_tolerance = 1e-10;
+   options.absolute_tolerance = 1e-12;
+   options.linear_relative_tolerance = 1e-11;
++  // Exact implicit endpoint penalty at zero surface onset, including real
++  // negative gaps, for the entire supported AR range. Identity self mobility
++  // makes the compressed pair an independently solvable scalar problem.
++  for (double ar : {1.,2.,2.09,3.,5.}) {
++    auto pair=problem();
++    const double a=std::cbrt(ar), minor=a/ar, initial_gap=1e-3;
++    const double separation=2.*minor+initial_gap, load=2., stiffness=100.;
++    pair.external[2]=load; pair.external[8]=-load;
++    pair.contacts.push_back(contact(initial_gap,0.,stiffness,separation));
++    const auto shape=geometry(a,minor,separation);
++    const auto state=st::solve(pair,shape,options);
++    const double expected_gap=(initial_gap-2.*pair.dt*load)/(1.+2.*pair.dt*stiffness);
++    require(expected_gap<0. && std::abs(state.endpoint.gaps[0]-expected_gap)<2e-12,
++            "surface-zero endpoint solve rejected or changed the finite overlap");
++    require(std::abs(state.solution.contacts[0].normal_load+stiffness*expected_gap)<2e-10,
++            "surface-zero endpoint normal load differs from analytic implicit penalty");
++    require(std::abs(state.solution.contacts[0].normal_load+
++                     stiffness*state.endpoint.gaps[0])<1e-13,
++            "surface-zero contact force is inconsistent with accepted endpoint geometry");
++  }
+   // A symmetric counter-rotation fixture has an exact endpoint gap:
+   // h = d + 2*dt*N - 2*sqrt(a^2 sin^2(theta)+c^2 cos^2(theta)).
+   // At theta=0 the first derivative of rotational gap closure is ZERO.
+diff --git a/lammps_slurry/tests/test_bridge_tools.py b/lammps_slurry/tests/test_bridge_tools.py
+index 2c1e6e5..5359cef 100644
+--- a/lammps_slurry/tests/test_bridge_tools.py
++++ b/lammps_slurry/tests/test_bridge_tools.py
+@@ -2,6 +2,8 @@
+ """Packing/image and averaging regressions for the new runtime tools."""
+ import csv
+ import importlib.util
++import contextlib
++import io
+ import json
+ import math
+ import os
+@@ -85,7 +87,7 @@ class BridgeToolsTest(unittest.TestCase):
+             environment.update(PATH=str(stub.parent)+os.pathsep+os.environ["PATH"],
+                                SLURRY_ROOT=str(root), SLURM_JOB_ID="12345", SLURM_CPUS_PER_TASK="16",
+                                CAPTURE=str(capture))
+-            for ar, count, shape in ((2, 500, "spheroid"), (5, 123, "flake")):
++            for ar, count, shape in ((2, 500, "spheroid"), (5, 123, "spheroid")):
+                 # Users edit these assignments for each run. Configure only the
+                 # temporary test copy by name, independent of their saved values.
+                 # Literal replacements such as AR=2 silently miss AR=20.
+@@ -93,10 +95,8 @@ class BridgeToolsTest(unittest.TestCase):
+                     "PARTICLE_SHAPE": shape, "AR": ar, "COUNT": count,
+                     "PHI": .24, "STEPS": 100000, "OUTPUT_INTERVAL": 100,
+                     "NORMAL_STIFFNESS": 100, "MOBILITY_BACKEND": "mesh",
+-                    "FRICTION": .3, "ROUGH_HYDRO": int(shape == "spheroid"),
+-                    "ROLLING_FRICTION": .3 if shape == "spheroid" else 0,
+-                    "TWISTING_FRICTION": .1 if shape == "spheroid" else 0,
+-                    "ROLLING_LENGTH_MODE": "particle",
++                    "FRICTION": 10, "ROLLING_FRICTION": 10, "ROLLING_STIFFNESS": 80,
++                    "NOMINAL_DIAMETER_UM": 8, "LUBRICATION_EPSILON": .001,
+                     "OUTPUT_DIR": '""', "BUILD_ENV": '""',
+                     "PREPARE_ONLY": 0, "TRACE_SOLVER": 0,
+                 }
+@@ -131,138 +131,117 @@ class BridgeToolsTest(unittest.TestCase):
+                 self.assertEqual(args.output_interval, 100)
+                 self.assertEqual(args.normal_stiffness, 100.)
+                 self.assertEqual(args.mobility_backend, "mesh")
+-                self.assertEqual(args.friction, .3)
+-                self.assertEqual(args.rough_hydro, int(shape == "spheroid"))
+-                self.assertEqual(args.rolling_friction, .3 if shape == "spheroid" else 0.)
+-                self.assertEqual(args.twisting_friction, .1 if shape == "spheroid" else 0.)
+-                self.assertEqual(args.rolling_length_mode, "particle")
++                self.assertEqual(args.friction, 10.)
++                self.assertEqual(args.rolling_friction, 10.)
++                self.assertEqual(args.rolling_stiffness, 80.)
++                self.assertEqual(args.nominal_diameter_um, 8.)
++                self.assertEqual(args.lubrication_epsilon, .001)
+                 self.assertIn("12345", str(args.output))
+ 
+     def test_defaults_and_explicit_physical_overrides(self):
+         defaults = prepare.parser().parse_args(["--output", "unused"])
++        prepare.validate_args(defaults)
++        self.assertEqual(defaults.ar, 2.)
++        self.assertEqual(defaults.count, 500)
++        self.assertEqual(defaults.nominal_diameter_um, 8.)
++        self.assertEqual(defaults.lubrication_epsilon, .001)
+         self.assertEqual(defaults.normal_stiffness, 100.)
+-        self.assertEqual(defaults.contact_gap_nm, 3.)
+         self.assertEqual(defaults.tangential_stiffness, 80.)
++        self.assertEqual(defaults.rolling_stiffness, 80.)
++        self.assertEqual(defaults.friction, 10.)
++        self.assertEqual(defaults.rolling_friction, 10.)
+         self.assertEqual(defaults.mobility_backend, "mesh")
+         self.assertEqual(defaults.shape, "spheroid")
+-        self.assertEqual(defaults.rough_hydro, 0)
+-        self.assertEqual(defaults.rolling_friction, 0.)
+-        self.assertEqual(defaults.twisting_friction, 0.)
+-        self.assertEqual(defaults.rolling_length_mode, "roughness")
+-        options, models = prepare.surface_models(defaults)
+-        self.assertEqual(options, "")
+-        self.assertFalse(models["rough_hydrodynamics"]["enabled"])
+-        self.assertFalse(models["rotation_contact"]["enabled"])
+-        explicit = prepare.parser().parse_args(["--output", "unused", "--normal-stiffness", "250",
+-                                                "--contact-gap-nm", "2", "--mobility-backend", "direct"])
++        explicit = prepare.parser().parse_args([
++            "--output", "unused", "--normal-stiffness", "250", "--friction", "0",
++            "--rolling-friction", "0", "--rolling-stiffness", "40", "--mobility-backend", "direct"])
++        prepare.validate_args(explicit)
+         self.assertEqual(explicit.normal_stiffness, 250.)
+-        self.assertEqual(explicit.contact_gap_nm, 2.)
++        self.assertEqual(explicit.rolling_stiffness, 40.)
++        self.assertEqual(explicit.rolling_friction, 0.)
+         self.assertEqual(explicit.mobility_backend, "direct")
+ 
+-    def test_surface_model_preparation_resolves_si_parameters_and_keeps_contact_gap(self):
++    def test_fixed_nominal_diameter_and_regularization_across_ar(self):
+         with tempfile.TemporaryDirectory() as temporary:
+-            output = Path(temporary)/"case"
+-            args = prepare.parser().parse_args([
+-                "--output", str(output), "--initialization", "aligned", "--ar", "2",
+-                "--count", "1", "--phi", ".01", "--steps", "0",
+-                "--normal-stiffness", "1", "--tangential-stiffness", ".8",
+-                "--contact-gap-nm", "30", "--rough-hydro", "1",
+-                "--rolling-friction", ".1", "--twisting-friction", ".2"])
+-            with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}):
+-                record = prepare.prepare(args)
+-            persisted = json.loads((output/"parameters.json").read_text())
+-            self.assertEqual(record["rough_hydrodynamics"], persisted["rough_hydrodynamics"])
+-            self.assertEqual(record["rotation_contact"], persisted["rotation_contact"])
+-            rough, rotation = record["rough_hydrodynamics"], record["rotation_contact"]
+-            self.assertTrue(rough["enabled"])
+-            self.assertTrue(rotation["enabled"])
+-            self.assertAlmostEqual(rough["height_per_surface_m"]/15e-9, 1.)
+-            self.assertAlmostEqual(rough["footprint_radius_m"]/150e-9, 1.)
+-            self.assertAlmostEqual(rotation["rolling_stiffness_Nm_per_rad"]/(150e-9)**2, 1.)
+-            self.assertEqual(rotation["rolling_length_mode"], "roughness")
+-            self.assertEqual(rotation["rolling_length_source"], "rough_footprint_radius")
+-            self.assertAlmostEqual(rotation["twisting_stiffness_Nm_per_rad"]/(.8*(150e-9)**2), 1.)
+-            self.assertEqual(record["hydro_gap_rule"], "max(actual_gap, gap_floor)")
+-            self.assertEqual(record["contact_gap_nm"], 30.)
+-            self.assertEqual(record["gap_floor_nm"], 1.)
+-            self.assertIn("not measured", record["surface_parameter_basis"])
+-            force_line = next(line for line in (output/"in.bridge").read_text().splitlines()
+-                              if line.startswith("fix hydro ")).split()
+-            index = force_line.index("rough_hydro")
+-            actual = list(map(float, force_line[index+1:index+4]))
+-            for value, expected in zip(actual, (15e-9, 150e-9, .2)):
+-                self.assertAlmostEqual(value/expected, 1.)
+-            index = force_line.index("rotation_contact")
+-            actual = list(map(float, force_line[index+1:index+7]))
+-            expected = (.1, .2, 150e-9, 150e-9, (150e-9)**2, .8*(150e-9)**2)
+-            for value, wanted in zip(actual, expected):
+-                self.assertAlmostEqual(value/wanted, 1.)
+-            self.assertAlmostEqual(float(force_line[force_line.index("contact")+1])/30e-9, 1.)
+-
+-    def test_surface_model_explicit_parameters_and_independent_switches(self):
+-        args = prepare.parser().parse_args([
+-            "--output", "unused", "--rough-hydro", "1", "--rough-height-nm", "4",
+-            "--rough-width-nm", "40", "--rough-coverage", ".3",
+-            "--rolling-friction", ".25", "--twisting-friction", ".5",
+-            "--rolling-length-mode", "particle", "--rolling-length-nm", "25", "--twisting-length-nm", "30",
+-            "--rolling-stiffness", "1e-15", "--twisting-stiffness", "2e-15"])
+-        options, metadata = prepare.surface_models(args)
+-        values = options.split()
+-        self.assertEqual(values[0], "rough_hydro")
+-        self.assertEqual(values[4], "rotation_contact")
+-        rotation = metadata["rotation_contact"]
+-        self.assertAlmostEqual(rotation["rolling_length_m"]/25e-9, 1.)
+-        self.assertEqual(rotation["rolling_length_mode"], "particle")
+-        self.assertEqual(rotation["rolling_length_source"], "explicit_nm")
+-        self.assertAlmostEqual(rotation["twisting_length_m"]/30e-9, 1.)
+-        self.assertEqual(rotation["rolling_stiffness_Nm_per_rad"], 1e-15)
+-        self.assertEqual(rotation["twisting_stiffness_Nm_per_rad"], 2e-15)
+-        args.rough_hydro = 0
+-        self.assertNotIn("rough_hydro", prepare.surface_models(args)[0])
+-        self.assertIn("rotation_contact", prepare.surface_models(args)[0])
+-        args.rough_hydro, args.rolling_friction, args.twisting_friction = 1, 0., 0.
+-        self.assertIn("rough_hydro", prepare.surface_models(args)[0])
+-        self.assertNotIn("rotation_contact", prepare.surface_models(args)[0])
+-
+-    def test_particle_rolling_length_tracks_ar_and_thickness_independently_of_roughness(self):
+-        for ar, thickness_nm in ((2., 300.), (20., 300.), (30., 400.)):
+-            with self.subTest(ar=ar, thickness_nm=thickness_nm):
++            volumes, boxes = [], []
++            for ar in (1., 2., 5.):
++                output = Path(temporary)/str(ar)
+                 args = prepare.parser().parse_args([
+-                    "--output", "unused", "--ar", str(ar), "--thickness-nm", str(thickness_nm),
+-                    "--contact-gap-nm", "10", "--friction", ".3", "--rough-height-nm", "9",
+-                    "--rough-width-nm", "45", "--rolling-friction", ".3", "--twisting-friction", ".1",
+-                    "--rolling-length-mode", "particle"])
+-                options, metadata = prepare.surface_models(args)
+-                rotation = metadata["rotation_contact"]
+-                radius = .5*ar*thickness_nm*1e-9
+-                self.assertAlmostEqual(rotation["rolling_length_m"]/radius, 1.)
+-                self.assertEqual(rotation["rolling_length_source"], "particle_major_radius")
+-                self.assertAlmostEqual(rotation["rolling_stiffness_Nm_per_rad"]/(100*radius**2), 1.)
+-                self.assertAlmostEqual(rotation["twisting_length_m"]/45e-9, 1.)
+-                self.assertAlmostEqual(rotation["twisting_stiffness_Nm_per_rad"]/(80*(45e-9)**2), 1.)
+-                self.assertEqual(options.split()[0], "rotation_contact")
+-                values = list(map(float, options.split()[1:]))
+-                for value, expected in zip(values, (.3, .1, radius, 45e-9, 100*radius**2, 80*(45e-9)**2)):
+-                    self.assertAlmostEqual(value/expected, 1.)
++                    "--output", str(output), "--initialization", "aligned", "--ar", str(ar),
++                    "--count", "1", "--phi", ".01", "--steps", "0"])
++                with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}):
++                    record = prepare.prepare(args)
++                persisted = json.loads((output/"parameters.json").read_text())
++                self.assertEqual(json.loads(json.dumps(record)), persisted)
++                self.assertAlmostEqual(record["a_m"]/record["c_m"], ar, places=13)
++                self.assertAlmostEqual(record["particle_volume_m3"]/(math.pi*(8e-6)**3/6), 1.)
++                self.assertAlmostEqual(record["reference_radius_m"]/4e-6, 1.)
++                self.assertEqual(record["computational_length_m"], record["reference_radius_m"])
++                self.assertAlmostEqual(record["lubrication_regularization_m"]/4e-9, 1.)
++                self.assertEqual(record["full_axes_m"], [2*record["a_m"], 2*record["a_m"], 2*record["c_m"]])
++                self.assertEqual(record["initial_surface_gap_target_m"], 0.)
++                self.assertEqual(record["rolling_contact"]["rolling_stiffness_N_per_m"], 80.)
++                self.assertAlmostEqual(record["rolling_contact"]["equivalent_angular_stiffness_Nm_per_rad"]/(80*(4e-6)**2), 1.)
++                self.assertEqual(record["rolling_contact"]["reference_radius_m"], record["reference_radius_m"])
++                self.assertIn("not measured", record["friction_parameter_basis"])
++                self.assertIn("max(actual_gap,0)", record["hydro_gap_rule"])
++                for retired in ("thickness_nm", "contact_gap_nm", "gap_floor_nm", "rough_hydrodynamics",
++                                "rotation_contact", "rolling_length_mode", "twisting_friction"):
++                    self.assertNotIn(retired, record)
++                force = next(line for line in (output/"in.bridge").read_text().splitlines()
++                             if line.startswith("fix hydro ")).split()
++                self.assertEqual(force[3], "slurry/bridge")
++                self.assertAlmostEqual(float(force[6])/8e-6, 1.)
++                self.assertEqual(float(force[7]), .001)
++                self.assertEqual(float(force[8]), 100.)
++                self.assertEqual(force[9:15], ["contact", "10", "80", "rolling", "10", "80"])
++                self.assertNotIn("rough_hydro", force)
++                self.assertNotIn("rotation_contact", force)
++                axes_row = (output/"particles.data").read_text().split("Ellipsoids\n\n", 1)[1].splitlines()[0]
++                axes = list(map(float, axes_row.split()[1:4]))
++                self.assertEqual(axes, record["full_axes_m"])
++                volumes.append(record["particle_volume_m3"])
++                boxes.append(record["box_length_m"])
++            for value in volumes:
++                self.assertAlmostEqual(value/volumes[0], 1.)
++            for value in boxes:
++                self.assertAlmostEqual(value/boxes[0], 1.)
+ 
+-    def test_invalid_surface_models_fail_before_creating_run_directory(self):
+-        cases = ((["--shape", "flake", "--rough-hydro", "1"], "spheroid-only"),
+-                 (["--shape", "flake", "--rolling-friction", ".1"], "spheroid-only"),
+-                 (["--shape", "flake", "--twisting-friction", ".1"], "spheroid-only"),
+-                 (["--rough-hydro", "1", "--contact-gap-nm", "0"], "positive rough height"),
+-                 (["--rough-hydro", "1", "--rough-height-nm", "3", "--rough-width-nm", "5"], "at least twice"),
+-                 (["--rough-coverage", "1.01"], "between 0 and 1"),
+-                 (["--rough-width-nm", "nan"], "finite and nonnegative"),
+-                 (["--rolling-friction", "-.1"], "finite and nonnegative"),
+-                 (["--twisting-stiffness", "inf"], "finite and nonnegative"))
++    def test_retired_surface_flags_and_flake_are_rejected(self):
++        retired = ("--thickness-nm", "--gap-floor-nm", "--contact-gap-nm", "--rough-hydro",
++                   "--rough-height-nm", "--rough-width-nm", "--rough-coverage", "--twisting-friction",
++                   "--twisting-stiffness", "--twisting-length-nm", "--rolling-length-nm",
++                   "--rolling-length-mode")
++        for flag in retired:
++            with self.subTest(flag=flag), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
++                prepare.parser().parse_args(["--output", "unused", flag, "1"])
++        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
++            prepare.parser().parse_args(["--output", "unused", "--shape", "flake"])
++
++    def test_invalid_contact_parameters_fail_before_creating_run_directory(self):
++        cases = (["--ar", ".9"], ["--ar", "5.1"], ["--nominal-diameter-um", "0"],
++                 ["--nominal-diameter-um", "inf"], ["--lubrication-epsilon", "0"],
++                 ["--lubrication-epsilon", "nan"], ["--rolling-friction", "-.1"],
++                 ["--friction", "inf"], ["--rolling-stiffness", "0"], ["--rolling-stiffness", "nan"])
+         with tempfile.TemporaryDirectory() as temporary:
+-            for number, (flags, message) in enumerate(cases):
++            for number, flags in enumerate(cases):
+                 output = Path(temporary)/str(number)
+                 args = prepare.parser().parse_args(["--output", str(output)]+flags)
+-                with self.subTest(flags=flags), self.assertRaisesRegex(ValueError, message):
++                with self.subTest(flags=flags), self.assertRaises(ValueError):
+                     prepare.prepare(args)
+                 self.assertFalse(output.exists())
+ 
++    def test_runner_rejects_retired_options_before_snapshot(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            output = Path(temporary)/"case"
++            with mock.patch.object(sys, "argv", ["run_bridge.py", "--output", str(output),
++                                                 "--contact-gap-nm", "3"]), \
++                 mock.patch.object(runner, "freeze_runtime") as freeze, \
++                 contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
++                runner.main()
++            freeze.assert_not_called()
++            self.assertFalse(output.exists())
++
+     def test_cylinder_volume_mass_and_storage_density(self):
+         a, c, density = 3e-6, 150e-9, 2400.
+         cylinder = prepare.particle_volume(a, c, "flake")
+@@ -280,32 +259,16 @@ class BridgeToolsTest(unittest.TestCase):
+             self.assertEqual(storage_density, 3600.)
+             self.assertAlmostEqual(storage_density*spheroid/(density*cylinder), 1.)
+ 
+-    def test_flake_preparation_uses_cylinder_volume_and_shape_certificate(self):
+-        with tempfile.TemporaryDirectory() as temporary:
+-            output = Path(temporary)/"case"
+-            args = prepare.parser().parse_args(["--output", str(output), "--shape", "flake",
+-                                                "--initialization", "aligned", "--steps", "0"])
+-            with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}), \
+-                 mock.patch.object(prepare, "verify_packing", side_effect=AssertionError("PW is not cylinder certification")):
+-                record = prepare.prepare(args)
+-            self.assertEqual(record["particle_shape"], "flake")
+-            self.assertEqual(record["model"], "cylinder_reynolds_rim_periodic")
+-            actual_phi = args.count*2*math.pi*record["a_m"]**2*record["c_m"]/record["box_length_m"]**3
+-            self.assertAlmostEqual(actual_phi, args.phi, places=12)
+-            self.assertIn("shape flake", (output/"in.bridge").read_text())
+-            self.assertIsNone(record["packing_max_PW_overlap"])
+-            self.assertIn("matched spheroid", record["middle_self_geometry"])
+-
+-    def test_flake_rejects_spheroid_clearance_certificate(self):
++    def test_spheroid_rejects_wrong_shape_clearance_certificate(self):
+         with tempfile.TemporaryDirectory() as temporary:
+             output = Path(temporary)
+-            args = prepare.parser().parse_args(["--output", str(output), "--shape", "flake", "--packer", sys.executable])
++            args = prepare.parser().parse_args(["--output", str(output), "--packer", sys.executable])
+             q = (1., 0., 0., 0.)
+             particles = [((0., 0., 0.), q, prepare.shape_matrix(q, .5))]
+             def certificate(command, **kwargs):
+-                self.assertEqual(command[command.index("--shape")+1], "flake")
++                self.assertEqual(command[command.index("--shape")+1], "spheroid")
+                 (output/"packing_clearance.json").write_text(json.dumps({
+-                    "certified": True, "particle_shape": "spheroid", "target_gap_m": 3e-9,
++                    "certified": True, "particle_shape": "flake", "target_gap_m": 0.,
+                     "minimum_surface_gap_m": 4e-9, "max_clearance_deficit_m": 0.,
+                     "nominal_volume_fraction": args.phi, "checked_pair_images": 1}))
+                 return prepare.subprocess.CompletedProcess(command, 0, stdout="")
+@@ -330,8 +293,8 @@ class BridgeToolsTest(unittest.TestCase):
+         self.assertGreater(images, 0)
+         self.assertEqual(packing["lattice"], (2, 2, 27))
+ 
+-    def test_generated_xz_input_uses_one_nm_actual_gap_floor(self):
+-        self.assertTrue(TEST_PACKER.is_file(), "Set SLURRY_TEST_PACKER to the compiled geometry packer")
++    @unittest.skipUnless(TEST_PACKER.is_file(), "compiled packer supplied by CTest")
++    def test_generated_xz_input_uses_mari_normalized_gap(self):
+         with tempfile.TemporaryDirectory() as temporary:
+             output = Path(temporary)/"case"
+             args = prepare.parser().parse_args(["--output", str(output), "--initialization", "aligned",
+@@ -343,7 +306,8 @@ class BridgeToolsTest(unittest.TestCase):
+             self.assertNotIn('plugin load "${slurry_plugin}"', text)
+             self.assertIn("slurry/bridge", text)
+             self.assertNotIn("finite_gap", text)
+-            self.assertEqual(record["gap_floor_nm"], 1.)
++            self.assertEqual(record["lubrication_epsilon"], .001)
++            self.assertAlmostEqual(record["lubrication_regularization_m"]/4e-9, 1.)
+             self.assertEqual(record["spectral"], 2.)
+             self.assertEqual(record["normal_stiffness"], 100.)
+             self.assertEqual(record["mobility_backend"], "mesh")
+@@ -351,10 +315,10 @@ class BridgeToolsTest(unittest.TestCase):
+             self.assertIn("not a total", record["spectral_tolerance_scope"])
+             self.assertTrue(record["packing_clearance"]["certified"])
+             self.assertGreater(record["packing_clearance"]["checked_pair_images"], 0)
+-            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 3e-9)
++            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 0.)
+             self.assertEqual(record["packing_clearance"]["max_clearance_deficit_m"], 0.)
+             force_line = next(line for line in text.splitlines() if line.startswith("fix hydro ")).split()
+-            self.assertEqual(float(force_line[7]), 100.)
++            self.assertEqual(float(force_line[8]), 100.)
+             self.assertIn("mobility_backend mesh", text)
+             with self.assertRaisesRegex(ValueError, "already exists"):
+                 prepare.prepare(args)
+@@ -376,42 +340,17 @@ class BridgeToolsTest(unittest.TestCase):
+             args = prepare.parser().parse_args([
+                 "--output", str(output), "--packer", str(TEST_PACKER), "--count", "16",
+                 "--ar", "2", "--phi", ".1", "--steps", "0", "--normal-stiffness", "250",
+-                "--contact-gap-nm", "2", "--mobility-backend", "direct"])
++                "--lubrication-epsilon", ".002", "--mobility-backend", "direct"])
+             record = prepare.prepare(args)
+             self.assertEqual(record["normal_stiffness"], 250.)
+             self.assertEqual(record["mobility_backend"], "direct")
+-            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 2e-9)
++            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 0.)
+             self.assertEqual(record["packing_clearance"]["max_clearance_deficit_m"], 0.)
+             self.assertAlmostEqual(record["packing_clearance"]["nominal_volume_fraction"], .1)
+             force_line = next(line for line in (output/"in.bridge").read_text().splitlines()
+                               if line.startswith("fix hydro ")).split()
+-            self.assertEqual(float(force_line[7]), 250.)
+-            self.assertEqual(float(force_line[9]), 2e-9)
+-
+-    @unittest.skipUnless(TEST_PACKER.is_file(), "compiled packer supplied by CTest")
+-    def test_random_flake_preparation_has_physical_phi_and_cylinder_clearance(self):
+-        with tempfile.TemporaryDirectory() as temporary:
+-            output = Path(temporary)/"case"
+-            args = prepare.parser().parse_args([
+-                "--output", str(output), "--packer", str(TEST_PACKER), "--shape", "flake",
+-                "--count", "16", "--ar", "2", "--phi", ".1", "--steps", "0"])
+-            record = prepare.prepare(args)
+-            self.assertEqual(record["initialization"], "random")
+-            self.assertEqual(record["packing_clearance"]["particle_shape"], "flake")
+-            self.assertTrue(record["packing_clearance"]["certified"])
+-            self.assertGreaterEqual(record["packing_clearance"]["minimum_surface_gap_m"], 3e-9)
+-            self.assertEqual(record["packing_clearance"]["max_clearance_deficit_m"], 0.)
+-            self.assertAlmostEqual(record["packing_clearance"]["nominal_volume_fraction"], .1)
+-            self.assertIn("shape flake", (output/"in.bridge").read_text())
+-            rows = (output/"packing.final").read_text().splitlines()[1:]
+-            axes = []
+-            for row in rows:
+-                w, x, y, z = map(float, row.split()[3:])
+-                axes.append((2*(x*z+w*y), 2*(y*z-w*x), 1-2*(x*x+y*y)))
+-            # The random path may align physically during packing, but must
+-            # never replace the seed with an exactly identical-axis lattice.
+-            spread = sum((axis[k]-axes[0][k])**2 for axis in axes for k in range(3))
+-            self.assertGreater(spread, 1e-6)
++            self.assertEqual(float(force_line[8]), 250.)
++            self.assertEqual(float(force_line[7]), .002)
+ 
+     def test_clearance_certificate_must_match_requested_gap(self):
+         with tempfile.TemporaryDirectory() as temporary:
+@@ -421,7 +360,7 @@ class BridgeToolsTest(unittest.TestCase):
+             particles = [((0., 0., 0.), q, prepare.shape_matrix(q, .5))]
+             def certificate(command, **kwargs):
+                 self.assertEqual(command[command.index("--certify-only")+1], "1")
+-                self.assertAlmostEqual(float(command[command.index("--contact-gap-m")+1]), 3e-9)
++                self.assertEqual(float(command[command.index("--contact-gap-m")+1]), 0.)
+                 (output/"packing_clearance.json").write_text(json.dumps({
+                     "certified": True, "target_gap_m": 1e-9, "minimum_surface_gap_m": 4e-9,
+                     "max_clearance_deficit_m": 0., "nominal_volume_fraction": args.phi,
+@@ -437,12 +376,12 @@ class BridgeToolsTest(unittest.TestCase):
+             args = prepare.parser().parse_args(["--output", str(output), "--packer", sys.executable])
+             q = (1., 0., 0., 0.)
+             particles = [((0., 0., 0.), q, prepare.shape_matrix(q, .5))]
+-            valid = {"certified": True, "target_gap_m": 3e-9, "minimum_surface_gap_m": 4e-9,
++            valid = {"certified": True, "target_gap_m": 0., "minimum_surface_gap_m": 4e-9,
+                      "max_clearance_deficit_m": 0., "nominal_volume_fraction": args.phi,
+                      "checked_pair_images": 1}
+             for field, value in (("minimum_surface_gap_m", float("nan")),
+                                  ("minimum_surface_gap_m", float("inf")),
+-                                 ("minimum_surface_gap_m", 2.9e-9),
++                                 ("minimum_surface_gap_m", -1e-12),
+                                  ("max_clearance_deficit_m", 1e-12),
+                                  ("nominal_volume_fraction", .5), ("checked_pair_images", 0)):
+                 with self.subTest(field=field, value=value):
+diff --git a/lammps_slurry/tests/test_compact_bridge.cpp b/lammps_slurry/tests/test_compact_bridge.cpp
+index 43b8633..378d8c2 100644
+--- a/lammps_slurry/tests/test_compact_bridge.cpp
++++ b/lammps_slurry/tests/test_compact_bridge.cpp
+@@ -1,86 +1,194 @@
+ #include "slurry_compact_bridge.h"
+-#include <fstream>
+ #include <iomanip>
+ #include <iostream>
+-#include <string>
++#include <stdexcept>
+ 
+-int main(int argc, char **argv) {
+-  using namespace SlurryCompactBridge;
+-  if (argc != 2) {
+-    std::cerr << "usage: test_compact_bridge golden.dat\n";
+-    return 2;
++// compact_bridge_v4.dat is a historical hard-gap-floor fixture. The additive
++// model is checked against sphere formulas and geometric invariants instead.
++namespace cb = SlurryCompactBridge;
++using cb::Mat3;
++using cb::Mat11;
++using cb::Mat22;
++using cb::Vec3;
++
++namespace {
++void require(bool condition, const char *message) {
++  if (!condition)
++    throw std::runtime_error(message);
++}
++void close(double got, double expected, double tolerance, const char *message) {
++  require(std::abs(got - expected) <= tolerance * std::max(1., std::abs(expected)), message);
++}
++cb::gr::Body body(double ar, double length, const Mat3 &rotation = Mat3::Identity()) {
++  cb::gr::Body b;
++  const double major = length * std::cbrt(ar), minor = major / ar;
++  b.axes = {{major, major, minor}}; // fixed volume-equivalent radius
++  for (int i = 0; i < 3; ++i)
++    for (int j = 0; j < 3; ++j)
++      b.rotation[3 * i + j] = rotation(i, j);
++  b.position = {{0., 0., 0.}};
++  return b;
++}
++void place_at_gap(const cb::gr::Body &bi, cb::gr::Body &bj, const Vec3 &n, double h) {
++  // For a prescribed common outward normal, the support points give an
++  // independent geometric construction of a separated or shallow-overlap pair.
++  const Mat3 Ai = cb::shape(bi, 1.), Aj = cb::shape(bj, 1.);
++  const Vec3 li = Ai * n / std::sqrt(n.dot(Ai * n));
++  const Vec3 lj = -Aj * n / std::sqrt(n.dot(Aj * n));
++  const Vec3 p = cb::vector(bi.position) + li - lj + h * n;
++  for (int k = 0; k < 3; ++k)
++    bj.position[k] = p[k];
++}
++Mat22 normalized(const cb::Result &result, double eta, double length) {
++  Eigen::Matrix<double, 22, 1> d = Eigen::Matrix<double, 22, 1>::Ones();
++  d.head<3>().setConstant(length);
++  d.segment<3>(11).setConstant(length);
++  return d.asDiagonal() * result.resistance * d.asDiagonal() / (eta * length * length * length);
++}
++Mat22 exchanged(const Mat22 &matrix) {
++  Mat22 out;
++  out.topLeftCorner<11, 11>() = matrix.bottomRightCorner<11, 11>();
++  out.bottomRightCorner<11, 11>() = matrix.topLeftCorner<11, 11>();
++  out.topRightCorner<11, 11>() = matrix.bottomLeftCorner<11, 11>();
++  out.bottomLeftCorner<11, 11>() = matrix.topRightCorner<11, 11>();
++  return out;
++}
++cb::gr::Body rotate(const cb::gr::Body &b, const Mat3 &rotation) {
++  cb::gr::Body out = b;
++  Mat3 orientation;
++  for (int i = 0; i < 3; ++i)
++    for (int j = 0; j < 3; ++j)
++      orientation(i, j) = b.rotation[3 * i + j];
++  orientation = (rotation * orientation).eval();
++  const Vec3 p = rotation * cb::vector(b.position);
++  for (int i = 0; i < 3; ++i) {
++    out.position[i] = p[i];
++    for (int j = 0; j < 3; ++j)
++      out.rotation[3 * i + j] = orientation(i, j);
+   }
+-  std::ifstream input(argv[1]);
+-  if (!input) {
+-    std::cerr << "cannot read fixture\n";
+-    return 2;
++  return out;
++}
++Mat22 rotation_map(const Mat3 &rotation) {
++  Mat11 single = Mat11::Zero();
++  single.topLeftCorner<3, 3>() = rotation;
++  single.block<3, 3>(3, 3) = rotation;
++  for (int k = 0; k < 5; ++k) {
++    const Mat3 e = rotation * cb::strain_basis()[k] * rotation.transpose();
++    for (int j = 0; j < 5; ++j)
++      single(6 + j, 6 + k) = (cb::strain_basis()[j].array() * e.array()).sum();
+   }
+-  int count;
+-  input >> count;
+-  double worst = 0, geometry_worst = 0;
+-  for (int trial = 0; trial < count; ++trial) {
+-    std::string name;
+-    double eta, length, floor;
+-    input >> name >> eta >> length >> floor;
+-    gr::Body bi, bj;
+-    for (auto *b : {&bi, &bj}) {
+-      for (double &x : b->axes)
+-        input >> x;
+-      for (double &x : b->rotation)
+-        input >> x;
+-      for (double &x : b->position)
+-        input >> x;
+-    }
+-    double gap_ref, elln, ellt, Lp, w, s;
+-    input >> gap_ref >> elln >> ellt >> Lp >> w >> s;
+-    Mat22 expected;
+-    for (int i = 0; i < 22; ++i)
+-      for (int j = 0; j < 22; ++j)
+-        input >> expected(i, j);
+-    if (!input) {
+-      std::cerr << "invalid fixture " << name << "\n";
+-      return 2;
++  Mat22 out = Mat22::Zero();
++  out.topLeftCorner<11, 11>() = single;
++  out.bottomRightCorner<11, 11>() = single;
++  return out;
++}
++} // namespace
++
++int main() {
++  try {
++    // Equal unit spheres have ell_n=ell_t=patch_width=1. The normal
++    // coefficient is (3*pi/2)/he/(1+he)^2; the tangential one is pi*log(1+1/he).
++    // In particular h>0 below epsilon must not produce the old floor plateau.
++    constexpr double epsilon = 1e-3;
++    const auto sphere_i = body(1., 1.);
++    double previous_normal = 1e100;
++    int analytic_cases = 0;
++    for (double h : {-epsilon, 0., .25 * epsilon, .5 * epsilon, 2 * epsilon, .05, .5, 1.01}) {
++      auto sphere_j = body(1., 1.);
++      sphere_j.position[2] = 2. + h;
++      const auto got = cb::evaluate(sphere_i, sphere_j, 1., 1., epsilon);
++      const double physical = std::max(h, 0.), he = physical + epsilon;
++      // Independent quintic support window, fixed by the physical gap.
++      const double t = std::min(1., std::max(0., (physical - .1) / .9));
++      const double weight = std::pow(1. - t, 3) * (1. + 3. * t + 6. * t * t);
++      const double normal = weight * (1.5 * cb::pi) / (he * std::pow(1. + he, 2));
++      const double tangent = weight * cb::pi * std::log1p(1. / he);
++      close(got.gap, h, 2e-13, "sphere physical gap");
++      close(got.effective_gap, he, 2e-13, "additive effective gap");
++      close(got.ell_n, 1., 2e-13, "sphere normal length");
++      close(got.ell_t, 1., 2e-13, "sphere tangent length");
++      close(got.patch_width, 1., 2e-13, "sphere patch width");
++      close(got.weight, weight, 2e-13, "physical support weight");
++      close(got.resistance(2, 2), normal, 5e-12, "sphere normal resistance");
++      close(got.resistance(0, 0), tangent, 5e-12, "sphere tangential resistance");
++      require(got.active == (h < 1.), "physical support boundary");
++      if (h > 0. && h < .01)
++        require(got.resistance(2, 2) < previous_normal, "sub-cutoff gap must remain resolved");
++      previous_normal = got.resistance(2, 2);
++      ++analytic_cases;
+     }
+-    auto got = evaluate(bi, bj, eta, length, floor);
+-    // Body labels are bookkeeping only, including the prescribed F/T/S basis.
+-    auto reverse = evaluate(bj, bi, eta, length, floor);
+-    Mat22 permuted;
+-    permuted.topLeftCorner<11, 11>() = reverse.resistance.bottomRightCorner<11, 11>();
+-    permuted.bottomRightCorner<11, 11>() = reverse.resistance.topLeftCorner<11, 11>();
+-    permuted.topRightCorner<11, 11>() = reverse.resistance.bottomLeftCorner<11, 11>();
+-    permuted.bottomLeftCorner<11, 11>() = reverse.resistance.topRightCorner<11, 11>();
+-    const double exchange =
+-        (permuted - got.resistance).norm() / std::max(got.resistance.norm(), 1e-300);
+-    if (exchange > 2e-10) {
+-      std::cerr << "exchange FAIL " << name << " " << exchange << "\n";
+-      return 1;
++    // Changing regularization changes the resistance, not its outer support.
++    for (double h : {.5, .9999, 1.0001}) {
++      auto bj = body(1., 1.);
++      bj.position[2] = 2. + h;
++      const auto small = cb::evaluate(sphere_i, bj, 1., 1., epsilon);
++      const auto large = cb::evaluate(sphere_i, bj, 1., 1., .1);
++      close(small.weight, large.weight, 1e-14, "regularization moved physical support");
++      require(small.active == large.active, "regularization changed support activation");
+     }
+-    double err = (got.resistance - expected).norm() / std::max(expected.norm(), 1e-300);
+-    double geom =
+-        std::max({std::abs(got.gap - gap_ref) / length, std::abs(got.ell_n - elln) / length,
+-                  std::abs(got.ell_t - ellt) / length, std::abs(got.patch_width - Lp) / length,
+-                  std::abs(got.weight - w), std::abs(got.normal_scale - s)});
+-    worst = std::max(worst, err);
+-    geometry_worst = std::max(geometry_worst, geom);
+-    // Mixed SI units cannot be eigentested raw: use the model's normalized coordinates.
+-    Eigen::Matrix<double, 22, 1> d = Eigen::Matrix<double, 22, 1>::Ones();
+-    d.head<3>().setConstant(length);
+-    d.segment<3>(11).setConstant(length);
+-    Mat22 normalized =
+-        d.asDiagonal() * got.resistance * d.asDiagonal() / (eta * length * length * length);
+-    Eigen::SelfAdjointEigenSolver<Mat22> es(normalized);
+-    double negative = es.eigenvalues()[0] / std::max(normalized.norm(), 1e-300);
+-    std::cout << std::setprecision(12) << name << " matrix=" << err << " geometry=" << geom
+-              << " min_scaled=" << negative << " w=" << got.weight << "\n";
+-    if (err > 2e-9 || geom > 2e-10 || negative < -2e-12) {
+-      std::cerr << "FAIL " << name << "\n";
+-      return 1;
++
++    const Mat3 qi = Eigen::AngleAxisd(.53, Vec3(1., 2., -.4).normalized()).toRotationMatrix();
++    const Mat3 qj = Eigen::AngleAxisd(-.71, Vec3(-.2, 1., 3.).normalized()).toRotationMatrix();
++    const Mat3 global = Eigen::AngleAxisd(1.23, Vec3(2., -.7, 1.).normalized()).toRotationMatrix();
++    const Mat22 transform = rotation_map(global);
++    const Vec3 normal = Vec3(.37, -.51, .78).normalized();
++    double worst_gap = 0., worst_exchange = 0., worst_rotation = 0., lowest_eigenvalue = 0.;
++    int shape_cases = 0;
++    for (double length : {1., 4e-6}) {
++      constexpr double eta = .23;
++      for (double ar : {1., 2., 5.}) {
++        const auto bi = body(ar, length, qi);
++        auto contact_bj = body(ar, length, qj);
++        place_at_gap(bi, contact_bj, normal, 0.);
++        const auto contact = cb::evaluate(bi, contact_bj, eta, length, epsilon * length);
++        for (double scaled_gap : {-1e-4, 0., 5e-4, .03}) {
++          auto bj = body(ar, length, qj);
++          place_at_gap(bi, bj, normal, scaled_gap * length);
++          const auto gap = cb::gr::closestEllipsoidGap(bi, bj);
++          const auto got = cb::evaluate(bi, bj, gap, eta, length, epsilon * length, true);
++          const Mat22 matrix = normalized(got, eta, length);
++          const double denominator = std::max(matrix.norm(), 1e-300);
++          const double gap_error = std::abs(got.gap / length - scaled_gap);
++          worst_gap = std::max(worst_gap, gap_error);
++          require(gap_error < 2e-12, "spheroid signed gap");
++          close(got.effective_gap / length, std::max(scaled_gap, 0.) + epsilon, 2e-12,
++                "spheroid additive effective gap");
++          require(got.active && matrix.allFinite(), "overlap/contact lubrication must remain active");
++          require((matrix - matrix.transpose()).norm() / denominator < 2e-13,
++                  "resistance symmetry");
++          Eigen::SelfAdjointEigenSolver<Mat22> eig(matrix);
++          require(eig.info() == Eigen::Success, "resistance eigensolve");
++          const double negative = eig.eigenvalues()[0] / denominator;
++          lowest_eigenvalue = std::min(lowest_eigenvalue, negative);
++          require(negative >= -2e-12 && got.schur_min_scaled >= -2e-12,
++                  "nonnegative viscous dissipation");
++          const auto reverse = cb::evaluate(bj, bi, eta, length, epsilon * length);
++          const double exchange = (matrix - exchanged(normalized(reverse, eta, length))).norm() /
++                                  denominator;
++          worst_exchange = std::max(worst_exchange, exchange);
++          require(exchange < 2e-10, "body-exchange symmetry");
++          const auto rotated = cb::evaluate(rotate(bi, global), rotate(bj, global), eta, length,
++                                            epsilon * length);
++          const double covariance = (normalized(rotated, eta, length) -
++                                     transform * matrix * transform.transpose()).norm() / denominator;
++          worst_rotation = std::max(worst_rotation, covariance);
++          require(covariance < 2e-10, "coordinate-frame covariance");
++          if (scaled_gap < 0.) {
++            require(got.gap < 0., "signed overlap geometry was discarded");
++            require((matrix - normalized(contact, eta, length)).norm() / denominator < 2e-10,
++                    "shallow overlap must use contact-limit scalar resistance");
++          }
++          ++shape_cases;
++        }
++      }
+     }
+-    // The exact implementation scales q by the same reference length as the model.
+-    if (got.effective_gap < std::max(got.gap, floor) * (1 - 1e-14))
+-      return 1;
++    std::cout << std::setprecision(12) << "PASS " << analytic_cases << " sphere limits, "
++              << shape_cases << " AR=1/2/5 geometry cases; gap=" << worst_gap
++              << " exchange=" << worst_exchange << " covariance=" << worst_rotation
++              << " min_scaled=" << lowest_eigenvalue << "\n";
++  } catch (const std::exception &e) {
++    std::cerr << "FAIL: " << e.what() << "\n";
++    return 1;
+   }
+-  std::cout << "PASS " << count << " fixtures, max_matrix_relative=" << worst
+-            << " max_geometry_scaled=" << geometry_worst << "\n";
+   return 0;
+ }
+diff --git a/lammps_slurry/tools/prepare_bridge.py b/lammps_slurry/tools/prepare_bridge.py
+index 525102f..6bb7b90 100755
+--- a/lammps_slurry/tools/prepare_bridge.py
++++ b/lammps_slurry/tools/prepare_bridge.py
+@@ -1,12 +1,12 @@
+ #!/usr/bin/env python3
+ """Prepare a table-free compact-bridge LAMMPS run (standard library only).
+ 
+-AR=a/c; full thickness=2c. The hydrodynamic floor max(h,1 nm) and the
+-mechanical contact onset are independent. Packing is geometry preparation,
+-not physical relaxation; its accepted surface gaps must satisfy the same
+-mechanical contact onset. Spheroids and flat circular cylinders (flake) share
+-the seed/growth/relaxation workflow and the same shear driver. This module
+-never loads a resistance table.
++AR=a/c. The nominal diameter is volume-equivalent and remains fixed as AR
++changes. Lubrication uses max(h,0)+epsilon*(D/2), with epsilon dimensionless;
++this regularization is not a mechanical roughness layer. Sliding and rolling
++springs act only at actual surface contact. Initial packing certifies physical
++nonoverlap and is geometric preparation, not physical equilibration. This
++module never loads a resistance table.
+ """
+ import argparse
+ import itertools
+@@ -45,7 +45,7 @@ def certify_packing(args, particles, a, c, box, output):
+         raise ValueError("Missing executable geometry packer: {}".format(packer))
+     geometry, report_path = output/"packing.validation", output/"packing_clearance.json"
+     write_packing_geometry(geometry, particles, a, c, box)
+-    target = args.contact_gap_nm*1e-9
++    target = 0.
+     command = [str(packer), "--input", str(geometry), "--shape", args.shape,
+                "--contact-gap-m", str(target),
+                "--certify-only", "1", "--report", str(report_path)]
+@@ -184,8 +184,8 @@ def aligned_particles(count, a, c, box, gap):
+ 
+ def random_particles(args, a, c, box, output):
+     bounding_radius = math.hypot(a, c) if args.shape == "flake" else a
+-    if box <= 4*bounding_radius+2*args.contact_gap_nm*1e-9:
+-        raise ValueError("The geometry-only random packer needs L>4*bounding_radius+2*contact_gap. "
++    if box <= 4*bounding_radius:
++        raise ValueError("The geometry-only random packer needs L>4*bounding_radius. "
+                          "This is not the hydrodynamic 3a image limit; use --initialization aligned "
+                          "for smaller compatible boxes, or increase --count/lower --phi.")
+     packer = args.packer.expanduser().resolve()
+@@ -220,7 +220,7 @@ def random_particles(args, a, c, box, output):
+                "--history", str(output/"packing_history.csv"),
+                "--growth-fraction", str(args.growth_fraction),
+                "--overlap-tolerance", str(args.overlap_tolerance), "--max-relax", str(args.max_relax),
+-               "--contact-gap-m", str(args.contact_gap_nm*1e-9)]
++               "--contact-gap-m", "0"]
+     with (output/"packing.log").open("w") as log:
+         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+         for line in process.stdout:
+@@ -275,154 +275,83 @@ def write_data(path, particles, a, c, box, density, shear, shape="spheroid"):
+ 
+ 
+ def parser():
+-    p = argparse.ArgumentParser(description=__doc__)
++    p = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+     p.add_argument("--output", type=Path, required=True, help="new run directory")
+     p.add_argument("--packer", type=Path, default=DEFAULT_PACKER)
+-    p.add_argument("--shape", choices=("spheroid", "flake"), default="spheroid",
+-                   help="physical particle shape; flake is a continuous flat circular cylinder")
++    p.add_argument("--shape", choices=("spheroid",), default="spheroid",
++                   help="oblate spheroid; flat cylinders do not support this contact model")
+     p.add_argument("--initialization", choices=("random", "aligned"), default="random")
+     p.add_argument("--mobility-backend", choices=("mesh", "direct"), default="mesh",
+                    help="periodic mobility implementation; direct is a reference/debug option")
+-    p.add_argument("--rough-hydro", type=int, choices=(0, 1), default=0,
+-                   help="spheroid-only rough-surface excess tangential resistance; default off")
+-    p.add_argument("--rolling-length-mode", choices=("roughness", "particle"), default="roughness",
+-                   help="automatic rolling torque arm: rough footprint radius or particle major radius; "
+-                        "a positive --rolling-length-nm overrides this choice")
+     for name, default, help_text in (
+-            ("rough-height-nm", 0., "cap height per surface; 0 derives contact-gap/2"),
+-            ("rough-width-nm", 0., "cap footprint radius; 0 derives 10 times the cap height"),
+-            ("rough-coverage", .2, "surface area fraction covered by caps, between 0 and 1"),
+-            ("rolling-friction", 0., "dimensionless rolling Coulomb coefficient; 0 disables rolling"),
+-            ("twisting-friction", 0., "dimensionless twisting Coulomb coefficient; 0 disables twisting"),
+-            ("rolling-length-nm", 0., "rolling torque arm; 0 uses --rolling-length-mode"),
+-            ("twisting-length-nm", 0., "twisting torque arm; 0 derives the rough footprint radius"),
+-            ("rolling-stiffness", 0., "N m/rad; 0 derives normal-stiffness times rolling length squared"),
+-            ("twisting-stiffness", 0., "N m/rad; 0 derives tangential-stiffness times twisting length squared")):
++            ("ar", 2., "equatorial/polar semiaxis ratio, 1 <= AR <= 5"),
++            ("nominal-diameter-um", 8., "volume-equivalent diameter D in micrometers; fixed across AR"),
++            ("lubrication-epsilon", .001, "dimensionless additive gap regularization, normalized by D/2"),
++            ("friction", 10., "sliding Coulomb coefficient; 10 is a strong-friction trial, not a graphite fit"),
++            ("rolling-friction", 10., "rolling Coulomb coefficient; 0 disables rolling resistance"),
++            ("normal-stiffness", 100., "normal spring stiffness in N/m"),
++            ("tangential-stiffness", 80., "sliding spring stiffness in N/m"),
++            ("rolling-stiffness", 80., "rolling quasi-force spring stiffness in N/m; not N m/rad")):
+         p.add_argument("--"+name, type=float, default=default, help=help_text)
+-    for name, default in (("ar", 20.), ("phi", .24), ("thickness-nm", 300.), ("density", 2400.),
+-                          ("viscosity", .01), ("shear-rate", 100.), ("gap-floor-nm", 1.),
+-                          ("contact-gap-nm", 3.), ("friction", .1), ("normal-stiffness", 100.),
+-                          ("tangential-stiffness", 80.), ("timestep", 1e-6),
++    for name, default in (("phi", .24), ("density", 2400.),
++                          ("viscosity", .01), ("shear-rate", 100.), ("timestep", 1e-6),
+                           ("average-start-strain", 5.), ("initial-phi", .05),
+-                          ("growth-fraction", .02), ("overlap-tolerance", 1e-6), ("tolerance", 1e-6), ("spectral", 2.), ("spectral-tolerance", 1e-8)):
++                          ("growth-fraction", .02), ("overlap-tolerance", 1e-6),
++                          ("tolerance", 1e-6), ("spectral", 2.), ("spectral-tolerance", 1e-8)):
+         p.add_argument("--"+name, type=float, default=default)
+-    for name, default in (("count", 108), ("steps", 100000), ("output-interval", 100),
++    for name, default in (("count", 500), ("steps", 100000), ("output-interval", 100),
+                           ("seed", 1729), ("max-relax", 20000), ("iterations", 1000)):
+         p.add_argument("--"+name, type=int, default=default)
+     return p
+ 
+ 
+-def surface_models(args):
+-    """Resolve optional, explicitly phenomenological spheroid surface models."""
+-    names = ("rough_height_nm", "rough_width_nm", "rough_coverage", "rolling_friction",
+-             "twisting_friction", "rolling_length_nm", "twisting_length_nm",
+-             "rolling_stiffness", "twisting_stiffness")
+-    for name in names:
+-        value = getattr(args, name)
+-        if not math.isfinite(value) or value < 0:
+-            raise ValueError(name+" must be finite and nonnegative")
+-    if args.rough_coverage > 1:
+-        raise ValueError("rough_coverage must be between 0 and 1")
+-    rotation = args.rolling_friction > 0 or args.twisting_friction > 0
+-    enabled = bool(args.rough_hydro) or rotation
+-    metadata = {
+-        "rough_hydrodynamics": {"enabled": bool(args.rough_hydro)},
+-        "rotation_contact": {"enabled": rotation},
+-        "surface_parameter_basis": "exploratory model settings; not measured graphite parameters"}
+-    if not enabled:
+-        return "", metadata
+-    if args.shape != "spheroid":
+-        raise ValueError("rough hydrodynamics and rolling/twisting contact are spheroid-only; "
+-                         "for flake set --rough-hydro 0 --rolling-friction 0 --twisting-friction 0")
+-    height = (args.rough_height_nm if args.rough_height_nm > 0 else args.contact_gap_nm/2)*1e-9
+-    if height <= 0:
+-        raise ValueError("enabled surface models require a positive rough height; "
+-                         "automatic height requires contact_gap_nm > 0")
+-    width = args.rough_width_nm*1e-9 if args.rough_width_nm > 0 else 10*height
+-    if width < 2*height:
+-        raise ValueError("rough_width_nm must be at least twice the resolved rough height")
+-    if args.rolling_length_nm > 0:
+-        rolling_length = args.rolling_length_nm*1e-9
+-        rolling_length_source = "explicit_nm"
+-    elif args.rolling_length_mode == "particle":
+-        # Current packing uses identical oblate spheroids. For an equal-size
+-        # pair the reduced major radius 2*a_i*a_j/(a_i+a_j) is simply a.
+-        rolling_length = args.ar*args.thickness_nm*.5e-9
+-        rolling_length_source = "particle_major_radius"
+-    else:
+-        rolling_length = width
+-        rolling_length_source = "rough_footprint_radius"
+-    twisting_length = args.twisting_length_nm*1e-9 if args.twisting_length_nm > 0 else width
+-    kr = (args.rolling_stiffness if args.rolling_stiffness > 0 else
+-          args.normal_stiffness*rolling_length**2)
+-    kw = (args.twisting_stiffness if args.twisting_stiffness > 0 else
+-          args.tangential_stiffness*twisting_length**2)
+-    for name, coefficient, stiffness in (("rolling", args.rolling_friction, kr),
+-                                          ("twisting", args.twisting_friction, kw)):
+-        if coefficient > 0 and (not math.isfinite(stiffness) or stiffness <= 0):
+-            raise ValueError(name+" stiffness must resolve to a finite positive value")
+-    f = lambda value: "{:.17g}".format(value)
+-    options = []
+-    if args.rough_hydro:
+-        options += ["rough_hydro", f(height), f(width), f(args.rough_coverage)]
+-    if rotation:
+-        options += ["rotation_contact", f(args.rolling_friction), f(args.twisting_friction),
+-                    f(rolling_length), f(twisting_length), f(kr), f(kw)]
+-    metadata["rough_hydrodynamics"].update({
+-        "height_per_surface_m": height, "footprint_radius_m": width,
+-        "coverage": args.rough_coverage,
+-        "hydrodynamic_reach_m": 3*height,
+-        "microscopic_excess_cutoff_m": height,
+-        "gap_floor_m": args.gap_floor_nm*1e-9,
+-        "microstate_rule": "exclude overlapping cap pairs and cap penetration into the opposite base; "
+-                           "floor only nonnegative microscopic fluid gaps; no density renormalization",
+-        "gap_rule": "actual smooth-body gap and cap geometry; microscopic fluid gap uses gap_floor; "
+-                    "contact onset is not subtracted from the smooth lubrication gap",
+-        "model": "finite-patch hard-core cap-pair tangential and rotational excess; "
+-                 "positive shifted inverse microgap cutoff; normal baseline unchanged; "
+-                 "dense-roughness correlations are an unresolved closure approximation"})
+-    metadata["rotation_contact"].update({
+-        "rolling_friction": args.rolling_friction, "twisting_friction": args.twisting_friction,
+-        "rolling_length_mode": args.rolling_length_mode,
+-        "rolling_length_source": rolling_length_source,
+-        "rolling_length_m": rolling_length, "twisting_length_m": twisting_length,
+-        "rolling_stiffness_Nm_per_rad": kr, "twisting_stiffness_Nm_per_rad": kw,
+-        "model": "elastic Coulomb rolling and twisting torques, active only at contact"})
+-    return " "+" ".join(options), metadata
++def particle_dimensions(nominal_diameter_um, ar):
++    """Return oblate semiaxes at constant volume-equivalent diameter."""
++    radius = nominal_diameter_um*.5e-6
++    return radius*ar**(1/3), radius*ar**(-2/3)
+ 
+ 
+-def prepare(args):
+-    for name in ("ar", "phi", "thickness_nm", "density", "viscosity", "gap_floor_nm", "normal_stiffness",
+-                 "tangential_stiffness", "timestep", "initial_phi", "growth_fraction", "overlap_tolerance", "tolerance", "spectral", "spectral_tolerance"):
++def validate_args(args):
++    """Validate physical settings before creating a run or snapshot directory."""
++    for name in ("ar", "phi", "nominal_diameter_um", "density", "viscosity",
++                 "lubrication_epsilon", "normal_stiffness", "tangential_stiffness",
++                 "rolling_stiffness", "timestep", "initial_phi", "growth_fraction",
++                 "overlap_tolerance", "tolerance", "spectral", "spectral_tolerance"):
+         value = getattr(args, name)
+         if not math.isfinite(value) or value <= 0:
+             raise ValueError(name+" must be finite and positive")
+-    for name in ("contact_gap_nm", "friction", "average_start_strain"):
++    for name in ("friction", "rolling_friction", "average_start_strain"):
+         if not math.isfinite(getattr(args, name)) or getattr(args, name) < 0:
+             raise ValueError(name+" must be finite and nonnegative")
+-    if not math.isfinite(args.shear_rate) or args.ar < 1 or args.phi >= 1 or args.tolerance >= 1 or args.spectral_tolerance >= 1:
+-        raise ValueError("Require finite shear, AR>=1, 0<phi<1 and 0<tolerance<1")
++    if (not math.isfinite(args.shear_rate) or not 1 <= args.ar <= 5 or args.phi >= 1 or
++            args.tolerance >= 1 or args.spectral_tolerance >= 1):
++        raise ValueError("Require finite shear, 1<=AR<=5, 0<phi<1 and 0<tolerance<1")
++    if args.shape != "spheroid":
++        raise ValueError("The contact-overlap model requires spheroid particles")
+     for name in ("count", "output_interval", "max_relax", "iterations"):
+         if getattr(args, name) < 1:
+             raise ValueError(name+" must be a positive integer")
+     if min(args.steps, args.seed) < 0:
+         raise ValueError("steps and seed must be nonnegative")
+-    surface_options, surface_metadata = surface_models(args)
++
++
++def prepare(args):
++    validate_args(args)
+     output = args.output.expanduser().resolve()
+     if output.exists():
+         raise ValueError("Run directory already exists: {}; choose a new path".format(output))
+-    c, a = args.thickness_nm*.5e-9, args.ar*args.thickness_nm*.5e-9
++    a, c = particle_dimensions(args.nominal_diameter_um, args.ar)
++    nominal_diameter = args.nominal_diameter_um*1e-6
++    reference_radius = nominal_diameter/2
++    regularization = args.lubrication_epsilon*reference_radius
+     volume = particle_volume(a, c, args.shape)
+     box = (args.count*volume/args.phi)**(1/3)
+     output.mkdir(parents=True, exist_ok=False)
+     if args.initialization == "aligned":
+-        particles, packing = aligned_particles(args.count, a, c, box, args.contact_gap_nm*1e-9)
++        particles, packing = aligned_particles(args.count, a, c, box, 0.)
+     else:
+         particles, packing = random_particles(args, a, c, box, output)
+-    # PW is an ellipsoid criterion. Cylinder acceptance is based exclusively
+-    # on the following true-cylinder periodic surface-gap certificate.
+-    worst, checked = (verify_packing(particles, a, box, args.overlap_tolerance)
+-                      if args.shape == "spheroid" else (None, None))
++    worst, checked = verify_packing(particles, a, box, args.overlap_tolerance)
+     clearance = certify_packing(args, particles, a, c, box, output)
+     write_data(output/"particles.data", particles, a, c, box, args.density, args.shear_rate, args.shape)
+     f = lambda v: "{:.17g}".format(v)
+@@ -443,7 +372,7 @@ neighbor {skin} bin
+ neigh_modify every 1 delay 0 check yes
+ timestep {dt}
+ fix shear all deform 0 xz erate {rate} remap v units box
+-fix hydro all slurry/bridge {eta} {rate} {floor} {kn} contact {hc} {mu} {kt} shape {particle_shape} mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations}{surface_options} history history.csv {interval} {average}
++fix hydro all slurry/bridge {eta} {rate} {diameter} {epsilon} {kn} contact {mu} {kt} rolling {mur} {kr} shape spheroid mobility_backend {backend} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
+ compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
+ dump trajectory all custom {interval} trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
+ dump_modify trajectory sort id format float %.17g
+@@ -452,33 +381,46 @@ thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+ thermo_modify flush yes lost error
+ run {steps}
+ write_data final.data nocoeff
+-'''.format(model_description=("Table-free periodic ellipsoid mobility + compact bridge v4" if args.shape == "spheroid"
+-                             else "Flat circular cylinders: Reynolds face films + approximate rim; matched-spheroid periodic mobility"),
++'''.format(model_description="Periodic spheroid mobility + Mari gap regularization + sliding/rolling contact",
+            communication=f(c), skin=f(.2*c), dt=f(args.timestep), rate=f(args.shear_rate), eta=f(args.viscosity),
+-           floor=f(args.gap_floor_nm*1e-9), kn=f(args.normal_stiffness), hc=f(args.contact_gap_nm*1e-9),
+-           mu=f(args.friction), kt=f(args.tangential_stiffness), particle_shape=args.shape, backend=args.mobility_backend,
++           diameter=f(nominal_diameter), epsilon=f(args.lubrication_epsilon), kn=f(args.normal_stiffness),
++           mu=f(args.friction), kt=f(args.tangential_stiffness), mur=f(args.rolling_friction),
++           kr=f(args.rolling_stiffness), backend=args.mobility_backend,
+            spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
+            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
+-           surface_options=surface_options,
+            slurry_plugin="{slurry_plugin}")
+     (output/"in.bridge").write_text(text)
+     metadata = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
+-    metadata.update(surface_metadata)
+-    metadata.update({"model": ("compact_bridge_v4_periodic" if args.shape == "spheroid" else
+-                               "cylinder_reynolds_rim_periodic"),
++    metadata.update({"model": "mari_singh_spheroid_periodic",
+                      "particle_shape": args.shape, "shear_plane": "xz", "a_m": a, "c_m": c,
+-                     "box_length_m": box, "particle_volume_m3": volume, "hydro_gap_rule": "max(actual_gap, gap_floor)",
++                     "box_length_m": box, "particle_volume_m3": volume,
++                     "nominal_diameter_definition": "volume-equivalent diameter: V=pi*D^3/6",
++                     "nominal_diameter_m": nominal_diameter,
++                     "reference_radius_m": reference_radius,
++                     "computational_length_m": reference_radius,
++                     "particle_size_constraint": "each particle volume radius (a*a*c)^(1/3) must equal D/2",
++                     "full_axes_m": [2*a, 2*a, 2*c],
++                     "axis_rule": "a=(D/2)*AR^(1/3); c=(D/2)*AR^(-2/3)",
++                     "lubrication_normalization": "dimensionless surface gap h/(D/2); epsilon is dimensionless",
++                     "lubrication_regularization_m": regularization,
++                     "hydro_gap_rule": "max(actual_gap,0)+lubrication_epsilon*(nominal_diameter_m/2)",
++                     "contact_activation": "actual surface gap < 0; no positive-gap contact shell",
++                     "friction_parameter_basis": "mu_s=mu_r=10 defaults are a strong-friction trial, not measured graphite or a proven saturation limit",
++                     "rolling_contact": {
++                         "enabled": args.rolling_friction > 0,
++                         "rolling_stiffness_N_per_m": args.rolling_stiffness,
++                         "equivalent_angular_stiffness_Nm_per_rad": args.rolling_stiffness*reference_radius**2,
++                         "reference_radius_m": reference_radius,
++                         "lever_rule": "2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j); monodisperse a_ref=D/2",
++                         "model": "tangential rolling displacement spring with Coulomb-limited quasi-force; no twisting spring"},
+                      "particle_mass_kg": args.density*volume,
+-                     "lammps_storage": ("ellipsoid" if args.shape == "spheroid" else
+-                                        "ellipsoid axes/orientation proxy; density multiplied by 1.5 for cylinder mass"),
+-                     "middle_self_geometry": ("spheroid" if args.shape == "spheroid" else
+-                                              "matched spheroid approximation with the same a and c"),
+-                     "near_support_center_m": (3*a if args.shape == "spheroid" else 2*math.hypot(a,c)+a),
++                     "lammps_storage": "ellipsoid", "middle_self_geometry": "spheroid",
++                     "near_support_center_m": 3*a,
+                      "periodic_images": "all images in geometric support; self images included",
+                      "packing": packing, "packing_max_PW_overlap": worst, "packing_image_checks": checked,
+                      "packing_clearance": clearance,
+                      "normal_contact_law": "linear spring; normal_stiffness in N/m; no Hertz conversion",
+-                     "contact_gap_use": "pair contact onset; initial actual surface gaps are certified at or above this gap",
++                     "initial_surface_gap_target_m": 0.,
+                      "step_geometry": "endpoint actual-gap correction with frozen-geometry implicit force solves",
+                      "spectral_tolerance_scope": "Fourier truncation only; not a total mobility or mesh error bound",
+                      "mesh_numerics": ({"window_support": 10, "gaussian_alpha": .6,
+@@ -490,7 +432,7 @@ write_data final.data nocoeff
+                                         if args.mobility_backend == "mesh" else None),
+                      "accumulated_strain": abs(args.shear_rate)*args.timestep*args.steps,
+                      "average_window": "selected strain window; no automatic steady-state certification",
+-                     "preparation": "geometric contact-clearance preparation; no physical equilibration"})
++                     "preparation": "geometric physical-nonoverlap preparation; no physical equilibration"})
+     (output/"parameters.json").write_text(json.dumps(metadata, indent=2, sort_keys=True)+"\n")
+     print("Prepared {}: shape={}, N={}, AR={}, phi={}, L/a={:.6g}; no table generation".format(
+         output, args.shape, args.count, args.ar, args.phi, box/a), flush=True)
+diff --git a/lammps_slurry/tools/run_bridge.py b/lammps_slurry/tools/run_bridge.py
+index d0ee24e..4c46035 100755
+--- a/lammps_slurry/tools/run_bridge.py
++++ b/lammps_slurry/tools/run_bridge.py
+@@ -18,6 +18,7 @@ import tempfile
+ 
+ import bundle_guard
+ import runtime_snapshot
++import prepare_bridge
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+ 
+@@ -49,7 +50,7 @@ def freeze_runtime(root, destination, envfile):
+                     raise RuntimeError("A runtime dependency escaped the private copy: {} -> {}".format(soname, resolved))
+         runtime_snapshot.verify_runtime_records(list(binaries.values()) + list(libraries.values()) + list(scripts.values()))
+         bundle_guard.check_build(root, release, executable, plugin, packer, manifest)
+-    identity = {"schema": 1, "model": "shape_selected_periodic_bridge", "source_root": str(root),
++    identity = {"schema": 1, "model": "mari_singh_spheroid_periodic", "source_root": str(root),
+                 "release": release, "approved_build": approved, "binaries": binaries,
+                 "libraries": libraries, "scripts": scripts}
+     (destination/"runtime_identity.json").write_text(json.dumps(identity, indent=2, sort_keys=True)+"\n")
+@@ -163,7 +164,7 @@ def summarize_run(runtime, output, parameters, environment):
+ 
+ 
+ def main():
+-    p = argparse.ArgumentParser(description=__doc__, add_help=False)
++    p = argparse.ArgumentParser(description=__doc__, add_help=False, allow_abbrev=False)
+     p.add_argument("--help", "-h", action="store_true")
+     p.add_argument("--output", type=Path, required=False)
+     p.add_argument("--build-env", type=Path, default=ROOT/"build/lammps/env.sh")
+@@ -177,6 +178,10 @@ def main():
+         p.error("--output NEW_RUN_DIRECTORY is required")
+     if any(flag == "--packer" or flag.startswith("--packer=") for flag in physical):
+         p.error("--packer is bound to the verified build, not a runtime override")
++    # Reject retired roughness/contact-shell options and invalid physical
++    # settings before reading build artifacts or creating runtime directories.
++    physical_args = prepare_bridge.parser().parse_args(["--output", str(args.output)]+physical)
++    prepare_bridge.validate_args(physical_args)
+     environment, threads = execution_environment(os.environ)
+     output = args.output.expanduser().resolve()
+     if output.exists():
+diff --git a/lammps_slurry/vendor/gr_re2/ellipsoidGap.h b/lammps_slurry/vendor/gr_re2/ellipsoidGap.h
+index df9a096..be91c40 100644
+--- a/lammps_slurry/vendor/gr_re2/ellipsoidGap.h
++++ b/lammps_slurry/vendor/gr_re2/ellipsoidGap.h
+@@ -30,6 +30,9 @@ inline Eval eval(const Vec3& n,const Vec3& r,const Mat3& qi,const Mat3& qj) {
+ // Exact support geometry: maximize n.(xJ-xI)-sqrt(n.QI.n)-sqrt(n.QJ.n)
+ // on the unit sphere. At a disjoint-pair maximum the two support points are
+ // the true closest surface points. This is not a Gay-Berne contact estimate.
++// Its shallow-overlap continuation is signed penetration depth, not unsigned
++// surface distance. Preserve negative gaps for the finite-stiffness normal
++// penalty; zero is the geometric surface-contact onset.
+ inline GapResult closestEllipsoidGap(const Body& bi,const Body& bj,GapCache* cache=nullptr) {
+   double length=0.;for(double a:bi.axes){if(!(a>0.))throw std::domain_error("Nonpositive ellipsoid axis");length=std::max(length,a);}
+   for(double a:bj.axes){if(!(a>0.))throw std::domain_error("Nonpositive ellipsoid axis");length=std::max(length,a);}
+diff --git a/run_slurry_cpu.sbatch b/run_slurry_cpu.sbatch
+index 9f4ee4e..576d997 100644
+--- a/run_slurry_cpu.sbatch
++++ b/run_slurry_cpu.sbatch
+@@ -12,39 +12,26 @@
+ 
+ # Edit this section, then submit from the slurry repository: sbatch run_slurry_cpu.sbatch
+ # Exactly one simulation is launched. No command-line parameters are needed.
+-PARTICLE_SHAPE=spheroid               # spheroid or flake (flat circular cylinder)
+-AR=20
++PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
++AR=2                                 # supported range: 1 through 5
+ PHI=0.24
+ COUNT=500
+ STEPS=100000
+ OUTPUT_INTERVAL=100
+-TIMESTEP=1e-6
++TIMESTEP=1e-6                         # AR5 contact smoke required 1e-7; test convergence
+ AVERAGE_START_STRAIN=5
++# If reducing TIMESTEP tenfold, increase STEPS tenfold for the same total strain.
+ 
+-THICKNESS_NM=300
++NOMINAL_DIAMETER_UM=8                 # volume-equivalent D; fixed while AR changes
++LUBRICATION_EPSILON=0.001             # additive gap epsilon*(D/2) = 4 nm at D=8 um
+ DENSITY=2400
+ VISCOSITY=0.01
+ SHEAR_RATE=100
+-GAP_FLOOR_NM=1
+-CONTACT_GAP_NM=10
+-FRICTION=0.3
+-NORMAL_STIFFNESS=100
+-TANGENTIAL_STIFFNESS=80
+-
+-# Spheroid-only extensions. These are exploratory model parameters, not measured
+-# graphite values. Set all three switches/coefficient values to 0 for the old model
+-# or before selecting flake. Changing contact onset still changes packing clearance.
+-ROUGH_HYDRO=1
+-ROLLING_FRICTION=0.3
+-TWISTING_FRICTION=0.1
+-ROUGH_HEIGHT_NM=9                      # per-surface peak height; independent of mechanical contact onset
+-ROUGH_WIDTH_NM=45                      # footprint radius; 5 * height in this upper-range trial
+-ROUGH_COVERAGE=0.78                    # dense, geometrically feasible upper-range trial; not a graphite fit
+-ROLLING_LENGTH_MODE=particle           # particle: major radius a=AR*thickness/2; roughness: footprint radius
+-ROLLING_LENGTH_NM=0                    # positive value overrides ROLLING_LENGTH_MODE
+-TWISTING_LENGTH_NM=0                   # 0: rough footprint radius
+-ROLLING_STIFFNESS=0                    # 0: NORMAL_STIFFNESS * rolling_length_m^2, N m/rad
+-TWISTING_STIFFNESS=0                   # 0: TANGENTIAL_STIFFNESS * twisting_length_m^2, N m/rad
++FRICTION=10                          # strong-friction trial; saturation must be checked
++NORMAL_STIFFNESS=100                 # N/m
++TANGENTIAL_STIFFNESS=80              # N/m
++ROLLING_FRICTION=10                  # strong-friction trial; not a measured graphite value
++ROLLING_STIFFNESS=80                 # rolling quasi-force spring stiffness in N/m
+ 
+ INITIALIZATION=random                 # random or aligned; no automatic switch
+ SEED=1729
+@@ -71,8 +58,8 @@ if (( $# != 0 )); then
+     exit 2
+ fi
+ case "$PARTICLE_SHAPE" in
+-    spheroid|flake) ;;
+-    *) printf 'PARTICLE_SHAPE must be spheroid or flake.\n' >&2; exit 2 ;;
++    spheroid) ;;
++    *) printf 'PARTICLE_SHAPE must be spheroid for the contact-overlap model.\n' >&2; exit 2 ;;
+ esac
+ SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}}"
+ if [[ "$(basename -- "$SLURRY_BASE")" == lammps_slurry ]]; then
+@@ -110,17 +97,12 @@ SLURRY_ARGUMENTS=(
+     --ar "$AR" --phi "$PHI" --count "$COUNT" --steps "$STEPS"
+     --output-interval "$OUTPUT_INTERVAL" --timestep "$TIMESTEP"
+     --average-start-strain "$AVERAGE_START_STRAIN"
+-    --thickness-nm "$THICKNESS_NM" --density "$DENSITY"
++    --nominal-diameter-um "$NOMINAL_DIAMETER_UM" --density "$DENSITY"
+     --viscosity "$VISCOSITY" --shear-rate "$SHEAR_RATE"
+-    --gap-floor-nm "$GAP_FLOOR_NM" --contact-gap-nm "$CONTACT_GAP_NM"
++    --lubrication-epsilon "$LUBRICATION_EPSILON"
+     --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
+     --tangential-stiffness "$TANGENTIAL_STIFFNESS"
+-    --rough-hydro "$ROUGH_HYDRO" --rough-height-nm "$ROUGH_HEIGHT_NM"
+-    --rough-width-nm "$ROUGH_WIDTH_NM" --rough-coverage "$ROUGH_COVERAGE"
+-    --rolling-friction "$ROLLING_FRICTION" --twisting-friction "$TWISTING_FRICTION"
+-    --rolling-length-mode "$ROLLING_LENGTH_MODE"
+-    --rolling-length-nm "$ROLLING_LENGTH_NM" --twisting-length-nm "$TWISTING_LENGTH_NM"
+-    --rolling-stiffness "$ROLLING_STIFFNESS" --twisting-stiffness "$TWISTING_STIFFNESS"
++    --rolling-friction "$ROLLING_FRICTION" --rolling-stiffness "$ROLLING_STIFFNESS"
+     --initialization "$INITIALIZATION" --seed "$SEED" --initial-phi "$INITIAL_PHI"
+     --growth-fraction "$GROWTH_FRACTION" --overlap-tolerance "$OVERLAP_TOLERANCE"
+     --max-relax "$MAX_RELAX" --mobility-backend "$MOBILITY_BACKEND"

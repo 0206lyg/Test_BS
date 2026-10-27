@@ -1,0 +1,52 @@
+LAMMPS (30 Sep 2026)
+# deterministic contact integration fixture, not production packing
+plugin load /workspace/scratch/0520ed9b6708/mari_build/plugin-build/libslurry.so
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (4.1039423e-05 4.1039423e-05 4.1039423e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  2 ellipsoids
+  reading velocities ...
+  2 velocities
+  read_data CPU = 0.000 seconds
+comm_modify vel yes
+pair_style zero 1.3679807573413575e-06
+pair_coeff * *
+neighbor 2.735961514682715e-07 bin
+neigh_modify every 1 delay 0 check yes
+timestep 1e-6
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge .01 100 8e-6 .001 100 contact 10 80 rolling 10 80 shape spheroid mobility_backend direct spectral 2 spectral_tolerance 1e-8 tolerance 1e-6 iterations 1000 history history.csv 1 0
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 5
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.6415769e-06
+  ghost atom cutoff = 1.6415769e-06
+  binsize = 8.2078845e-07, bins = 50 50 50
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.398 | 5.398 | 5.398 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                      2   1.0145559      0.010145559    1              1            
+ERROR: slurry/bridge solve failed: bridge proximal solver: nonlinear iteration limit (src/fix_slurry_bridge.cpp:639)
+Last input line: run 5

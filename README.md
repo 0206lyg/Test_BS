@@ -1,20 +1,55 @@
-# Test_BS — spheroid / flake suspension hydrodynamics
+# Test_BS — spheroid suspension hydrodynamics
 
-현재 실행 모델은 `fix slurry/bridge`입니다. `PARTICLE_SHAPE=spheroid|flake`와 AR을 입력받아 형상별 근거리 유체력, 주기 중거리 mobility, 접촉·마찰을 함께 풀고 입자의 위치·배향과 xz 전단 응력을 계산합니다. 기저나 저항표를 먼저 생성하지 않습니다.
+현재 실행 모델은 `fix slurry/bridge`입니다. **체적 등가 직경 D를 고정한 oblate spheroid**의 AR, 체적분율, sliding·rolling 마찰을 바꾸며 입자의 위치·배향과 xz 전단 응력을 계산합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기저나 저항표를 먼저 생성하지 않습니다.
 
-실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `PARTICLE_SHAPE`, `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
+이번 overlay는 Mari의 무차원 lubrication regularization과 Singh의 sliding·rolling 접촉 법칙을 적용합니다. 기존 spheroid 근거리 bridge 및 주기 중거리 mobility는 유지하므로, 유체 연산자 전체가 Mari의 구형 입자 모델과 같다는 뜻은 아닙니다. **Graphite의 발산 농도 φJ≈0.30 또는 상대점도 100을 재현했다고 주장하는 변경이 아닙니다.**
+
+실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
 
 ## Overlay 적용과 실행
 
-`slurry` 저장소 디렉토리에서 `unzip -o slurry_flake_overlay_20261023.zip`을 실행합니다.
+저장소 디렉토리에서 다음 명령으로 적용하고 **반드시 다시 빌드**합니다. `slurry/bridge`의 입력 형식이 바뀌었으므로 이전 plugin과 새 입력을 함께 사용할 수 없습니다.
 
-`sbatch build_slurry_cpu.sbatch`로 다시 빌드합니다. 빌드 로그의 `Build complete`를 확인한 뒤 `run_slurry_cpu.sbatch` 상단 설정을 편집합니다.
+```bash
+unzip -o slurry_mari_singh_overlay_20261027.zip
+sbatch build_slurry_cpu.sbatch
+```
 
-`sbatch run_slurry_cpu.sbatch`로 한 실행을 제출합니다. 기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
+빌드 로그의 `Build complete`를 확인한 뒤 `run_slurry_cpu.sbatch` 상단 설정을 편집하고 제출합니다.
 
-ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다.
+```bash
+sbatch run_slurry_cpu.sbatch
+```
 
-Flake는 평평한 원형 양면을 가진 연속 원기둥입니다. 같은 무작위 seed·성장·FIRE 준비 절차를 사용하고 실제 원기둥 체적과 간격으로 목표 PHI를 검사합니다. 근거리는 면–면 Reynolds 박막과 근사 가장자리 저항이며, 중거리·고립 입자 응답은 같은 a,c의 spheroid 근사, 접촉은 기존 단일점 Coulomb 법칙입니다. [형상별 차이와 검증 범위](validation_flake_integration/README_KO.md)를 참고하십시오.
+기본값은 AR=2, φ=0.24, 입자 500개, 100000 step, 기록 간격 100 step입니다. 실행 결과는 기본적으로 `runs/spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`에 저장됩니다. 기존 실행 폴더는 덮어쓰지 않습니다.
+
+ZIP은 기존 파일을 삭제할 수 없으므로, **성공한 빌드의 마지막 단계**에서 이전 `lammps_slurry/run_bridge_cpu.sbatch`와 `lammps_slurry/run_slurry_cpu.sbatch` 두 파일을 삭제합니다. 최상위의 새 `run_slurry_cpu.sbatch`를 사용합니다. 과거 flake 관련 소스와 검증 기록이 남아 있어도 현재 실행기의 flake 선택은 지원되지 않습니다.
+
+## 입자 크기와 접촉 설정
+
+`NOMINAL_DIAMETER_UM=8`은 두께나 장축 직경이 아니라 **체적 등가 직경**입니다. AR=a/c일 때 semiaxis는 다음과 같으며, AR을 바꿔도 입자 체적과 기준 반경은 고정됩니다.
+
+\[
+a=\frac{D}{2}\mathrm{AR}^{1/3},\qquad
+c=\frac{D}{2}\mathrm{AR}^{-2/3},\qquad
+V=\frac{\pi D^3}{6},\qquad a_{\rm ref}=D/2.
+\]
+
+`LUBRICATION_EPSILON=0.001`은 Mari의 **반경 정규화**를 사용합니다. 스칼라 lubrication gap은 `max(actual_gap,0)+epsilon*a_ref`이며 D=8 μm에서는 추가 정규화 길이가 **4 nm**입니다. 이것은 표면의 4 nm 두께 roughness층이나 접촉 시작 간격이 아닙니다. 실제 gap이 음수가 되어 입자가 약하게 겹칠 때 접촉 스프링과 마찰이 작용하며, 초기배치는 실제 gap ≥ 0을 인증합니다.
+
+| 배치 설정 | 기본값 | 의미 |
+| --- | --- | --- |
+| `NOMINAL_DIAMETER_UM` | 8 | 체적 등가 직경, μm |
+| `LUBRICATION_EPSILON` | 0.001 | D/2로 정규화한 무차원 gap 추가량 |
+| `FRICTION` | 10 | sliding Coulomb 계수 μs |
+| `ROLLING_FRICTION` | 10 | rolling Coulomb 계수 μr |
+| `NORMAL_STIFFNESS` | 100 | 법선 스프링 강성, N/m |
+| `TANGENTIAL_STIFFNESS` | 80 | sliding 스프링 강성, N/m |
+| `ROLLING_STIFFNESS` | 80 | rolling quasi-force 스프링 강성, **N/m** |
+
+Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`는 과거의 N·m/rad 값과 단위가 다르며, 현재 단분산 설정에서 대응하는 각도 스프링 강성은 `ROLLING_STIFFNESS*a_ref^2`입니다. 기존 두께, 절대 gap floor, 양의 접촉 shell, rough-hydrodynamics, rolling length, twisting 설정은 실행 옵션에서 제거했습니다.
+
+μs=μr=10은 강한 마찰의 **시험 시작값**입니다. 포화한계나 측정된 graphite 계수로 확정한 값이 아닙니다. AR별 φJ를 비교하기 전에 마찰계수 증가에 대한 포화, timestep 및 법선·접선·rolling 강성에 대한 수렴, 실제 겹침 크기를 확인해야 합니다. Solver 잔차가 작다는 것만으로 유한 스프링의 물리적 오차나 정상상태 점도의 수렴이 보장되지는 않습니다.
 
 ## 계산과 병렬 실행
 
@@ -26,17 +61,18 @@ Flake는 평평한 원형 양면을 가진 연속 원기둥입니다. 같은 무
 
 프로덕션 빌드에는 GCC/OpenMP, FFTW 개발 파일과 **static oneMKL LP64/GNU-thread 라이브러리**가 필요합니다. `build_slurry_cpu.sbatch`는 Negishi의 `fftw`, `intel-mkl` 모듈을 추가로 불러옵니다. 사이트의 모듈 이름이 다를 때는 `SLURRY_FFTW_MODULE`, `SLURRY_MKL_MODULE`을 지정합니다. 필요한 최적화 라이브러리가 없으면 느린 backend로 자동 전환하지 않고 빌드에서 원인을 알립니다. MKL은 정적으로 링크하고 FFTW 등 연결 라이브러리는 실행별 private runtime에 보관합니다.
 
-## 물성·출력
+## 출력과 해석
 
-기본 물성은 두께 300 nm, 매질 점도 0.01 Pa·s, 유체 gap floor 1 nm, 접촉 시작 간격 3 nm, 법선 강성 **100 N/m**, 접선 강성 80 N/m, 마찰계수 0.1입니다. 표면 기하는 실제 간격을 사용하며 스칼라 gap 함수에만 floor를 적용합니다. 기본 전단률은 100 s⁻¹, timestep은 1e-6 s입니다.
+기본 매질 점도는 0.01 Pa·s, 전단률은 100 s⁻¹, timestep은 1e-6 s입니다. `SPECTRAL=2`는 저비용 중거리 근사이며 4 또는 8과 비교하여 해상도 영향을 검사할 수 있습니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
 
-초기배치는 실제 주기 표면 gap이 3 nm 이상임을 인증하며, 접촉력은 실제 위치·배향 갱신 후의 gap과 일치하도록 보정합니다. `SPECTRAL=2`는 저비용 중거리 근사입니다. 4 또는 8은 생략한 고파수 입자 간 상호작용의 영향을 줄이는 설정입니다. `SPECTRAL_TOLERANCE=1e-8`은 Fourier 절단 허용값이며 전체 유체력 오차가 아닙니다.
-
-`history.csv`는 매질·유체·접촉 응력과 순간 점도, 매 시간단계에 누적한 평균, 소산, solver 잔차 및 비용을 출력합니다. `trajectory.lammpstrj`는 입자별 유체력·토크·stresslet과 접촉력·토크를 별도로 출력합니다. 평균창은 배치의 `AVERAGE_START_STRAIN`으로 지정합니다. `final.data`는 기하 저장이며 마찰 이력을 보존하는 restart가 아닙니다.
+`parameters.json`에는 D, a_ref, 실제 축 길이, lubrication 정규화와 rolling 강성 단위를 기록합니다. `history.csv`는 매질·유체·접촉 응력과 순간 점도, 매 시간단계에 누적한 평균, 소산, solver 잔차 및 비용을 출력합니다. `trajectory.lammpstrj`는 입자별 유체력·토크·stresslet과 접촉력·토크를 별도로 출력합니다. 평균창은 `AVERAGE_START_STRAIN`으로 지정합니다. `final.data`는 기하 저장이며 마찰 이력을 보존하는 restart가 아닙니다.
 
 - [실행·출력·점도 평균](docs/BRIDGE_RUN.md)
+- [Mari/Singh 변경의 과학적 범위와 확인 사항](docs/MARI_SINGH_OVERLAY.md)
 - [연결식·단위·접촉·응력 구현 명세](docs/COMPACT_BRIDGE_MODEL.md)
 - [주기 중거리의 근사와 해상도](docs/PERIODIC_MIDDLE.md)
 - [이전 FFT·접촉 변경과 검증 기록](docs/FFT_CONTACT_UPDATE.md)
+
+AR5의 접촉 입자쌍 검사에서는 `TIMESTEP=1e-6`이 수렴하지 않았고 `1e-7`에서 통과했습니다. AR5 시험에는 `TIMESTEP=1e-7`을 사용하고, 기본 총 strain 10을 유지하려면 `STEPS=1000000`으로 함께 변경하십시오. 실제 다입자계에서는 별도의 시간간격 수렴 검사가 필요합니다. [실행 검증 기록](validation_mari_singh/REPORT.md)에 실패 조건도 포함합니다.
 
 기존 검증 폴더의 결과는 해당 소스 버전과 조건에서 얻은 기록입니다. 짧은 실행 검사나 kernel 시간만으로 정상상태 점도 또는 전체 실행 속도를 판정하지 않습니다.

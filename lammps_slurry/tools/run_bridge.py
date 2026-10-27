@@ -18,6 +18,7 @@ import tempfile
 
 import bundle_guard
 import runtime_snapshot
+import prepare_bridge
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -49,7 +50,7 @@ def freeze_runtime(root, destination, envfile):
                     raise RuntimeError("A runtime dependency escaped the private copy: {} -> {}".format(soname, resolved))
         runtime_snapshot.verify_runtime_records(list(binaries.values()) + list(libraries.values()) + list(scripts.values()))
         bundle_guard.check_build(root, release, executable, plugin, packer, manifest)
-    identity = {"schema": 1, "model": "shape_selected_periodic_bridge", "source_root": str(root),
+    identity = {"schema": 1, "model": "mari_singh_spheroid_periodic", "source_root": str(root),
                 "release": release, "approved_build": approved, "binaries": binaries,
                 "libraries": libraries, "scripts": scripts}
     (destination/"runtime_identity.json").write_text(json.dumps(identity, indent=2, sort_keys=True)+"\n")
@@ -163,7 +164,7 @@ def summarize_run(runtime, output, parameters, environment):
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__, add_help=False)
+    p = argparse.ArgumentParser(description=__doc__, add_help=False, allow_abbrev=False)
     p.add_argument("--help", "-h", action="store_true")
     p.add_argument("--output", type=Path, required=False)
     p.add_argument("--build-env", type=Path, default=ROOT/"build/lammps/env.sh")
@@ -177,6 +178,10 @@ def main():
         p.error("--output NEW_RUN_DIRECTORY is required")
     if any(flag == "--packer" or flag.startswith("--packer=") for flag in physical):
         p.error("--packer is bound to the verified build, not a runtime override")
+    # Reject retired roughness/contact-shell options and invalid physical
+    # settings before reading build artifacts or creating runtime directories.
+    physical_args = prepare_bridge.parser().parse_args(["--output", str(args.output)]+physical)
+    prepare_bridge.validate_args(physical_args)
     environment, threads = execution_environment(os.environ)
     output = args.output.expanduser().resolve()
     if output.exists():

@@ -1,0 +1,24 @@
+LOCAL REFERENCE VALIDATION ONLY
+
+Pinned LAMMPS: stable_30Sep2026, commit 8de817dd79bfe4525d5d39246a212d833e6dee07.
+Plugin source base: 4a0a1ea66e02e7d46d64d1bec9602e8cb141897e plus the overlay.
+
+Configure pinned LAMMPS (substitute your source/build/install paths):
+cmake -S LAMMPS/cmake -B LAMMPS_BUILD -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=INSTALL -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_RPATH=INSTALL/lib -DBUILD_MPI=OFF -DBUILD_OMP=OFF -DPKG_ASPHERE=ON -DPKG_PLUGIN=ON -DDOWNLOAD_POTENTIALS=OFF -DENABLE_TESTING=OFF
+cmake --build LAMMPS_BUILD -j 4
+cmake --install LAMMPS_BUILD
+
+Configure plugin reference backends explicitly (does not alter production build.py):
+cmake -S REPO/lammps_slurry -B PLUGIN_BUILD -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DLAMMPS_SOURCE_DIR=LAMMPS -DLAMMPS_DIR=INSTALL/lib/cmake/LAMMPS -DSLURRY_ENABLE_LU=ON -DSLURRY_USE_FFTW=OFF -DSLURRY_USE_MKL_PARDISO=OFF
+cmake --build PLUGIN_BUILD -j 2
+OMP_NUM_THREADS=1 ctest --test-dir PLUGIN_BUILD --output-on-failure
+
+Contact fixtures:
+python3 smoke_contact.py --repo REPO --lmp INSTALL/bin/lmp --plugin PLUGIN_BUILD/libslurry.so --output NEW_OUTPUT --timestep 1e-6 --backend direct
+  Expected recorded behavior: AR1 and AR2 pass; AR5 fails (nonlinear iteration limit).
+python3 smoke_contact.py --repo REPO --lmp INSTALL/bin/lmp --plugin PLUGIN_BUILD/libslurry.so --output NEW_OUTPUT_1E7 --timestep 1e-7 --backend direct
+  All AR1/2/5 passed locally.
+python3 smoke_contact.py --repo REPO --lmp INSTALL/bin/lmp --plugin PLUGIN_BUILD/libslurry.so --output NEW_OUTPUT_MESH --timestep 1e-7 --backend mesh
+  All AR1/2/5 passed locally with builtin-reference FFT.
+
+The fixture deliberately begins with 0.1 nm elastic overlap to exercise contact immediately. It is not a certified production initial packing. These results neither reproduce relative viscosity 100 nor establish a jamming concentration. Re-run the production FFTW/MKL backend and timestep/stiffness/size convergence studies before rheology inference.

@@ -1,0 +1,36 @@
+{
+  "repository_base_commit": "4a0a1ea66e02e7d46d64d1bec9602e8cb141897e",
+  "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+  "lammps_tag": "stable_30Sep2026",
+  "compiler": "GNU 13.3.0",
+  "cmake": "4.4.4",
+  "mpi": false,
+  "fft": "builtin-reference",
+  "sparse": "Eigen-reference",
+  "production_fftw_mkl_tested": false,
+  "smoke_steps": 5,
+  "particle_count": 2,
+  "initial_elastic_overlap_m": 1e-10,
+  "nominal_volume_equivalent_diameter_m": 8e-06,
+  "reference_radius_m": 4e-06,
+  "dimensionless_regularization": 0.001,
+  "physical_regularization_m": 4e-09,
+  "mu_sliding": 10.0,
+  "mu_rolling": 10.0,
+  "normal_stiffness_N_per_m": 100.0,
+  "sliding_stiffness_N_per_m": 80.0,
+  "rolling_quasiforce_stiffness_N_per_m": 80.0,
+  "limitations": [
+    "Integration/finite-output fixtures only; no viscosity/jamming validation.",
+    "No long-run or same-duration timestep convergence study.",
+    "AR5 fails at dt1e-6 in the retained fixture; dt1e-7 passes.",
+    "Production FFTW and static MKL/PARDISO not available locally; no HPC job was submitted.",
+    "Step-zero interval/selected-window viscosity averages are deliberately NaN until physical time has elapsed."
+  ],
+  "ctest": {
+    "total": 44,
+    "passed": 44,
+    "failed": 0,
+    "wall_time_s": 7.67
+  }
+}

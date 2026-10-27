@@ -1,0 +1,7 @@
+[ 16%] Building CXX object CMakeFiles/slurry.dir/src/plugin.cpp.o
+[ 33%] Building CXX object CMakeFiles/slurry.dir/src/pair_slurry_spheroid.cpp.o
+[ 50%] Building CXX object CMakeFiles/slurry.dir/src/fix_slurry_drag.cpp.o
+[ 66%] Building CXX object CMakeFiles/slurry.dir/src/fix_slurry_implicit.cpp.o
+[100%] Building CXX object CMakeFiles/slurry.dir/src/fix_slurry_bridge.cpp.o
+Linking CXX shared module libslurry.so
+Built target slurry

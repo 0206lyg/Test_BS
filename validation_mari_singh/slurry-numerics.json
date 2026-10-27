@@ -1,0 +1,4 @@
+{
+  "fft": "builtin-reference",
+  "sparse": "Eigen-reference"
+}

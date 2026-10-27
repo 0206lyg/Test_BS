@@ -30,6 +30,9 @@ inline Eval eval(const Vec3& n,const Vec3& r,const Mat3& qi,const Mat3& qj) {
 // Exact support geometry: maximize n.(xJ-xI)-sqrt(n.QI.n)-sqrt(n.QJ.n)
 // on the unit sphere. At a disjoint-pair maximum the two support points are
 // the true closest surface points. This is not a Gay-Berne contact estimate.
+// Its shallow-overlap continuation is signed penetration depth, not unsigned
+// surface distance. Preserve negative gaps for the finite-stiffness normal
+// penalty; zero is the geometric surface-contact onset.
 inline GapResult closestEllipsoidGap(const Body& bi,const Body& bj,GapCache* cache=nullptr) {
   double length=0.;for(double a:bi.axes){if(!(a>0.))throw std::domain_error("Nonpositive ellipsoid axis");length=std::max(length,a);}
   for(double a:bj.axes){if(!(a>0.))throw std::domain_error("Nonpositive ellipsoid axis");length=std::max(length,a);}

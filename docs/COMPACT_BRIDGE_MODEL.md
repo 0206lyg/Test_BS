@@ -1,74 +1,82 @@
-# Compact bridge v4 implementation contract
+# Spheroid bridge implementation contract — 2026-10-27
 
-`fix slurry/bridge` is a separate LAMMPS integrator. The near model accepted on 2026-10-20 is retained. The periodic middle approximation is documented separately in [PERIODIC_MIDDLE.md](PERIODIC_MIDDLE.md); it is not an exact periodic Stokes solver.
+The active `fix slurry/bridge` uses Mari-style additive lubrication regularization and the Singh sliding/rolling contact law, extended to oblate spheroids. Its compact near hydrodynamics and periodic ellipsoid mobility remain approximations; this is not the complete spherical LF-DEM operator of either paper. See [MARI_SINGH_OVERLAY.md](MARI_SINGH_OVERLAY.md) for provenance, scope and validation.
 
-## Coordinates and units
+## Geometry, coordinates and units
 
-For every particle the numerical variables are
-`q=(U-u_inf, Omega-Omega_inf, -E_inf[STF5])` after nondimensionalization by the common polar semiaxis `c` and rate `max(abs(shear_rate),1/s)`. The 11 conjugate moments act **on the fluid**. In SI, force, torque/stresslet scales are respectively `eta*c^2*rate` and `eta*c^3*rate`. Shape semiaxes are `(AR*c,AR*c,c)` in the particle frame, with an arbitrary quaternion. The implementation permits different ARs at a common c.
+The supported shape is an oblate spheroid with AR=a/c between 1 and 5. The nominal diameter D is interpreted as volume-equivalent: a=(D/2) AR^(1/3), c=(D/2) AR^(-2/3). Thus V=pi D^3/6 is independent of AR. Default D=8 micrometers. This diameter interpretation is a modeling choice; it does not infer a three-dimensional size distribution from a projected image.
 
-The STF basis is orthonormal: `(xx-yy)/sqrt(2)`, `(xx+yy-2zz)/sqrt(6)`, symmetric xy, xz, yz, with each off-diagonal entry `1/sqrt(2)`. This basis is shared by the near matrix, periodic mobility, mixed solver, output, and stress calculation.
+The fixed normalization length is L=D/2, not the polar semiaxis. The rate scale is s=max(abs(shear_rate),1/s). Each particle has q=(U-u_inf, Omega-Omega_inf, -E_inf[STF5]) in normalized coordinates. The 11 conjugate moments act on the fluid. Force, torque/stresslet and power scales are eta L^2 s, eta L^3 s and eta L^3 s^2. The code checks that every particle has the prescribed volume-equivalent diameter.
 
-## Near connection
+The STF basis is orthonormal: (xx-yy)/sqrt(2), (xx+yy-2zz)/sqrt(6), symmetric xy, xz, yz, with each off-diagonal entry 1/sqrt(2). The same basis is used throughout the hydrodynamic solve and stress calculation.
 
-The exact convex support geometry computes the actual signed gap, contact points, normal, and local curvature. Only scalar gap functions use `he=max(h,hfloor)`, default 1 nm. No surface positions or curvatures are moved to the floor.
+## Regularized near hydrodynamics
 
-In the local 11-dimensional relative coordinates, the retained singular terms are `alpha=a0/he`, `v=b*log1p(ell_t/he)`, `C_log=C*log1p(ell_t/he)`. The normal component is separated from the remaining ten coordinates. The positive completion is
+Convex support geometry computes the signed surface gap h, contact points, normal and local curvature. Negative h is the shallow penetration used by the finite-stiffness contact penalty. Neither the geometry nor the contact onset is shifted by a roughness layer.
+
+Scalar resistance functions use
+
+```
+ell_reg = epsilon * (D/2)
+h_eff = max(h,0) + ell_reg
+```
+
+Default epsilon=0.001 gives ell_reg=4 nm at D=8 micrometers. Mari's dimensionless gap is 2h/(a_i+a_j); equal reference radii therefore use h/(D/2), not h/D. The additive rule differs from the old hard floor max(h,h_floor), including for positive gaps smaller than ell_reg. During shallow overlap, scalar resistance stays at its contact limit while actual geometry is retained.
+
+In the local 11-dimensional relative coordinates, retained terms are alpha=a0/h_eff, v=b log1p(ell_t/h_eff), C_log=C log1p(ell_t/h_eff). The normal coordinate is separated from the other ten coordinates. Positive completion is
 
 ```
 Delta = positive_part(v*v^T/alpha - C_log)
 Hplus = [[alpha, v^T], [v, C_log+Delta]]
 ```
 
-The completion is evaluated in the fixed nondimensional coordinates using `c`, not an arbitrary instantaneous contact length. It preserves the retained formal singular coefficients before applying the floor. The normal-normal subleading logarithmic coefficient remains omitted, as in the accepted model; this is not a complete reconstruction of every Claeys–Brady coefficient.
+This finite completion uses the fixed reference L=D/2. Changing L changes that finite model, so the shift from the previous L=c is an intentional model change as well as a normalization change. The normal-normal subleading logarithm remains omitted.
 
-The contact-centred homothetic curvature ellipse is maximized inside both projected particle regions. Its depth is `ell_n`, its short semiaxis `Lp=sqrt(ell_n/lambda_max)`. The log reference remains `ell_t=min(c, all four local curvature radii)`. With `D_nn=ell_n/(he+ell_n)` and all other diagonal entries one,
+The contact-centred curvature ellipse fits inside both projected particles. Its depth is ell_n and its short semiaxis is Lp. The log reference is ell_t=min(polar semiaxes, local curvature radii). With D_nn=ell_n/(h_eff+ell_n) and other diagonal entries one,
 
 ```
-Hbridge = w(he/Lp) D Hplus D
+Hbridge = w(max(h,0)/Lp) D Hplus D
 Rnear_pair = B^T Hbridge B
 ```
 
-`w=1` up to 0.1 and zero from 1; between them the quintic is evaluated stably as `(1-t)^3*(1+3t+6t^2)`, `t=(he/Lp-0.1)/0.9`. This near correction contains no isolated-particle drag. The positive completion, ellipse, and switch are explicit finite-distance model choices. The geometric ellipse cusp and positive-part kink found in the previous audit are retained.
+The quintic switch w is one below 0.1 and zero from 1. Its support uses the actual nonnegative gap, so regularization does not move the outer geometric support. Pair matrices are symmetric positive semidefinite by construction. All periodic images within ai+aj+min(ai,aj), where ai and aj are the largest semiaxes, are enumerated; one representative of each self-image pair is included. This is support of the near correction, not a cutoff of all hydrodynamics.
 
-All images within `ai+aj+min(ai,aj)` are enumerated. Equal sizes give the proven near support radius `3a`. For `i<j` every admissible lattice vector is included; for `i=j`, one of ±image is included and its complete 22×22 matrix is assembled onto the same 11 unknowns. This preserves the congruence/PSD property. The center radius is a support of this near model, not a cutoff of physical hydrodynamics.
+The near model retains the previous surface-point moment maps, finite-distance completion, curvature patch and taper. Coordinate-rotation covariance is tested; these tests do not prove an exact finite-gap rigid-body null mode or an exact Stokes solution. Periodic middle hydrodynamics is documented in [PERIODIC_MIDDLE.md](PERIODIC_MIDDLE.md).
 
-## Velocity and contact solve
+## Surface sliding and rolling
 
-The system solves `M*g_mid=q`, `q=P*u+qE`, and
-
-```
-P^T(g_mid + Rnear*q) = F_contact
-```
-
-The production solver retains three traction components per periodic contact in addition to the `11N+6N` hydrodynamic variables. It uses a force-variable semismooth Newton method with right FGMRES. This changes the nonlinear solution variables, not the contact law or the accepted near/middle model. There is no nested many-body mobility inverse.
-
-For each contact, write the traction as `-N*n+T`, with tangential `T`, relative normal/tangential velocities `vn,vt`, and committed tangential spring history `xi`. The equivalent proximal equations are
+Contact onset is h=0. For the actual end-of-step gap,
 
 ```
-N = max(0, N - rho_n*(vn + (gap-onset)/dt + N/(kn*dt)))
-T = project_disk(T + rho_t*(vt + xi/dt - T/(kt*dt)), mu*max(N,0))
+Fn = kn * max(-h_endpoint,0)
+|Ft| <= mu_s * Fn
 ```
 
-The normal and tangential scales are positive scalars. Each combines isolated-particle relative mobility with spring compliance: `rho_n=1/(n^T W n+1/(kn*dt))` and `rho_t=1/(trace((I-n*n^T)W)/2+1/(kt*dt))`. Zero stiffness or friction is handled explicitly before taking reciprocals. These equations have exactly the same roots as the frozen-geometry backward-Euler normal penalty and elastic/Coulomb return map. Retaining the contact force changes the off-root line search; it avoids forcing the search to locate a narrow sticking interval only in velocity space. It does not change the physical stiffness.
+No positive-gap shell, rough hydrodynamic excess, repulsion barrier, contact dashpot or twisting spring is active. Sliding uses the existing tangential displacement spring and Coulomb return map. Its numerical stiffness kt has units N/m. At noncompressive separation all sliding and rolling history is discarded. An implicitly predicted overlap can create a contact within a step that starts at positive gap; it is the endpoint overlap that supplies the normal load.
 
-The preconditioner analytically eliminates each local three-component contact block, then factors the sparse `6N` Schur matrix `A+P^T D^-1 P`. For the mesh backend, `D` contains positive isolated continuum mobility blocks; the direct reference uses the discrete self blocks. This approximation is confined to the preconditioner and does not alter the physical mobility. The complete nonsymmetric contact derivative, including the normal-load dependence of friction, is retained. SparseLU handles this nonsymmetric matrix. The global mobility remains matrix-free, with one mobility product per Jacobian application.
+Singh's rolling quasi-force spring has stiffness kr in N/m. Let aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j). Here every reference radius is D/2, hence aij=D/2 independently of AR. The angular-history implementation uses
 
-The augmented nonlinear merit uses a fixed weighted norm. FGMRES uses the same norm and a bounded inexact-Newton forcing term, at most 0.05, to avoid oversolving early linear systems. Backtracking checks the actual augmented residual and its directional derivative; a Jacobian-transpose Cauchy step is available if the Newton line search fails. Linear hydrodynamic products are reused exactly during backtracking, and the full residual is reevaluated at every accepted iterate.
+```
+K_theta = kr * aij^2
+M_trial = K_theta * theta_tangent
+|M_roll| <= mu_r * Fn * aij
+```
 
-Acceptance is independently checked using the **original** contact return map and original hydrodynamic equations at the user's tolerance. The retained auxiliary tractions do not supply the reported contact forces or spring histories. A final call to the original formulation verifies or polishes that physical state. Physical residuals may temporarily increase while the augmented merit decreases; only the final physical residual controls acceptance. No continuation parameter or environment variable is required by the production path. The older stiffness-continuation implementation remains a lower-level regression/reference path and is not used silently.
+This is equivalent to the quasi-force rolling representation for a frozen contact normal. Relative angular motion parallel to the normal produces no rolling torque. The two particles receive opposite resisting couples. Existing objective history transport follows common rotation and changes of contact normal. Using volume-equivalent aij for nonspherical particles is an explicit extension of the sphere law, not a shape-friction mapping established by the cited papers.
 
-The production default is the same linear contact law with `kn=100 N/m`, `kt=80 N/m`, `mu=0.1`, and `onset=3 nm`. A nonlinear endpoint correction wraps the frozen-geometry solves: trial Euler translation, quaternion rotation and lattice shear produce the actual endpoint gap. The inner contact gap is offset until its predicted compression agrees with that endpoint. Final force and normal energy are evaluated directly as `N=kn*max(onset-h_endpoint,0)` and `Un=N*N/(2*kn)`. Every correction uses the original committed tangential history. Both contactwise force consistency and the complete force/mobility residual must pass before a state is accepted. Hydrodynamics, normals and tangential velocity maps remain evaluated at the beginning of the first-order step. No Hertz law, stress activation barrier or position projection is introduced.
+Default kn=100, kt=80, kr=80 N/m; mu_s=mu_r=10. These are trial numerical parameters. They are neither measured graphite coefficients nor demonstrated infinite-friction limits for every AR. Stiffness, timestep and friction saturation require separate convergence tests. The launcher permits mu_s=0 and/or mu_r=0 to disable either friction branch.
 
-`solver_relative_residual` is the final endpoint-corrected physical-equation residual. Newton/Krylov counts and `mobility_applications` include all geometry corrections and final verification/polish. `SLURRY_BRIDGE_TRACE=1` prints `prox_*` and `polish_*` phases, physical `residual`, augmented `merit`, and timing. It changes no physical parameters. Nonfinite residuals, linear failures, an unlisted new endpoint contact, or failure to converge within 24 geometry corrections stop before committing that pending advance. Automatic timestep subdivision is not implemented.
+## Coupled solve and integration
 
-The contact force acts at a common midpoint. Its velocity uses the actual center displacement and levers, including the affine contribution `E*d`. Each periodic contact has its own history. After a committed step its predicted physical image displacement identifies the history after periodic wrapping or a lattice flip; reversed self-image representatives reverse the normal and elastic vector. History is committed only during a genuine position advance, never during `run 0`, setup, or residual evaluations.
+The system solves M*g_mid=q, q=P*u+qE and P^T(g_mid+Rnear*q)=F_contact. When rolling is enabled, the retained contact unknown is a six-component force/couple wrench. The solver uses semismooth Newton with matrix-free right FGMRES and local contact-block condensation. The production sparse preconditioner uses oneMKL PARDISO; a reference Eigen backend exists for tests. Physical acceptance is checked against the original contact return map and hydrodynamic equations, not only the augmented residual.
 
-LAMMPS owns the periodic geometry through `fix deform 0 xz erate ... remap v`, defined before this fix. The bridge advances physical velocities and quaternions once; `remap x` is rejected because it would apply affine displacement twice. The current fix supports constant-volume xz shear, periodic 3D, SI ellipsoid atoms, and `pair_style zero`. It cannot be combined with another integrator or slurry force fix. Position/orientation updates are first order; implicit contact does not remove the need to resolve geometric motion with the timestep.
+A nonlinear endpoint correction updates the contact compression to agree with trial Euler translation, quaternion rotation and lattice shear. Fn and normal energy are evaluated from that actual endpoint gap. Every correction starts from the original committed history. Hydro matrices, normals and sliding maps remain evaluated at the beginning of the first-order step. No position projection or automatic timestep subdivision is introduced. Failure of force/mobility convergence, gap consistency or unlisted new-contact detection aborts the advance rather than silently accepting it.
 
-## Stress and power
+Each periodic contact keeps its own history. Predicted physical image displacement identifies history after wrapping or a lattice flip. History is committed only on a genuine position advance, not during `run 0`, setup or residual evaluation.
 
-The reported symmetric stresses are
+LAMMPS owns periodic geometry via `fix deform 0 xz erate ... remap v`, defined before this fix. Supported runs are constant-volume xz shear, periodic 3D SI ellipsoid atoms and `pair_style zero`. This fix advances positions and orientations itself and must not be combined with another integrator.
+
+## Stress, power and output
 
 ```
 sigma_H = -sum(S_on_fluid)/V
@@ -77,8 +85,8 @@ sigma = 2*eta*E + sigma_H + sigma_C
 eta_app = sigma_xz / shear_rate
 ```
 
-No extra hydrodynamic pair virial is added: the near strain-conjugate moment already carries its lever contribution. The code independently reports `stress_power=V*sigma_xz*shear_rate` and `hydro_dissipation + contact_power`. Contact power includes elastic energy change and can have either sign during relaxation; it is not frictional dissipation alone. `hydro_dissipation_W` includes the solvent term. Their difference is a power-balance diagnostic, not a Stokes-accuracy estimate.
+No extra near hydrodynamic virial is added. Contact couples enter rotational balance and contact power. The symmetric shear stress uses the force virial above. `stress_power_W` and `hydro_dissipation_W + contact_power_W` are reported independently; their difference is a consistency diagnostic. Contact power includes elastic storage/release and is not purely plastic dissipation.
 
-Per-particle hydrodynamic force/torque and contact force/torque are output separately. Their sum should agree with the accepted force-balance residual. The raw force and mobility residual columns are norms in the stated nondimensional variables; they are not SI newtons or a relative error. The solver's accepted residual is measured in fixed preconditioned coordinates with the configured tolerance.
+The CSV retains normal and sliding elastic energies and adds/retains rolling yield count, rolling elastic energy, rolling plastic dissipation and rolling contact power. Obsolete rough-hydro and twisting columns are removed. Force and mobility residual norms use the stated nondimensional coordinates, not SI newtons. Solver acceptance uses its configured relative norm.
 
-Time averages use every committed timestep. Initial output at step zero is not included in the average. `--average-start-strain` selects an averaging window; it does not establish stationarity. `final.data` stores geometry, not tangential contact history; restarting a physical trajectory from that file is not supported as a history-preserving restart in this version.
+Averages include every committed timestep, excluding step-zero output. Selecting an averaging window does not establish stationarity. `final.data` stores geometry, not friction histories, so it is not a physical history-preserving restart.

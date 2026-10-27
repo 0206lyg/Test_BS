@@ -1,0 +1,50 @@
+[
+  {
+    "ar": 1,
+    "returncode": 0,
+    "a_m": 4e-06,
+    "c_m": 4e-06,
+    "reference_radius_m": 4e-06,
+    "regularization_m": 4e-09,
+    "rows": 6,
+    "max_contacts": 1.0,
+    "max_solver_relative_residual": 5.194595995753542e-10,
+    "min_endpoint_gap_m": -6.641930877560042e-11,
+    "max_gap_consistency_m": 3.0643890203130295e-21,
+    "max_rolling_elastic_energy_J": 3.892177417922057e-52,
+    "all_finite": true,
+    "pass": true,
+    "timestep_s": 1e-06,
+    "mobility_backend": "direct"
+  },
+  {
+    "ar": 2,
+    "returncode": 0,
+    "a_m": 5.039684199579493e-06,
+    "c_m": 2.5198420997897463e-06,
+    "reference_radius_m": 4e-06,
+    "regularization_m": 4e-09,
+    "rows": 6,
+    "max_contacts": 1.0,
+    "max_solver_relative_residual": 1.925140269165193e-08,
+    "min_endpoint_gap_m": -6.011143483321857e-11,
+    "max_gap_consistency_m": 4.651911722584195e-21,
+    "max_rolling_elastic_energy_J": 4.355984804746911e-25,
+    "all_finite": true,
+    "pass": true,
+    "timestep_s": 1e-06,
+    "mobility_backend": "direct"
+  },
+  {
+    "ar": 5,
+    "returncode": 1,
+    "a_m": 6.839903786706787e-06,
+    "c_m": 1.3679807573413575e-06,
+    "reference_radius_m": 4e-06,
+    "regularization_m": 4e-09,
+    "pass": false,
+    "timestep_s": 1e-06,
+    "mobility_backend": "direct",
+    "failure": "bridge proximal solver: nonlinear iteration limit at first evolved step"
+  }
+]

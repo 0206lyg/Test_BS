@@ -1,14 +1,19 @@
 #ifndef SLURRY_COMPACT_BRIDGE_H
 #define SLURRY_COMPACT_BRIDGE_H
 
-// Validated compact lubrication connection, model v4 (2026-10-20).
+// Compact lubrication connection with Mari-style additive regularization.
 // This is an explicit finite-gap approximation, not an exact Stokes solution.
 // The normal-normal subleading logarithm is deliberately omitted.
 // q_i = (U_i, Omega_i, e_i), e_i = -E_i, with orthonormal STF coordinates.
 // The returned matrix maps physical q to ON-FLUID (F,T,strain-conjugate S).
-// Geometry uses the actual surface gap; only scalar gap functions use max(h,hfloor).
+// Geometry uses the actual signed surface gap. Scalar resistance functions use
+// max(h,0)+regularization_length; that length is NOT a contact-onset distance.
+// The compact support uses max(h,0), so the regularization does not move its
+// geometric outer boundary. Shallow penalty overlap uses the contact-limit
+// scalar resistance while retaining the actual surface points and normal.
 // The Schur completion is evaluated in coordinates nondimensionalized by L;
-// changing L changes that finite, explicitly chosen model. Use L=c=150 nm.
+// changing L changes that finite, explicitly chosen model. The runtime uses the
+// fixed nominal radius, independent of AR, as L.
 
 #include "../vendor/gr_re2/ellipsoidGap.h"
 #include <Eigen/Dense>
@@ -259,10 +264,12 @@ inline Mat11 center_map(const Mat3 &Q, const Vec3 &lever) {
 } // namespace detail
 
 inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResult &gap, double eta,
-                       double reference_length, double gap_floor, bool diagnostics = false) {
-  if (!(eta > 0 && reference_length > 0 && gap_floor > 0) || !std::isfinite(eta) ||
-      !std::isfinite(reference_length) || !std::isfinite(gap_floor) || !std::isfinite(gap.gap))
-    throw std::invalid_argument("compact bridge needs finite eta,L,hfloor > 0 and finite gap");
+                       double reference_length, double regularization_length,
+                       bool diagnostics = false) {
+  if (!(eta > 0 && reference_length > 0 && regularization_length > 0) || !std::isfinite(eta) ||
+      !std::isfinite(reference_length) || !std::isfinite(regularization_length) ||
+      !std::isfinite(gap.gap))
+    throw std::invalid_argument("compact bridge needs finite eta,L,regularization_length > 0 and finite gap");
   const double length = reference_length;
   const Mat3 Ai = shape(bi, length), Aj = shape(bj, length);
   const Vec3 n = vector(gap.normal).normalized(), li = vector(gap.leverI) / length,
@@ -279,14 +286,15 @@ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResu
   const double Lp = std::sqrt(ell_n / el.eigenvalues()[1]);
   if (!(ell_n > 0 && Lp > 0))
     throw std::runtime_error("non-positive curvature patch");
-  const double he = std::max(gap.gap, gap_floor) / length;
+  const double physical_gap = std::max(gap.gap, 0.) / length;
+  const double he = physical_gap + regularization_length / length;
   Result out;
   out.gap = gap.gap;
   out.effective_gap = he * length;
   out.ell_n = ell_n * length;
   out.ell_t = z.ell * length;
   out.patch_width = Lp * length;
-  out.weight = compact_weight(he / Lp);
+  out.weight = compact_weight(physical_gap / Lp);
   out.normal_scale = ell_n / (he + ell_n);
   out.active = out.weight > 0;
   if (!out.active)
@@ -336,8 +344,9 @@ inline Result evaluate(const gr::Body &bi, const gr::Body &bj, const gr::GapResu
   return out;
 }
 inline Result evaluate(const gr::Body &bi, const gr::Body &bj, double eta, double reference_length,
-                       double gap_floor, gr::GapCache *cache = nullptr) {
-  return evaluate(bi, bj, gr::closestEllipsoidGap(bi, bj, cache), eta, reference_length, gap_floor);
+                       double regularization_length, gr::GapCache *cache = nullptr) {
+  return evaluate(bi, bj, gr::closestEllipsoidGap(bi, bj, cache), eta, reference_length,
+                  regularization_length);
 }
 
 // Guaranteed compact support radius for bodies with maximum semiaxes ai,aj.
