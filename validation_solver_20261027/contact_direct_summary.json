@@ -1,0 +1,29 @@
+[
+  {
+    "ar": 1,
+    "returncode": 0,
+    "last_step": 100,
+    "max_solver_relative_residual": 5.283381390190415e-10,
+    "max_contacts": 1,
+    "max_gap_consistency_m": 4.929380657863391e-21,
+    "rescues": 0
+  },
+  {
+    "ar": 2,
+    "returncode": 0,
+    "last_step": 100,
+    "max_solver_relative_residual": 1.925140269165193e-08,
+    "max_contacts": 1,
+    "max_gap_consistency_m": 5.6071012480822135e-21,
+    "rescues": 0
+  },
+  {
+    "ar": 5,
+    "returncode": 0,
+    "last_step": 100,
+    "max_solver_relative_residual": 8.759823609719441e-08,
+    "max_contacts": 1,
+    "max_gap_consistency_m": 9.97067595045857e-19,
+    "rescues": 3
+  }
+]

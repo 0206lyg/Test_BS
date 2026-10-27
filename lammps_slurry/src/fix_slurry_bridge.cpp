@@ -626,6 +626,15 @@ void FixSlurryBridge::solve_velocities() {
       }
       p.warm = std::move(result);
       p.have_warm = true;
+    } catch (const bs::NonlinearFailure &e) {
+      failed = 1;
+      std::ostringstream diagnostic;
+      diagnostic << e.what() << "; step=" << static_cast<long long>(update->ntimestep)
+                 << std::scientific << std::setprecision(9)
+                 << "; residual=" << e.residual << "; tolerance=" << e.tolerance
+                 << "; Newton iterations=" << e.newton_iterations
+                 << "; linear iterations=" << e.linear_iterations;
+      message = diagnostic.str();
     } catch (const std::exception &e) {
       failed = 1;
       message = e.what();

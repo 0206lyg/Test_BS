@@ -1,0 +1,10 @@
+[
+  {
+    "case": "n500",
+    "returncode": 0,
+    "last_step": 5,
+    "max_relative_residual": 2.6826939872522726e-08,
+    "max_gap_consistency_m": 1.6164710273314707e-20,
+    "continuation_rescues": 0
+  }
+]

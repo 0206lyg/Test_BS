@@ -1,0 +1,26 @@
+[
+  {
+    "case": "ar1",
+    "returncode": 0,
+    "last_step": 5,
+    "max_relative_residual": 6.355717384322165e-10,
+    "max_gap_consistency_m": 1.0122562103852608e-20,
+    "continuation_rescues": 0
+  },
+  {
+    "case": "ar2",
+    "returncode": 0,
+    "last_step": 5,
+    "max_relative_residual": 1.3943626707469328e-08,
+    "max_gap_consistency_m": 5.164660576105744e-21,
+    "continuation_rescues": 0
+  },
+  {
+    "case": "ar5",
+    "returncode": 0,
+    "last_step": 5,
+    "max_relative_residual": 3.239507427668818e-08,
+    "max_gap_consistency_m": 9.989478082889861e-19,
+    "continuation_rescues": 3
+  }
+]

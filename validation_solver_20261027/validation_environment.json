@@ -1,0 +1,22 @@
+{
+  "baseline_git_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
+  "release": "20261027-contact-globalization",
+  "validation_backends": {
+    "fft": "FFTW system shared library",
+    "sparse": "Eigen reference",
+    "production_MKL_PARDISO_tested": false
+  },
+  "pinned_lammps": {
+    "repository": "https://github.com/lammps/lammps.git",
+    "tag": "stable_30Sep2026",
+    "commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+    "release_date": "2026-09-30"
+  },
+  "source_sha256": {
+    "lammps_slurry/src/slurry_bridge_solver.h": "0e158bb5dbd77b5840627b84b0a120078eff247620bf13bc2461c731719e43aa",
+    "lammps_slurry/src/slurry_bridge_contact_solver.h": "a1258b96fb1988f15e266315558cd0cc96b8ae0f0a4cdfce47e19d95f7d16298",
+    "lammps_slurry/src/slurry_bridge_step.h": "48cad75a43a77c5724dab433458d1fecec87735b2f28afe0797dd2ffd6086de7",
+    "lammps_slurry/src/fix_slurry_bridge.cpp": "5d0b18899190b3375e22b9900591543f6a0d97e917ed271bcb3f1883e5ab5833"
+  },
+  "final_build_note": "Full plugin compiled with O3 before adding the diagnostic step number; final bridge translation unit rebuilt O1 with identical numerical source and final diagnostic. C++ regression tests compiled O1. Production build defaults remain O3."
+}

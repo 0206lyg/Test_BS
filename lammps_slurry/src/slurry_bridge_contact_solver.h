@@ -667,5 +667,65 @@ inline Result solve_proximal(const Problem &p, const Options &opt = Options{},
   const bool angular = std::any_of(p.contacts.begin(), p.contacts.end(), rotation_enabled);
   return angular ? solve_proximal_impl<6>(p, opt, warm) : solve_proximal_impl<3>(p, opt, warm);
 }
+// Globalized contact solve. The inexpensive retained-wrench formulation is
+// tried first. A failed nonlinear globalization is rescued by stiffness
+// continuation in the original return-map formulation. Intermediate stages
+// supply initial guesses only: geometry, time step and committed histories
+// remain frozen, and only the full requested stiffness is returned.
+inline Result solve(const Problem &p, const Options &opt = Options{},
+                    const Result *warm = nullptr) {
+  const auto started = std::chrono::steady_clock::now();
+  try {
+    return solve_proximal(p, opt, warm);
+  } catch (const NonlinearFailure &failure) {
+    Options rescue = opt;
+    rescue.cold_start_continuation = true;
+    rescue.trace_callback = [&](const IterationTrace &input) {
+      if (!opt.trace_callback) return;
+      IterationTrace event = input;
+      event.total_newton_iterations += failure.newton_iterations;
+      event.total_linear_iterations += failure.linear_iterations;
+      event.elapsed_seconds = std::chrono::duration<double>(
+          std::chrono::steady_clock::now() - started).count();
+      opt.trace_callback(event);
+    };
+    if (opt.trace_callback) {
+      IterationTrace event;
+      event.phase = "prox_retry";
+      event.continuation_stage = -2;
+      event.residual = failure.residual;
+      event.merit_residual = std::numeric_limits<double>::quiet_NaN();
+      event.tolerance = failure.tolerance;
+      rescue.trace_callback(event);
+    }
+    auto add_failed_work = [&](auto &value) {
+      value.newton_iterations += failure.newton_iterations;
+      value.linear_iterations += failure.linear_iterations;
+      value.mobility_applications += failure.mobility_applications;
+      value.kink_reselections += failure.kink_reselections;
+      value.descent_steps += failure.descent_steps;
+      value.breakpoint_steps += failure.breakpoint_steps;
+    };
+    try {
+      // Start at normal-only equilibrium rather than retrying the same failed
+      // warm state. solve() returns only after scale=1 passes the original gate.
+      Result result = SlurryBridgeSolver::solve(p, rescue, nullptr);
+      add_failed_work(result);
+      ++result.continuation_retries;
+      return result;
+    } catch (const NonlinearFailure &second) {
+      Result work;
+      work.newton_iterations = second.newton_iterations;
+      work.linear_iterations = second.linear_iterations;
+      work.mobility_applications = second.mobility_applications;
+      work.kink_reselections = second.kink_reselections;
+      work.descent_steps = second.descent_steps;
+      work.breakpoint_steps = second.breakpoint_steps;
+      add_failed_work(work);
+      throw NonlinearFailure(std::string("bridge globalized solver: ") + second.what(),
+                             work, second.residual, second.tolerance);
+    }
+  }
+}
 } // namespace SlurryBridgeContactSolver
 #endif

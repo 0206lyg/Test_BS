@@ -1,0 +1,37 @@
+{
+  "last_trace": {
+    "step": "61",
+    "phase": "prox_accepted",
+    "stage": "-2",
+    "stiffness_scale": "1",
+    "iteration": "39",
+    "newton_total": "40",
+    "residual": "5.881659000e+00",
+    "merit": "8.327416757e-02",
+    "tolerance": "5.246692600e-05",
+    "alpha": "1",
+    "linear": "7",
+    "linear_total": "462",
+    "linear_residual": "3.254312e-03",
+    "linear_target": "4.181257e-03",
+    "linear_defect": "0.000000e+00",
+    "active": "3",
+    "sliding": "0",
+    "reselections": "0",
+    "yield_distance": "1.000000e+00",
+    "descent": "1",
+    "breakpoint": "0",
+    "elapsed_s": "50.1149"
+  },
+  "failed": true,
+  "finished": false,
+  "trace_events": 693,
+  "completed_step": 60,
+  "max_relative_residual": 3.1103193000487033e-08,
+  "max_contacts": 2.0,
+  "max_gap_consistency_m": 1.7303017098822553e-20,
+  "mean_solve_time_s": null,
+  "errors": [
+    "ERROR: slurry/bridge solve failed: bridge proximal solver: nonlinear iteration limit (src/fix_slurry_bridge.cpp:639)"
+  ]
+}

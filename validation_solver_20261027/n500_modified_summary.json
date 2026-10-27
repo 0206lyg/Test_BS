@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "base_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
+  "case": {
+    "N": 500,
+    "AR": 2,
+    "phi": 0.24,
+    "dt_s": 1e-06,
+    "steps": 100,
+    "output_interval": 1,
+    "seed": 1729,
+    "nominal_diameter_m": 8e-06,
+    "mu_s": 10,
+    "mu_r": 10,
+    "kn_N_per_m": 100,
+    "kt_N_per_m": 80,
+    "kr_N_per_m": 80
+  },
+  "returncode": 0,
+  "last_step": 100,
+  "strain": 0.009999999999999998,
+  "maximum_relative_residual": 7.488130557619338e-08,
+  "maximum_gap_consistency_m": 1.0286271549700236e-19,
+  "maximum_contacts": 4,
+  "essential_outputs_finite": true,
+  "proximal_rescue_steps": [
+    61,
+    68
+  ],
+  "adaptive_retry_count": 3,
+  "successful_full_stiffness_step_residuals": {
+    "61": 6.485576441584674e-08,
+    "68": 6.48919861348933e-08
+  },
+  "optimization": "bridgeO1 unchangedothertranslationunitsO3",
+  "backend": "FFTW + Eigen reference sparse LU",
+  "threads": 2,
+  "wall_time_s": 598,
+  "candidate_library_sha256": "6a135022d96c3af5b23a925f00ef96421960438eef8f2e5bd005d5dcd76111c1",
+  "limitation": "CandidateB numerical implementation; final source adds diagnostic and continuation counter aggregation only. Final full-source plugin separately passed contactsAR1/2/5 and exactN5005 through shipped reproduce.py. Production MKL/PARDISO and long100000steps not tested."
+}

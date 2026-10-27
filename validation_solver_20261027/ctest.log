@@ -1,0 +1,15 @@
+Test project /workspace/scratch/af0f332bc475/review/final-test-build
+    Start 28: slurry_bridge_solver
+1/5 Test #28: slurry_bridge_solver .............   Passed    0.00 sec
+    Start 29: slurry_bridge_globalization
+2/5 Test #29: slurry_bridge_globalization ......   Passed    0.01 sec
+    Start 30: slurry_bridge_step
+3/5 Test #30: slurry_bridge_step ...............   Passed    0.00 sec
+    Start 38: slurry_contact_condensation
+4/5 Test #38: slurry_contact_condensation ......   Passed    0.01 sec
+    Start 39: slurry_contact_rotation
+5/5 Test #39: slurry_contact_rotation ..........   Passed    0.00 sec
+
+100% tests passed out of 5
+
+Total Test time (real) =   0.04 sec

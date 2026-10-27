@@ -2,16 +2,16 @@
 
 현재 실행 모델은 `fix slurry/bridge`입니다. **체적 등가 직경 D를 고정한 oblate spheroid**의 AR, 체적분율, sliding·rolling 마찰을 바꾸며 입자의 위치·배향과 xz 전단 응력을 계산합니다. 현재 실행 경로는 `PARTICLE_SHAPE=spheroid`, **1 ≤ AR ≤ 5**를 지원합니다. 기저나 저항표를 먼저 생성하지 않습니다.
 
-이번 overlay는 Mari의 무차원 lubrication regularization과 Singh의 sliding·rolling 접촉 법칙을 적용합니다. 기존 spheroid 근거리 bridge 및 주기 중거리 mobility는 유지하므로, 유체 연산자 전체가 Mari의 구형 입자 모델과 같다는 뜻은 아닙니다. **Graphite의 발산 농도 φJ≈0.30 또는 상대점도 100을 재현했다고 주장하는 변경이 아닙니다.**
+현재 모델은 Mari의 무차원 lubrication regularization과 Singh의 sliding·rolling 접촉 법칙을 사용합니다. 기존 spheroid 근거리 bridge 및 주기 중거리 mobility는 유지하므로, 유체 연산자 전체가 Mari의 구형 입자 모델과 같다는 뜻은 아닙니다. **Graphite의 발산 농도 φJ≈0.30 또는 상대점도 100을 재현했다고 주장하는 변경이 아닙니다.**
 
 실행 배치 파일은 저장소 최상위의 **`run_slurry_cpu.sbatch` 하나**입니다. 파일 상단의 `AR`, `PHI`, `COUNT`, `STEPS`, `OUTPUT_INTERVAL` 및 물성·solver 설정을 직접 고친 뒤 제출합니다. 실행 인자를 매번 입력할 필요가 없습니다.
 
 ## Overlay 적용과 실행
 
-저장소 디렉토리에서 다음 명령으로 적용하고 **반드시 다시 빌드**합니다. `slurry/bridge`의 입력 형식이 바뀌었으므로 이전 plugin과 새 입력을 함께 사용할 수 없습니다.
+저장소 디렉토리에서 다음 명령으로 적용하고 **반드시 다시 빌드**합니다. 수정한 solver를 사용하려면 새 소스에서 plugin을 다시 만들어야 합니다. 이번 solver 변경은 기존 실행 입력 형식을 유지합니다.
 
 ```bash
-unzip -o slurry_mari_singh_overlay_20261027.zip
+unzip -o slurry_solver_overlay_20261027.zip
 sbatch build_slurry_cpu.sbatch
 ```
 
@@ -55,6 +55,8 @@ Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`�
 
 중거리는 ellipsoid 형상함수를 유지하는 particle–mesh FFT이며 FFTW를 사용합니다. 격자 분배를 병렬화하고 FFT 계획·작업 버퍼를 재사용합니다. 접촉력을 독립적인 비선형 변수로 유지하는 Newton–FGMRES에서 접촉 증분을 블록 소거해 선형계 크기를 줄이고, PARDISO 전처리기의 행렬 구조 분석과 재사용 가능한 분해를 보존합니다. 최종 수렴은 원래 힘·mobility 방정식으로 검사합니다.
 
+접촉 Newton 반복이 정체하거나 line search가 실패하면, 같은 시간단계의 고정된 위치·배향·접촉 이력에서 **적응형 강성 연속화(adaptive stiffness continuation)**로 다시 풉니다. 법선 강성과 마찰계수는 고정하고 sliding·rolling 스프링 강성을 중간 계산에서 점차 원래 값으로 복원합니다. 중간 해는 초기 추정값으로만 사용하며, 원래 강성 및 원래 잔차 기준을 통과한 최종 해만 시간 적분에 사용합니다. 수렴한 warm start에는 추가 반복을 강제하지 않습니다. [solver 변경과 검증](docs/CONTACT_SOLVER_UPDATE.md)을 참고하십시오.
+
 **전체 밀집 행렬을 만들어 직접 푸는 방식은 사용하지 않습니다.** 배치의 `MOBILITY_BACKEND=direct`는 검증용 Fourier 직접 합산을 뜻하며 밀집 직접 solver가 아닙니다. 기본값은 `mesh`입니다.
 
 한 작업은 **MPI 프로세스 1개**와 OpenMP 스레드를 사용합니다. 기본 자원 요청은 물리 코어 16개, 메모리 96 GB이며 배치 상단의 `#SBATCH` 항목에서 변경합니다. launcher는 한 MPI 프로세스에 할당된 코어를 명시적으로 배정하고 바인딩을 출력합니다. 시작 실패 시 다른 실행 방식으로 재시도하거나 시뮬레이션을 중복 실행하지 않습니다.
@@ -73,6 +75,6 @@ Rolling의 기준 길이도 `a_ref=D/2`를 사용합니다. `ROLLING_STIFFNESS`�
 - [주기 중거리의 근사와 해상도](docs/PERIODIC_MIDDLE.md)
 - [이전 FFT·접촉 변경과 검증 기록](docs/FFT_CONTACT_UPDATE.md)
 
-AR5의 접촉 입자쌍 검사에서는 `TIMESTEP=1e-6`이 수렴하지 않았고 `1e-7`에서 통과했습니다. AR5 시험에는 `TIMESTEP=1e-7`을 사용하고, 기본 총 strain 10을 유지하려면 `STEPS=1000000`으로 함께 변경하십시오. 실제 다입자계에서는 별도의 시간간격 수렴 검사가 필요합니다. [실행 검증 기록](validation_mari_singh/REPORT.md)에 실패 조건도 포함합니다.
+이전 solver에서는 AR5 접촉 입자쌍의 `TIMESTEP=1e-6` 실행이 실패했습니다. 수정 solver는 같은 입력으로 AR1/2/5 각각 100 step을 direct 및 FFTW mesh에서 통과했습니다. 이전 실패 기록은 [기존 실행 검증 기록](validation_mari_singh/REPORT.md)에 보존하며, 새 결과는 [solver 변경 기록](docs/CONTACT_SOLVER_UPDATE.md)에 정리합니다. 이 수렴 성공은 시간간격에 대한 물리량의 수렴 검사를 대신하지 않습니다.
 
 기존 검증 폴더의 결과는 해당 소스 버전과 조건에서 얻은 기록입니다. 짧은 실행 검사나 kernel 시간만으로 정상상태 점도 또는 전체 실행 속도를 판정하지 않습니다.

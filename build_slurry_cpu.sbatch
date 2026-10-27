@@ -12,7 +12,7 @@
 # Submit from the source root: sbatch build_slurry_cpu.sbatch
 set -Eeuo pipefail
 trap 'printf "LAMMPS build failed at line %s (exit %s).\n" "$LINENO" "$?" >&2' ERR
-readonly SLURRY_LAUNCHER_RELEASE=20261027-mari-singh-spheroid-contact
+readonly SLURRY_LAUNCHER_RELEASE=20261027-contact-globalization
 # Slurm executes a spool copy; an explicit root or submission directory takes
 # precedence. Direct bash execution without Slurm uses this script's directory.
 SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}}"

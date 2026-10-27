@@ -1,0 +1,13 @@
+{
+  "bundle_guard": {
+    "tests": 7,
+    "passed": 7
+  },
+  "bridge_tools": {
+    "tests": 23,
+    "passed": 21,
+    "skipped": 2
+  },
+  "shell_syntax": "build_slurry_cpu.sbatch passed",
+  "source_release_check": "20261027-contact-globalization"
+}

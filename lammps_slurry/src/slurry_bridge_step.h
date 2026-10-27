@@ -172,12 +172,18 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
   int geometry_iteration_limit = geometry_iteration_block;
   double checkpoint_error = std::numeric_limits<double>::infinity();
   int linear = 0, newton = 0, applications = 0;
+  int stages = 0, retries = 0, descent = 0, breakpoints = 0, reselections = 0;
   for (int iteration = 0; iteration < geometry_iteration_limit; ++iteration) {
-    auto state = SlurryBridgeContactSolver::solve_proximal(
+    auto state = SlurryBridgeContactSolver::solve(
         corrected, inner, iteration ? &previous : warm);
     linear += state.linear_iterations;
     newton += state.newton_iterations;
     applications += state.mobility_applications;
+    stages += state.continuation_stages;
+    retries += state.continuation_retries;
+    descent += state.descent_steps;
+    breakpoints += state.breakpoint_steps;
+    reselections += state.kink_reselections;
     auto endpoint = geometry.advance(original, state.velocity);
     std::vector<bs::ContactResponse> exact;
     exact.reserve(original.contacts.size());
@@ -255,6 +261,11 @@ inline Result solve(const bs::Problem &original, const Geometry &geometry,
       state.linear_iterations = linear;
       state.newton_iterations = newton;
       state.mobility_applications = applications;
+      state.continuation_stages = stages;
+      state.continuation_retries = retries;
+      state.descent_steps = descent;
+      state.breakpoint_steps = breakpoints;
+      state.kink_reselections = reselections;
       out.solution = std::move(state);
       out.endpoint = std::move(endpoint);
       out.geometry_iterations = iteration + 1;
