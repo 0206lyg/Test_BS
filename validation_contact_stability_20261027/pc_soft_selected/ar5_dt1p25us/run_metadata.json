@@ -1,0 +1,10 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar5",
+  "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+  "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+  "initial_particles_sha256": "1e73a298806be8e30b2a63dc60dd44fcef566cbb4fe9d13535b41b305e4e3a83",
+  "steps": 96,
+  "dt": 1.25e-06,
+  "threads": 1,
+  "backend": "mesh"
+}

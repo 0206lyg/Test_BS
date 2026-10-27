@@ -1,0 +1,1193 @@
+{
+  "description": "Same physical120us pair trajectories, explicit predictor-corrector v2, kn.3 ktkr.24 N/m, mu_s=mu_r=10.",
+  "cases": [
+    {
+      "ar": 1,
+      "matching_times": 25,
+      "final_time_s": 0.00012,
+      "fields": {
+        "eta_relative": {
+          "max_abs_coarse": 1.159931661412422,
+          "max_abs_fine": 1.15991661305661,
+          "max_absolute_difference": 1.5048355811897451e-05,
+          "max_difference_over_fine_max": 1.297365314239448e-05,
+          "rms_difference_over_fine_max": 1.1556079205307714e-05,
+          "last_coarse": 1.159931661412422,
+          "last_fine": 1.15991661305661,
+          "last_relative_difference": 1.297365314239448e-05,
+          "late_mean_coarse": 1.1598596499878746,
+          "late_mean_fine": 1.1598447408651025,
+          "late_mean_relative_difference": 1.285441253198493e-05
+        },
+        "sigma_contact_Pa": {
+          "max_abs_coarse": 0.021495851512971408,
+          "max_abs_fine": 0.02149349796841674,
+          "max_absolute_difference": 2.353544554668796e-06,
+          "max_difference_over_fine_max": 0.00010950030367914858,
+          "rms_difference_over_fine_max": 6.0917193001172024e-05,
+          "last_coarse": 0.021495851512971408,
+          "last_fine": 0.02149349796841674,
+          "last_relative_difference": 0.00010950030367914858,
+          "late_mean_coarse": 0.01849338855942734,
+          "late_mean_fine": 0.018491681934585634,
+          "late_mean_relative_difference": 9.229148801844887e-05
+        },
+        "max_overlap_m": {
+          "max_abs_coarse": 2.4760161967973814e-10,
+          "max_abs_fine": 2.4757449490664385e-10,
+          "max_absolute_difference": 2.7124773094289686e-14,
+          "max_difference_over_fine_max": 0.00010956206577142762,
+          "rms_difference_over_fine_max": 6.094899786459916e-05,
+          "last_coarse": 2.4760161967973814e-10,
+          "last_fine": 2.4757449490664385e-10,
+          "last_relative_difference": 0.00010956206577142762,
+          "late_mean_coarse": 2.1302647894247616e-10,
+          "late_mean_fine": 2.130068101443646e-10,
+          "late_mean_relative_difference": 9.233882286778735e-05
+        },
+        "actual_endpoint_overlap_m": {
+          "max_abs_coarse": 2.5314764780048904e-10,
+          "max_abs_fine": 2.503525514789828e-10,
+          "max_absolute_difference": 3.3648547548281705e-12,
+          "max_difference_over_fine_max": 0.013440465195780724,
+          "rms_difference_over_fine_max": 0.012280119710041292,
+          "last_coarse": 2.5314764780048904e-10,
+          "last_fine": 2.503525514789828e-10,
+          "last_relative_difference": 0.011164640843458215,
+          "late_mean_coarse": 2.188529736711481e-10,
+          "late_mean_fine": 2.159253618984827e-10,
+          "late_mean_relative_difference": 0.013558443283016476
+        },
+        "normal_elastic_energy_J": {
+          "max_abs_coarse": 9.195984310204454e-21,
+          "max_abs_fine": 9.193969579241973e-21,
+          "max_absolute_difference": 2.0147309624806734e-24,
+          "max_difference_over_fine_max": 0.00021913613538916934,
+          "rms_difference_over_fine_max": 0.0001084000617105646,
+          "last_coarse": 9.195984310204454e-21,
+          "last_fine": 9.193969579241973e-21,
+          "last_relative_difference": 0.00021913613538916934,
+          "late_mean_coarse": 6.878901660943847e-21,
+          "late_mean_fine": 6.877613825361719e-21,
+          "late_mean_relative_difference": 0.00018725034798822694
+        },
+        "tangential_elastic_energy_J": {
+          "max_abs_coarse": 4.083333345574049e-24,
+          "max_abs_fine": 4.0845369692711025e-24,
+          "max_absolute_difference": 1.555133645352183e-27,
+          "max_difference_over_fine_max": 0.00038073682697740426,
+          "rms_difference_over_fine_max": 0.0002204773550359704,
+          "last_coarse": 4.083333345574049e-24,
+          "last_fine": 4.0845369692711025e-24,
+          "last_relative_difference": -0.0002946781253563493,
+          "late_mean_coarse": 2.331851765514124e-24,
+          "late_mean_fine": 2.3327794296945546e-24,
+          "late_mean_relative_difference": -0.0003976647635958537
+        },
+        "rolling_elastic_energy_J": {
+          "max_abs_coarse": 1.0260169534299538e-35,
+          "max_abs_fine": 7.749263272128535e-37,
+          "max_absolute_difference": 1.0177598195325459e-35,
+          "max_difference_over_fine_max": 13.133633273153615,
+          "rms_difference_over_fine_max": 3.353687381206591,
+          "last_coarse": 3.2421880549724905e-37,
+          "last_fine": 7.438586381073946e-39,
+          "last_relative_difference": 42.58607790347928,
+          "late_mean_coarse": 2.0050416823000425e-37,
+          "late_mean_fine": 2.2494259345794972e-37,
+          "late_mean_relative_difference": -0.1086429424159455
+        },
+        "hydro_dissipation_W": {
+          "max_abs_coarse": 1.6033791079004075e-12,
+          "max_abs_fine": 1.6033790914078707e-12,
+          "max_absolute_difference": 4.5262511488315285e-20,
+          "max_difference_over_fine_max": 2.8229450995629405e-08,
+          "rms_difference_over_fine_max": 1.3656806249593556e-08,
+          "last_coarse": 1.6033791079004075e-12,
+          "last_fine": 1.6033790914078707e-12,
+          "last_relative_difference": 1.0286111978034941e-08,
+          "late_mean_coarse": 1.6032880203202962e-12,
+          "late_mean_fine": 1.6032880027959934e-12,
+          "late_mean_relative_difference": 1.093022756444316e-08
+        },
+        "power_balance_error_W": {
+          "max_abs_coarse": 2.7622149669519346e-17,
+          "max_abs_fine": 6.862014203828939e-18,
+          "max_absolute_difference": 2.0760135465690407e-17,
+          "max_difference_over_fine_max": 3.0253705179022288,
+          "rms_difference_over_fine_max": 2.6954292605534613,
+          "last_coarse": 2.7622149669519346e-17,
+          "last_fine": 6.862014203828939e-18,
+          "last_relative_difference": 3.0253705179022288,
+          "late_mean_coarse": 2.736652259904854e-17,
+          "late_mean_fine": 6.79595384849705e-18,
+          "late_mean_relative_difference": 3.026884703624164
+        }
+      },
+      "coarse_summary": {
+        "rows": 25,
+        "last_step": 24,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.1596246028724553,
+          "max": 1.159931661412422,
+          "last": 1.159931661412422,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.1596246028724553,
+          "max": 1.159931661412422,
+          "last": 1.159931661412422,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 9.999999999976693e-11,
+          "max": 2.4760161967973814e-10,
+          "last": 2.4760161967973814e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0674273388033838e-10,
+          "max": 2.5314764780048904e-10,
+          "last": 2.5314764780048904e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 4.7558891379300435e-09,
+          "max": 9.521551488304586e-07,
+          "last": 9.177353040778145e-07,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 2.3696146368688918e-06,
+          "max": 0.0061215005746328354,
+          "last": 0.0061215005746328354,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 7.160922882756868e-08,
+          "max": 1.3755477327593972e-06,
+          "last": 9.05182141896536e-08,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 5.0,
+          "max": 9.0,
+          "last": 5.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.04030489921569824,
+          "max": 0.3037281036376953,
+          "last": 0.05217909812927246,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 1.6030244352309354e-12,
+          "max": 1.6033791079004075e-12,
+          "last": 1.6033791079004075e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -4.687308270771659e-21,
+          "max": 2.7622149669519346e-17,
+          "last": 2.7622149669519346e-17,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 1.603065051010882e-12,
+          "max": 1.603489528736532e-12,
+          "last": 1.603489528736532e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 6.190040491993454e-05,
+        "endpoint_overlap_radius_fraction": 6.328691195012226e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar1",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "5c755ad19ec1b96950308cbdd35848838bc5713ca7e3c73f5d95fea54b79c15f",
+        "steps": 24,
+        "dt": 5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 1.5643128359952243
+      },
+      "fine_summary": {
+        "rows": 49,
+        "last_step": 48,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.1596246028724553,
+          "max": 1.15991661305661,
+          "last": 1.15991661305661,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.1596246028724553,
+          "max": 1.15991661305661,
+          "last": 1.15991661305661,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 9.999999999976693e-11,
+          "max": 2.4757449490664385e-10,
+          "last": 2.4757449490664385e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0337787912551021e-10,
+          "max": 2.503525514789828e-10,
+          "last": 2.503525514789828e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 5.701650443659348e-08,
+          "max": 8.186827574507998e-07,
+          "last": 2.343918808015051e-07,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 3.943313200007299e-05,
+          "max": 0.0016188392816457108,
+          "last": 0.0015207067998948068,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 4.436307616314598e-07,
+          "max": 1.131566448820479e-06,
+          "last": 8.449475175915092e-07,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 4.0,
+          "max": 8.0,
+          "last": 4.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.037847042083740234,
+          "max": 0.3870890140533447,
+          "last": 0.06879806518554688,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 1.6030244352309354e-12,
+          "max": 1.6033790914078707e-12,
+          "last": 1.6033790914078707e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -4.2974906870191094e-21,
+          "max": 6.862014203828939e-18,
+          "last": 6.862014203828939e-18,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 1.603065051010882e-12,
+          "max": 1.6034687258894576e-12,
+          "last": 1.6034687258894576e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 6.189362372666096e-05,
+        "endpoint_overlap_radius_fraction": 6.258813786974571e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar1",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "5c755ad19ec1b96950308cbdd35848838bc5713ca7e3c73f5d95fea54b79c15f",
+        "steps": 48,
+        "dt": 2.5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 2.8151222139931633
+      }
+    },
+    {
+      "ar": 2,
+      "matching_times": 25,
+      "final_time_s": 0.00012,
+      "fields": {
+        "eta_relative": {
+          "max_abs_coarse": 1.0529782223172794,
+          "max_abs_fine": 1.0529781894099342,
+          "max_absolute_difference": 0.00011340381796642873,
+          "max_difference_over_fine_max": 0.00010769816422311438,
+          "rms_difference_over_fine_max": 3.3561990882721936e-05,
+          "last_coarse": 1.0529782223172794,
+          "last_fine": 1.0529781894099342,
+          "last_relative_difference": 3.1251687474737175e-08,
+          "late_mean_coarse": 1.052933661458545,
+          "late_mean_fine": 1.0529336923334687,
+          "late_mean_relative_difference": -2.9322761683454597e-08
+        },
+        "sigma_contact_Pa": {
+          "max_abs_coarse": 0.004483835174141406,
+          "max_abs_fine": 0.004483835174141406,
+          "max_absolute_difference": 0.0004974350882716815,
+          "max_difference_over_fine_max": 0.11093964629664015,
+          "rms_difference_over_fine_max": 0.03430060028232693,
+          "last_coarse": 0.004090094658627,
+          "last_fine": 0.004090184664055256,
+          "last_relative_difference": -2.2005223638736907e-05,
+          "late_mean_coarse": 0.002962301444272184,
+          "late_mean_fine": 0.002962474005091321,
+          "late_mean_relative_difference": -5.824888888164614e-05
+        },
+        "max_overlap_m": {
+          "max_abs_coarse": 2.077987841976096e-10,
+          "max_abs_fine": 2.0779952036688785e-10,
+          "max_absolute_difference": 1.8084845748454657e-13,
+          "max_difference_over_fine_max": 0.0008703025741601479,
+          "rms_difference_over_fine_max": 0.00026758885044627327,
+          "last_coarse": 2.077987841976096e-10,
+          "last_fine": 2.0779952036688785e-10,
+          "last_relative_difference": -3.542689978103491e-06,
+          "late_mean_coarse": 1.8253045564372754e-10,
+          "late_mean_fine": 1.8253137791729737e-10,
+          "late_mean_relative_difference": -5.052685079960722e-06
+        },
+        "actual_endpoint_overlap_m": {
+          "max_abs_coarse": 2.1181197838079695e-10,
+          "max_abs_fine": 2.0981123533900397e-10,
+          "max_absolute_difference": 2.5430949846248788e-12,
+          "max_difference_over_fine_max": 0.012120871318048603,
+          "rms_difference_over_fine_max": 0.010809023737816852,
+          "last_coarse": 2.1181197838079695e-10,
+          "last_fine": 2.0981123533900397e-10,
+          "last_relative_difference": 0.009535919459033091,
+          "late_mean_coarse": 1.8680095980541463e-10,
+          "late_mean_fine": 1.846720837384176e-10,
+          "late_mean_relative_difference": 0.011527871586766254
+        },
+        "normal_elastic_energy_J": {
+          "max_abs_coarse": 6.477050207100708e-21,
+          "max_abs_fine": 6.477096099706296e-21,
+          "max_absolute_difference": 5.645944837221028e-24,
+          "max_difference_over_fine_max": 0.0008716784111751937,
+          "rms_difference_over_fine_max": 0.00027941194004597083,
+          "last_coarse": 6.477050207100708e-21,
+          "last_fine": 6.477096099706296e-21,
+          "last_relative_difference": -7.085367405621348e-06,
+          "late_mean_coarse": 5.036284835217749e-21,
+          "late_mean_fine": 5.0363347470591145e-21,
+          "late_mean_relative_difference": -9.910350259083966e-06
+        },
+        "tangential_elastic_energy_J": {
+          "max_abs_coarse": 8.583857811844972e-21,
+          "max_abs_fine": 8.583671266826813e-21,
+          "max_absolute_difference": 1.1286343654983214e-21,
+          "max_difference_over_fine_max": 0.13148620565889307,
+          "rms_difference_over_fine_max": 0.041925914029819475,
+          "last_coarse": 8.583857811844972e-21,
+          "last_fine": 8.583671266826813e-21,
+          "last_relative_difference": 2.1732544544264936e-05,
+          "late_mean_coarse": 8.527762479947063e-21,
+          "late_mean_fine": 8.52733472505028e-21,
+          "late_mean_relative_difference": 5.0162789496977287e-05
+        },
+        "rolling_elastic_energy_J": {
+          "max_abs_coarse": 1.5879051423298848e-22,
+          "max_abs_fine": 1.5900257303407556e-22,
+          "max_absolute_difference": 4.851426814521987e-23,
+          "max_difference_over_fine_max": 0.3051162457278151,
+          "rms_difference_over_fine_max": 0.11441605510013862,
+          "last_coarse": 1.5879051423298848e-22,
+          "last_fine": 1.5900257303407556e-22,
+          "last_relative_difference": -0.001333681569050042,
+          "late_mean_coarse": 1.5701923402749803e-22,
+          "late_mean_fine": 1.5835034326390954e-22,
+          "late_mean_relative_difference": -0.008406102626459485
+        },
+        "hydro_dissipation_W": {
+          "max_abs_coarse": 2.911222013573411e-12,
+          "max_abs_fine": 2.9112220628656338e-12,
+          "max_absolute_difference": 4.498110498659078e-16,
+          "max_difference_over_fine_max": 0.00015450935729139828,
+          "rms_difference_over_fine_max": 4.956059866163735e-05,
+          "last_coarse": 2.911222013573411e-12,
+          "last_fine": 2.9112220628656338e-12,
+          "last_relative_difference": -1.6931797557928132e-08,
+          "late_mean_coarse": 2.911102004163107e-12,
+          "late_mean_fine": 2.91110248162463e-12,
+          "late_mean_relative_difference": -1.6401398644726694e-07
+        },
+        "power_balance_error_W": {
+          "max_abs_coarse": 2.2080978149539863e-20,
+          "max_abs_fine": 5.149735201880112e-19,
+          "max_absolute_difference": 5.149616115369882e-19,
+          "max_difference_over_fine_max": 0.999976875216771,
+          "rms_difference_over_fine_max": 0.32234439402982223,
+          "last_coarse": -6.813688537227286e-22,
+          "last_fine": -1.3688938446430941e-19,
+          "last_relative_difference": -0.9950224858093333,
+          "late_mean_coarse": -2.5010396134097225e-22,
+          "late_mean_fine": -1.7507680732250668e-19,
+          "late_mean_relative_difference": -0.9985714614907258
+        }
+      },
+      "coarse_summary": {
+        "rows": 25,
+        "last_step": 24,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.0516269811232342,
+          "max": 1.0529782223172794,
+          "last": 1.0529782223172794,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.0516269811232342,
+          "max": 1.0529782223172794,
+          "last": 1.0529782223172794,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 1.0000000000095793e-10,
+          "max": 2.077987841976096e-10,
+          "last": 2.077987841976096e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0415443663855858e-10,
+          "max": 2.1181197838079695e-10,
+          "last": 2.1181197838079695e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 2.8673729526693047e-09,
+          "max": 9.989771799856083e-08,
+          "last": 8.691401534488788e-08,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 1.5838213449416396e-10,
+          "max": 1.6300328976999796e-05,
+          "last": 1.6263902046445345e-05,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 4.7897089195589556e-08,
+          "max": 1.4534573147669279e-06,
+          "last": 1.10718016646585e-06,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 6.0,
+          "max": 14.0,
+          "last": 6.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.0548100471496582,
+          "max": 0.35141801834106445,
+          "last": 0.07005000114440918,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 2.907518421720691e-12,
+          "max": 2.911222013573411e-12,
+          "last": 2.911222013573411e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -7.746400195922121e-22,
+          "max": 2.2080978149539863e-20,
+          "last": -6.813688537227286e-22,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 2.9075382774095167e-12,
+          "max": 2.9112741890628135e-12,
+          "last": 2.9112741890628135e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 5.19496960494024e-05,
+        "endpoint_overlap_radius_fraction": 5.295299459519924e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar2",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "0f42de6dcc5adfe07909691b8beb18c24486f82318d584b71ee685c90379812f",
+        "steps": 24,
+        "dt": 5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 2.1110634400029085
+      },
+      "fine_summary": {
+        "rows": 49,
+        "last_step": 48,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.0516269811232326,
+          "max": 1.0529781894099342,
+          "last": 1.0529781894099342,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.0516269811232326,
+          "max": 1.0529781894099342,
+          "last": 1.0529781894099342,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 1.0000000000095793e-10,
+          "max": 2.0779952036688785e-10,
+          "last": 2.0779952036688785e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0186516234377721e-10,
+          "max": 2.0981123533900397e-10,
+          "last": 2.0981123533900397e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 1.525067239526197e-08,
+          "max": 6.889162002639865e-07,
+          "last": 3.140951794655456e-08,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 1.2799214748860622e-09,
+          "max": 0.000412216361492232,
+          "last": 3.382585469052248e-05,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 2.1804530787346413e-07,
+          "max": 1.3289657078404573e-06,
+          "last": 4.081332132477197e-07,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 4.0,
+          "max": 13.0,
+          "last": 4.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.0417020320892334,
+          "max": 0.3599507808685303,
+          "last": 0.050695180892944336,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 2.9075184217206893e-12,
+          "max": 2.9112220628656338e-12,
+          "last": 2.9112220628656338e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -2.0309091985068573e-19,
+          "max": 5.149735201880112e-19,
+          "last": -1.3688938446430941e-19,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 2.9075382774095127e-12,
+          "max": 2.911274098080585e-12,
+          "last": 2.911274098080585e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 5.1949880091721966e-05,
+        "endpoint_overlap_radius_fraction": 5.245280883475099e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar2",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "0f42de6dcc5adfe07909691b8beb18c24486f82318d584b71ee685c90379812f",
+        "steps": 48,
+        "dt": 2.5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 3.2095975619959063
+      }
+    },
+    {
+      "ar": 5,
+      "matching_times": 25,
+      "final_time_s": 0.00012,
+      "fields": {
+        "eta_relative": {
+          "max_abs_coarse": 1.0136103447337839,
+          "max_abs_fine": 1.0136099428569623,
+          "max_absolute_difference": 0.00010007093685016066,
+          "max_difference_over_fine_max": 9.872726442294024e-05,
+          "rms_difference_over_fine_max": 2.9467200573846764e-05,
+          "last_coarse": 1.0136103447337839,
+          "last_fine": 1.0136099428569623,
+          "last_relative_difference": 3.9648074136467537e-07,
+          "late_mean_coarse": 1.0136038059007106,
+          "late_mean_fine": 1.013603304582367,
+          "late_mean_relative_difference": 4.945902814838501e-07
+        },
+        "sigma_contact_Pa": {
+          "max_abs_coarse": 0.0022609934123918696,
+          "max_abs_fine": 0.0022609934123918696,
+          "max_absolute_difference": 0.0007577729513663203,
+          "max_difference_over_fine_max": 0.3351504463538813,
+          "rms_difference_over_fine_max": 0.1001057103494926,
+          "last_coarse": 0.001666811239743872,
+          "last_fine": 0.0016672519714105679,
+          "last_relative_difference": -0.00026434616617852357,
+          "late_mean_coarse": 0.0011676603695726976,
+          "late_mean_fine": 0.0011678117451120892,
+          "late_mean_relative_difference": -0.0001296232376709304
+        },
+        "max_overlap_m": {
+          "max_abs_coarse": 2.3052275137208325e-10,
+          "max_abs_fine": 2.3054311673394226e-10,
+          "max_absolute_difference": 1.613080671297291e-12,
+          "max_difference_over_fine_max": 0.006996871969762008,
+          "rms_difference_over_fine_max": 0.002075067390699343,
+          "last_coarse": 2.3052275137208325e-10,
+          "last_fine": 2.3054311673394226e-10,
+          "last_relative_difference": -8.833645587656373e-05,
+          "late_mean_coarse": 2.0774273299839836e-10,
+          "late_mean_fine": 2.0776549673464206e-10,
+          "late_mean_relative_difference": -0.00010956456486504021
+        },
+        "actual_endpoint_overlap_m": {
+          "max_abs_coarse": 2.3353399277077915e-10,
+          "max_abs_fine": 2.320663419397315e-10,
+          "max_absolute_difference": 5.213983168817578e-12,
+          "max_difference_over_fine_max": 0.022467640611888773,
+          "rms_difference_over_fine_max": 0.01321302384191761,
+          "last_coarse": 2.3353399277077915e-10,
+          "last_fine": 2.320663419397315e-10,
+          "last_relative_difference": 0.006324272700557357,
+          "late_mean_coarse": 2.1181196495366034e-10,
+          "late_mean_fine": 2.098242493750077e-10,
+          "late_mean_relative_difference": 0.00947324050758356
+        },
+        "normal_elastic_energy_J": {
+          "max_abs_coarse": 7.971110835023297e-21,
+          "max_abs_fine": 7.972519301010019e-21,
+          "max_absolute_difference": 5.081385499437017e-23,
+          "max_difference_over_fine_max": 0.006373625835930267,
+          "rms_difference_over_fine_max": 0.0020110312716557005,
+          "last_coarse": 7.971110835023297e-21,
+          "last_fine": 7.972519301010019e-21,
+          "last_relative_difference": -0.00017666510842360514,
+          "late_mean_coarse": 6.50977700019136e-21,
+          "late_mean_fine": 6.511191633034427e-21,
+          "late_mean_relative_difference": -0.00021726174297962369
+        },
+        "tangential_elastic_energy_J": {
+          "max_abs_coarse": 6.93691436898993e-21,
+          "max_abs_fine": 6.9369926442704e-21,
+          "max_absolute_difference": 1.9054914619492512e-21,
+          "max_difference_over_fine_max": 0.2746855243565941,
+          "rms_difference_over_fine_max": 0.08790213795657144,
+          "last_coarse": 6.93691436898993e-21,
+          "last_fine": 6.9369926442704e-21,
+          "last_relative_difference": -1.1283748518051217e-05,
+          "late_mean_coarse": 6.869511612346783e-21,
+          "late_mean_fine": 6.870920408578513e-21,
+          "late_mean_relative_difference": -0.0002050374837658178
+        },
+        "rolling_elastic_energy_J": {
+          "max_abs_coarse": 5.114517852895716e-22,
+          "max_abs_fine": 5.114558995106497e-22,
+          "max_absolute_difference": 5.625438233558729e-23,
+          "max_difference_over_fine_max": 0.10998872510691596,
+          "rms_difference_over_fine_max": 0.03340148734985913,
+          "last_coarse": 5.114517852895716e-22,
+          "last_fine": 5.114558995106497e-22,
+          "last_relative_difference": -8.044136517045748e-06,
+          "late_mean_coarse": 5.105435212345133e-22,
+          "late_mean_fine": 5.104798087910186e-22,
+          "late_mean_relative_difference": 0.00012480893934977918
+        },
+        "hydro_dissipation_W": {
+          "max_abs_coarse": 7.006030143507608e-12,
+          "max_abs_fine": 7.0060301962088886e-12,
+          "max_absolute_difference": 9.525666185001358e-16,
+          "max_difference_over_fine_max": 0.0001359638185709776,
+          "rms_difference_over_fine_max": 4.337236966777731e-05,
+          "last_coarse": 7.006030143507608e-12,
+          "last_fine": 7.0060301962088886e-12,
+          "last_relative_difference": -7.522274215218422e-09,
+          "late_mean_coarse": 7.005975520843007e-12,
+          "late_mean_fine": 7.005976190733168e-12,
+          "late_mean_relative_difference": -9.561696223063493e-08
+        },
+        "power_balance_error_W": {
+          "max_abs_coarse": 4.7659914745242434e-20,
+          "max_abs_fine": 5.4717368638850864e-18,
+          "max_absolute_difference": 5.471739381685942e-18,
+          "max_difference_over_fine_max": 1.0000004601465526,
+          "rms_difference_over_fine_max": 0.6115761365641965,
+          "last_coarse": -3.4333524169183295e-21,
+          "last_fine": -2.8093356264028465e-18,
+          "last_relative_difference": -0.998777877450935,
+          "late_mean_coarse": -7.249505747129042e-21,
+          "late_mean_fine": -3.808576015852748e-18,
+          "late_mean_relative_difference": -0.9980965311662539
+        }
+      },
+      "coarse_summary": {
+        "rows": 25,
+        "last_step": 24,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.0130817099296558,
+          "max": 1.0136103447337839,
+          "last": 1.0136103447337839,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.0130817099296558,
+          "max": 1.0136103447337839,
+          "last": 1.0136103447337839,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 1.0000000000197297e-10,
+          "max": 2.3052275137208325e-10,
+          "last": 2.3052275137208325e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0581028854428918e-10,
+          "max": 2.3353399277077915e-10,
+          "last": 2.3353399277077915e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 3.199462386083154e-09,
+          "max": 9.540778914257308e-08,
+          "last": 2.4163192734443575e-08,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 6.392617968327476e-11,
+          "max": 1.1905969894744137e-05,
+          "last": 8.598129741892975e-07,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 3.877308068906431e-08,
+          "max": 7.088778063435026e-07,
+          "last": 1.4760999947410086e-07,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 5.0,
+          "max": 12.0,
+          "last": 6.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.053479909896850586,
+          "max": 0.39806699752807617,
+          "last": 0.05986595153808594,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 7.0024212793016376e-12,
+          "max": 7.006030143507608e-12,
+          "last": 7.006030143507608e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -4.7659914745242434e-20,
+          "max": 6.104719796345478e-23,
+          "last": -3.4333524169183295e-21,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 7.002420779033778e-12,
+          "max": 7.0060747027999096e-12,
+          "last": 7.0060747027999096e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 5.763068784302082e-05,
+        "endpoint_overlap_radius_fraction": 5.838349819269479e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar5",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "1e73a298806be8e30b2a63dc60dd44fcef566cbb4fe9d13535b41b305e4e3a83",
+        "steps": 24,
+        "dt": 5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 2.1678343389939982
+      },
+      "fine_summary": {
+        "rows": 49,
+        "last_step": 48,
+        "time_s": {
+          "min": 0.0,
+          "max": 0.00012000000000000002,
+          "last": 0.00012000000000000002,
+          "nonfinite": 0
+        },
+        "strain": {
+          "min": 0.0,
+          "max": 0.012000000000000002,
+          "last": 0.012000000000000002,
+          "nonfinite": 0
+        },
+        "eta_relative": {
+          "min": 1.0130817099296558,
+          "max": 1.0136099428569623,
+          "last": 1.0136099428569623,
+          "nonfinite": 0
+        },
+        "sigma_xz_Pa": {
+          "min": 1.0130817099296558,
+          "max": 1.0136099428569623,
+          "last": 1.0136099428569623,
+          "nonfinite": 0
+        },
+        "max_overlap_m": {
+          "min": 1.0000000000197297e-10,
+          "max": 2.3054311673394226e-10,
+          "last": 2.3054311673394226e-10,
+          "nonfinite": 0
+        },
+        "actual_endpoint_overlap_m": {
+          "min": 1.0143478503109622e-10,
+          "max": 2.320663419397315e-10,
+          "last": 2.320663419397315e-10,
+          "nonfinite": 0
+        },
+        "contacts": {
+          "min": 1.0,
+          "max": 1.0,
+          "last": 1.0,
+          "nonfinite": 0
+        },
+        "rolling_yield_contacts": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "solver_relative_residual": {
+          "min": 4.870075156818479e-09,
+          "max": 8.334967803579724e-07,
+          "last": 3.5353794336560073e-07,
+          "nonfinite": 0
+        },
+        "force_residual": {
+          "min": 9.908088843166873e-11,
+          "max": 0.0014082910641497527,
+          "last": 0.0007017504898225843,
+          "nonfinite": 0
+        },
+        "mobility_residual": {
+          "min": 5.947025833293998e-08,
+          "max": 6.143278404325802e-07,
+          "last": 3.6235073784241316e-07,
+          "nonfinite": 0
+        },
+        "linear_iterations": {
+          "min": 3.0,
+          "max": 12.0,
+          "last": 3.0,
+          "nonfinite": 0
+        },
+        "newton_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "geometry_iterations": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_stages": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "continuation_retries": {
+          "min": 0.0,
+          "max": 0.0,
+          "last": 0.0,
+          "nonfinite": 0
+        },
+        "profile_total_s": {
+          "min": 0.03809189796447754,
+          "max": 0.3549368381500244,
+          "last": 0.040632009506225586,
+          "nonfinite": 0
+        },
+        "hydro_dissipation_W": {
+          "min": 7.0024212793016376e-12,
+          "max": 7.0060301962088886e-12,
+          "last": 7.0060301962088886e-12,
+          "nonfinite": 0
+        },
+        "power_balance_error_W": {
+          "min": -5.6276761722738225e-18,
+          "max": 9.710671919599722e-23,
+          "last": -2.8093356264028465e-18,
+          "nonfinite": 0
+        },
+        "stress_power_W": {
+          "min": 7.002420779033778e-12,
+          "max": 7.006071925027319e-12,
+          "last": 7.006071925027319e-12,
+          "nonfinite": 0
+        },
+        "overlap_radius_fraction": 5.763577918348557e-05,
+        "endpoint_overlap_radius_fraction": 5.8016585484932876e-05,
+        "fixture": "/workspace/scratch/af0f332bc475/implicit_validation/pair_stiffness03/fixture_ar5",
+        "plugin": "/workspace/scratch/af0f332bc475/implicit_validation/libslurry_author_pc_v2.so",
+        "plugin_sha256": "54c910d46598f0c56de0048fa2159f8fd614525bb78bcda4db5e529106bb6480",
+        "initial_particles_sha256": "1e73a298806be8e30b2a63dc60dd44fcef566cbb4fe9d13535b41b305e4e3a83",
+        "steps": 48,
+        "dt": 2.5e-06,
+        "threads": 1,
+        "backend": "mesh",
+        "returncode": 0,
+        "wall_seconds": 3.039343695003481
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+LAMMPS (30 Sep 2026)
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+Reading data file ...
+  triclinic box = (0 0 0) to (4.1039423e-05 4.1039423e-05 4.1039423e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  2 ellipsoids
+  reading velocities ...
+  2 velocities
+  read_data CPU = 0.000 seconds
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.6415769e-06
+  ghost atom cutoff = 1.6415769e-06
+  binsize = 8.2078845e-07, bins = 50 50 50
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : si
+  Current step  : 0
+  Time step     : 5e-06
+Per MPI rank memory allocation (min/avg/max) = 5.398 | 5.398 | 5.398 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                      2   1.0130817      0.010130817    1              1            
+         1   5e-06                  2   1.0133167      0.010133167    1              1            
+         2   1e-05                  2   1.0134419      0.010134419    1              1            
+         3   1.5e-05                2   1.0135092      0.010135092    1              1            
+         4   2e-05                  2   1.0135456      0.010135456    1              1            
+         5   2.5e-05                2   1.0135657      0.010135657    1              1            
+         6   3e-05                  2   1.0135771      0.010135771    1              1            
+         7   3.5e-05                2   1.0135839      0.010135839    1              1            
+         8   4e-05                  2   1.0135881      0.010135881    1              1            
+         9   4.5e-05                2   1.0135911      0.010135911    1              1            
+        10   5e-05                  2   1.0135932      0.010135932    1              1            
+        11   5.5e-05                2   1.013595       0.01013595     1              1            
+        12   6e-05                  2   1.0135965      0.010135965    1              1            
+        13   6.5e-05                2   1.0135979      0.010135979    1              1            
+        14   7e-05                  2   1.0135993      0.010135993    1              1            
+        15   7.5e-05                2   1.0136005      0.010136005    1              1            
+        16   8e-05                  2   1.0136017      0.010136017    1              1            
+        17   8.5e-05                2   1.0136029      0.010136029    1              1            
+        18   9e-05                  2   1.013604       0.01013604     1              1            
+        19   9.5e-05                2   1.0136051      0.010136051    1              1            
+        20   0.0001                 2   1.0136062      0.010136062    1              1            
+        21   0.000105               2   1.0136073      0.010136073    1              1            
+        22   0.00011                2   1.0136083      0.010136083    1              1            
+        23   0.000115               2   1.0136093      0.010136093    1              1            
+        24   0.00012                2   1.0136103      0.010136103    1              1            
+Loop time of 1.75935 on 1 procs for 24 steps with 2 atoms
+
+100.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 4.8112e-05 | 4.8112e-05 | 4.8112e-05 |   0.0 |  0.00
+Neigh   | 0.00056869 | 0.00056869 | 0.00056869 |   0.0 |  0.03
+Comm    | 0.00011591 | 0.00011591 | 0.00011591 |   0.0 |  0.01
+Output  | 0.00059314 | 0.00059314 | 0.00059314 |   0.0 |  0.03
+Modify  | 1.7578     | 1.7578     | 1.7578     |   0.0 | 99.91
+Other   |            | 0.0001967  |            |       |  0.01
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 4
+Dangerous builds = 0
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:00:02

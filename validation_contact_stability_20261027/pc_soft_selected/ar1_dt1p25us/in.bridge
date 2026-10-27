@@ -1,0 +1,21 @@
+# deterministic contact integration fixture, not production packing
+plugin load ${slurry_plugin}
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+comm_modify vel yes
+pair_style zero 3.9999999999999998e-06
+pair_coeff * *
+neighbor 7.9999999999999996e-07 bin
+neigh_modify every 1 delay 0 check yes
+timestep 1.2500000000000001e-06
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge .01 100 8e-6 .001 .3 contact 10 .24 rolling 10 .24 shape spheroid mobility_backend mesh spectral 2 spectral_tolerance 1e-8 tolerance 1e-6 iterations 1000 history history.csv 1 0
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 96
+write_data final.data nocoeff
