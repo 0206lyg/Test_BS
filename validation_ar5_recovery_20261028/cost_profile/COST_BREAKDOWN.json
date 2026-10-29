@@ -1,0 +1,321 @@
+{
+  "status": "PROFILE_COMPLETED_NO_PRODUCTION_CHANGES",
+  "compiler_command": "c++ -O3 -DNDEBUG -std=c++17 -DEIGEN_DONT_PARALLELIZE -DSLURRY_HAVE_EIGEN=1 -Icost_breakdown/src -ITest_BS/lammps_slurry/src -isystem Test_BS/lammps_slurry/vendor/eigen3 cost_breakdown/replay_cost.cpp -o cost_breakdown/replay_cost",
+  "clock": "std::clock process CPU; snapshot parsing and result serialization excluded",
+  "method": "Scratch-only copies add nested RAII CPU timers. Report categories subtract nesting. Each frozen state alternates three repetitions per method. Original physical problem, caps, warm velocity, solver tolerances and direction rules retained.",
+  "scope_limits": [
+    "One captured inner solve per state with a fresh workspace; not an entire physical step or full trajectory.",
+    "Production reuses workspaces across endpoint corrections, so cold hydro setup cost here is not a per-inner cost prediction.",
+    "Concurrent host workloads and instrumentation affect absolute timings; use this probe for cost attribution, not a new full-trajectory speedup claim.",
+    "The lower-triangular factor nonzero count is not directly comparable to full symmetric matrix nonzeros without accounting for the half-storage convention.",
+    "The same FGMRES return conditions and expected Newton/Krylov counts match archived uninstrumented results."
+  ],
+  "conclusions": [
+    "Repeated Krylov preconditioner solves dominate the largest single category. FGMRES total is larger than factorization alone.",
+    "On step683 v4 reduces trial/residual evaluations344->81 and Newton46->24 but Krylov iterations only1140->1112; linear work remains substantial.",
+    "Four v4 step683 Krylov calls hit checked direct fallback. This is a cost observation, not a proposed production change."
+  ],
+  "summaries": [
+    {
+      "state": "step595",
+      "method": "old_extended",
+      "repetitions": 3,
+      "mean_cpu_s": 2.321204,
+      "median_cpu_s": 2.305396,
+      "newton": 41,
+      "linear": 915,
+      "relative_residual": 2.4158282892633205e-08,
+      "cpu_categories": {
+        "hydro_factorization": {
+          "mean_cpu_s": 0.056362,
+          "percent_of_total_mean": 2.4281364326444383
+        },
+        "hydro_setup_other": {
+          "mean_cpu_s": 0.020246000000000004,
+          "percent_of_total_mean": 0.8722197618132661
+        },
+        "contact_factorization": {
+          "mean_cpu_s": 0.36263300000000004,
+          "percent_of_total_mean": 15.622625154876523
+        },
+        "krylov_matvec": {
+          "mean_cpu_s": 0.12051733333333386,
+          "percent_of_total_mean": 5.19201816528551
+        },
+        "krylov_preconditioner_solve": {
+          "mean_cpu_s": 0.7449053333333331,
+          "percent_of_total_mean": 32.091334209889915
+        },
+        "krylov_other": {
+          "mean_cpu_s": 0.12990166666666633,
+          "percent_of_total_mean": 5.596305480546576
+        },
+        "jacobian_assembly": {
+          "mean_cpu_s": 0.16249366666666668,
+          "percent_of_total_mean": 7.000404387837807
+        },
+        "residual_trial_evaluation": {
+          "mean_cpu_s": 0.5427636666666665,
+          "percent_of_total_mean": 23.382850738955586
+        },
+        "objective_increment": {
+          "mean_cpu_s": 0.16616833333333336,
+          "percent_of_total_mean": 7.158713035706184
+        },
+        "other": {
+          "mean_cpu_s": 0.015213000000000143,
+          "percent_of_total_mean": 0.6553926324442033
+        }
+      },
+      "mean_percent_fgmres_total": 42.879657855722,
+      "mean_percent_factorization_total": 18.050761587520963,
+      "residual_trial_evaluation_calls": 281,
+      "objective_evaluation_calls": 280,
+      "contact_numeric_factorizations": 7,
+      "hydro_numeric_factorizations": 1,
+      "krylov_fallbacks": 0,
+      "matrix_dimension": 6000,
+      "hydro_matrix_nnz": 179154,
+      "hydro_factor_L_nnz": 488517,
+      "median_percent_fgmres_total": 42.86680980964181,
+      "median_percent_factorization_total": 18.306393468926117,
+      "median_percent_preconditioner_solve": 32.07980094727231,
+      "median_percent_residual_trial_evaluation": 23.384219667102965
+    },
+    {
+      "state": "step595",
+      "method": "v4",
+      "repetitions": 3,
+      "mean_cpu_s": 1.26205,
+      "median_cpu_s": 1.202531,
+      "newton": 19,
+      "linear": 557,
+      "relative_residual": 9.600841777549614e-10,
+      "cpu_categories": {
+        "hydro_factorization": {
+          "mean_cpu_s": 0.05293766666666667,
+          "percent_of_total_mean": 4.194577605219022
+        },
+        "hydro_setup_other": {
+          "mean_cpu_s": 0.016858666666666664,
+          "percent_of_total_mean": 1.335816066452729
+        },
+        "contact_factorization": {
+          "mean_cpu_s": 0.21366666666666667,
+          "percent_of_total_mean": 16.93012690992169
+        },
+        "krylov_matvec": {
+          "mean_cpu_s": 0.08008966666666659,
+          "percent_of_total_mean": 6.345997913447692
+        },
+        "krylov_preconditioner_solve": {
+          "mean_cpu_s": 0.48826466666666685,
+          "percent_of_total_mean": 38.68821890310739
+        },
+        "krylov_other": {
+          "mean_cpu_s": 0.10527066666666653,
+          "percent_of_total_mean": 8.341243743644588
+        },
+        "jacobian_assembly": {
+          "mean_cpu_s": 0.08225400000000001,
+          "percent_of_total_mean": 6.517491383067233
+        },
+        "residual_trial_evaluation": {
+          "mean_cpu_s": 0.165166,
+          "percent_of_total_mean": 13.087120161641774
+        },
+        "objective_increment": {
+          "mean_cpu_s": 0.04907533333333334,
+          "percent_of_total_mean": 3.8885411301718116
+        },
+        "other": {
+          "mean_cpu_s": 0.008466666666666622,
+          "percent_of_total_mean": 0.6708661833260665
+        }
+      },
+      "mean_percent_fgmres_total": 53.37546056019968,
+      "mean_percent_factorization_total": 21.124704515140714,
+      "residual_trial_evaluation_calls": 76,
+      "objective_evaluation_calls": 75,
+      "contact_numeric_factorizations": 4,
+      "hydro_numeric_factorizations": 1,
+      "krylov_fallbacks": 0,
+      "matrix_dimension": 6000,
+      "hydro_matrix_nnz": 179154,
+      "hydro_factor_L_nnz": 488517,
+      "median_percent_fgmres_total": 53.14058431757684,
+      "median_percent_factorization_total": 21.273796683827694,
+      "median_percent_preconditioner_solve": 38.62154073366927,
+      "median_percent_residual_trial_evaluation": 13.098556211159456
+    },
+    {
+      "state": "step683",
+      "method": "old_extended",
+      "repetitions": 3,
+      "mean_cpu_s": 2.915277,
+      "median_cpu_s": 2.907183,
+      "newton": 46,
+      "linear": 1140,
+      "relative_residual": 1.0929994401755285e-08,
+      "cpu_categories": {
+        "hydro_factorization": {
+          "mean_cpu_s": 0.055149,
+          "percent_of_total_mean": 1.8917241826419924
+        },
+        "hydro_setup_other": {
+          "mean_cpu_s": 0.022799333333333338,
+          "percent_of_total_mean": 0.7820640485735434
+        },
+        "contact_factorization": {
+          "mean_cpu_s": 0.431245,
+          "percent_of_total_mean": 14.792590892735063
+        },
+        "krylov_matvec": {
+          "mean_cpu_s": 0.16513400000000092,
+          "percent_of_total_mean": 5.664436003851467
+        },
+        "krylov_preconditioner_solve": {
+          "mean_cpu_s": 0.9738329999999992,
+          "percent_of_total_mean": 33.404475801098805
+        },
+        "krylov_other": {
+          "mean_cpu_s": 0.17527866666666658,
+          "percent_of_total_mean": 6.012418945666795
+        },
+        "jacobian_assembly": {
+          "mean_cpu_s": 0.199379,
+          "percent_of_total_mean": 6.839109971368072
+        },
+        "residual_trial_evaluation": {
+          "mean_cpu_s": 0.6731213333333332,
+          "percent_of_total_mean": 23.089446846160183
+        },
+        "objective_increment": {
+          "mean_cpu_s": 0.20242499999999994,
+          "percent_of_total_mean": 6.943594039262819
+        },
+        "other": {
+          "mean_cpu_s": 0.01691266666666665,
+          "percent_of_total_mean": 0.5801392686412525
+        }
+      },
+      "mean_percent_fgmres_total": 45.08133075061706,
+      "mean_percent_factorization_total": 16.684315075377057,
+      "residual_trial_evaluation_calls": 344,
+      "objective_evaluation_calls": 343,
+      "contact_numeric_factorizations": 8,
+      "hydro_numeric_factorizations": 1,
+      "krylov_fallbacks": 0,
+      "matrix_dimension": 6000,
+      "hydro_matrix_nnz": 179442,
+      "hydro_factor_L_nnz": 481353,
+      "median_percent_fgmres_total": 44.76522374459382,
+      "median_percent_factorization_total": 16.674045186814155,
+      "median_percent_preconditioner_solve": 32.98171179109017,
+      "median_percent_residual_trial_evaluation": 23.447883226717785
+    },
+    {
+      "state": "step683",
+      "method": "v4",
+      "repetitions": 3,
+      "mean_cpu_s": 2.274094333333333,
+      "median_cpu_s": 2.292435,
+      "newton": 24,
+      "linear": 1112,
+      "relative_residual": 4.3597316117592854e-11,
+      "cpu_categories": {
+        "hydro_factorization": {
+          "mean_cpu_s": 0.06569333333333333,
+          "percent_of_total_mean": 2.888769052822933
+        },
+        "hydro_setup_other": {
+          "mean_cpu_s": 0.021460666666666666,
+          "percent_of_total_mean": 0.9437016904751679
+        },
+        "contact_factorization": {
+          "mean_cpu_s": 0.4413823333333334,
+          "percent_of_total_mean": 19.409147934789576
+        },
+        "krylov_matvec": {
+          "mean_cpu_s": 0.16010166666666742,
+          "percent_of_total_mean": 7.040238582890834
+        },
+        "krylov_preconditioner_solve": {
+          "mean_cpu_s": 0.9553133333333323,
+          "percent_of_total_mean": 42.008518262874716
+        },
+        "krylov_other": {
+          "mean_cpu_s": 0.2990883333333335,
+          "percent_of_total_mean": 13.151975665623965
+        },
+        "jacobian_assembly": {
+          "mean_cpu_s": 0.106031,
+          "percent_of_total_mean": 4.662559439413463
+        },
+        "residual_trial_evaluation": {
+          "mean_cpu_s": 0.1606446666666667,
+          "percent_of_total_mean": 7.064116220332697
+        },
+        "objective_increment": {
+          "mean_cpu_s": 0.04985400000000001,
+          "percent_of_total_mean": 2.192257342593382
+        },
+        "other": {
+          "mean_cpu_s": 0.014524999999999899,
+          "percent_of_total_mean": 0.638715808183268
+        }
+      },
+      "mean_percent_fgmres_total": 62.20073251138952,
+      "mean_percent_factorization_total": 22.297916987612506,
+      "residual_trial_evaluation_calls": 81,
+      "objective_evaluation_calls": 80,
+      "contact_numeric_factorizations": 8,
+      "hydro_numeric_factorizations": 1,
+      "krylov_fallbacks": 4,
+      "matrix_dimension": 6000,
+      "hydro_matrix_nnz": 179442,
+      "hydro_factor_L_nnz": 481353,
+      "median_percent_fgmres_total": 61.97642292841053,
+      "median_percent_factorization_total": 22.111882718735966,
+      "median_percent_preconditioner_solve": 41.832110637971866,
+      "median_percent_residual_trial_evaluation": 7.031731468940521
+    }
+  ],
+  "production_sources_sha256": {
+    "Test_BS/lammps_slurry/src/slurry_nearfield_imex_solver.h": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "Test_BS/lammps_slurry/src/slurry_nearfield_solver.h": "cfdfb83d129eb54dd2d9776688496a6aeb82b4afdc576381618739346cbf9c9c"
+  },
+  "instrumented_build_files_sha256": {
+    "replay_cost.cpp": "ce7d6e89d562e06935df7d6f33839207c841c03964de7d6aa023d06cd685b8df",
+    "src/profile_cpu.h": "b77c7243f61ee6795f648294acc5b27243c61a6ba40ca00ecdd40eddcfc1e8a8",
+    "src/slurry_nearfield_imex_solver.h": "2a9966301264e0e304b51cdf55fc0d382f8cdf63c9ea6a6bb98b779ce536dc64",
+    "src/slurry_nearfield_solver.h": "708eeaf67a9ed938546b56247e97535325fcfaf0267a3d7c77fdde4fad0808dd",
+    "step595.jsonl": "2fed0410c42482973369954316722d069774f5cf1bb0249d1ee8e19063e60ccb",
+    "step683.jsonl": "6b207f9c31c21a66e220c764eed3b6e973f54c94a3aa521ce7d7841bfb33d296"
+  },
+  "instrumented_build_files_note": "Paths refer to the scratch build; run_profile.py regenerates the two instrumented headers and places profile_cpu.h under src. Source-delivery manifest is SOURCE_MANIFEST.json.",
+  "portable_build_verification": {
+    "passed": true,
+    "binary_sha256": "2fde934ac786c940348974b4d0e9c508428a510b1ed9f092f9ed584a2009eae0",
+    "initial_profile_binary_sha256": "2fde934ac786c940348974b4d0e9c508428a510b1ed9f092f9ed584a2009eae0",
+    "same_binary": true,
+    "archived_iteration_residual_checks": {
+      "step595_v4": {
+        "matches_archived_newton_krylov_and_residual_exactly": true,
+        "repetitions": 3
+      },
+      "step595_old_extended": {
+        "matches_archived_newton_krylov_and_residual_exactly": true,
+        "repetitions": 3
+      },
+      "step683_v4": {
+        "matches_archived_newton_krylov_and_residual_exactly": true,
+        "repetitions": 3
+      },
+      "step683_old_extended": {
+        "matches_archived_newton_krylov_and_residual_exactly": true,
+        "repetitions": 3
+      }
+    }
+  }
+}

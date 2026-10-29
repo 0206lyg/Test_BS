@@ -1,0 +1,84 @@
+{
+  "schema": "fmm3dbie_single_object_patch_build_v1",
+  "upstream_revision": "be6b2b3700b77e9cbf20c512ff4f0922aaee45d9",
+  "patch_policy": "get_quadparams_adap_high_order_p_ge_4_v1",
+  "supported_panel_order_minimum": 4,
+  "physical_accuracy_qualified": false,
+  "compiler": "/workspace/scratch/581ed100c5ad/reference_deps/gfortran13/bin/gfortran",
+  "compiler_version": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "compile_flags": [
+    "-fPIC",
+    "-O3",
+    "-std=legacy",
+    "-w",
+    "-fopenmp",
+    "-J",
+    "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/.mod"
+  ],
+  "commands": [
+    [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/patches/fmm3dbie-get-quadparams-high-order-v1.patch"
+    ],
+    [
+      "/workspace/scratch/581ed100c5ad/reference_deps/gfortran13/bin/gfortran",
+      "-fPIC",
+      "-O3",
+      "-std=legacy",
+      "-w",
+      "-fopenmp",
+      "-J",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/.mod",
+      "-c",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/src/quadratures/near_field_routs.f",
+      "-o",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/near_field_routs.o"
+    ],
+    [
+      "ar",
+      "r",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib-static/libfmm3dbie.a",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/near_field_routs.o"
+    ],
+    [
+      "ranlib",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib-static/libfmm3dbie.a"
+    ],
+    [
+      "/workspace/scratch/581ed100c5ad/reference_deps/gfortran13/bin/gfortran",
+      "-shared",
+      "-fPIC",
+      "-fopenmp",
+      "-Wl,--whole-archive",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib-static/libfmm3dbie.a",
+      "-Wl,--no-whole-archive",
+      "-o",
+      "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib/libfmm3dbie.so",
+      "-lm",
+      "-lstdc++",
+      "-lgomp",
+      "-lblas",
+      "-llapack"
+    ]
+  ],
+  "upstream_files_sha256": {
+    "/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/src/quadratures/near_field_routs.f": "298c2580f8129f7a998394c4323ef6c19f33899661b7082e2d13c63b898e2241",
+    "/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/lib-static/libfmm3dbie.a": "b62798790f5ec2a369d1f1837534e3e9677ee0d38507afcc861c151f76099fdf",
+    "/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/lib/libfmm3dbie.so": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44"
+  },
+  "patch_sha256": "6025b63528c2c504f7aa5931048e17aa8db7a2df1967299779ac75a993694433",
+  "patched_source_sha256": "1ffe5aee371099c5843c94a2f648f4934b639a7f120e3ba85a88f2725f2f5891",
+  "patched_object_sha256": "747d608b3af158d6f84377b20504eb282031c9d4e8dac7ef938e2295640e94b0",
+  "patched_archive_sha256": "0c687ed96eb451660d3da98fe9f991899cb33c4bca53640b87f9f90f7a302336",
+  "library": "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib/libfmm3dbie.so",
+  "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+  "changed_archive_members": [
+    "near_field_routs.o"
+  ],
+  "unchanged_archive_member_count": 131,
+  "original_artifacts_unchanged": true
+}

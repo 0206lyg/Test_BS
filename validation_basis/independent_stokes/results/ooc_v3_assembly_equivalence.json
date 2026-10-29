@@ -1,0 +1,32 @@
+{
+  "schema": "same_pose_ooc_v3_storage_equivalence_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Same recorded AR20 h150nm N300 all17-RHS exact storage/cache-advice change; coarse BC fails. Different LU panel widths can change floating-point rounding.",
+  "v2_reference": "ooc_buffered_smoke_h150_p4_l0.json",
+  "v3_reference": "ooc_v3_smoke_h150_p4_l0.json",
+  "reports_sha256": {
+    "ooc_buffered_smoke_h150_p4_l0.json": "697018dc6feb0585bb411c4305fd502632c2d8042fedd850f31daa6f099e9758",
+    "ooc_v3_smoke_h150_p4_l0.json": "884f256469c508068c6847374ba4257b40f04e6dff689d7ffecf26795222cc62"
+  },
+  "original_matrix_bitwise_identical": true,
+  "original_matrix_sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0",
+  "density_relative_difference": 1.0944930340633586e-14,
+  "raw17_relative_difference": 2.726800138690093e-14,
+  "true_original_residual": 4.0819039994881485e-14,
+  "v3_hash_details": {
+    "status": "completed",
+    "algorithm": "sha256",
+    "chunk_bytes": 67108864,
+    "bytes_read": 6480000,
+    "digest_valid": true,
+    "cache_advice_scope": "only_this_operator_file_already_read_ranges_then_entire_file",
+    "posix_fadvise_supported": true,
+    "advice_calls_accepted": 2,
+    "advice_calls_failed": 0,
+    "cache_eviction_guaranteed": false,
+    "expected_bytes": 6480000,
+    "file_unchanged_during_hash": true,
+    "sha256": "106d927c9c1877ac3dd27578c11739535aee7c32271ad3789521c5ed250061b0"
+  },
+  "passed": true
+}

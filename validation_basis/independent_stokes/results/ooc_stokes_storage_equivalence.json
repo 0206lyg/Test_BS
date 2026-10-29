@@ -1,0 +1,15 @@
+{
+  "schema": "same_stokes_storage_equivalence_v1",
+  "scope": "Same recorded pose,150nm,N300,all17RHS; coarse physical accuracy is deliberately not qualified",
+  "physical_accuracy_qualified": false,
+  "density_relative_difference": 8.235421561917808e-15,
+  "raw17_relative_difference": 9.484456428159611e-15,
+  "ooc_true_residual": 3.727830446427381e-14,
+  "same_library": true,
+  "same_discretization": true,
+  "references": {
+    "cow_driver_smoke_h150_p4_l0.json": "b36767237cda7f43f9ae10f40ac2de9755193a1bf94ea456f91fcd3a632f9f9c",
+    "ooc_driver_smoke_h150_p4_l0.json": "a521de9f66bc2fcfb76f2b77f6a20ce2c0c3d15da0e11f562a1e279188cfa825"
+  },
+  "equivalence_passed": true
+}

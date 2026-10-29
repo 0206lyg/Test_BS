@@ -1,0 +1,81 @@
+{
+  "physical_case": {
+    "particles": 1000,
+    "aspect_ratio": 5,
+    "volume_fraction": 0.2,
+    "normal_stiffness_N_per_m": 300,
+    "sliding_and_rolling_stiffness_N_per_m": 240,
+    "dt_s": 2.5e-06,
+    "shear_rate_per_s": 100
+  },
+  "capture": {
+    "local_step": 683,
+    "strain": 0.17075,
+    "compiler_optimization": "O1",
+    "phase": "frozen-cap IMEX inner equation at 40-update failure",
+    "snapshot_tolerances_are_already_inner": true,
+    "caps_must_be_loaded_separately": true,
+    "note": "Identical uploaded initial particles/settings, different floating-point trajectory from HPC step723 and local O3 step595."
+  },
+  "hashes": {
+    "inner_snapshot_raw_sha256": "1a552a8e997ff1d0799b3045476e119d3bfb54ed421ce7264974ee5e86a8f10c",
+    "inner_snapshot_gzip_sha256": "eb4c90d7cdd3f4ca9cd629fc9bd116542c0911966e70d5bcb4b3dd9f613c7fc0",
+    "caps_sha256": "3044475655fe8088f38a70fa0a5f0e9761e5b8e27273a10bb4aa74915906476e",
+    "original_production_imex_header_sha256": "78d986b1a2ff3d30ba14c1dd400c223139150349ef2474f4b506bf5c1e73825b",
+    "capture_instrumented_imex_header_sha256": "3242481f742c1a52a01b9c95b30210ffa8ca32d5e45c21356f4a7ab9fb65b6da",
+    "capture_plugin_sha256": "32afb0de67ad57ec692f63186ac05556bf42254dc5a0061a667e1de18da3b999",
+    "uploaded_particles_data_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "uploaded_in_bridge_sha256": "897a382316c1d2b05a8ab916479918ccdee62594322a7da8a385ce7b1870f68e",
+    "uploaded_parameters_json_sha256": "1ef01d68e517ce8cde8cce1a5db322bf9ac1978812ef332bd9c8bc08ec6e7090",
+    "tight_reference_cli_binary_sha256": "218d9604d153f45ee58d4751697bfd3dca8316fbf36e65ce686770a2289d371b",
+    "tight_reference_cli_source_sha256": "b81397de0f9e3fb5889389a6d28c98ad230939f71ee95837e6776cc9413c4d14",
+    "portable_replay_binary_sha256": "e87e929c50fa279620bb7c4b3bd8d6943dc333bd3bd41a2a078558e418391f36",
+    "portable_replay_source_sha256": "2ac1383ff3e1cad56b90d63dc5c932d60b39f9eaeaa5791b4701c3855a0f6fb8",
+    "portable_replay_log_sha256": "f0ed600c49dc593ee2d99cbb4dcffd001548a94c4ab8bc6c250516eb15dedd68",
+    "production_imex_header_sha256": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "snapshot_helper_sha256": "2ba7eecf300593e16ecae3d8d6c4a64a1b466dc8b651f5945d8dffe79fcac41f"
+  },
+  "results": [
+    {
+      "name": "baseline40",
+      "returncode": 1,
+      "wall_total_s": 3.6259701070011943,
+      "cpu_total_s": 3.563728,
+      "result": "FAIL IMEX: convex Newton limit; residual=3.08096; tolerance=0.00147418; iterations=40; primary_limit=40; recovery_limit=0"
+    },
+    {
+      "name": "hybrid40",
+      "returncode": 0,
+      "wall_total_s": 2.940117525999085,
+      "cpu_total_s": 2.861475,
+      "result": "PASS newton=24 linear=1112 residual=6.4270168141856659e-07 tolerance=0.0014741771721016328 relative=4.3597316117592854e-11 majorized=11 line_refinements=8 recoveries=0 recovery_iterations=0 max_linear_relative=9.6027387895581238e-11 seconds=2.588555527 cpu_seconds=2.5194169999999998"
+    },
+    {
+      "name": "v4_default",
+      "returncode": 0,
+      "wall_total_s": 2.7385346349983593,
+      "cpu_total_s": 2.685124999999999,
+      "result": "PASS newton=24 linear=1112 residual=6.4270168141856659e-07 tolerance=0.0014741771721016328 relative=4.3597316117592854e-11 majorized=11 line_refinements=8 recoveries=0 recovery_iterations=0 max_linear_relative=9.6027387895581238e-11 seconds=2.4364332630000001 cpu_seconds=2.3889830000000001"
+    },
+    {
+      "name": "reference200",
+      "returncode": 0,
+      "wall_total_s": 8.905301290000352,
+      "cpu_total_s": 4.103730999999999,
+      "result": "PASS newton=46 linear=1140 residual=0.00016112748227336291 tolerance=0.0014741771721016328 relative=1.0929994401755285e-08 majorized=0 line_refinements=32 recoveries=0 recovery_iterations=0 max_linear_relative=9.0232805781027158e-11 seconds=8.6223641010000005 cpu_seconds=3.8346659999999999"
+    },
+    {
+      "name": "forced_recovery4",
+      "returncode": 0,
+      "wall_total_s": 5.901488440998946,
+      "cpu_total_s": 2.6204130000000005,
+      "result": "PASS newton=23 linear=945 residual=6.4100788848440905e-07 tolerance=0.0014741771721016328 relative=4.3482418602737717e-11 majorized=11 line_refinements=7 recoveries=1 recovery_iterations=19 max_linear_relative=9.8986114190026811e-11 seconds=5.2943972520000004 cpu_seconds=2.3475169999999999"
+    }
+  ],
+  "relative_velocity_difference_from_1000x_tighter_original_reference": {
+    "hybrid40": 7.637691238583449e-10,
+    "v4_default": 7.637691238583449e-10,
+    "forced_recovery4": 7.567426393099186e-10
+  },
+  "portable_replay_passed": true
+}

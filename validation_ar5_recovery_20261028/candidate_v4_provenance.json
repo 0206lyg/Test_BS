@@ -1,0 +1,11 @@
+{
+  "plugin": "/workspace/scratch/af0f332bc475/ar5_recovery_20261028/libslurry_ar5_candidate_v4.so",
+  "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+  "sources": {
+    "lammps_slurry/src/slurry_nearfield_imex_solver.h": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "lammps_slurry/src/fix_slurry_bridge.cpp": "5987aeafc37ee0a894e01248aa38f952523a7b29c4a0b0aec3e19f239ed35141",
+    "lammps_slurry/src/slurry_nearfield_step.h": "19f54a1d775c56c7cd89360580a5b09104da62d574d9d522ccf3203893284e25",
+    "lammps_slurry/tests/test_nearfield_imex.cpp": "2906dd99944d0bad2910c6ba4f0f243594d30667045a94a33820cb88498ed2d4"
+  },
+  "release_id": "20261028-imex-huber-recovery"
+}

@@ -1,0 +1,16 @@
+{
+  "fixture": "general_near_python_v1.txt",
+  "sha256": "e37216d2e6aca40154f8f6300e94280d28ed1e5495ab97325c45fdc4b57d8508",
+  "generated_from": "Previously evaluated general_pair_eval Python calculator; no fit or new reference solve",
+  "source_sha256": {
+    "near.py": "00d95be7e9d5c31835fcc52af116fa373bf961d2aba697b1d5d5e642866b7d53",
+    "vendor/claeys_near.py": "20f1a34ed5fcbfbf0da3eec60fee6afaf46f2cdc87eae0afc0557b1fd7ed37fc",
+    "vendor/geometry.py": "64b69e5f52d7f87514b52052ae9b0dceaddc409113f8659e5c8cbe49111866ff"
+  },
+  "units": "c=eta=1",
+  "modes": "Ui3, a*Omega_i3, Uj3, a*Omega_j3, a*E5",
+  "format": "Header then cases: AR h theta_i theta_j phi cutoff_factor derived_normal_log; grand17, inverse_gap17, logarithm17 (each 17 rows); reference_length cutoff derived_normal_log_candidate",
+  "cases": 12,
+  "scope": "Port regression for published corrected leading terms, experimental normal-log option, chosen C1 continuation and all force/torque/summed-stresslet entries. Not an independent Stokes accuracy or suspension viscosity test.",
+  "runtime_input": false
+}

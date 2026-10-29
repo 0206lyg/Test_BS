@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python",
+    "-u",
+    "lammps_slurry/tools/prepare_bridge.py",
+    "--output",
+    "/workspace/scratch/0520ed9b6708/solver500_ar2_repro",
+    "--packer",
+    "/workspace/scratch/0520ed9b6708/bridge-build/slurry_pack",
+    "--initialization",
+    "random",
+    "--ar",
+    "2",
+    "--count",
+    "500",
+    "--phi",
+    "0.24",
+    "--seed",
+    "1729",
+    "--steps",
+    "1",
+    "--output-interval",
+    "1"
+  ],
+  "returncode": 0,
+  "wall_seconds": 4.358439673000021,
+  "user_seconds": 4.350181,
+  "system_seconds": 0.015486999999999999,
+  "max_rss_kb": 12800
+}

@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "hybrid": 0,
+      "cpu_seconds": 3.431991,
+      "wall_seconds": 3.436333176,
+      "newton": 46,
+      "linear": 1140
+    },
+    {
+      "hybrid": 1,
+      "cpu_seconds": 2.191639,
+      "wall_seconds": 2.194340255,
+      "newton": 24,
+      "linear": 1112
+    },
+    {
+      "hybrid": 1,
+      "cpu_seconds": 2.101078,
+      "wall_seconds": 2.105495008,
+      "newton": 24,
+      "linear": 1112
+    },
+    {
+      "hybrid": 0,
+      "cpu_seconds": 3.305754,
+      "wall_seconds": 3.308266267,
+      "newton": 46,
+      "linear": 1140
+    },
+    {
+      "hybrid": 0,
+      "cpu_seconds": 3.462429,
+      "wall_seconds": 3.470658001,
+      "newton": 46,
+      "linear": 1140
+    },
+    {
+      "hybrid": 1,
+      "cpu_seconds": 2.273692,
+      "wall_seconds": 2.290559807,
+      "newton": 24,
+      "linear": 1112
+    },
+    {
+      "hybrid": 1,
+      "cpu_seconds": 2.326719,
+      "wall_seconds": 2.326844368,
+      "newton": 24,
+      "linear": 1112
+    },
+    {
+      "hybrid": 0,
+      "cpu_seconds": 4.300825,
+      "wall_seconds": 4.304554002,
+      "newton": 46,
+      "linear": 1140
+    }
+  ],
+  "median_cpu_s": {
+    "0": 3.44721,
+    "1": 2.2326655
+  },
+  "cpu_ratio_hybrid_to_original": 0.6476731907832711
+}

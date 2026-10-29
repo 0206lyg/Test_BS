@@ -1,0 +1,81 @@
+{
+  "schema": "near_apply_verification_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Stored-kernel application algebra and wall time only",
+  "provenance": {
+    "schema": "spheroid_near_apply_build_v1",
+    "abi": 1,
+    "source_path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/near_apply.cpp",
+    "source_sha256": "df74585fd1340cb4a1afe7db38e86955bc4530a646461daa9d93b01f115a61b1",
+    "library_path": "/workspace/scratch/581ed100c5ad/reference_deps/near_apply_v1/libnear_apply.so",
+    "library_sha256": "bf0de6e2a94af05ee8f9e4cdb6b51d9fdb82c8a7b49b3a7c478798e1cb15810f",
+    "compiler": "g++",
+    "compiler_version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "compile_flags": [
+      "-std=c++11",
+      "-O3",
+      "-fopenmp",
+      "-shared",
+      "-fPIC",
+      "-ffp-contract=off"
+    ],
+    "fast_math": false,
+    "loaded_library_path": "/workspace/scratch/581ed100c5ad/reference_deps/near_apply_v1/libnear_apply.so",
+    "manifest_path": "/workspace/scratch/581ed100c5ad/reference_deps/near_apply_v1/libnear_apply.so.json",
+    "manifest_sha256": "8813c26c2b04663495c6554753a89b2ab447a7a5f7725486269568d874e13cbf",
+    "threads": 8
+  },
+  "cpu_count": 9,
+  "cases": [
+    {
+      "npts": 2352,
+      "weights_bytes": 265531392,
+      "relative_l2_error": 2.269493638473293e-15,
+      "max_absolute_error": 1.3073986337985843e-12,
+      "native": {
+        "minimum_seconds": 0.01186893100020825,
+        "median_seconds": 0.0119739709989517,
+        "samples_seconds": [
+          0.01186893100020825,
+          0.0119739709989517,
+          0.012092078000932815
+        ]
+      },
+      "einsum": {
+        "minimum_seconds": 0.10414027700062434,
+        "median_seconds": 0.10509146599906671,
+        "samples_seconds": [
+          0.10414027700062434,
+          0.11118396599886182,
+          0.10509146599906671
+        ]
+      },
+      "median_speedup": 8.77665947314114
+    },
+    {
+      "npts": 4000,
+      "weights_bytes": 768000000,
+      "relative_l2_error": 2.9822877269010094e-15,
+      "max_absolute_error": 2.3874235921539366e-12,
+      "native": {
+        "minimum_seconds": 0.023530989999926533,
+        "median_seconds": 0.027721691998522147,
+        "samples_seconds": [
+          0.027721691998522147,
+          0.029351426999710384,
+          0.023530989999926533
+        ]
+      },
+      "einsum": {
+        "minimum_seconds": 0.2966215300002659,
+        "median_seconds": 0.2970314909998706,
+        "samples_seconds": [
+          0.2966215300002659,
+          0.2970314909998706,
+          0.30541058000017074
+        ]
+      },
+      "median_speedup": 10.714767735522978
+    }
+  ]
+}

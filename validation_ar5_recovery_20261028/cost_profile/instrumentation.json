@@ -1,0 +1,56 @@
+[
+  {
+    "name": "slurry_nearfield_imex_solver.h",
+    "original_sha256": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "instrumented_sha256": "2a9966301264e0e304b51cdf55fc0d382f8cdf63c9ea6a6bb98b779ce536dc64",
+    "replacements": [
+      {
+        "old": "// only when the step is committed, adding dissipation without changing loads.\n",
+        "new": "// only when the step is committed, adding dissipation without changing loads.\n#include \"profile_cpu.h\"\n"
+      },
+      {
+        "old": "inline Evaluation evaluate(const bs::Problem&p,const FrozenCaps&caps,const bs::Vector&u,const Workspace&w) {\n",
+        "new": "inline Evaluation evaluate(const bs::Problem&p,const FrozenCaps&caps,const bs::Vector&u,const Workspace&w) {\n  CostProfile::Scope profile_scope(\"evaluate\");\n"
+      },
+      {
+        "old": "                           bool majorize_huber=false) {\n",
+        "new": "                           bool majorize_huber=false) {\n  CostProfile::Scope profile_scope(\"jacobian_assembly\");\n"
+      },
+      {
+        "old": "                                  const bs::Vector&du,const Workspace&w) {\n",
+        "new": "                                  const bs::Vector&du,const Workspace&w) {\n  CostProfile::Scope profile_scope(\"objective_increment\");\n"
+      },
+      {
+        "old": "inline void factorize(const bs::Sparse&j,Workspace&w) {\n",
+        "new": "inline void factorize(const bs::Sparse&j,Workspace&w) {\n  CostProfile::Scope profile_scope(\"contact_factorization\");\n"
+      },
+      {
+        "old": "  bs::Options base=o;base.trace_callback={};const auto cold=ns::solve(p,base,w);\n",
+        "new": "  bs::Options base=o;base.trace_callback={};const auto cold=[&](){CostProfile::Scope scope(\"hydro_setup\");return ns::solve(p,base,w);}();\n"
+      },
+      {
+        "old": "      const bs::Apply apply=[&](const bs::Vector&v){++w.jacobian_products;bs::Vector z=j*v;\n",
+        "new": "      const bs::Apply apply=[&](const bs::Vector&v){CostProfile::Scope scope(\"krylov_matvec\");++w.jacobian_products;bs::Vector z=j*v;\n"
+      },
+      {
+        "old": "      const bs::Apply inverse=[&](const bs::Vector&v){++iterations;++w.krylov_iterations;bs::Vector z;\n",
+        "new": "      const bs::Apply inverse=[&](const bs::Vector&v){CostProfile::Scope scope(\"krylov_preconditioner_solve\");++iterations;++w.krylov_iterations;bs::Vector z;\n"
+      },
+      {
+        "old": "      try {auto answer=bs::detail::fgmres(apply,inverse,-at.residual,target,linear);direction=std::move(answer.x);\n",
+        "new": "      try {auto answer=[&](){CostProfile::Scope scope(\"fgmres_total\");return bs::detail::fgmres(apply,inverse,-at.residual,target,linear);}();direction=std::move(answer.x);\n"
+      }
+    ]
+  },
+  {
+    "name": "slurry_nearfield_solver.h",
+    "original_sha256": "cfdfb83d129eb54dd2d9776688496a6aeb82b4afdc576381618739346cbf9c9c",
+    "instrumented_sha256": "708eeaf67a9ed938546b56247e97535325fcfaf0267a3d7c77fdde4fad0808dd",
+    "replacements": [
+      {
+        "old": "inline void factorize(const bs::Sparse &a, Workspace &w) {\n",
+        "new": "inline void factorize(const bs::Sparse &a, Workspace &w) {\n  CostProfile::Scope profile_scope(\"hydro_factorization\");\n"
+      }
+    ]
+  }
+]

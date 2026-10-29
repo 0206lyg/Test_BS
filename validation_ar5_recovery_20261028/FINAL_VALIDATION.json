@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_VALIDATION_USER_STOPPED",
+  "scope": "Measured v4 physical prefixes, completed smaller integrations, frozen failure replays, and v4 tests; the requested N1000 4000-step trajectories were stopped by user instruction.",
+  "all_measured_prefix_physical_gates_pass": true,
+  "all_prefix_equivalence_checks_pass": true,
+  "requested_runs_completed": false,
+  "n1000_4000_step_validation_completed": false,
+  "n1000_4000_step_validation_pass": false,
+  "production_integration": {
+    "particles": 1000,
+    "aspect_ratio": 5,
+    "volume_fraction": 0.2,
+    "normal_stiffness_N_per_m": 300,
+    "sliding_and_rolling_stiffness_N_per_m": 240,
+    "dt_s": 2.5e-06,
+    "shear_rate_per_s": 100,
+    "solvent_viscosity_Pa_s": 0.01,
+    "sliding_and_rolling_friction_coefficient": 10,
+    "original_user_particles_preserved": true,
+    "run": "candidate_v4_restarted",
+    "status": "USER_REQUESTED_STOP",
+    "returncode": 130,
+    "returncode_source": "Root agent observed tool session exit130 after Ctrl-C requested by user.",
+    "requested_steps": 4000,
+    "last_step": 1974,
+    "last_strain": 0.4935,
+    "recorded_rows": 1975,
+    "requested_run_completed": false,
+    "final_data_present": false,
+    "maximum_physical_relative_residual": 9.9966238251605e-08,
+    "maximum_overlap_fraction_min_semiaxis": 0.0004519484496950943,
+    "maximum_overlap_percent_min_semiaxis": 0.04519484496950943,
+    "finite_numeric_diagnostics_except_documented_undefined_averages": true,
+    "intentional_undefined_average_field_counts": {
+      "mean_eta_Pa_s": 1975,
+      "interval_mean_sigma_solvent_Pa": 1,
+      "interval_mean_sigma_hydro_Pa": 1,
+      "interval_mean_sigma_contact_Pa": 1,
+      "interval_mean_sigma_xz_Pa": 1,
+      "interval_mean_eta_Pa_s": 1,
+      "interval_mean_eta_relative": 1
+    },
+    "unexpected_nonfinite_values": [],
+    "recovery_events": [],
+    "recovered_steps": 0,
+    "additional_recovery_updates": 0,
+    "console_contains_error": false,
+    "measured_prefix_physical_gates_pass": true,
+    "history_sha256": "b3c1825abdcb115b1232f23be72c228336445bc58ce3656e0eac87a7a42877ee",
+    "console_sha256": "4ea2b349738842949846ab7ae4e069406e63f660291fb8399ac8aba51d3c5df4",
+    "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+    "particles_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "input_sha256": "c52cfb6edcd6d0d05cd5940ebe6dc1ea3871ff810b30a78cbc038d945c989a0e",
+    "evidence_directory": "n1000_ar5_phi020"
+  },
+  "diagnostic_integration": {
+    "run": "diagnostic_v4_restarted",
+    "status": "USER_REQUESTED_STOP",
+    "returncode": 130,
+    "returncode_source": "Root agent observed tool session exit130 after Ctrl-C requested by user.",
+    "requested_steps": 4000,
+    "last_step": 1917,
+    "last_strain": 0.47925000000000006,
+    "recorded_rows": 1918,
+    "requested_run_completed": false,
+    "final_data_present": false,
+    "maximum_physical_relative_residual": 9.9966238251605e-08,
+    "maximum_overlap_fraction_min_semiaxis": 0.0003939934282214952,
+    "maximum_overlap_percent_min_semiaxis": 0.03939934282214952,
+    "finite_numeric_diagnostics_except_documented_undefined_averages": true,
+    "intentional_undefined_average_field_counts": {
+      "mean_eta_Pa_s": 1918,
+      "interval_mean_sigma_solvent_Pa": 1,
+      "interval_mean_sigma_hydro_Pa": 1,
+      "interval_mean_sigma_contact_Pa": 1,
+      "interval_mean_sigma_xz_Pa": 1,
+      "interval_mean_eta_Pa_s": 1,
+      "interval_mean_eta_relative": 1
+    },
+    "unexpected_nonfinite_values": [],
+    "recovery_events": [],
+    "recovered_steps": 0,
+    "additional_recovery_updates": 0,
+    "console_contains_error": false,
+    "measured_prefix_physical_gates_pass": true,
+    "history_sha256": "bae575c29e1e9faafed4ab6014b1a3e220e754fab3889ff5244cb1b406d69774",
+    "console_sha256": "f349a4a23bb454c11f66aea6bd0ea26199a0133b11400ddd2e5f9a0946a43f7d",
+    "plugin_sha256": "590027eb132baae02d594a8852755a7a1fb21278584c31b8baf825fed4284809",
+    "particles_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "input_sha256": "c52cfb6edcd6d0d05cd5940ebe6dc1ea3871ff810b30a78cbc038d945c989a0e"
+  },
+  "prefix_equivalence": [
+    {
+      "comparison": "Fresh production and instrumented diagnostic prefixes",
+      "compared_rows": 1918,
+      "through_step": 1917,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted production and fresh replay prefixes",
+      "compared_rows": 1244,
+      "through_step": 1243,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted diagnostic and fresh diagnostic replay prefixes",
+      "compared_rows": 1242,
+      "through_step": 1241,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    }
+  ],
+  "completed_n256_integrations": [
+    {
+      "name": "regression_ar1_n256",
+      "status": "PASS",
+      "particle_count": 256,
+      "aspect_ratio": 1.0,
+      "volume_fraction": 0.34,
+      "steps": 4000,
+      "strain": 1.0,
+      "normal_stiffness_N_m": 300.0,
+      "tangential_and_rolling_stiffness_N_m": 240.0,
+      "timestep_s": 2.5e-06,
+      "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+      "particles_sha256": "6dde9c3260d4e19b7a612c0d7c0e19bb5f0917c6e48d689a315762f581d6d362",
+      "input_sha256": "0f1542a28dc1b3faa531336b3401d8d1db66193f8b12321e4cb83b4ed2876c52",
+      "maximum_physical_relative_residual": 9.994207141509112e-08,
+      "maximum_overlap_fraction_min_semiaxis": 0.0019069987496338223,
+      "maximum_overlap_percent_min_semiaxis": 0.19069987496338223,
+      "maximum_inner_updates": 49,
+      "maximum_aggregate_step_updates": 52.0,
+      "mean_aggregate_step_updates": 10.030992251937016,
+      "recoveries": [
+        {
+          "step": 1871,
+          "inner_solves": 1,
+          "additional_updates": 9,
+          "relative_residual": 7.128065151e-08
+        }
+      ],
+      "recovered_steps": 1,
+      "additional_recovery_updates": 9,
+      "wall_seconds": 537.3979230609984,
+      "timing_scope": "Concurrent shared-host runs; not an isolated performance benchmark",
+      "steady_state_certified": false,
+      "attraction_tested": false,
+      "summary_sha256": "afd52f6c1122c54ed50aea5921b81321d2a845d3a43aac92222a89c16e9a36d3"
+    },
+    {
+      "name": "regression_ar5_n256",
+      "status": "PASS",
+      "particle_count": 256,
+      "aspect_ratio": 5.0,
+      "volume_fraction": 0.24,
+      "steps": 1000,
+      "strain": 0.25,
+      "normal_stiffness_N_m": 300.0,
+      "tangential_and_rolling_stiffness_N_m": 240.0,
+      "timestep_s": 2.5e-06,
+      "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+      "particles_sha256": "c85b085d9e4baa733c004bb3ff4196717adedecaf3c95dfc4a4a4f7e180a0626",
+      "input_sha256": "0659b2ba217e495c42bd8182a8bf3c80a8bef313873b51179207a8b98610cd1a",
+      "maximum_physical_relative_residual": 9.996375166761061e-08,
+      "maximum_overlap_fraction_min_semiaxis": 0.0003919437732746722,
+      "maximum_overlap_percent_min_semiaxis": 0.03919437732746722,
+      "maximum_inner_updates": 31,
+      "maximum_aggregate_step_updates": 32.0,
+      "mean_aggregate_step_updates": 15.225774225774225,
+      "recoveries": [],
+      "recovered_steps": 0,
+      "additional_recovery_updates": 0,
+      "wall_seconds": 204.42138823999994,
+      "timing_scope": "Concurrent shared-host runs; not an isolated performance benchmark",
+      "steady_state_certified": false,
+      "attraction_tested": false,
+      "summary_sha256": "5393bb3b794606ccf434da0a5c15c7341074fe464ea8af22b1c98933cd084c2e"
+    }
+  ],
+  "completed_n256_integrations_pass": true,
+  "frozen_failure_replays": [
+    {
+      "case": "step595",
+      "portable_replay_passed": true,
+      "metadata": "frozen/step595_metadata.json"
+    },
+    {
+      "case": "step683",
+      "portable_replay_passed": true,
+      "metadata": "frozen/step683_metadata.json"
+    },
+    {
+      "case": "step1871",
+      "portable_replay_passed": true,
+      "metadata": "frozen/step1871_metadata.json"
+    }
+  ],
+  "v4_tests": {
+    "cpp_ctest": {
+      "passed": 54,
+      "failed": 0,
+      "log": "ctest_final.log"
+    },
+    "python_bridge": {
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "log": "python_bridge_tests.log"
+    },
+    "source_provenance": "test_provenance.json"
+  },
+  "tested_v4_binary_and_source_provenance": "candidate_v4_provenance.json",
+  "release_wrapper_change_validation": {
+    "status": "PASS",
+    "report": "production_ceiling_short_checks.json",
+    "ctest_passed": 54,
+    "ctest_failed": 0,
+    "new_long_trajectory_performed": false,
+    "note": "Only the production continuation ceiling and configuration logging changed after the stopped v4 run; the solver header and physical equations are unchanged. Two-step comparisons at1000,120,2400 reproduce the tested v4 physical prefix exactly."
+  },
+  "limitations": [
+    "N1000 was stopped at step1974 (strain0.4935);4000 steps/strain1 was not completed.",
+    "No strain50 or steady-state viscosity validation.",
+    "No attraction or yielding validation.",
+    "Measured timing is not an isolated full-run performance benchmark.",
+    "Old and fresh run prefixes match exactly excluding timing; trajectory equality beyond recorded prefixes is not asserted."
+  ],
+  "production_ceiling_short_checks": {
+    "status": "PASS",
+    "scope": "Only constructor/configuration and two-step N1000 equivalence checks; no new long integration.",
+    "default_total": 1000,
+    "primary_iterations": 40,
+    "default_recovery_iterations": 960,
+    "checks": [
+      {
+        "name": "default",
+        "setting": null,
+        "effective_total": 1000,
+        "returncode": 0,
+        "last_step": 2,
+        "non_timing_prefix_identical_to_tested_v4": true
+      },
+      {
+        "name": "explicit120",
+        "setting": "120",
+        "effective_total": 120,
+        "returncode": 0,
+        "last_step": 2,
+        "non_timing_prefix_identical_to_tested_v4": true
+      },
+      {
+        "name": "explicit2400",
+        "setting": "2400",
+        "effective_total": 2400,
+        "returncode": 0,
+        "last_step": 2,
+        "non_timing_prefix_identical_to_tested_v4": true
+      },
+      {
+        "name": "invalid39",
+        "setting": "39",
+        "returncode": 1,
+        "invalid_value_rejected": true
+      },
+      {
+        "name": "invalidtext",
+        "setting": "invalid",
+        "returncode": 1,
+        "invalid_value_rejected": true
+      }
+    ],
+    "plugin_sha256": "1bf076a7faa56a1bcdd990d465565bdf93d815b41600574c242a8053629be994",
+    "source_sha256": {
+      "lammps_slurry/src/fix_slurry_bridge.cpp": "a68a0ee34e1136baf8f5cae380ea37f55902f6be7db3df90c46aea7596bf73a2",
+      "lammps_slurry/src/slurry_nearfield_imex_solver.h": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2"
+    }
+  }
+}

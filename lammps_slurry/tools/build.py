@@ -3,7 +3,7 @@
 
 The default install is entirely inside this repository.  Existing LAMMPS source
 trees are validated and reused without resetting, checking out, or patching them.
-Only the Python standard library, Git, a C++ compiler, CMake and MPI are required.
+The production bridge also requires FFTW and static oneMKL (LP64/GNU threading).
 """
 
 import argparse
@@ -129,11 +129,11 @@ def check_plugin(executable, plugin, build, *, mpi):
             print(error.stdout, file=sys.stderr)
         raise RuntimeError("LAMMPS startup/plugin verification failed. See {}.".format(log)) from error
     log.write_text(result.stdout)
-    for style in ("slurry/spheroid", "slurry/drag", "slurry/implicit"):
+    for style in ("slurry/spheroid", "slurry/drag", "slurry/implicit", "slurry/bridge"):
         if style not in result.stdout:
             raise RuntimeError("Plugin check did not find style {}. See {}."
                                .format(style, build / "check-slurry-plugin.log"))
-    print("Plugin load verified: pair slurry/spheroid, fix slurry/drag, fix slurry/implicit", flush=True)
+    print("Plugin load verified: pair slurry/spheroid, fix slurry/drag, fix slurry/implicit, fix slurry/bridge", flush=True)
 
 
 def write_environment(build, executable, plugin, packer):
@@ -168,6 +168,8 @@ def main():
                         help="Require an existing pristine checkout; do not access the network")
     parser.add_argument("--serial", action="store_true",
                         help="Build without MPI for local development only (production uses MPI)")
+    parser.add_argument("--fftw-root", type=Path, help="Optional FFTW installation prefix")
+    parser.add_argument("--mkl-root", type=Path, help="Optional full oneMKL installation prefix")
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error("--jobs must be at least 1")
@@ -211,13 +213,23 @@ def main():
     run(configure)
     run(["cmake", "--build", build, "--parallel", args.jobs])
     run(["cmake", "--install", build])
-    run([
+    plugin_configure = [
         "cmake", "-S", PROJECT, "-B", plugin_build,
         "-D", "CMAKE_BUILD_TYPE=Release", "-D", "BUILD_TESTING=ON",
         "-D", "LAMMPS_SOURCE_DIR={}".format(source),
         "-D", "LAMMPS_DIR={}".format(install / "lib" / "cmake" / "LAMMPS"),
         "-D", "CMAKE_INSTALL_PREFIX={}".format(install),
-    ])
+        "-D", "SLURRY_ENABLE_LU=ON", "-D", "SLURRY_USE_FFTW=ON",
+        "-D", "SLURRY_USE_MKL_PARDISO=ON",
+    ]
+    for name, value in (("SLURRY_FFTW_ROOT", args.fftw_root),
+                        ("SLURRY_MKL_ROOT", args.mkl_root)):
+        if value is not None:
+            plugin_configure.extend(["-D", "{}={}".format(name, value.expanduser().resolve())])
+    run(plugin_configure)
+    numerics = json.loads((plugin_build / "slurry-numerics.json").read_text())
+    if numerics != {"fft": "FFTW", "sparse": "MKL-PARDISO-static-GNU-LP64"}:
+        raise RuntimeError("Production build did not select the optimized numerical backends.")
     run(["cmake", "--build", plugin_build, "--parallel", args.jobs])
     run(["ctest", "--test-dir", plugin_build, "--output-on-failure"])
     executable = install / "bin" / "lmp"
@@ -238,13 +250,23 @@ def main():
         "packer": str(packer),
         "cmake_version": run(["cmake", "--version"], capture=True).stdout.splitlines()[0],
         "packages": ["ASPHERE", "PLUGIN"],
-        "validation": "CTest suite and loading slurry/spheroid, slurry/drag, slurry/implicit styles",
+        "numerical_backends": numerics,
+        "run_batch": "run_slurry_cpu.sbatch",
+        "validation": "CTest suite and loading slurry/spheroid, slurry/drag, slurry/implicit, slurry/bridge styles",
         **identity,
     }
     temporary_manifest = manifest_path.with_suffix(".json.tmp")
     temporary_manifest.write_text(json.dumps(manifest, indent=2) + "\n")
     temporary_manifest.replace(manifest_path)
     environment = write_environment(build, executable, plugin, packer)
+    # This release has one editable run batch at the repository root. ZIP
+    # overlays cannot remove obsolete files; retire only these two old entry
+    # points after a successful verified build, never during a failed build.
+    for name in ("run_bridge_cpu.sbatch", "run_slurry_cpu.sbatch"):
+        obsolete = PROJECT / name
+        if obsolete.is_file() or obsolete.is_symlink():
+            obsolete.unlink()
+            print("Removed obsolete launcher: {}".format(obsolete), flush=True)
     print("\nBuild complete.\n  LAMMPS: {}\n  Plugin: {}\n  Environment: {}"
           .format(executable, plugin, environment), flush=True)
 

@@ -1,0 +1,338 @@
+{
+  "acceptance_decision": null,
+  "acceptance_threshold": null,
+  "baseline": {
+    "input_sha256": "96b4e6293895356a241724e1155ae77ae33943b358eb62ca2826a25fb51e6618",
+    "provenance": {
+      "before_after_hash_verification_available": true,
+      "binary_sha256_at_launch": {
+        "/workspace/scratch/0520ed9b6708/lammps-build-env/install/bin/lmp": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+        "/workspace/scratch/0520ed9b6708/lammps-build-env/install/lib/liblammps.so.0": "c5e9db090e5d0a494ecde4f9ff1bd447280b8458ead1d01b229bd36a576577b5",
+        "/workspace/scratch/0520ed9b6708/solver_schur_v5_binary/libslurry.so": "50c740bddd99abed91247f940df419c0c66041c7af2b9df51f430b8923b631b4"
+      },
+      "finalized_run": true,
+      "history_sha256_when_read": "f1fd751bd4738fcc12068d9336df64457ca3cc82753c62cbca47c9a7a9a8c38c",
+      "recorded_launch_status": "completed",
+      "recorded_returncode": 0,
+      "trajectory_sha256_when_read": "c2d37d0b546253b9d70683612a5af4692afd4fa949c1e1d570bece0e72098205"
+    },
+    "run": "/workspace/scratch/0520ed9b6708/solver500_schur_v5_cont_ar10/solver500_ar10_repro",
+    "tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 0.020406916406653406,
+      "linear_iterations": 549.0,
+      "mobility_residual": 0.00010474958845192274,
+      "newton_iterations": 78.0,
+      "profile_solve_s": 55.48980116844177,
+      "profile_total_s": 56.045040130615234,
+      "solver_relative_residual": 2.9126594221942074e-08
+    }
+  },
+  "candidate": {
+    "input_sha256": "96b4e6293895356a241724e1155ae77ae33943b358eb62ca2826a25fb51e6618",
+    "provenance": {
+      "before_after_hash_verification_available": true,
+      "binary_sha256_at_launch": {
+        "/workspace/scratch/0520ed9b6708/lammps-build-env/install/bin/lmp": "709cdb7accde7a3ccacd6c59b53c9d069b2acc335045a05392e619742e2d12c9",
+        "/workspace/scratch/0520ed9b6708/lammps-build-env/install/lib/liblammps.so.0": "c5e9db090e5d0a494ecde4f9ff1bd447280b8458ead1d01b229bd36a576577b5",
+        "/workspace/scratch/0520ed9b6708/solver_final_binary/libslurry.so": "6ca16a0b254c6ce498ecb7c1365f3c326a3cddd0a1417c2fc2ce680bc05638e2"
+      },
+      "finalized_run": true,
+      "history_sha256_when_read": "195983ad1d762a37b62c1b4eefa23b981b77f86438a3f1baa6e3a6b8bdc4129c",
+      "recorded_launch_status": "completed",
+      "recorded_returncode": 0,
+      "trajectory_sha256_when_read": "994699e0333b937a4e651ce30d977b3a47edf02f616f3a377b2d4a57467c29e8"
+    },
+    "run": "/workspace/scratch/0520ed9b6708/solver500_final/solver500_ar10_repro",
+    "tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 3.24991857839414,
+      "linear_iterations": 74.0,
+      "mobility_residual": 0.000880778017057985,
+      "newton_iterations": 11.0,
+      "profile_solve_s": 8.127145051956177,
+      "profile_total_s": 8.715766906738281,
+      "solver_relative_residual": 2.8081871180999784e-07
+    }
+  },
+  "exact_box_and_geometry_match": true,
+  "fixed_particle_sha256": "fb1a2d75f06e20519b3a1d363f3b6c0af0ed056a8836621ba6c4d399541c90d3",
+  "particle_count": 500,
+  "physical_input_parameters": {
+    "contact": [
+      3.0000000000000004e-09,
+      0.1,
+      80.0
+    ],
+    "deformation_tokens": [
+      "fix",
+      "shear",
+      "all",
+      "deform",
+      "0",
+      "xz",
+      "erate",
+      "100",
+      "remap",
+      "v",
+      "units",
+      "box"
+    ],
+    "gap_floor": 1e-09,
+    "normal_stiffness": 1.0,
+    "shear_rate": 100.0,
+    "spectral": [
+      2.0
+    ],
+    "spectral_tolerance": [
+      1e-08
+    ],
+    "timestep": 1e-06,
+    "viscosity": 0.01
+  },
+  "power_balance_diagnostics": {
+    "baseline": {
+      "error_W": 6.869734987252895e-22,
+      "physical_power_scale_W": 5.15270811942642e-10,
+      "relative_error_to_physical_power": 1.3332280478595416e-12
+    },
+    "candidate": {
+      "error_W": 3.971572260348057e-19,
+      "physical_power_scale_W": 5.152708102858248e-10,
+      "relative_error_to_physical_power": 7.707737719792422e-10
+    }
+  },
+  "power_balance_ratio_note": "Relative change of an already tiny balance error is ill-conditioned near zero; use its absolute error or error normalized by physical power",
+  "scalar_comparisons": {
+    "contact_power_W": {
+      "absolute_difference": 1.2534079638426673e-18,
+      "baseline": -5.140388398962542e-10,
+      "candidate": -5.140388386428462e-10,
+      "relative_difference_to_baseline": 2.438352642955221e-09,
+      "relative_difference_to_larger_response": 2.438352642955221e-09,
+      "signed_difference": 1.2534079638426673e-18
+    },
+    "eta_Pa_s": {
+      "absolute_difference": 2.3559652145843657e-10,
+      "baseline": 0.04182921408916907,
+      "candidate": 0.04182921385357255,
+      "relative_difference_to_baseline": 5.6323439631499094e-09,
+      "relative_difference_to_larger_response": 5.6323439631499094e-09,
+      "signed_difference": -2.3559652145843657e-10
+    },
+    "eta_relative": {
+      "absolute_difference": 2.355965200706578e-08,
+      "baseline": 4.182921408916907,
+      "candidate": 4.182921385357255,
+      "relative_difference_to_baseline": 5.632343929972649e-09,
+      "relative_difference_to_larger_response": 5.632343929972649e-09,
+      "signed_difference": -2.355965200706578e-08
+    },
+    "hydro_dissipation_W": {
+      "absolute_difference": 1.6568171243447253e-18,
+      "baseline": 5.15270811942642e-10,
+      "candidate": 5.152708102858248e-10,
+      "relative_difference_to_baseline": 3.2154298010754703e-09,
+      "relative_difference_to_larger_response": 3.2154298010754703e-09,
+      "signed_difference": -1.6568171243447253e-18
+    },
+    "power_balance_error_W": {
+      "absolute_difference": 3.964702525360804e-19,
+      "baseline": 6.869734987252895e-22,
+      "candidate": 3.971572260348057e-19,
+      "relative_difference_to_baseline": 577.1259783263095,
+      "relative_difference_to_larger_response": 0.9982702731973834,
+      "signed_difference": 3.964702525360804e-19
+    },
+    "sigma_contact_Pa": {
+      "absolute_difference": 9.941431222681985e-08,
+      "baseline": -0.33474954407390123,
+      "candidate": -0.33474964348821346,
+      "relative_difference_to_baseline": 2.9698117290003706e-07,
+      "relative_difference_to_larger_response": 2.9698108470224624e-07,
+      "signed_difference": -9.941431222681985e-08
+    },
+    "sigma_hydro_Pa": {
+      "absolute_difference": 7.585466033077637e-08,
+      "baseline": 3.517670952990808,
+      "candidate": 3.5176710288454682,
+      "relative_difference_to_baseline": 2.1563887397223132e-08,
+      "relative_difference_to_larger_response": 2.1563886932221903e-08,
+      "signed_difference": 7.585466033077637e-08
+    },
+    "sigma_solvent_Pa": {
+      "absolute_difference": 0.0,
+      "baseline": 1.0,
+      "candidate": 1.0,
+      "relative_difference_to_baseline": 0.0,
+      "relative_difference_to_larger_response": 0.0,
+      "signed_difference": 0.0
+    },
+    "sigma_xz_Pa": {
+      "absolute_difference": 2.355965200706578e-08,
+      "baseline": 4.182921408916907,
+      "candidate": 4.182921385357255,
+      "relative_difference_to_baseline": 5.632343929972649e-09,
+      "relative_difference_to_larger_response": 5.632343929972649e-09,
+      "signed_difference": -2.355965200706578e-08
+    },
+    "stress_power_W": {
+      "absolute_difference": 6.93889039646756e-21,
+      "baseline": 1.2319720470747047e-12,
+      "candidate": 1.2319720401358143e-12,
+      "relative_difference_to_baseline": 5.632344023505915e-09,
+      "relative_difference_to_larger_response": 5.632344023505915e-09,
+      "signed_difference": -6.93889039646756e-21
+    }
+  },
+  "scope": "Same-state step-0 numerical response comparison; configured solver tolerances are context, not an error bound on observables",
+  "status": "comparison_available",
+  "steady_state_claim": false,
+  "step": 0,
+  "vector_comparisons": {
+    "angular_momentum": {
+      "baseline_l2": 2.7208188675552363e-23,
+      "candidate_l2": 2.720818885517656e-23,
+      "difference_l2": 8.91792505616979e-30,
+      "fields": [
+        "c_shape[8]",
+        "c_shape[9]",
+        "c_shape[10]"
+      ],
+      "maximum_absolute_component_difference": 2.9730239091059833e-30,
+      "maximum_absolute_component_location": {
+        "atom_id": 275,
+        "field": "c_shape[8]"
+      },
+      "maximum_per_particle_vector_difference": 3.3001092453006526e-30,
+      "relative_l2_to_baseline": 3.2776621635908084e-07,
+      "relative_l2_to_larger_response": 3.277662141952197e-07,
+      "units": "kg m^2/s",
+      "zero_baseline": false
+    },
+    "contact_force": {
+      "baseline_l2": 4.001863491781497e-08,
+      "candidate_l2": 4.001863492114358e-08,
+      "difference_l2": 1.5093573800464913e-14,
+      "fields": [
+        "f_hydro[12]",
+        "f_hydro[13]",
+        "f_hydro[14]"
+      ],
+      "maximum_absolute_component_difference": 7.848029409146792e-15,
+      "maximum_absolute_component_location": {
+        "atom_id": 107,
+        "field": "f_hydro[12]"
+      },
+      "maximum_per_particle_vector_difference": 1.0274374491779373e-14,
+      "relative_l2_to_baseline": 3.771636346782472e-07,
+      "relative_l2_to_larger_response": 3.7716363464687607e-07,
+      "units": "N",
+      "zero_baseline": false
+    },
+    "contact_torque": {
+      "baseline_l2": 5.0384387922389884e-14,
+      "candidate_l2": 5.038438829267378e-14,
+      "difference_l2": 1.1138609923260891e-20,
+      "fields": [
+        "f_hydro[15]",
+        "f_hydro[16]",
+        "f_hydro[17]"
+      ],
+      "maximum_absolute_component_difference": 7.702663587854592e-21,
+      "maximum_absolute_component_location": {
+        "atom_id": 461,
+        "field": "f_hydro[17]"
+      },
+      "maximum_per_particle_vector_difference": 7.981574106627446e-21,
+      "relative_l2_to_baseline": 2.2107264536821138e-07,
+      "relative_l2_to_larger_response": 2.210726437435089e-07,
+      "units": "N m",
+      "zero_baseline": false
+    },
+    "hydrodynamic_force_on_particle": {
+      "baseline_l2": 4.0018634916885655e-08,
+      "candidate_l2": 4.00186350847443e-08,
+      "difference_l2": 4.484683497994653e-15,
+      "fields": [
+        "f_hydro[1]",
+        "f_hydro[2]",
+        "f_hydro[3]"
+      ],
+      "maximum_absolute_component_difference": 2.057211273449176e-15,
+      "maximum_absolute_component_location": {
+        "atom_id": 111,
+        "field": "f_hydro[1]"
+      },
+      "maximum_per_particle_vector_difference": 2.3521819367789e-15,
+      "relative_l2_to_baseline": 1.1206487945700427e-07,
+      "relative_l2_to_larger_response": 1.1206487898694679e-07,
+      "units": "N",
+      "zero_baseline": false
+    },
+    "hydrodynamic_stresslet_on_fluid_STF5": {
+      "baseline_l2": 4.238559427955193e-14,
+      "candidate_l2": 4.238559412082229e-14,
+      "difference_l2": 2.8818860568616198e-21,
+      "fields": [
+        "f_hydro[7]",
+        "f_hydro[8]",
+        "f_hydro[9]",
+        "f_hydro[10]",
+        "f_hydro[11]"
+      ],
+      "maximum_absolute_component_difference": 7.897196258977141e-22,
+      "maximum_absolute_component_location": {
+        "atom_id": 111,
+        "field": "f_hydro[10]"
+      },
+      "maximum_per_particle_vector_difference": 1.0697507110137775e-21,
+      "relative_l2_to_baseline": 6.799211160882384e-08,
+      "relative_l2_to_larger_response": 6.799211160882384e-08,
+      "units": "N m",
+      "zero_baseline": false
+    },
+    "hydrodynamic_torque_on_particle": {
+      "baseline_l2": 5.0384387923389036e-14,
+      "candidate_l2": 5.038438780723123e-14,
+      "difference_l2": 2.552696172022084e-21,
+      "fields": [
+        "f_hydro[4]",
+        "f_hydro[5]",
+        "f_hydro[6]"
+      ],
+      "maximum_absolute_component_difference": 9.494845183992732e-22,
+      "maximum_absolute_component_location": {
+        "atom_id": 111,
+        "field": "f_hydro[5]"
+      },
+      "maximum_per_particle_vector_difference": 1.0657281977816646e-21,
+      "relative_l2_to_baseline": 5.0664427558463834e-08,
+      "relative_l2_to_larger_response": 5.0664427558463834e-08,
+      "units": "N m",
+      "zero_baseline": false
+    },
+    "translational_velocity": {
+      "baseline_l2": 0.028580066214549237,
+      "candidate_l2": 0.028580066252422546,
+      "difference_l2": 5.23883003216769e-09,
+      "fields": [
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "maximum_absolute_component_difference": 1.177668593804797e-09,
+      "maximum_absolute_component_location": {
+        "atom_id": 334,
+        "field": "vz"
+      },
+      "maximum_per_particle_vector_difference": 1.4766173127989673e-09,
+      "relative_l2_to_baseline": 1.833036352274356e-07,
+      "relative_l2_to_larger_response": 1.8330363498452803e-07,
+      "units": "m/s",
+      "zero_baseline": false
+    }
+  }
+}

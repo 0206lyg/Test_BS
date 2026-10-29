@@ -1,0 +1,34 @@
+{
+  "scope": "AR5 N500 phi0.24 kn3 kt=kr2.4 mu=mu_roll10, fixed initial positions; transient comparison to gamma0.05 only. Production timestep is not reduced.",
+  "records": [
+    {
+      "case": "ar5_imex_k3_dt2p5us_gamma1",
+      "dt_s": 2.5e-06,
+      "strain": 0.05,
+      "eta_relative_at_strain": 7.631299515808777,
+      "max_endpoint_overlap_fraction_to_strain": 0.004247273852805433,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.020720060453516573,
+      "mean_relative_viscosity_gamma0p01_to0p05": 5.5200747607153735
+    },
+    {
+      "case": "ar5_imex_k3_dt1p25us_gamma0p05",
+      "dt_s": 1.25e-06,
+      "strain": 0.05,
+      "eta_relative_at_strain": 7.634387834769312,
+      "max_endpoint_overlap_fraction_to_strain": 0.00424715838369144,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.010448231306692955,
+      "mean_relative_viscosity_gamma0p01_to0p05": 5.5189645134676395
+    },
+    {
+      "case": "ar5_imex_k3_dt0p625us_gamma0p05",
+      "dt_s": 6.25e-07,
+      "strain": 0.05,
+      "eta_relative_at_strain": 7.6394706644505215,
+      "max_endpoint_overlap_fraction_to_strain": 0.004250435695362792,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.005225746276292054,
+      "mean_relative_viscosity_gamma0p01_to0p05": 5.520470477826178
+    }
+  ],
+  "coarse_to_quarter_relative_viscosity_difference": 0.001069596180239052,
+  "asymptotic_order_in_many_particle_case_established": false
+}

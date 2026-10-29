@@ -1,0 +1,1605 @@
+{
+  "schema": "reference17_accuracy_assessment_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Sampled empirical independent-reference screening; untested ARs, gaps and angles are not certified.",
+  "screening_tolerances": {
+    "model": 0.05,
+    "refinement": 0.01,
+    "boundary": 0.01,
+    "linear": 1e-08,
+    "reciprocity": 0.001,
+    "surface": 0.001
+  },
+  "boundary_residual_is_force_error_bound": false,
+  "two_resolution_change_is_continuum_error_bound": false,
+  "strict_reference_qualification_assessed": false,
+  "strict_previous_three_resolution_and_0_1_percent_gates_modified": false,
+  "groups": [
+    {
+      "id": "AR2",
+      "physical_accuracy_qualified": false,
+      "cases": [
+        {
+          "id": "AR2_v00_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v00_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v00_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v00_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v00_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v01_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v01_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v01_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v01_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v01_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v02_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v02_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v02_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v02_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v02_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v03_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v03_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v03_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v03_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v03_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v04_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v04_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v04_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR2_v04_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'"
+          ]
+        }
+      ],
+      "context_error": "[Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json'",
+      "counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      }
+    },
+    {
+      "id": "AR5",
+      "physical_accuracy_qualified": false,
+      "cases": [
+        {
+          "id": "AR5_v00_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v00_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v00_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v00_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v00_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v01_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v01_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v01_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v01_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v01_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v02_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v02_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v02_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v02_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v02_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v03_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v03_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v03_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v03_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v03_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v04_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v04_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v04_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR5_v04_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'"
+          ]
+        }
+      ],
+      "context_error": "[Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json'",
+      "counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      }
+    },
+    {
+      "id": "AR10",
+      "physical_accuracy_qualified": false,
+      "cases": [
+        {
+          "id": "AR10_v00_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v00_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v00_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v00_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v00_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v01_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v01_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v01_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v01_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v01_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v02_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v02_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v02_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v02_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v02_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v03_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v03_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v03_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v03_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v03_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v04_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v04_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v04_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR10_v04_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'"
+          ]
+        }
+      ],
+      "context_error": "[Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json'",
+      "counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      }
+    },
+    {
+      "id": "AR20",
+      "physical_accuracy_qualified": false,
+      "cases": [
+        {
+          "id": "AR20_v00_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v00_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v00_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v00_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v00_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v01_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v01_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v01_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v01_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v01_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v02_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v02_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v02_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v02_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v02_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v03_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v03_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v03_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v03_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v03_h04",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v04_h00",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v04_h01",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v04_h02",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        },
+        {
+          "id": "AR20_v04_h03",
+          "status": "UNRESOLVED",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "physical_accuracy_qualified": false,
+          "reasons": [
+            "campaign_context_unavailable: [Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'"
+          ]
+        }
+      ],
+      "context_error": "[Errno 2] No such file or directory: '/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json'",
+      "counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNRESOLVED": 24
+      }
+    }
+  ],
+  "assessor_sha256": "f5335065ec4d96f6e00c62263bc90898d2d703279099b20c5d7ea1ca0c3ff4f3",
+  "input_manifest_sha256": "58fe6e9b0911d896bc4227080217847b09a408ced067cdd2207d8617d58759f1"
+}

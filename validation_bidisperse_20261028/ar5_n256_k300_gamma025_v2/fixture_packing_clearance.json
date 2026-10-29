@@ -1,0 +1,12 @@
+{
+  "certified": true,
+  "target_gap_m": 0,
+  "minimum_surface_gap_m": 1.8183129569765129e-11,
+  "max_clearance_deficit_m": 0,
+  "checked_pair_images": 1084,
+  "nominal_volume_fraction": 0.23999999999999871,
+  "particle_shape": "spheroid",
+  "maximum_gap_bound_width_m": 0,
+  "distance_tolerance_not_met": 0,
+  "method": "ellipsoid_support_gap_all_periodic_images"
+}

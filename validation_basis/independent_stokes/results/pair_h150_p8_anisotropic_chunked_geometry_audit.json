@@ -1,0 +1,213 @@
+{
+  "schema": "recorded_ar20_saved_boundary_geometry_audit_v1",
+  "physical_accuracy_qualified": false,
+  "contains_new_stokes_solve": false,
+  "excludes_operator_or_self_quadrature_error": false,
+  "scope": "Geometry interpolation and density-tail indicators at saved/reconstructed off-grid sites; no kernel evaluation",
+  "report": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json",
+  "report_sha256": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a",
+  "sample_velocity_file": null,
+  "sample_velocity_sha256": null,
+  "patches": [
+    {
+      "patch": 1,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.007532226462396109,
+      "max_position_error_c": 8.000169988356136e-06,
+      "max_normal_error": 1.9195578214102663e-06,
+      "max_interpolated_analytic_derivative_relative_error": 3.722993326853915e-06,
+      "max_position_derivative_consistency_relative_error": 2.8278172938960762e-05,
+      "density_directional_tail_indicators": [
+        0.009144949247173517,
+        0.0005191384699374061
+      ],
+      "sampled_worst_mode": 8,
+      "worst_uv": [
+        0.5210573010525773,
+        0.7802020268556786
+      ],
+      "worst_point_nm": [
+        3206.5918952040547,
+        -697.665878280701,
+        -173.0750688730265
+      ],
+      "opposite_body_projected_ellipse_level": 1.1284541054125594,
+      "alternative_mesh_resolution_indicators": [
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p6_anisotropic_proposal.json",
+          "order": 6,
+          "patch": 2,
+          "cube_coordinate_spans": [
+            0.0,
+            0.5,
+            0.5
+          ],
+          "local_tangent_panel_scales_nm": [
+            1416.6247067145841,
+            106.29976692976699
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            202.37495810208344,
+            15.185680989966713
+          ]
+        }
+      ]
+    },
+    {
+      "patch": 84,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.00510914866834883,
+      "max_position_error_c": 7.03630578652729e-06,
+      "max_normal_error": 2.407045885793693e-06,
+      "max_interpolated_analytic_derivative_relative_error": 4.212832595667009e-06,
+      "max_position_derivative_consistency_relative_error": 1.911210108005694e-05,
+      "density_directional_tail_indicators": [
+        0.008597933949401273,
+        0.000484799290296896
+      ]
+    },
+    {
+      "patch": 66,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.004107744017486802,
+      "max_position_error_c": 5.2298563837075135e-06,
+      "max_normal_error": 2.3067035901704746e-07,
+      "max_interpolated_analytic_derivative_relative_error": 4.9404659372329704e-06,
+      "max_position_derivative_consistency_relative_error": 7.574082230700361e-06,
+      "density_directional_tail_indicators": [
+        0.0011791163343437946,
+        0.0015153268082981812
+      ]
+    },
+    {
+      "patch": 94,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.003193659239825133,
+      "max_position_error_c": 7.1882986600962815e-06,
+      "max_normal_error": 1.614367075917396e-06,
+      "max_interpolated_analytic_derivative_relative_error": 3.4651700127615452e-06,
+      "max_position_derivative_consistency_relative_error": 1.3622145655603445e-05,
+      "density_directional_tail_indicators": [
+        0.008037604067093558,
+        0.0005089505319922531
+      ]
+    },
+    {
+      "patch": 120,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.002834856059586395,
+      "max_position_error_c": 3.322177776358734e-08,
+      "max_normal_error": 8.951217281747139e-10,
+      "max_interpolated_analytic_derivative_relative_error": 1.4905578564253707e-08,
+      "max_position_derivative_consistency_relative_error": 9.73600444867753e-08,
+      "density_directional_tail_indicators": [
+        3.523730853811241e-05,
+        0.0017228003756879834
+      ]
+    },
+    {
+      "patch": 2,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.002765881692868445,
+      "max_position_error_c": 3.064429956746642e-06,
+      "max_normal_error": 1.3496520310550718e-07,
+      "max_interpolated_analytic_derivative_relative_error": 1.3910653913938737e-06,
+      "max_position_derivative_consistency_relative_error": 9.912679022576506e-06,
+      "density_directional_tail_indicators": [
+        0.006432138338072569,
+        5.096652721809543e-05
+      ]
+    },
+    {
+      "patch": 42,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.0023149414616764554,
+      "max_position_error_c": 1.446320051336839e-08,
+      "max_normal_error": 3.899807260002885e-10,
+      "max_interpolated_analytic_derivative_relative_error": 8.917956444910996e-09,
+      "max_position_derivative_consistency_relative_error": 5.202990553822215e-08,
+      "density_directional_tail_indicators": [
+        6.580879796684873e-05,
+        0.00116751907702249
+      ]
+    },
+    {
+      "patch": 26,
+      "body": 0,
+      "check_site_count": 10,
+      "recorded_patch_boundary_error": 0.002299961231907888,
+      "max_position_error_c": 8.364783340401469e-06,
+      "max_normal_error": 1.9167511030045948e-07,
+      "max_interpolated_analytic_derivative_relative_error": 4.99979352712477e-06,
+      "max_position_derivative_consistency_relative_error": 1.6710156931732062e-05,
+      "density_directional_tail_indicators": [
+        0.0011722715920501274,
+        0.0013458702137035268
+      ]
+    },
+    {
+      "patch": 0,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.0022570539868521883,
+      "max_position_error_c": 3.064429956391223e-06,
+      "max_normal_error": 1.349652030365889e-07,
+      "max_interpolated_analytic_derivative_relative_error": 1.3910653916435899e-06,
+      "max_position_derivative_consistency_relative_error": 9.91267902172119e-06,
+      "density_directional_tail_indicators": [
+        0.0029392391741938197,
+        1.553760643514682e-05
+      ]
+    },
+    {
+      "patch": 32,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.0021226820091327183,
+      "max_position_error_c": 2.1430483225187766e-06,
+      "max_normal_error": 1.1944036944375842e-07,
+      "max_interpolated_analytic_derivative_relative_error": 1.119435768504628e-06,
+      "max_position_derivative_consistency_relative_error": 3.4164776921629465e-06,
+      "density_directional_tail_indicators": [
+        0.006340027395416624,
+        7.36349644207444e-05
+      ]
+    },
+    {
+      "patch": 102,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.0019044557544462685,
+      "max_position_error_c": 5.904905262903312e-06,
+      "max_normal_error": 2.2333585744914668e-07,
+      "max_interpolated_analytic_derivative_relative_error": 5.847565480092969e-06,
+      "max_position_derivative_consistency_relative_error": 6.798000926390143e-06,
+      "density_directional_tail_indicators": [
+        0.0009314986025188167,
+        0.0007421590362764101
+      ]
+    },
+    {
+      "patch": 63,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.0018783751685810598,
+      "max_position_error_c": 1.5432463219098946e-08,
+      "max_normal_error": 4.1756530109897126e-10,
+      "max_interpolated_analytic_derivative_relative_error": 8.601375676563795e-09,
+      "max_position_derivative_consistency_relative_error": 7.961031572517761e-08,
+      "density_directional_tail_indicators": [
+        7.246045914682823e-05,
+        0.0012540406718761492
+      ]
+    }
+  ],
+  "source_sha256": "437d1dbc37cc96de13282e8e2548f84f87259637fcd4773be1cb5f6936f0e215"
+}

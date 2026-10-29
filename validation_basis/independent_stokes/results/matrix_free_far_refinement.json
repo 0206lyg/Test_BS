@@ -1,0 +1,22 @@
+[
+  {
+    "increment": 0,
+    "nodes": 1396,
+    "relative": 0.0006258209068203791
+  },
+  {
+    "increment": 16,
+    "nodes": 8564,
+    "relative": 1.8576040383326325e-05
+  },
+  {
+    "increment": 32,
+    "nodes": 21876,
+    "relative": 1.2012512376562814e-06
+  },
+  {
+    "increment": 48,
+    "nodes": 41332,
+    "relative": 9.641701705791791e-08
+  }
+]

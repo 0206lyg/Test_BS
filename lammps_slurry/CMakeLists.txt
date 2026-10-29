@@ -20,6 +20,79 @@ if(SLURRY_ENABLE_LU)
   target_compile_definitions(slurry_solver_options INTERFACE SLURRY_HAVE_EIGEN=1 EIGEN_DONT_PARALLELIZE)
 endif()
 
+# Production bridge backends. OFF is an explicit developer/reference build;
+# normal build.py always requests both optimized backends.
+option(SLURRY_USE_FFTW "Use FFTW for the periodic bridge mobility" ON)
+option(SLURRY_USE_MKL_PARDISO "Use threaded oneMKL PARDISO for bridge preconditioning" ON)
+set(SLURRY_FFTW_ROOT "" CACHE PATH "FFTW installation prefix (optional)")
+set(SLURRY_MKL_ROOT "" CACHE PATH "oneMKL installation prefix (optional)")
+add_library(slurry_bridge_numerics INTERFACE)
+target_link_libraries(slurry_bridge_numerics INTERFACE slurry_solver_options)
+set(SLURRY_FFT_BACKEND "builtin-reference")
+set(SLURRY_SPARSE_BACKEND "Eigen-reference")
+if(SLURRY_ENABLE_LU)
+  find_package(OpenMP REQUIRED COMPONENTS CXX)
+  find_package(Threads REQUIRED)
+  target_link_libraries(slurry_bridge_numerics INTERFACE OpenMP::OpenMP_CXX)
+  if(SLURRY_USE_FFTW)
+    find_path(SLURRY_FFTW_INCLUDE_DIR fftw3.h
+      HINTS "${SLURRY_FFTW_ROOT}" "$ENV{FFTW_ROOT}" "$ENV{RCAC_FFTW_ROOT}"
+      PATH_SUFFIXES include)
+    find_library(SLURRY_FFTW_LIBRARY NAMES fftw3
+      HINTS "${SLURRY_FFTW_ROOT}" "$ENV{FFTW_ROOT}" "$ENV{RCAC_FFTW_ROOT}"
+      PATH_SUFFIXES lib lib64 lib/x86_64-linux-gnu)
+    find_library(SLURRY_FFTW_THREADS_LIBRARY NAMES fftw3_omp fftw3_threads
+      HINTS "${SLURRY_FFTW_ROOT}" "$ENV{FFTW_ROOT}" "$ENV{RCAC_FFTW_ROOT}"
+      PATH_SUFFIXES lib lib64 lib/x86_64-linux-gnu)
+    if(NOT SLURRY_FFTW_INCLUDE_DIR OR NOT SLURRY_FFTW_LIBRARY OR NOT SLURRY_FFTW_THREADS_LIBRARY)
+      message(FATAL_ERROR "Production bridge requires FFTW headers, fftw3 and fftw3_omp (or fftw3_threads). Load the FFTW module or set SLURRY_FFTW_ROOT. No slow fallback was selected.")
+    endif()
+    target_compile_definitions(slurry_bridge_numerics INTERFACE SLURRY_HAVE_FFTW=1)
+    target_include_directories(slurry_bridge_numerics SYSTEM INTERFACE "${SLURRY_FFTW_INCLUDE_DIR}")
+    target_link_libraries(slurry_bridge_numerics INTERFACE
+      "${SLURRY_FFTW_THREADS_LIBRARY}" "${SLURRY_FFTW_LIBRARY}" Threads::Threads)
+    set(SLURRY_FFT_BACKEND "FFTW")
+  endif()
+  if(SLURRY_USE_MKL_PARDISO)
+    # Static MKL includes CPU-dispatch kernels in the plugin itself. Dynamic
+    # mkl_rt dlopens kernels invisible to ldd, defeating a private runtime copy.
+    # GNU threading shares libgomp with the plugin and FFTW OpenMP backend.
+    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      message(FATAL_ERROR "This production configuration uses MKL GNU threading; configure with the GCC compiler (Negishi: gcc/12.2.0).")
+    endif()
+    find_path(SLURRY_MKL_INCLUDE_DIR mkl.h
+      HINTS "${SLURRY_MKL_ROOT}" "$ENV{MKLROOT}" "$ENV{RCAC_INTEL_MKL_ROOT}"
+      PATH_SUFFIXES include mkl/include)
+    set(_slurry_saved_suffixes "${CMAKE_FIND_LIBRARY_SUFFIXES}")
+    set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
+    foreach(_part intel_lp64 gnu_thread core)
+      find_library(SLURRY_MKL_${_part}_LIBRARY NAMES mkl_${_part}
+        HINTS "${SLURRY_MKL_ROOT}" "$ENV{MKLROOT}" "$ENV{RCAC_INTEL_MKL_ROOT}"
+        PATH_SUFFIXES lib lib/intel64 lib/intel64_lin lib64 mkl/lib/intel64)
+    endforeach()
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${_slurry_saved_suffixes}")
+    if(NOT SLURRY_MKL_INCLUDE_DIR OR NOT SLURRY_MKL_intel_lp64_LIBRARY OR
+       NOT SLURRY_MKL_gnu_thread_LIBRARY OR NOT SLURRY_MKL_core_LIBRARY)
+      message(FATAL_ERROR "Production bridge requires static oneMKL LP64/GNU-thread/core libraries and headers. Load intel-mkl or set SLURRY_MKL_ROOT/MKLROOT to a full installation. No sequential fallback was selected.")
+    endif()
+    # Keep GNU OpenMP after the static MKL archives even when --as-needed
+    # drops CMake's earlier libgomp entry (e.g. a PARDISO-only test program).
+    # The GCC driver places its OpenMP runtime libraries at the end of linking.
+    target_link_options(slurry_bridge_numerics INTERFACE -fopenmp)
+    target_compile_definitions(slurry_bridge_numerics INTERFACE SLURRY_HAVE_MKL_PARDISO=1)
+    target_include_directories(slurry_bridge_numerics SYSTEM INTERFACE "${SLURRY_MKL_INCLUDE_DIR}")
+    target_link_libraries(slurry_bridge_numerics INTERFACE
+      "-Wl,--start-group" "${SLURRY_MKL_intel_lp64_LIBRARY}"
+      "${SLURRY_MKL_gnu_thread_LIBRARY}" "${SLURRY_MKL_core_LIBRARY}"
+      "-Wl,--end-group" Threads::Threads "${CMAKE_DL_LIBS}" m)
+    set(SLURRY_SPARSE_BACKEND "MKL-PARDISO-static-GNU-LP64")
+  endif()
+endif()
+message(STATUS "Slurry bridge FFT backend: ${SLURRY_FFT_BACKEND}")
+message(STATUS "Slurry bridge sparse backend: ${SLURRY_SPARSE_BACKEND}")
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/slurry-numerics.json"
+  "{\n  \"fft\": \"${SLURRY_FFT_BACKEND}\",\n  \"sparse\": \"${SLURRY_SPARSE_BACKEND}\"\n}\n")
+
 find_package(LAMMPS CONFIG REQUIRED)
 set(LAMMPS_SOURCE_DIR "" CACHE PATH "The pristine LAMMPS source directory")
 if(NOT EXISTS "${LAMMPS_SOURCE_DIR}/src/lammpsplugin.h")
@@ -37,7 +110,10 @@ add_library(slurry MODULE
   src/pair_slurry_spheroid.cpp
   src/fix_slurry_drag.cpp
   src/fix_slurry_implicit.cpp)
-target_link_libraries(slurry PRIVATE LAMMPS::lammps slurry_solver_options)
+if(SLURRY_ENABLE_LU)
+  target_sources(slurry PRIVATE src/fix_slurry_bridge.cpp)
+endif()
+target_link_libraries(slurry PRIVATE LAMMPS::lammps slurry_bridge_numerics)
 target_include_directories(slurry PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/src"
   "${LAMMPS_SOURCE_DIR}/src"
@@ -57,6 +133,10 @@ install(TARGETS slurry LIBRARY DESTINATION lib/lammps/plugins)
 # Geometry-only preparation. This executable does not link to MPI/LAMMPS and
 # its artificial relaxation steps have no physical time interpretation.
 add_executable(slurry_pack src/pack_spheroids.cpp)
+target_include_directories(slurry_pack SYSTEM PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/vendor/eigen3")
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(slurry_pack PRIVATE OpenMP::OpenMP_CXX)
+endif()
 install(TARGETS slurry_pack RUNTIME DESTINATION bin)
 
 # Offline generation only. Runtime finite_gap_fast loads the resulting table;
@@ -193,3 +273,36 @@ if(BUILD_TESTING)
       "${CMAKE_CURRENT_SOURCE_DIR}/tests/data/dense_friction_stall.dat" ilu)
   endif()
 endif()
+
+# Compact bridge path: no offline basis or resistance-table generation.
+if(SLURRY_ENABLE_LU)
+  find_package(OpenMP QUIET COMPONENTS CXX)
+  if(OpenMP_CXX_FOUND)
+    target_link_libraries(slurry PRIVATE OpenMP::OpenMP_CXX)
+  endif()
+  if(BUILD_TESTING)
+    foreach(BRIDGE_TEST compact_bridge bridge_images bridge_solver bridge_globalization bridge_linear bridge_relaxation bridge_step bridge_flake flake_diagnostics cylinder_geometry cylinder_film cylinder_pair periodic_mobility periodic_mesh contact_condensation contact_rotation rough_surface bridge_workspace nearfield_hydro nearfield_solver nearfield_implicit nearfield_imex nearfield_step ellipsoid_gap_robust)
+      if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_${BRIDGE_TEST}.cpp")
+        add_executable(slurry_${BRIDGE_TEST}_test tests/test_${BRIDGE_TEST}.cpp)
+        target_include_directories(slurry_${BRIDGE_TEST}_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+        target_link_libraries(slurry_${BRIDGE_TEST}_test PRIVATE slurry_bridge_numerics)
+        if(OpenMP_CXX_FOUND)
+          target_link_libraries(slurry_${BRIDGE_TEST}_test PRIVATE OpenMP::OpenMP_CXX)
+        endif()
+        add_test(NAME slurry_${BRIDGE_TEST} COMMAND slurry_${BRIDGE_TEST}_test)
+      endif()
+    endforeach()
+  endif()
+endif()
+
+if(BUILD_TESTING)
+  find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter)
+  add_test(NAME slurry_flake_layering COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_diagnose_flake.py")
+  add_test(NAME slurry_bridge_tools COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_bridge_tools.py")
+  add_test(NAME slurry_bundle_guard COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_bundle_guard.py")
+  set_tests_properties(slurry_bridge_tools PROPERTIES ENVIRONMENT "SLURRY_TEST_PACKER=$<TARGET_FILE:slurry_pack>")
+  add_test(NAME slurry_packing_clearance COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_packing_clearance.py")
+  set_tests_properties(slurry_packing_clearance PROPERTIES ENVIRONMENT "SLURRY_TEST_PACKER=$<TARGET_FILE:slurry_pack>")
+  add_test(NAME slurry_runtime_link_paths COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_runtime_link_paths.py")
+endif()
+

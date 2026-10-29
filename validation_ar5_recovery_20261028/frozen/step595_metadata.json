@@ -1,0 +1,42 @@
+{
+  "physical_case": {
+    "particles": 1000,
+    "aspect_ratio": 5,
+    "volume_fraction": 0.2,
+    "normal_stiffness_N_per_m": 300,
+    "sliding_and_rolling_stiffness_N_per_m": 240,
+    "dt_s": 2.5e-06,
+    "shear_rate_per_s": 100
+  },
+  "capture": {
+    "local_step": 595,
+    "strain": 0.14875,
+    "compiler_optimization": "O3",
+    "phase": "frozen-cap IMEX inner equation at 40-update failure",
+    "exact_local_production_trajectory_match": true,
+    "snapshot_tolerances_are_already_inner": true,
+    "caps_must_be_loaded_separately": true,
+    "note": "This instrumented trajectory reproduced the original local binary bit-for-bit to its same step595 failure. The supplied HPC binary failed at723."
+  },
+  "hashes": {
+    "inner_snapshot_raw_sha256": "aaf4f79537553d79f9b53bba56631d94da590cd6a485477e5d23ef0a74765e06",
+    "inner_snapshot_gzip_sha256": "2f36a3ecd435d69abc1eb72a76f9015cf18d279c2bf4e1a47877328524b19099",
+    "caps_sha256": "050d3767be9e221a221d21f1a07b484a9967933f9086f745b41fd6d410e5a255",
+    "original_production_imex_header_sha256": "78d986b1a2ff3d30ba14c1dd400c223139150349ef2474f4b506bf5c1e73825b",
+    "portable_replay_binary_sha256": "e87e929c50fa279620bb7c4b3bd8d6943dc333bd3bd41a2a078558e418391f36",
+    "portable_replay_source_sha256": "2ac1383ff3e1cad56b90d63dc5c932d60b39f9eaeaa5791b4701c3855a0f6fb8",
+    "portable_replay_log_sha256": "f6aad4528d16b3a7249fd6a95f896ef9d7439ed87fa235e94d50e0e496204575",
+    "production_imex_header_sha256": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "uploaded_particles_data_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "uploaded_in_bridge_sha256": "897a382316c1d2b05a8ab916479918ccdee62594322a7da8a385ce7b1870f68e",
+    "uploaded_parameters_json_sha256": "1ef01d68e517ce8cde8cce1a5db322bf9ac1978812ef332bd9c8bc08ec6e7090",
+    "capture_plugin_sha256": "6189240ddbad9c2183229838a4405157adeb7660c96c91ab219e0d8beee81cea",
+    "capture_instrumented_imex_header_sha256": "3a6f5bfc0bab62cdc8872ee54a4a99bd4b523d6f8e22a94e2b019012a4f609ff",
+    "snapshot_helper_sha256": "2ba7eecf300593e16ecae3d8d6c4a64a1b466dc8b651f5945d8dffe79fcac41f"
+  },
+  "portable_replay_passed": true,
+  "strict_hybrid_newton": 19,
+  "original_extended_newton": 41,
+  "original_tight_newton": 42,
+  "relative_velocity_difference_from_1000x_tighter_original_reference": 6.940148426999074e-10
+}

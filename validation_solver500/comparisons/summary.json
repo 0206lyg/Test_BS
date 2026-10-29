@@ -1,0 +1,126 @@
+[
+  {
+    "acceptance_decision": null,
+    "acceptance_threshold": null,
+    "ar": 2,
+    "baseline_tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 0.0060624354767734945,
+      "linear_iterations": 970.0,
+      "mobility_residual": 0.00022882094066950756,
+      "newton_iterations": 140.0,
+      "profile_solve_s": 246.09186911582947,
+      "profile_total_s": 248.8876678943634,
+      "solver_relative_residual": 2.6393016778035703e-08
+    },
+    "candidate_tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 0.01077067967940907,
+      "linear_iterations": 61.0,
+      "mobility_residual": 0.00014758877841367595,
+      "newton_iterations": 9.0,
+      "profile_solve_s": 16.283461093902588,
+      "profile_total_s": 18.668468952178955,
+      "solver_relative_residual": 1.6617948732478346e-08
+    },
+    "exact_fixed_data_box_geometry_and_physics_match": true,
+    "power_balance_diagnostics": {
+      "baseline": {
+        "error_W": -9.431926934635898e-22,
+        "physical_power_scale_W": 5.705635374004329e-10,
+        "relative_error_to_physical_power": 1.6530896764993208e-12
+      },
+      "candidate": {
+        "error_W": 1.5592354546624572e-21,
+        "physical_power_scale_W": 5.705635373468284e-10,
+        "relative_error_to_physical_power": 2.7327989831124535e-12
+      }
+    },
+    "power_balance_ratio_note": "Relative change of an already tiny balance error is ill-conditioned near zero; use its absolute error or error normalized by physical power",
+    "relative_l2_to_baseline": {
+      "angular_momentum": 6.437030417765647e-08,
+      "contact_force": 7.804877536081496e-09,
+      "contact_torque": 1.0575728577106825e-08,
+      "hydrodynamic_force_on_particle": 6.9351023907222315e-09,
+      "hydrodynamic_stresslet_on_fluid_STF5": 5.774823194913449e-09,
+      "hydrodynamic_torque_on_particle": 7.777425071211152e-09,
+      "translational_velocity": 5.5803604785920884e-08
+    },
+    "relative_scalar_differences": {
+      "contact_power_W": 8.200062920573697e-11,
+      "eta_Pa_s": 4.237132606609591e-08,
+      "eta_relative": 4.2371326104546697e-08,
+      "hydro_dissipation_W": 9.39501133608002e-11,
+      "power_balance_error_W": 2.6531462398596797,
+      "sigma_contact_Pa": 1.1528498489610453e-08,
+      "sigma_hydro_Pa": 8.775341499474688e-09,
+      "sigma_solvent_Pa": 0.0,
+      "sigma_xz_Pa": 4.2371326104546697e-08,
+      "stress_power_W": 4.237132611042275e-08
+    }
+  },
+  {
+    "acceptance_decision": null,
+    "acceptance_threshold": null,
+    "ar": 10,
+    "baseline_tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 0.020406916406653406,
+      "linear_iterations": 549.0,
+      "mobility_residual": 0.00010474958845192274,
+      "newton_iterations": 78.0,
+      "profile_solve_s": 55.48980116844177,
+      "profile_total_s": 56.045040130615234,
+      "solver_relative_residual": 2.9126594221942074e-08
+    },
+    "candidate_tolerances": {
+      "configured_linear_iteration_limit": 1000,
+      "configured_solver_relative_tolerance": 1e-06,
+      "force_residual": 3.24991857839414,
+      "linear_iterations": 74.0,
+      "mobility_residual": 0.000880778017057985,
+      "newton_iterations": 11.0,
+      "profile_solve_s": 8.127145051956177,
+      "profile_total_s": 8.715766906738281,
+      "solver_relative_residual": 2.8081871180999784e-07
+    },
+    "exact_fixed_data_box_geometry_and_physics_match": true,
+    "power_balance_diagnostics": {
+      "baseline": {
+        "error_W": 6.869734987252895e-22,
+        "physical_power_scale_W": 5.15270811942642e-10,
+        "relative_error_to_physical_power": 1.3332280478595416e-12
+      },
+      "candidate": {
+        "error_W": 3.971572260348057e-19,
+        "physical_power_scale_W": 5.152708102858248e-10,
+        "relative_error_to_physical_power": 7.707737719792422e-10
+      }
+    },
+    "power_balance_ratio_note": "Relative change of an already tiny balance error is ill-conditioned near zero; use its absolute error or error normalized by physical power",
+    "relative_l2_to_baseline": {
+      "angular_momentum": 3.2776621635908084e-07,
+      "contact_force": 3.771636346782472e-07,
+      "contact_torque": 2.2107264536821138e-07,
+      "hydrodynamic_force_on_particle": 1.1206487945700427e-07,
+      "hydrodynamic_stresslet_on_fluid_STF5": 6.799211160882384e-08,
+      "hydrodynamic_torque_on_particle": 5.0664427558463834e-08,
+      "translational_velocity": 1.833036352274356e-07
+    },
+    "relative_scalar_differences": {
+      "contact_power_W": 2.438352642955221e-09,
+      "eta_Pa_s": 5.6323439631499094e-09,
+      "eta_relative": 5.632343929972649e-09,
+      "hydro_dissipation_W": 3.2154298010754703e-09,
+      "power_balance_error_W": 577.1259783263095,
+      "sigma_contact_Pa": 2.9698117290003706e-07,
+      "sigma_hydro_Pa": 2.1563887397223132e-08,
+      "sigma_solvent_Pa": 0.0,
+      "sigma_xz_Pa": 5.632343929972649e-09,
+      "stress_power_W": 5.632344023505915e-09
+    }
+  }
+]

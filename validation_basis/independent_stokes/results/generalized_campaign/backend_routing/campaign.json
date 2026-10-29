@@ -1,0 +1,251 @@
+{
+  "schema": "independent_reference_campaign_v1",
+  "created_utc": "2026-10-19T01:23:54.624678+00:00",
+  "output_dir": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/run",
+  "configuration_sha256": "ce00c02d5dfc8db75d849af8f288fcc529ae6266642b0305b88ad02a625de202",
+  "settings": {
+    "aspect_ratios": [
+      2.0,
+      5.0,
+      10.0,
+      20.0
+    ],
+    "c_nm": 150.0,
+    "floor_nm": 1.0,
+    "anchor_over_c": 1.0,
+    "anchor_policy": "explicit computational trial anchor; not a physical transition",
+    "theta_nodes": [
+      0.0,
+      0.39269908169872403,
+      1.1780972450961722,
+      1.5707963267948966
+    ],
+    "phi_nodes": [
+      -3.141592653589793,
+      -2.356194490192345,
+      -1.5707963267948966,
+      -0.7853981633974483,
+      0.0,
+      0.7853981633974483,
+      1.5707963267948966,
+      2.356194490192345
+    ],
+    "validation_gaps_nm": [
+      1.0,
+      3.499635511580583,
+      12.247448713915889,
+      42.86160644548199,
+      150.0
+    ],
+    "development_boundary_limit": 0.01,
+    "model_tolerance": 0.05,
+    "refinement_tolerance": 0.01,
+    "grid_order": 2,
+    "coarse_order": 2,
+    "fine_order": 2,
+    "surface_level": 0,
+    "rim_levels": 0,
+    "contact_levels": 0,
+    "isolated_order": 2,
+    "isolated_level": 0,
+    "isolated_rim_levels": 0,
+    "maximum_gap_nodes": 1024,
+    "initial_gap_nodes": 129,
+    "interpolation_tolerance": 1e-06,
+    "matched_model": "dissipative-increment",
+    "defaults": {
+      "solver": "dense",
+      "max_memory_gb": 2.0,
+      "quad_tol": 1e-08,
+      "check_points_per_patch": 3,
+      "alpha": 1.0,
+      "beta": 1.0,
+      "lu_panel_columns": 512,
+      "lu_stripe_columns": 256,
+      "max_refinements": 0,
+      "adapt_fraction": 0.2
+    }
+  },
+  "defaults": {
+    "solver": "dense",
+    "max_memory_gb": 2.0,
+    "quad_tol": 1e-08,
+    "check_points_per_patch": 3,
+    "alpha": 1.0,
+    "beta": 1.0,
+    "lu_panel_columns": 512,
+    "lu_stripe_columns": 256,
+    "max_refinements": 0,
+    "adapt_fraction": 0.2
+  },
+  "development_boundary_limit": 0.01,
+  "physical_accuracy_qualified": false,
+  "source_root": "/dev/shm/Test_BS_development_20261019",
+  "task_count": 4,
+  "tasks": [
+    {
+      "task_id": 0,
+      "aspect_ratio": 2.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0,
+      "role": "grid",
+      "case_id": "AR2_g0053",
+      "query_id": "AR2_g0053",
+      "resolution_label": "grid",
+      "output_subdir": "tasks/task_000000",
+      "resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "isolated_resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "max_refinements": 0,
+      "test_only_low_resolution": true
+    },
+    {
+      "task_id": 1,
+      "aspect_ratio": 5.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0,
+      "role": "grid",
+      "case_id": "AR5_g0053",
+      "query_id": "AR5_g0053",
+      "resolution_label": "grid",
+      "output_subdir": "tasks/task_000001",
+      "resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "isolated_resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "max_refinements": 0,
+      "test_only_low_resolution": true
+    },
+    {
+      "task_id": 2,
+      "aspect_ratio": 10.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0,
+      "role": "grid",
+      "case_id": "AR10_g0053",
+      "query_id": "AR10_g0053",
+      "resolution_label": "grid",
+      "output_subdir": "tasks/task_000002",
+      "resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "isolated_resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "max_refinements": 0,
+      "test_only_low_resolution": true
+    },
+    {
+      "task_id": 3,
+      "aspect_ratio": 20.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0,
+      "role": "grid",
+      "case_id": "AR20_g0053",
+      "query_id": "AR20_g0053",
+      "resolution_label": "grid",
+      "output_subdir": "tasks/task_000003",
+      "resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "isolated_resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "max_refinements": 0,
+      "test_only_low_resolution": true
+    }
+  ],
+  "groups": [
+    {
+      "id": "AR2",
+      "aspect_ratio": 2.0,
+      "grid_task_ids": [
+        0
+      ],
+      "cases": []
+    },
+    {
+      "id": "AR5",
+      "aspect_ratio": 5.0,
+      "grid_task_ids": [
+        1
+      ],
+      "cases": []
+    },
+    {
+      "id": "AR10",
+      "aspect_ratio": 10.0,
+      "grid_task_ids": [
+        2
+      ],
+      "cases": []
+    },
+    {
+      "id": "AR20",
+      "aspect_ratio": 20.0,
+      "grid_task_ids": [
+        3
+      ],
+      "cases": []
+    }
+  ],
+  "task_failure_policy": "Retain failed task and continue other tasks/ARs; finalization reports unresolved coverage",
+  "accuracy_scope": "Two-resolution empirical held-out screening; not a global error bound or bulk rheology qualification",
+  "test_only_low_resolution": true,
+  "complete_grid_coverage": false,
+  "scope": "Real backend routing only: p2/l0 with no rim/contact/adaptive refinement; insufficient for accuracy.",
+  "planner_fixture_parent": {
+    "path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/planner_full/campaign.json",
+    "sha256": "aabfac05e651424c14530b9dd30566ffff5620e97fcf7531663b5cc977abf335"
+  },
+  "test_fixture_selection": "One actual grid task (local index53) per AR; IDs reassigned before execution."
+}

@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "completed_case_count": 5,
+  "scope": "Bidisperse finite transient integration at unchanged dt2.5e-6s: N1000 AR1 phi.34 through strain.25; N1000 AR5 phi.24 through strain.05; N256 AR1 phi.34 through strain1; N256 AR5 phi.24 through strain.25. High stiffness kn300 kt=kr240 N/m, friction coefficients10, eta0.01Pa.s, shear100/s.",
+  "plugin_sha256": "a8cab2458e735ca2f69b772ba117c6aa45d0b63dba43bf7b6f89f81d3bfb54b1",
+  "runtime_source_hashes": "build_source_hashes_v2.json",
+  "cases": {
+    "AR1_N1000_high_stiffness": {
+      "status": "passed",
+      "directory": "ar1_n1000_k300_gamma025_v2",
+      "steps": 1000,
+      "end_strain": 0.25,
+      "AR": 1.0,
+      "phi": 0.34,
+      "count": 1000,
+      "kn_N_per_m": 300.0,
+      "kt_kr_N_per_m": 240.0,
+      "dt_s": 2.5e-06,
+      "max_recorded_overlap_fraction_min_semiaxis": 3.78149623846615e-05,
+      "max_solver_relative_residual": 3.601066475283855e-08,
+      "mean_completed_step_s": 0.7891479053497314,
+      "wall_seconds": 790.3546532770015,
+      "last_relative_apparent_viscosity": 9.623942309475657,
+      "overlap_below_five_percent": true,
+      "steady_state_certified": false
+    },
+    "AR5_N1000_high_stiffness": {
+      "status": "passed",
+      "directory": "ar5_n1000_k300_pilot_v2",
+      "steps": 200,
+      "end_strain": 0.05,
+      "AR": 5.0,
+      "phi": 0.24,
+      "count": 1000,
+      "kn_N_per_m": 300.0,
+      "kt_kr_N_per_m": 240.0,
+      "dt_s": 2.5e-06,
+      "max_recorded_overlap_fraction_min_semiaxis": 8.48872043502924e-05,
+      "max_solver_relative_residual": 2.5611603941343145e-08,
+      "mean_completed_step_s": 2.4414891052246093,
+      "wall_seconds": 489.29044953300036,
+      "last_relative_apparent_viscosity": 8.850317320080864,
+      "overlap_below_five_percent": true,
+      "steady_state_certified": false
+    },
+    "AR1_N256_high_stiffness": {
+      "status": "passed",
+      "directory": "ar1_n256_k300_gamma1_v2",
+      "steps": 4000,
+      "end_strain": 1.0,
+      "AR": 1.0,
+      "phi": 0.34,
+      "count": 256,
+      "kn_N_per_m": 300.0,
+      "kt_kr_N_per_m": 240.0,
+      "dt_s": 2.5e-06,
+      "max_recorded_overlap_fraction_min_semiaxis": 0.0006111417157163416,
+      "max_solver_relative_residual": 9.983967560186053e-08,
+      "mean_completed_step_s": 0.14528999775648116,
+      "wall_seconds": 582.6077334090005,
+      "last_relative_apparent_viscosity": 127.2757911012235,
+      "overlap_below_five_percent": true,
+      "steady_state_certified": false
+    },
+    "AR5_N256_high_stiffness": {
+      "status": "passed",
+      "directory": "ar5_n256_k300_gamma025_v2",
+      "steps": 1000,
+      "end_strain": 0.25,
+      "AR": 5.0,
+      "phi": 0.24,
+      "count": 256,
+      "kn_N_per_m": 300.0,
+      "kt_kr_N_per_m": 240.0,
+      "dt_s": 2.5e-06,
+      "max_recorded_overlap_fraction_min_semiaxis": 0.0003309030299505911,
+      "max_solver_relative_residual": 9.983662108650366e-08,
+      "mean_completed_step_s": 0.2632256259918213,
+      "wall_seconds": 263.78959808799846,
+      "last_relative_apparent_viscosity": 38.419050860395124,
+      "overlap_below_five_percent": true,
+      "steady_state_certified": false
+    },
+    "AR5_N1000_default_stiffness": {
+      "status": "passed",
+      "directory": "ar5_n1000_k30_pilot_v2",
+      "steps": 200,
+      "end_strain": 0.05,
+      "AR": 5.0,
+      "phi": 0.24,
+      "count": 1000,
+      "kn_N_per_m": 30.0,
+      "kt_kr_N_per_m": 24.0,
+      "dt_s": 2.5e-06,
+      "max_recorded_overlap_fraction_min_semiaxis": 0.0009027662457896658,
+      "max_solver_relative_residual": 7.818472695971704e-08,
+      "mean_completed_step_s": 1.4235274815559387,
+      "wall_seconds": 285.6673808960004,
+      "last_relative_apparent_viscosity": 8.817842692770107,
+      "overlap_below_five_percent": true,
+      "steady_state_certified": false
+    }
+  },
+  "mixture": {
+    "size_ratio": 1.4,
+    "N1000_counts": [
+      733,
+      267
+    ],
+    "N1000_solid_volume_shares": [
+      0.5001200834033821,
+      0.49987991659661796
+    ],
+    "mean_particle_volume_preserved": true,
+    "same_aspect_ratio_in_both_species": true,
+    "initial_geometry_and_coarse_mixing_audited": true
+  },
+  "solver_change": "Safeguarded scalar directional line-search refinement after repeated Armijo backtracking; original equations, frozen friction caps, timestep, tolerances and40-Newton-iteration budget preserved.",
+  "old_solver_failures": [
+    {
+      "directory": "ar5_n1000_k300_pilot",
+      "last_completed_step": 8,
+      "failed_step": 9,
+      "reason": "convex Newton iteration limit; high stiffness, tiny overlap"
+    },
+    {
+      "directory": "ar1_n256_k300_gamma1_v1",
+      "last_completed_step": 2698,
+      "failed_step": 2699,
+      "reason": "convex Newton iteration limit; high stiffness, tiny overlap"
+    }
+  ],
+  "intentionally_interrupted_probe": {
+    "directory": "ar5_n1000_k300_gamma025_v2",
+    "last_recorded_step": 90,
+    "solver_failure": false,
+    "reason": "Replaced with a clean completed200step N1000 run and longerN256 runs to bound runtime."
+  },
+  "cost_comparison": "SOLVER_COST_COMPARISON.json",
+  "not_established": [
+    "strain50 stability",
+    "steady state rheology",
+    "stiffness-independent viscosity",
+    "jamming fraction",
+    "crystallization suppression in long runs",
+    "attraction stability",
+    "AR5 phi.34 flowability"
+  ],
+  "attraction_implemented_or_tested": false,
+  "timing_caveat": "Concurrent validation/build workloads; single-thread wall timings are indicative, not isolated benchmarks.",
+  "automated_checks": {
+    "full_source_build": "passed",
+    "ctest_passed": 54,
+    "ctest_failed": 0,
+    "python_bridge_tests_passed": 28,
+    "python_bridge_tests_skipped": 0,
+    "run_script_migration": "passed; numerical settings/resources preserved and idempotent",
+    "logs_directory": "checks"
+  }
+}

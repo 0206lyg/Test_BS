@@ -1,0 +1,41 @@
+{
+  "schema": "independent_stokes_backend_build_v1",
+  "built_at_utc": "2026-10-19T20:07:45.220047+00:00",
+  "physical_qualification": false,
+  "installation_smoke": "shared_library_loaded_and_required_symbols_found",
+  "required_symbols": [
+    "get_disc_exps_",
+    "surf_vals_to_coefs_",
+    "get_qwts_",
+    "stok_comb_vel_matgen_",
+    "getnearquad_stok_comb_vel_eval_",
+    "get_basis_pols_",
+    "stok_comb_vel_solver_"
+  ],
+  "fmm3dbie_commit": "be6b2b3700b77e9cbf20c512ff4f0922aaee45d9",
+  "fmm3d_commit": "d2b5e6e983e1ec915d15330ce74df44221a9ac42",
+  "compiler_paths": {
+    "fortran": "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpif90",
+    "c": "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpicc",
+    "cxx": "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpiCC"
+  },
+  "compiler_versions": {
+    "fortran": "GNU Fortran (Spack GCC) 12.2.0",
+    "c": "gcc (Spack GCC) 12.2.0",
+    "cxx": "g++ (Spack GCC) 12.2.0"
+  },
+  "fortran_flags": "-fPIC -O3 -std=legacy -w -fopenmp",
+  "blas_link_flags": "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2 -lpthread -lm -ldl -Xlinker -rpath -Xlinker /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+  "jobs": 4,
+  "artifacts": {
+    "fmm3dbie/lib/libfmm3dbie.so": {
+      "sha256": "817da50088effcd1ada1a2913a937cdb4e710d79ed6b2dfe33579090c8469315",
+      "bytes": 26606632
+    },
+    "fmm3dbie/lib-static/libfmm3dbie.a": {
+      "sha256": "6d0b0f205bf6293acc8a49b9fae1c771ce392fae4e376aba210712fe68a01382",
+      "bytes": 51114788
+    }
+  },
+  "dynamic_linkage": "\tlinux-vdso.so.1 (0x00007fff7479a000)\n\t/apps/external/apps/xalt3/xalt/xalt/lib64/libxalt_init.so (0x000014fea1a37000)\n\tlibgfortran.so.5 => /apps/spack/negishi/apps/gcc/12.2.0-gcc-8.5.0-27t2zcj/lib64/libgfortran.so.5 (0x000014fea1586000)\n\tlibm.so.6 => /lib64/libm.so.6 (0x000014fea1204000)\n\tlibmvec.so.1 => /lib64/libmvec.so.1 (0x000014fea0fd9000)\n\tlibstdc++.so.6 => /apps/spack/negishi/apps/gcc/12.2.0-gcc-8.5.0-27t2zcj/lib64/libstdc++.so.6 (0x000014fea0bad000)\n\tlibgomp.so.1 => /apps/spack/negishi/apps/gcc/12.2.0-gcc-8.5.0-27t2zcj/lib64/libgomp.so.1 (0x000014fea0964000)\n\tlibmkl_rt.so.2 => /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2 (0x000014fe9fd25000)\n\tlibpthread.so.0 => /lib64/libpthread.so.0 (0x000014fe9fb05000)\n\tlibdl.so.2 => /lib64/libdl.so.2 (0x000014fe9f901000)\n\tlibmpi_usempif08.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libmpi_usempif08.so.40 (0x000014fe9f6c0000)\n\tlibmpi_usempi_ignore_tkr.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libmpi_usempi_ignore_tkr.so.40 (0x000014fe9f4b1000)\n\tlibmpi_mpifh.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libmpi_mpifh.so.40 (0x000014fe9f243000)\n\tlibmpi.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libmpi.so.40 (0x000014fe9ed53000)\n\tlibgcc_s.so.1 => /apps/spack/negishi/apps/gcc/12.2.0-gcc-8.5.0-27t2zcj/lib64/libgcc_s.so.1 (0x000014fe9eb34000)\n\tlibquadmath.so.0 => /apps/spack/negishi/apps/gcc/12.2.0-gcc-8.5.0-27t2zcj/lib64/libquadmath.so.0 (0x000014fe9e8ee000)\n\tlibc.so.6 => /lib64/libc.so.6 (0x000014fe9e518000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000014fea37ae000)\n\tliblustreapi.so.1 => /lib64/liblustreapi.so.1 (0x000014fe9e2cd000)\n\tlibopen-rte.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libopen-rte.so.40 (0x000014fe9dfab000)\n\tlibopen-pal.so.40 => /apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/lib/libopen-pal.so.40 (0x000014fe9dc67000)\n\tlibucp.so.0 => /lib64/libucp.so.0 (0x000014fe9d977000)\n\tlibuct.so.0 => /lib64/libuct.so.0 (0x000014fe9d738000)\n\tlibucm.so.0 => /lib64/libucm.so.0 (0x000014fe9d51c000)\n\tlibucs.so.0 => /lib64/libucs.so.0 (0x000014fe9d16e000)\n\tlibrdmacm.so.1 => /lib64/librdmacm.so.1 (0x000014fe9cf53000)\n\tlibibverbs.so.1 => /lib64/libibverbs.so.1 (0x000014fe9cd32000)\n\tlibpmi2.so.0 => /lib64/libpmi2.so.0 (0x000014fe9cb1a000)\n\tlibpmi.so.0 => /lib64/libpmi.so.0 (0x000014fe9c914000)\n\tlibpmix.so.2 => /apps/spack/negishi/apps/pmix/4.1.2-gcc-12.2.0-husqypr/lib/libpmix.so.2 (0x000014fe9c51d000)\n\tlibrt.so.1 => /lib64/librt.so.1 (0x000014fe9c315000)\n\tlibutil.so.1 => /lib64/libutil.so.1 (0x000014fe9c111000)\n\tlibz.so.1 => /apps/spack/negishi/apps/zlib/1.2.13-gcc-12.2.0-lcttzi4/lib/libz.so.1 (0x000014fe9bef9000)\n\tlibhwloc.so.15 => /apps/spack/negishi/apps/hwloc/2.8.0-gcc-12.2.0-37auxcx/lib/libhwloc.so.15 (0x000014fe9bc9c000)\n\tlibevent_core-2.1.so.7 => /apps/spack/negishi/apps/libevent/2.1.12-gcc-12.2.0-fxhhv5n/lib/libevent_core-2.1.so.7 (0x000014fe9ba66000)\n\tlibevent_pthreads-2.1.so.7 => /apps/spack/negishi/apps/libevent/2.1.12-gcc-12.2.0-fxhhv5n/lib/libevent_pthreads-2.1.so.7 (0x000014fe9b863000)\n\tlibjson-c.so.4 => /lib64/libjson-c.so.4 (0x000014fe9b653000)\n\tliblnetconfig.so.4 => /lib64/liblnetconfig.so.4 (0x000014fe9b427000)\n\tlibyaml-0.so.2 => /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libyaml-0.so.2 (0x000014fea39a2000)\n\tlibreadline.so.7 => /lib64/libreadline.so.7 (0x000014fe9b1d8000)\n\tlibkeyutils.so.1 => /lib64/libkeyutils.so.1 (0x000014fe9afd4000)\n\tlibnl-3.so.200 => /lib64/libnl-3.so.200 (0x000014fe9adb1000)\n\tlibnl-route-3.so.200 => /lib64/libnl-route-3.so.200 (0x000014fe9ab1f000)\n\tlibresolv.so.2 => /lib64/libresolv.so.2 (0x000014fe9a908000)\n\tlibslurm_pmi.so => /usr/lib64/slurm/libslurm_pmi.so (0x000014fe9a4a8000)\n\tlibpciaccess.so.0 => /apps/spack/negishi/apps/libpciaccess/0.16-gcc-12.2.0-wvspjvf/lib/libpciaccess.so.0 (0x000014fe9a29f000)\n\tlibxml2.so.2 => /apps/spack/negishi/apps/libxml2/2.10.1-gcc-12.2.0-i4ywaof/lib/libxml2.so.2 (0x000014fe99f36000)\n\tlibtinfo.so.6 => /apps/spack/negishi/apps/ncurses/6.3-gcc-12.2.0-kibhdxg/lib/libtinfo.so.6 (0x000014fe99cf7000)\n\tliblzma.so.5 => /apps/spack/negishi/apps/xz/5.2.6-gcc-12.2.0-3zpozay/lib/liblzma.so.5 (0x000014fe99ad0000)\n\tlibiconv.so.2 => /apps/spack/negishi/apps/libiconv/1.16-gcc-12.2.0-grtsqit/lib/libiconv.so.2 (0x000014fe997d3000)\n"
+}

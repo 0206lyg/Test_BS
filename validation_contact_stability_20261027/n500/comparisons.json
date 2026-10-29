@@ -1,0 +1,104 @@
+{
+  "stiffness_03_vs_1": {
+    "shared_times": 121,
+    "through_s": 0.00012,
+    "eta_relative": {
+      "max_absolute_difference": 0.021724055610485404,
+      "max_difference_over_peak_reference": 0.00805795242839726,
+      "final_a": 2.6764209025227146,
+      "final_b": 2.6959771484784447
+    },
+    "sigma_contact_Pa": {
+      "max_absolute_difference": 0.02313514422239116,
+      "max_difference_over_peak_reference": 0.4693882990904514,
+      "final_a": 0.026152714608391085,
+      "final_b": 0.049287858830782245
+    },
+    "max_overlap_m": {
+      "max_absolute_difference": 3.861330754340034e-11,
+      "max_difference_over_peak_reference": 0.046894737882312555,
+      "final_a": 7.866387020722954e-10,
+      "final_b": 8.234038462973103e-10
+    },
+    "tangential_elastic_energy_J": {
+      "max_absolute_difference": 1.3827631961090427e-18,
+      "max_difference_over_peak_reference": 0.2857073882956655,
+      "final_a": 6.2225512196448025e-18,
+      "final_b": 4.83978802353576e-18
+    },
+    "rolling_elastic_energy_J": {
+      "max_absolute_difference": 1.4615969668121255e-18,
+      "max_difference_over_peak_reference": 0.1358817932756393,
+      "final_a": 1.2217982583884775e-17,
+      "final_b": 1.075638561707265e-17
+    }
+  },
+  "heun_5us_vs_2p5us": {
+    "shared_times": 25,
+    "through_s": 0.00012,
+    "eta_relative": {
+      "max_absolute_difference": 8.063491357868102e-05,
+      "max_difference_over_peak_reference": 3.0125112619373405e-05,
+      "final_a": 2.6766272753221805,
+      "final_b": 2.676667622707072
+    },
+    "sigma_contact_Pa": {
+      "max_absolute_difference": 5.5508914957192595e-05,
+      "max_difference_over_peak_reference": 0.00210912501112367,
+      "final_a": 0.026289355504085895,
+      "final_b": 0.026318456546878335
+    },
+    "max_overlap_m": {
+      "max_absolute_difference": 7.41582359964327e-13,
+      "max_difference_over_peak_reference": 0.0009393015402885493,
+      "final_a": 7.887624567119999e-10,
+      "final_b": 7.895040390719643e-10
+    },
+    "tangential_elastic_energy_J": {
+      "max_absolute_difference": 2.694639919718094e-20,
+      "max_difference_over_peak_reference": 0.0042781819979821395,
+      "final_a": 6.283993316571429e-18,
+      "final_b": 6.298563083545899e-18
+    },
+    "rolling_elastic_energy_J": {
+      "max_absolute_difference": 2.9671274519996827e-20,
+      "max_difference_over_peak_reference": 0.0024125303834500594,
+      "final_a": 1.2271055411181586e-17,
+      "final_b": 1.2298819000805773e-17
+    }
+  },
+  "euler_1us_vs_heun_2p5us": {
+    "shared_times": 25,
+    "through_s": 0.00012,
+    "eta_relative": {
+      "max_absolute_difference": 0.00024672018435722975,
+      "max_difference_over_peak_reference": 9.217438215496741e-05,
+      "final_a": 2.6764209025227146,
+      "final_b": 2.676667622707072
+    },
+    "sigma_contact_Pa": {
+      "max_absolute_difference": 0.00021865807538611406,
+      "max_difference_over_peak_reference": 0.008308164842290092,
+      "final_a": 0.026152714608391085,
+      "final_b": 0.026318456546878335
+    },
+    "max_overlap_m": {
+      "max_absolute_difference": 2.865336999668923e-12,
+      "max_difference_over_peak_reference": 0.0036292873219965173,
+      "final_a": 7.866387020722954e-10,
+      "final_b": 7.895040390719643e-10
+    },
+    "tangential_elastic_energy_J": {
+      "max_absolute_difference": 7.601186390109646e-20,
+      "max_difference_over_peak_reference": 0.012068127744829078,
+      "final_a": 6.2225512196448025e-18,
+      "final_b": 6.298563083545899e-18
+    },
+    "rolling_elastic_energy_J": {
+      "max_absolute_difference": 8.083641692099848e-20,
+      "max_difference_over_peak_reference": 0.00657269750174406,
+      "final_a": 1.2217982583884775e-17,
+      "final_b": 1.2298819000805773e-17
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "idempotent": true,
+  "source": "user attached run_slurry_cpu.sbatch",
+  "preserved_settings": {
+    "AR": "5",
+    "PHI": "0.34",
+    "COUNT": "500",
+    "STEPS": "200000",
+    "TIMESTEP": "2.5e-6",
+    "OUTPUT_INTERVAL": "400",
+    "NORMAL_STIFFNESS": "30",
+    "TANGENTIAL_STIFFNESS": "24",
+    "ROLLING_STIFFNESS": "24",
+    "OUTPUT_DIR": "\"\"",
+    "BUILD_ENV": "\"\""
+  },
+  "slurm_resources_preserved": true,
+  "obsolete_integrator_comment_corrected": true
+}

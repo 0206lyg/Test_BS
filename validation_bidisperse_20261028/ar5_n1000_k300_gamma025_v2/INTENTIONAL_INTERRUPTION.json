@@ -1,0 +1,4 @@
+{
+  "reason": "Exploratory 1000-step run deliberately stopped after step90 to replace with a clean completed 200-step N1000 test and longer N256 tests. Not a solver failure.",
+  "method": "exec session interrupt, exit130"
+}

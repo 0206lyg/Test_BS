@@ -1,0 +1,10 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/nearfield_update_20261028/fixture_ar5_k3",
+  "plugin": "/workspace/scratch/af0f332bc475/nearfield_update_20261028/libslurry_be_v2_frozen.so",
+  "plugin_sha256": "4262fbda1f6960f9c7efdf0f421405af7fa62a3e27796237ce21251b8e90db9c",
+  "initial_particles_sha256": "306b29ea563385f894119c8631c074ff4828ae2a263af90d0d74041da25cf75f",
+  "steps": 1000,
+  "dt": 2.5e-06,
+  "threads": 1,
+  "backend": "nearfield"
+}

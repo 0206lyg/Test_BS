@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checked_cumulative_files": 661,
+  "fresh_baseline_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
+  "control_file_sha256_before": {
+    "run_slurry_cpu.sbatch": "36b70695bc1c7095927894b2c69e9c710394e45c8c033b224292e3d6e3ae2a41",
+    "sweep_slurry.sh": "573e626c04be03cfceb6554f3d9fa4760b95bf578a95c70af6bccfb3a36b4101"
+  },
+  "control_file_sha256_after": {
+    "run_slurry_cpu.sbatch": "36b70695bc1c7095927894b2c69e9c710394e45c8c033b224292e3d6e3ae2a41",
+    "sweep_slurry.sh": "573e626c04be03cfceb6554f3d9fa4760b95bf578a95c70af6bccfb3a36b4101"
+  },
+  "source_guard_passed": true,
+  "shell_syntax_passed": true,
+  "note": "Staging check; final ZIP bytes and manifest are checked again by package_overlay.py."
+}

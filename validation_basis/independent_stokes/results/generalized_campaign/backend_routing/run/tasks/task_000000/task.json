@@ -1,0 +1,126 @@
+{
+  "schema": "independent_reference_campaign_task_v1",
+  "task_id": 0,
+  "case_id": "AR2_g0053",
+  "query_id": "AR2_g0053",
+  "role": "grid",
+  "resolution_label": "grid",
+  "identity": {
+    "task": {
+      "task_id": 0,
+      "aspect_ratio": 2.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0,
+      "role": "grid",
+      "case_id": "AR2_g0053",
+      "query_id": "AR2_g0053",
+      "resolution_label": "grid",
+      "output_subdir": "tasks/task_000000",
+      "resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "isolated_resolution": {
+        "order": 2,
+        "level": 0,
+        "rim_levels": 0,
+        "contact_levels": 0,
+        "resolution_level": 200
+      },
+      "max_refinements": 0,
+      "test_only_low_resolution": true
+    },
+    "physical": {
+      "aspect_ratio": 2.0,
+      "c_nm": 150.0,
+      "theta_i": 0.39269908169872403,
+      "theta_j": 1.1780972450961722,
+      "phi": 0.7853981633974483,
+      "gap_nm": 150.0
+    },
+    "pair_resolution": {
+      "order": 2,
+      "level": 0,
+      "rim_levels": 0,
+      "rim_width": 0.05,
+      "contact_levels": 0,
+      "contact_radius": 0.25,
+      "focus": 0.0,
+      "resolution_level": 200
+    },
+    "isolated_resolution": {
+      "order": 2,
+      "level": 0,
+      "rim_levels": 0,
+      "rim_width": 0.05,
+      "contact_levels": 0,
+      "contact_radius": 0.25,
+      "focus": 0.0,
+      "resolution_level": 200
+    },
+    "development_boundary_limit": 0.01,
+    "max_refinements": 0,
+    "adapt_fraction": 0.2,
+    "configuration": {
+      "library": {
+        "path": "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib/libfmm3dbie.so",
+        "sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052"
+      },
+      "helper": {
+        "path": "/dev/shm/build-reference-pipeline/slurry_reference_operator_export",
+        "sha256": "9e4a5bceaf76621235227c0d0240085210ad244b9a15a9ea40a6ad48ca719fe1"
+      },
+      "backend_manifest": {
+        "path": "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/patch_manifest.json",
+        "sha256": "ce3c396abe085cf5370ec627cc45ed95b13fc299efc1ff6577490cd7e8a0ec0a"
+      },
+      "controls": {
+        "solver": "dense",
+        "max_memory_gb": 2.0,
+        "quad_tol": 1e-08,
+        "check_points_per_patch": 3,
+        "alpha": 1.0,
+        "beta": 1.0,
+        "lu_panel_columns": 512,
+        "lu_stripe_columns": 256,
+        "mmap_factor_mode": "shared",
+        "gmres_rtol": 1e-09,
+        "gmres_restart": 80,
+        "gmres_maxiter": 20,
+        "preconditioner": "patch",
+        "far_order_increment": 0,
+        "near_radius_factor": 1.0
+      },
+      "source_hashes": {
+        "run_campaign_reference.py": "af01f1c8995e2efa2c67c7ac6425cb723cd6bf7c73f51e65364e489316a0310d",
+        "run_reference.py": "cd49928001680a7a0ead960b82beaec8d6efb9b581d66d852a5b8afdc6624e47",
+        "geometry.py": "1e397438238b4972fc189aa5db316db64d3b103db6f1a4360d56604c68ef5782",
+        "backend.py": "be9f61297c56c456403ded15f1320ecbfada05deec101ab7573a7a0023b0d1a9",
+        "matrix_free.py": "ffb4ea26d8891c18b7202f55e5bfd78a8bca2be95073a03e451cbd5cd8c70c82",
+        "near_apply.py": "ed39658d13f26296d4f7f05a39deff20ceb590e24b5cb60de506e57cfc48358b",
+        "memory_bounded_dense.py": "833520ebe201391cb978c95a747f3359fc74342ec2517d088f77effd92f1f228",
+        "out_of_core_dense.py": "112e816727006d8dee92e331a59e8bf035c4481dab64739fd2f2876cf6d99f43",
+        "out_of_core_lu.py": "dfc2c80f4129ce0920eb70fc30b43116c5213dabc4e6f8bd9bd1693f8a9d8bc1",
+        "prepare_reference_source.py": "bacb5f8f605bd12db516d8e4eb64573ad30c21bdb8b6644fd53bee22189f7174",
+        "compare_reference.py": "eaf69601c25994b1c3a9d8b03635959d01bf27e706f950d6cdd26c5056785034"
+      },
+      "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    },
+    "campaign_sha256": "0e79dfa4073ae0266fd4b80b55712d229abe19f3c8514a96c1869f9e69e539d1"
+  },
+  "identity_sha256": "f4338da90f279febefac07fda2c21214391123ca66ed4c518d028ccd88b7c3b5",
+  "campaign_path": "/dev/shm/Test_BS_development_20261019/validation_basis/independent_stokes/results/generalized_campaign/backend_routing/campaign.json",
+  "status": "unresolved",
+  "workflow_completed": false,
+  "accepted_for_development": false,
+  "physical_accuracy_qualified": false,
+  "stageattempts": [],
+  "failure": "Driver subprocess failed with exit 1"
+}

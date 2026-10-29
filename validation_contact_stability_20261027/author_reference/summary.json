@@ -1,0 +1,285 @@
+{
+  "stiff_dt1e6s": {
+    "status": 0,
+    "wall_seconds": 6.803130638996663,
+    "maxrss_kb": 10828,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 201,
+    "strain_end": 0.02,
+    "eta_end": 1.94636,
+    "eta_min": 1.19989,
+    "eta_max": 2.13826,
+    "max_overlap_over_a": 3.56646e-05,
+    "max_tangential_displacement_over_a": 0.000445808,
+    "max_rolling_displacement_over_a": 0.000445808,
+    "max_omega_over_gamma": 166.639,
+    "output_dt_strain_min": 0.0001,
+    "contact_eta_increment_lag1corr": -0.7061593649810111,
+    "contact_eta_increment_signflip_fraction": 0.7074468085106383
+  },
+  "stiff_dt1e7s": {
+    "status": 0,
+    "wall_seconds": 54.110855544000515,
+    "maxrss_kb": 10848,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 2001,
+    "strain_end": 0.02,
+    "eta_end": 2.00655,
+    "eta_min": 1.89464,
+    "eta_max": 2.01228,
+    "max_overlap_over_a": 3.16828e-06,
+    "max_tangential_displacement_over_a": 3.96034e-05,
+    "max_rolling_displacement_over_a": 3.96034e-05,
+    "max_omega_over_gamma": 24.5673,
+    "output_dt_strain_min": 1e-05,
+    "contact_eta_increment_lag1corr": -0.9820347900675837,
+    "contact_eta_increment_signflip_fraction": 0.9783983140147524
+  },
+  "stiff_dt1e8s": {
+    "status": "intentionally_interrupted_130",
+    "wall_seconds": null,
+    "reason": "Parent prioritized approved numerical stiffness reduction after large-stiffness two-cycle was demonstrated; no full-strain claim.",
+    "threads": 1,
+    "nout": 7324,
+    "strain_end": 0.007323,
+    "eta_end": 1.94319,
+    "eta_min": 1.89463,
+    "eta_max": 1.94333,
+    "max_overlap_over_a": 5.96068e-06,
+    "max_tangential_displacement_over_a": 5.89919e-06,
+    "max_rolling_displacement_over_a": 1.00106e-05,
+    "max_omega_over_gamma": 0.691767,
+    "output_dt_strain_min": 1e-06,
+    "contact_eta_increment_lag1corr": 0.2355189106460513,
+    "contact_eta_increment_signflip_fraction": 0.00015820281601012498
+  },
+  "stiff_dt1e8s_sparse": {
+    "status": "intentionally_interrupted_130",
+    "wall_seconds": null,
+    "reason": "Parent prioritized approved numerical stiffness reduction after large-stiffness two-cycle was demonstrated; no full-strain claim.",
+    "threads": 1,
+    "nout": 82,
+    "strain_end": 0.008181,
+    "eta_end": 1.94626,
+    "eta_min": 1.89464,
+    "eta_max": 1.94626,
+    "max_overlap_over_a": 5.96262e-06,
+    "max_tangential_displacement_over_a": 5.89909e-06,
+    "max_rolling_displacement_over_a": 1.00105e-05,
+    "max_omega_over_gamma": 0.68208,
+    "output_dt_strain_min": 1e-06,
+    "contact_eta_increment_lag1corr": 0.5629712004870557,
+    "contact_eta_increment_signflip_fraction": 0.12857142857142856
+  },
+  "original_adaptive": {
+    "status": 0,
+    "wall_seconds": 20.362090963993978,
+    "maxrss_kb": 10976,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 201,
+    "strain_end": 0.02,
+    "eta_end": 2.00874,
+    "eta_min": 1.89464,
+    "eta_max": 2.00955,
+    "max_overlap_over_a": 3.24593e-06,
+    "max_tangential_displacement_over_a": 4.05742e-05,
+    "max_rolling_displacement_over_a": 4.05742e-05,
+    "max_omega_over_gamma": 24.0993,
+    "output_dt_strain_min": 1.11111e-05,
+    "contact_eta_increment_lag1corr": -0.971438964604148,
+    "contact_eta_increment_signflip_fraction": 0.574468085106383
+  },
+  "soft2000": {
+    "status": 0,
+    "wall_seconds": 23.799996205001662,
+    "maxrss_kb": 12644,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 101,
+    "strain_end": 0.1,
+    "eta_end": 1.95016,
+    "eta_min": 1.89382,
+    "eta_max": 1.95016,
+    "max_overlap_over_a": 0.00130139,
+    "max_tangential_displacement_over_a": 0.00201648,
+    "max_rolling_displacement_over_a": 0.0035005,
+    "max_omega_over_gamma": 0.553732,
+    "output_dt_strain_min": 5.55556e-05,
+    "contact_eta_increment_lag1corr": 0.07432464000652443,
+    "contact_eta_increment_signflip_fraction": 0.061855670103092786
+  },
+  "soft4000": {
+    "status": 0,
+    "wall_seconds": 24.03625369900692,
+    "maxrss_kb": 11224,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 101,
+    "strain_end": 0.1,
+    "eta_end": 1.94912,
+    "eta_min": 1.89464,
+    "eta_max": 1.94912,
+    "max_overlap_over_a": 0.000963961,
+    "max_tangential_displacement_over_a": 0.0010046,
+    "max_rolling_displacement_over_a": 0.00175249,
+    "max_omega_over_gamma": 0.555358,
+    "output_dt_strain_min": 5.55556e-05,
+    "contact_eta_increment_lag1corr": 0.1985724639667282,
+    "contact_eta_increment_signflip_fraction": 0.05154639175257732
+  },
+  "soft8000": {
+    "status": 0,
+    "wall_seconds": 26.460546485999657,
+    "maxrss_kb": 12740,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 101,
+    "strain_end": 0.1,
+    "eta_end": 1.9548,
+    "eta_min": 1.89464,
+    "eta_max": 1.9548,
+    "max_overlap_over_a": 0.000586495,
+    "max_tangential_displacement_over_a": 0.000498673,
+    "max_rolling_displacement_over_a": 0.000872068,
+    "max_omega_over_gamma": 0.558193,
+    "output_dt_strain_min": 5e-05,
+    "contact_eta_increment_lag1corr": 0.10767728692261766,
+    "contact_eta_increment_signflip_fraction": 0.14432989690721648
+  },
+  "soft4000_halfdt": {
+    "status": 0,
+    "wall_seconds": 54.28245204700215,
+    "maxrss_kb": 12408,
+    "command": [
+      "/tmp/lf_dem_singh_method/LF_DEM/LF_DEM",
+      "-f",
+      "-r",
+      "1h",
+      "../n500_ar1.dat",
+      "params.txt"
+    ],
+    "threads": 1,
+    "nout": 101,
+    "strain_end": 0.1,
+    "eta_end": 1.94912,
+    "eta_min": 1.89464,
+    "eta_max": 1.94912,
+    "max_overlap_over_a": 0.000963972,
+    "max_tangential_displacement_over_a": 0.0010046,
+    "max_rolling_displacement_over_a": 0.00175249,
+    "max_omega_over_gamma": 0.555363,
+    "output_dt_strain_min": 2.5e-05,
+    "contact_eta_increment_lag1corr": 0.1987319852835716,
+    "contact_eta_increment_signflip_fraction": 0.05154639175257732
+  },
+  "soft4000_vs_soft4000_halfdt": {
+    "eta": {
+      "max_abs_diff": 1.0000000000065512e-05,
+      "max_abs_diff_over_ref_max": 5.130520440027044e-06
+    },
+    "contact_eta": {
+      "max_abs_diff": 3.800000000005188e-06,
+      "max_abs_diff_over_ref_max": 3.5929049582137476e-05
+    },
+    "gap": {
+      "max_abs_diff": 1.6000000000035083e-08,
+      "max_abs_diff_over_ref_max": 1.659799247284681e-05
+    },
+    "roll": {
+      "max_abs_diff": 1.8999999999995583e-07,
+      "max_abs_diff_over_ref_max": 0.0001084171664317376
+    },
+    "max_omega": {
+      "max_abs_diff": 2.0999999999937735e-05,
+      "max_abs_diff_over_ref_max": 3.7813106022435296e-05
+    }
+  },
+  "soft2000_vs_soft8000": {
+    "eta": {
+      "max_abs_diff": 0.01102000000000003,
+      "max_abs_diff_over_ref_max": 0.005637405361162282
+    },
+    "contact_eta": {
+      "max_abs_diff": 0.019310400000000005,
+      "max_abs_diff_over_ref_max": 0.16677808006218428
+    },
+    "gap": {
+      "max_abs_diff": 0.0007148949999999999,
+      "max_abs_diff_over_ref_max": 1.2189276975933296
+    },
+    "roll": {
+      "max_abs_diff": 0.002628432,
+      "max_abs_diff_over_ref_max": 3.014021842333396
+    },
+    "max_omega": {
+      "max_abs_diff": 0.041676999999999964,
+      "max_abs_diff_over_ref_max": 0.07466413946430708
+    }
+  },
+  "soft4000_vs_soft8000": {
+    "eta": {
+      "max_abs_diff": 0.006669999999999954,
+      "max_abs_diff_over_ref_max": 0.0034121137712297693
+    },
+    "contact_eta": {
+      "max_abs_diff": 0.010716000000000003,
+      "max_abs_diff_over_ref_max": 0.0925508485555124
+    },
+    "gap": {
+      "max_abs_diff": 0.000377466,
+      "max_abs_diff_over_ref_max": 0.6435962795931764
+    },
+    "roll": {
+      "max_abs_diff": 0.0008810670000000001,
+      "max_abs_diff_over_ref_max": 1.0103191494241275
+    },
+    "max_omega": {
+      "max_abs_diff": 0.03923399999999999,
+      "max_abs_diff_over_ref_max": 0.0702875170415967
+    }
+  }
+}

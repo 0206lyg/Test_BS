@@ -1,0 +1,11 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/nearfield_update_20261028/fixture_ar5_k10",
+  "plugin": "/workspace/scratch/af0f332bc475/nearfield_update_20261028/libslurry_imex_v1.so",
+  "plugin_sha256": "7d571d05b262acdaec7ec1cbd252a7139c511b769dce1a682931d0e41e4222b2",
+  "initial_particles_sha256": "306b29ea563385f894119c8631c074ff4828ae2a263af90d0d74041da25cf75f",
+  "steps": 1000,
+  "dt": 2.5e-06,
+  "threads": 1,
+  "backend": "nearfield",
+  "contact_scheme": "imex"
+}

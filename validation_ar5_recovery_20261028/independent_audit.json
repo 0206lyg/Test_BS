@@ -1,0 +1,65 @@
+{
+  "scope": "Read-only source/history/solver audit before recovery changes",
+  "identity": {
+    "source_file_count": 435,
+    "matching_hash_count": 435,
+    "release": "20261028-bidisperse-imex",
+    "audit_file": "source_identity_audit.json"
+  },
+  "last_recorded_state": {
+    "step": 400,
+    "strain": 0.1,
+    "eta_relative": 4.512035367370503,
+    "eta_Pa_s": 0.04512035367370503,
+    "endpoint_overlap_min_semiaxis_fraction": 3.3810487301555454e-05,
+    "endpoint_overlap_min_semiaxis_percent": 0.0033810487301555456,
+    "solver_relative_residual": 1.3185779779837247e-08,
+    "newton_iterations_aggregate": 21,
+    "linear_iterations_aggregate": 446,
+    "geometry_iterations": 3,
+    "profile_solve_seconds": 1.3650795849999895,
+    "profile_total_seconds": 1.4161151539999537,
+    "solve_fraction_of_total": 0.9639608623240777,
+    "mobility_threads": 1
+  },
+  "confirmed_code_findings": [
+    {
+      "file": "lammps_slurry/src/slurry_nearfield_imex_solver.h",
+      "line": 223,
+      "finding": "The inner solve stops at the fixed Newton budget with std::runtime_error; it does not carry the final iterate or recover."
+    },
+    {
+      "file": "lammps_slurry/src/slurry_nearfield_step.h",
+      "line": 37,
+      "finding": "Endpoint catches only NonlinearFailure to enrich diagnostics. It does not recover inner nonlinear failures; changing exception type alone cannot fix convergence."
+    },
+    {
+      "file": "lammps_slurry/src/fix_slurry_bridge.cpp",
+      "line": 617,
+      "finding": "User iterations sets linear iteration maximum only, leaving default maximum_newton_iterations=40."
+    },
+    {
+      "file": "lammps_slurry/src/slurry_nearfield_imex_solver.h",
+      "line": 292,
+      "finding": "Prior directional refinement applies only after at least three halvings with positive derivative bracket. Full or mildly damped steps are untouched."
+    },
+    {
+      "file": "lammps_slurry/src/slurry_nearfield_imex_solver.h",
+      "line": 217,
+      "finding": "A full cold hydrodynamic solve is performed even when a valid warm velocity is then selected unconditionally; possible redundant work, not established failure root cause."
+    },
+    {
+      "file": "lammps_slurry/src/slurry_nearfield_solver.h",
+      "line": 28,
+      "finding": "Dominant nearfield hydro and Newton factors use Eigen SimplicialLDLT. Requested OpenMP cores do not turn these sparse factorizations into a multithreaded solve."
+    }
+  ],
+  "independent_math_review": "No sign inconsistency found between frozen-cap contact responses, assembled Jacobian, and convex objective increment. Normal, sliding, rolling, and twisting terms use the same gap, projections and cap conventions.",
+  "interpretation": "The recorded step400 is well below overlap threshold and has modest relative viscosity. This supports a numerical nonlinear convergence problem, not an observed physical viscosity divergence. State at failure723 requires replay trace; it is not contained in supplied history.",
+  "recommended_verification": [
+    "Capture failing inner frozen equation and trace Newton residual, step length, rolling/sliding changes and line-search work.",
+    "Compare a robust candidate to a stricter/longer-budget solution on the same frozen equation while preserving physical residual acceptance.",
+    "Run exact N1000 fixture beyond step723; previous200-step N1000 validation did not cover this failure.",
+    "Report runtime cost and solver fractions; avoid claiming global stability from one frozen replay."
+  ]
+}

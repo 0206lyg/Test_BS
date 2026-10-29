@@ -1,0 +1,16 @@
+{
+  "ctest": {
+    "passed": 54,
+    "failed": 0
+  },
+  "python_bridge_tests": {
+    "passed": 28,
+    "skipped": 0
+  },
+  "sha256": {
+    "Test_BS/lammps_slurry/tests/test_nearfield_imex.cpp": "f0e93d712e647d469be9c344c01fd8e90a5597bc78f568f9b75ecb6af9276f57",
+    "Test_BS/lammps_slurry/src/slurry_nearfield_imex_solver.h": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "nearfield_update_20261028/plugin_build/slurry_nearfield_imex_test": "0c2c2337b0afa06ffb2c31965bf80f4b94cca4f3db26c303ca3bbcf36d7e6efe",
+    "nearfield_update_20261028/plugin_build/slurry_nearfield_step_test": "d338aa65f53511136f6be0da98018e1ed96c4bf451ce6caa7d8536026457ce21"
+  }
+}

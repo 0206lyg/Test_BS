@@ -1,0 +1,77 @@
+{
+  "scope": "Transient regression at N500, phi0.24, D8um, eta0.01Pa.s, shear100/s, mu_s=mu_r10, kn30 kt=kr24N/m; dt2.5e-6s unchanged.",
+  "plugin_sha256": "a2a806eca817dc1435e5d8adf54bfb2d91ba9db77c6d71f496cba2fff01362ab",
+  "cases": {
+    "AR1": {
+      "case": "ar1_imex_v2_k30_dt2p5us_pilot",
+      "completed_steps": 200,
+      "completed_strain": 0.05,
+      "max_overlap_fraction_min_semiaxis": 1.2246859218301154e-05,
+      "max_solver_relative_residual": 1.7236638346121263e-10,
+      "wall_seconds": 18.638038686000073,
+      "mean_completed_step_s": 0.09177060723304749,
+      "last_relative_apparent_viscosity": 2.535065127355656,
+      "same_timestep_as_previous_default": true,
+      "runtime_fft_and_global_mobility_calls": 0
+    },
+    "AR2": {
+      "case": "ar2_imex_v2_k30_dt2p5us_pilot",
+      "completed_steps": 200,
+      "completed_strain": 0.05,
+      "max_overlap_fraction_min_semiaxis": 2.7023341031773285e-05,
+      "max_solver_relative_residual": 2.741082282054111e-10,
+      "wall_seconds": 19.23328949899951,
+      "mean_completed_step_s": 0.09461852073669434,
+      "last_relative_apparent_viscosity": 2.6387845766963354,
+      "same_timestep_as_previous_default": true,
+      "runtime_fft_and_global_mobility_calls": 0
+    },
+    "AR5": {
+      "case": "ar5_imex_v2_k30_dt2p5us_gamma0p25",
+      "completed_steps": 1000,
+      "completed_strain": 0.25,
+      "max_overlap_fraction_min_semiaxis": 0.023737870630055058,
+      "max_solver_relative_residual": 9.959020266732311e-08,
+      "wall_seconds": 597.5203567410008,
+      "mean_completed_step_s": 0.596258927822113,
+      "last_relative_apparent_viscosity": 256.4749866121615,
+      "same_timestep_as_previous_default": true,
+      "runtime_fft_and_global_mobility_calls": 0
+    }
+  },
+  "selected_stiffness_timestep_comparison": [
+    {
+      "dt_s": 2.5e-06,
+      "case": "ar5_imex_v2_k30_dt2p5us_gamma0p25",
+      "strain": 0.05,
+      "relative_apparent_viscosity": 9.674042822147417,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.03721637766280137
+    },
+    {
+      "dt_s": 1.25e-06,
+      "case": "ar5_imex_v2_k30_dt1p25us_gamma0p05",
+      "strain": 0.05,
+      "relative_apparent_viscosity": 9.738853043239779,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.016967397653715695
+    },
+    {
+      "dt_s": 6.25e-07,
+      "case": "ar5_imex_v2_k30_dt0p625us_gamma0p05",
+      "strain": 0.05,
+      "relative_apparent_viscosity": 9.794096439826754,
+      "mean_cap_load_lag_fraction_gamma0p01_to0p05": 0.007251320683952759
+    }
+  ],
+  "coarse_to_quarter_dt_relative_viscosity_difference_at_gamma0p05": 0.012257753271772032,
+  "core_cpp_tests_passed": 10,
+  "python_tests_passed": 24,
+  "python_tests_skipped": 0,
+  "bundle_tests_passed": 7,
+  "strain10_tested": false,
+  "steady_state_rheology_certified": false,
+  "stiffness_independence_established": false,
+  "attraction_implemented_or_tested": false,
+  "overlap_reference": "minimum particle semiaxis; stricter than volume-equivalent radius for oblate AR>1",
+  "comparison_notes": "k3 and k10 continued numerically but exceeded the overlap criterion. High startup stress includes elastic loading; it is not a certified jamming or steady viscosity measurement.",
+  "python_validation_revision": "20261028-build-test-fix1; compiled packer supplied to CTest; checks/buildfix_bridge_tools_ctest.log"
+}

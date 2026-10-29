@@ -1,0 +1,21 @@
+{
+  "schema": "task_owned_incomplete_temporary_cleanup_v1",
+  "time_utc": "2026-10-18T23:41:31.292518+00:00",
+  "path": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025.ssb.tmp",
+  "size_bytes": 752973039,
+  "completed_sibling": "/workspace/scratch/581ed100c5ad/ar20_validation/ar20_L16_d025.ssb",
+  "completed_sibling_exists": true,
+  "open_file_references_checked": null,
+  "reason": "Closed incomplete temporary from prior basis generation; completed sibling and diagnostic results retained. Make room for exact same-pose out-of-core matrix.",
+  "free_before": 11813187584,
+  "free_after": 12566167552,
+  "open_fd_check_scope": "No matching references observed among readable proc fd symlinks; complete other-process fd visibility is unavailable. File was known incomplete generated temporary with completed sibling retained.",
+  "temporary_reappeared_after_cleanup": true,
+  "reappearance_note": "Observed same-name historical temporary again after initial unlink; cause not proven; no scientific evidence was lost.",
+  "repeat_cleanup_before": 6173147136,
+  "repeat_cleanup_size": 752973039,
+  "repeat_cleanup_after": 6926127104,
+  "rehydration_workaround": "Repeatedly reappearing incomplete temporary replaced atomically with small explicit non-checkpoint cleanup marker. No completed data discarded.",
+  "marker_size_bytes": 164,
+  "free_after_marker": 5443776512
+}

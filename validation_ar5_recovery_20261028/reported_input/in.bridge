@@ -1,0 +1,24 @@
+# Isolated spheroid drag + near lubrication + implicit contact
+plugin load ${slurry_plugin}
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+comm_modify vel yes
+pair_style zero 1.6860280575905792e-06
+pair_coeff * *
+neighbor 2.408611510843685e-07 bin
+neigh_modify every 1 delay 0 check yes
+timestep 2.5000000000000002e-06
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge 0.01 100 7.9999999999999996e-06 0.001 300 contact 10 240 rolling 10 240 shape spheroid mobility_backend nearfield contact_scheme imex spectral 2 spectral_tolerance 1e-08 tolerance 9.9999999999999995e-07 iterations 1000 history history.csv 400 5
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
+dump trajectory all custom 400 trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
+dump_modify trajectory sort id format float %.17g
+thermo 400
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 200000
+write_data final.data nocoeff

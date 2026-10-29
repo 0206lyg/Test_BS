@@ -1,0 +1,17 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/bidisperse_update_20261028/fixture_ar5_phi024_n256",
+  "plugin": "/workspace/scratch/af0f332bc475/ar5_recovery_20261028/libslurry_ar5_candidate_v4.so",
+  "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+  "particles_sha256": "c85b085d9e4baa733c004bb3ff4196717adedecaf3c95dfc4a4a4f7e180a0626",
+  "input_sha256": "0659b2ba217e495c42bd8182a8bf3c80a8bef313873b51179207a8b98610cd1a",
+  "steps": 1000,
+  "dt_s": 2.5e-06,
+  "kn_N_per_m": 300.0,
+  "kt_kr_N_per_m": 240.0,
+  "threads": 1,
+  "history_interval_steps": 1,
+  "backend": "nearfield",
+  "contact_scheme": "imex",
+  "steady_state_certified": false,
+  "attraction_tested": false
+}

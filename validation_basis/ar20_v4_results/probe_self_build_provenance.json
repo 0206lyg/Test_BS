@@ -1,0 +1,11 @@
+{
+  "captured_unix": 1792346168.1239436,
+  "executable_sha256": "fd9c41afd6a1abd2496d9aff47704757be2335248fbbe124d1bd62331bc54403",
+  "sources_sha256": {
+    "validation_basis/ar20_pair_probe.cpp": "1ed01fee692d4cc57fdc09259ec14fb78f904a6e736af0c73f4f841d746ea6a9",
+    "lammps_slurry/src/slurry_scattering_math.h": "6ca1e66b91cb73c294012e0389300abaf6e1fb959296bd5467f194e59ef8dec8",
+    "lammps_slurry/tools/basis_cylindrical_kernel.h": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
+    "lammps_slurry/src/slurry_scattering_provider.h": "8660031bae26ee523e4559ffe2f4c871159b20124351483d84cfd59992925549"
+  },
+  "flags": "-O3 -DNDEBUG -march=native -std=c++17; no fast-math"
+}

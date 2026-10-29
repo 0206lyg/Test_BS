@@ -1,0 +1,70 @@
+{
+  "comparisons": [
+    {
+      "case": "AR5_N1000_kn30_completed_200_steps",
+      "v1": "ar5_n1000_k30_pilot",
+      "v2": "ar5_n1000_k30_pilot_v2",
+      "common_last_step": 200,
+      "identical_fixture_and_numerical_parameters": true,
+      "timing_caveat": "Single-thread processes ran concurrently with other validation/build work; wall timing is indicative, not an isolated speed benchmark.",
+      "profile_total_s": {
+        "v1_mean": 1.3271368634700775,
+        "v2_mean": 1.4235274815559387,
+        "v2_over_v1": 1.0726305031071381
+      },
+      "newton_iterations": {
+        "v1_mean": 11.235,
+        "v2_mean": 10.36,
+        "v2_over_v1": 0.9221183800623053
+      },
+      "linear_iterations": {
+        "v1_mean": 237.095,
+        "v2_mean": 214.245,
+        "v2_over_v1": 0.9036251291676333
+      },
+      "geometry_iterations": {
+        "v1_mean": 2.745,
+        "v2_mean": 2.735,
+        "v2_over_v1": 0.9963570127504553
+      },
+      "eta_relative_maximum_absolute_difference": 0.021370724310267875,
+      "max_overlap_fraction_min_semiaxis_maximum_absolute_difference": 1.269609338494515e-06,
+      "solver_relative_residual_maximum_absolute_difference": 1.8268583427578653e-09
+    },
+    {
+      "case": "AR5_N1000_kn300_common_accepted_prefix",
+      "v1": "ar5_n1000_k300_trace",
+      "v2": "ar5_n1000_k300_trace_v2",
+      "common_last_step": 8,
+      "identical_fixture_and_numerical_parameters": true,
+      "timing_caveat": "Single-thread processes ran concurrently with other validation/build work; wall timing is indicative, not an isolated speed benchmark.",
+      "profile_total_s": {
+        "v1_mean": 1.3648259043693542,
+        "v2_mean": 1.2004377245903015,
+        "v2_over_v1": 0.8795537370350458
+      },
+      "newton_iterations": {
+        "v1_mean": 15.625,
+        "v2_mean": 11.375,
+        "v2_over_v1": 0.728
+      },
+      "linear_iterations": {
+        "v1_mean": 174.875,
+        "v2_mean": 119.5,
+        "v2_over_v1": 0.6833452466047176
+      },
+      "geometry_iterations": {
+        "v1_mean": 3.0,
+        "v2_mean": 3.0,
+        "v2_over_v1": 1.0
+      },
+      "eta_relative_maximum_absolute_difference": 4.850075896456474e-11,
+      "max_overlap_fraction_min_semiaxis_maximum_absolute_difference": 1.5543122344752192e-15,
+      "solver_relative_residual_maximum_absolute_difference": 5.944464593788578e-12
+    }
+  ],
+  "physical_equations_changed": false,
+  "newton_iteration_budget_changed": false,
+  "timestep_changed": false,
+  "tolerances_relaxed": false
+}

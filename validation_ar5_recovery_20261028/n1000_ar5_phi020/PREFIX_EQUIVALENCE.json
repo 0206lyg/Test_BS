@@ -1,0 +1,47 @@
+{
+  "comparisons": [
+    {
+      "comparison": "Fresh production and instrumented diagnostic prefixes",
+      "compared_rows": 1918,
+      "through_step": 1917,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted production and fresh replay prefixes",
+      "compared_rows": 1244,
+      "through_step": 1243,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted diagnostic and fresh diagnostic replay prefixes",
+      "compared_rows": 1242,
+      "through_step": 1241,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    }
+  ],
+  "all_prefix_comparisons_pass": true
+}

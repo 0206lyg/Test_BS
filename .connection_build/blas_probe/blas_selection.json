@@ -1,0 +1,25 @@
+{
+  "provider": "mkl_rt in /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+  "link_flags": "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2 -lpthread -lm -ldl -Xlinker -rpath -Xlinker /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+  "runtime_environment": {
+    "MKL_INTERFACE_LAYER": "LP64",
+    "MKL_THREADING_LAYER": "SEQUENTIAL"
+  },
+  "diagnostics": [
+    {
+      "provider": "system BLAS/LAPACK",
+      "link_flags": "-llapack -lblas",
+      "passed": false,
+      "stage": "link",
+      "error": "/usr/bin/ld: cannot find -llapack\n/usr/bin/ld: cannot find -lblas\ncollect2: error: ld returned 1 exit status\n"
+    },
+    {
+      "provider": "mkl_rt in /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+      "link_flags": "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2 -lpthread -lm -ldl -Xlinker -rpath -Xlinker /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+      "passed": true,
+      "stage": "DGEMM_DGESV_LP64_clean_runtime"
+    }
+  ],
+  "probe_library": "/home/lee6456/slurry/.connection_build/blas_probe/probe_1.so",
+  "passed": true
+}

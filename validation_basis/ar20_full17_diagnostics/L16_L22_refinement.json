@@ -1,0 +1,16 @@
+{
+  "schema": "ar20_direct_refinement_v1",
+  "left": "/workspace/scratch/581ed100c5ad/ar20_validation/L16_h050_self16384.json",
+  "right": "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_t3_p256.json",
+  "h_over_c": 0.5,
+  "relative_energy_changes": {
+    "full17": 0.015804667494370817,
+    "velocity12": 0.015797195218757665,
+    "clamped_strain5": 0.003672663638479623,
+    "force_torque_free_strain5": 0.00018720663524129932,
+    "reduced11": 0.015804194543459826
+  },
+  "limit": 0.01,
+  "all_energy_changes_below_one_percent": false,
+  "scope": "One refinement in the same MFS family; not independent accuracy certification"
+}

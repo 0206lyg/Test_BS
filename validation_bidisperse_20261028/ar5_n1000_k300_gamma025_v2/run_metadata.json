@@ -1,0 +1,17 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/bidisperse_update_20261028/fixture_ar5_phi024_n1000",
+  "plugin": "/workspace/scratch/af0f332bc475/bidisperse_update_20261028/libslurry_bidisperse_v2.so",
+  "plugin_sha256": "a8cab2458e735ca2f69b772ba117c6aa45d0b63dba43bf7b6f89f81d3bfb54b1",
+  "particles_sha256": "4aa0827d026f800dbc2924ee8216ff2f7924725fd3db4bb3b3a1959665d241f0",
+  "input_sha256": "b7388e05d2c73e3df4934495d7d84d4884283e00f4b48c7489a76e4ad0754523",
+  "steps": 1000,
+  "dt_s": 2.5e-06,
+  "kn_N_per_m": 300.0,
+  "kt_kr_N_per_m": 240.0,
+  "threads": 1,
+  "history_interval_steps": 1,
+  "backend": "nearfield",
+  "contact_scheme": "imex",
+  "steady_state_certified": false,
+  "attraction_tested": false
+}

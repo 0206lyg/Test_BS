@@ -1,0 +1,135 @@
+{
+  "schema": "independent_ar20_reference_and_matching_comparison_v1",
+  "qualified": false,
+  "scope": "Only the recorded AR20 pose and explicitly supplied effective gaps; no other AR or full table",
+  "convention_id": "slurry_full17_c_eta_1_v1",
+  "conventions": {
+    "input": "Ui-uinf(xi),a(Omegai-Omegainf),Uj-uinf(xj),a(Omegaj-Omegainf),aE5; c=eta=1,a=20",
+    "output": "Fsource_i,Tsource_i/a,Fsource_j,Tsource_j/a,sum intrinsic S/a; physical hydrodynamic forces=-Fsource",
+    "stresslet": "minus STF symmetric source dipole about each body center; not the global-origin force dipole",
+    "combined_layer": "density is not traction; for D=+3r_i r_j(r.n)/(4pi r^5), M=STF integral[alpha sym(r_body tensor q)+2beta sym(n tensor q)], S=-M"
+  },
+  "thresholds": {
+    "reference_refinement_budget": 0.002,
+    "total_model_budget": 0.01,
+    "boundary_max_scaled": 0.001,
+    "raw_reciprocity": 0.001,
+    "energy_scaled_raw_reciprocity": 0.001,
+    "surface_position_error_over_gap": 0.001,
+    "linear_relative_residual": 1e-08,
+    "encoding_energy": 1e-09,
+    "minimum_consecutive_refinements": 2,
+    "minimum_heldout_gaps": 1
+  },
+  "reference_groups": [
+    {
+      "h_over_c": 1.0,
+      "gap_nm": 150.0,
+      "references": [
+        {
+          "path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_l1.json",
+          "sha256": "3dfde437852147f1e24088c8ade1dc8d87d5365e3e0d1fb7fea9605c1a8d1b08",
+          "resolution_level": 106,
+          "method": "independent_ar20_panel_bie_v1",
+          "raw_reciprocity": 0.00047026140968323165,
+          "minimum_symmetric_eigenvalue": 9.935878490783345,
+          "energy_scaled_raw_reciprocity": 0.0036564619896734796,
+          "discretization_signature": "{\"mesh_sha256\": \"714f18d6a6bf3e67cd5e225263679810040dce181a057e24887fc9c3a2a6d353\"}",
+          "quadrature_tolerance": 1e-07,
+          "boundary_max_scaled_error": 0.5553414365256324,
+          "linear_relative_residual": 7.461924468139537e-14,
+          "boundary_evaluation_valid": null,
+          "exact_surface_position_max_error_over_gap": 0.0006809933640330936,
+          "moment_method": "combined_layer_farfield_moments",
+          "max_scaled_flux_error": 0.00021132577588994198,
+          "source_gates_passed": false,
+          "source_gate_failures": [
+            "isolated_spheroid_moment_validation_missing_or_failed",
+            "boundary_evaluator_failed_or_clean_execution_not_verified",
+            "boundary_error_missing_or_above_tolerance",
+            "energy_scaled_raw_reciprocity_missing_or_above_tolerance"
+          ],
+          "source_claimed_qualified": false
+        }
+      ],
+      "refinements": [],
+      "qualified_reference": false,
+      "distinct_resolution_levels": true,
+      "distinct_discretizations": true,
+      "estimated_energy_uncertainty": null,
+      "estimated_block_uncertainty": null,
+      "uncertainty_interpretation": "maximum of last two observed refinement changes, measured against latest reference; not a rigorous error bound",
+      "latest_path": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_l1.json"
+    }
+  ],
+  "qualification_failures": [
+    "matching_anchor_unqualified",
+    "insufficient_heldout_gaps"
+  ],
+  "matching": {
+    "anchor_gap_over_c": 1.0,
+    "anchor_file": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p6_l1.json",
+    "anchor_qualified": false,
+    "formula": "Gmodel(h)=Gisolated(h)+Janoschek17(h)+[Gref(anchor)-Gisolated(anchor)-Janoschek17(anchor)]",
+    "model_limitations": [
+      "Janoschek K33 subleading normal-normal log term is missing",
+      "finite terms are not fully recovered by a constant anchor residual",
+      "no claim of validity beyond the explicitly compared pose and gaps"
+    ],
+    "operator_helper": "/workspace/scratch/581ed100c5ad/independent_operator_export",
+    "operator_helper_sha256": "865c4497b4c6173c2316ab6de0e958547128cd8924dcc126fd0484cdc37b03ee",
+    "model_domain_for_gate": "below-anchor",
+    "queries": [
+      {
+        "h_over_c": 1.0,
+        "gap_nm": 150.0,
+        "reference_qualified": false,
+        "is_anchor_reconstruction": true,
+        "counts_for_model_gate": false,
+        "role": "anchor_reconstruction_not_independent_test",
+        "minimum_predicted_eigenvalue": 9.935878490805443,
+        "predicted_positive": true,
+        "model_errors": {
+          "full17_max_relative_energy_error": 6.484691315307205e-12,
+          "blocks": {
+            "force": {
+              "energy_input_scaled_operator_absolute": 8.739908946626833e-14,
+              "energy_input_scaled_operator_relative": 6.020682082641611e-14,
+              "unweighted_relative_frobenius": 6.625899793385756e-16
+            },
+            "torque_over_a": {
+              "energy_input_scaled_operator_absolute": 3.1417529188346244e-13,
+              "energy_input_scaled_operator_relative": 2.2062281964827713e-13,
+              "unweighted_relative_frobenius": 3.799695529295264e-15
+            },
+            "intrinsic_stresslet_over_a": {
+              "energy_input_scaled_operator_absolute": 3.501113930962728e-14,
+              "energy_input_scaled_operator_relative": 2.4545351271336377e-14,
+              "unweighted_relative_frobenius": 8.179117568757903e-16
+            }
+          },
+          "common_motion_max_relative_energy_error": 9.427870539252884e-13,
+          "fixed_body_total_dipole_max_relative_energy_error": 1.054662228012901e-14,
+          "fixed_body_intrinsic_stress_relative_frobenius_error": 4.8721503358296884e-15,
+          "fixed_body_definition": "U=Omega=0; uinf=E(x-contact_midpoint), so center-nonaffine U=-E(xi-contact_midpoint)",
+          "force_torque_free_strain_max_relative_energy_error": 5.468505630322032e-12,
+          "force_torque_free_velocity_relative_frobenius_error": 5.94181558996876e-13
+        },
+        "estimated_anchor_change_in_query_energy_metric": null,
+        "estimated_total_energy_budget_used": null,
+        "estimated_total_block_budgets_used": null,
+        "budget_interpretation": "discrepancy plus observed reference/anchor refinement estimates; conservative accounting, not a rigorous bound",
+        "encoding": {
+          "independent_values": 153,
+          "maximum_relative_energy_error": 1.1642493798719994e-12,
+          "passed": true,
+          "scope": "one-node153-entry storage/restore only, not table interpolation"
+        },
+        "qualified_comparison": false
+      }
+    ],
+    "heldout_gap_count": 0
+  },
+  "qualification_scope": "Only explicitly compared held-out gaps in model_domain, using qualified independent reference groups",
+  "wall_seconds": 0.21093620300052862
+}

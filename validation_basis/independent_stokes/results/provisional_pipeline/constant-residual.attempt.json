@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/dev/shm/build-reference-pipeline/slurry_precompute_reference17",
+    "--source",
+    "validation_basis/independent_stokes/results/provisional_pipeline/current_source17.txt",
+    "--output",
+    "validation_basis/independent_stokes/results/provisional_pipeline/constant-residual.sft",
+    "--report",
+    "validation_basis/independent_stokes/results/provisional_pipeline/constant-residual.generation.json",
+    "--matched-model",
+    "constant-residual",
+    "--layout",
+    "sparse",
+    "--gap-nodes",
+    "129",
+    "--interpolation-tolerance",
+    "1e-6"
+  ],
+  "returncode": 1,
+  "seconds": 0.01685410999925807,
+  "source_sha256": "9914fd880253ec7889348b286311902a09a921d14cc64128dcee3f463d0dd5c0",
+  "executable_sha256": "483a639d435333b7f685c9152612451414b117438df9ad95eab05ff472519f0c",
+  "table_written": false,
+  "physical_accuracy_qualified": false
+}

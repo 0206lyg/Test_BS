@@ -1,0 +1,125 @@
+{
+  "status": "USER_REQUESTED_STOP",
+  "user_requested_action": "Stop long-running tests immediately and deliver the current overlay.",
+  "termination_method": "Ctrl-C",
+  "returncode": 130,
+  "not_a_completed_4000_step_run": true,
+  "production": {
+    "run": "candidate_v4_restarted",
+    "status": "USER_REQUESTED_STOP",
+    "returncode": 130,
+    "returncode_source": "Root agent observed tool session exit130 after Ctrl-C requested by user.",
+    "requested_steps": 4000,
+    "last_step": 1974,
+    "last_strain": 0.4935,
+    "recorded_rows": 1975,
+    "requested_run_completed": false,
+    "final_data_present": false,
+    "maximum_physical_relative_residual": 9.9966238251605e-08,
+    "maximum_overlap_fraction_min_semiaxis": 0.0004519484496950943,
+    "maximum_overlap_percent_min_semiaxis": 0.04519484496950943,
+    "finite_numeric_diagnostics_except_documented_undefined_averages": true,
+    "intentional_undefined_average_field_counts": {
+      "mean_eta_Pa_s": 1975,
+      "interval_mean_sigma_solvent_Pa": 1,
+      "interval_mean_sigma_hydro_Pa": 1,
+      "interval_mean_sigma_contact_Pa": 1,
+      "interval_mean_sigma_xz_Pa": 1,
+      "interval_mean_eta_Pa_s": 1,
+      "interval_mean_eta_relative": 1
+    },
+    "unexpected_nonfinite_values": [],
+    "recovery_events": [],
+    "recovered_steps": 0,
+    "additional_recovery_updates": 0,
+    "console_contains_error": false,
+    "measured_prefix_physical_gates_pass": true,
+    "history_sha256": "b3c1825abdcb115b1232f23be72c228336445bc58ce3656e0eac87a7a42877ee",
+    "console_sha256": "4ea2b349738842949846ab7ae4e069406e63f660291fb8399ac8aba51d3c5df4",
+    "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+    "particles_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "input_sha256": "c52cfb6edcd6d0d05cd5940ebe6dc1ea3871ff810b30a78cbc038d945c989a0e"
+  },
+  "diagnostic": {
+    "run": "diagnostic_v4_restarted",
+    "status": "USER_REQUESTED_STOP",
+    "returncode": 130,
+    "returncode_source": "Root agent observed tool session exit130 after Ctrl-C requested by user.",
+    "requested_steps": 4000,
+    "last_step": 1917,
+    "last_strain": 0.47925000000000006,
+    "recorded_rows": 1918,
+    "requested_run_completed": false,
+    "final_data_present": false,
+    "maximum_physical_relative_residual": 9.9966238251605e-08,
+    "maximum_overlap_fraction_min_semiaxis": 0.0003939934282214952,
+    "maximum_overlap_percent_min_semiaxis": 0.03939934282214952,
+    "finite_numeric_diagnostics_except_documented_undefined_averages": true,
+    "intentional_undefined_average_field_counts": {
+      "mean_eta_Pa_s": 1918,
+      "interval_mean_sigma_solvent_Pa": 1,
+      "interval_mean_sigma_hydro_Pa": 1,
+      "interval_mean_sigma_contact_Pa": 1,
+      "interval_mean_sigma_xz_Pa": 1,
+      "interval_mean_eta_Pa_s": 1,
+      "interval_mean_eta_relative": 1
+    },
+    "unexpected_nonfinite_values": [],
+    "recovery_events": [],
+    "recovered_steps": 0,
+    "additional_recovery_updates": 0,
+    "console_contains_error": false,
+    "measured_prefix_physical_gates_pass": true,
+    "history_sha256": "bae575c29e1e9faafed4ab6014b1a3e220e754fab3889ff5244cb1b406d69774",
+    "console_sha256": "f349a4a23bb454c11f66aea6bd0ea26199a0133b11400ddd2e5f9a0946a43f7d",
+    "plugin_sha256": "590027eb132baae02d594a8852755a7a1fb21278584c31b8baf825fed4284809",
+    "particles_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+    "input_sha256": "c52cfb6edcd6d0d05cd5940ebe6dc1ea3871ff810b30a78cbc038d945c989a0e"
+  },
+  "prefix_comparisons": [
+    {
+      "comparison": "Fresh production and instrumented diagnostic prefixes",
+      "compared_rows": 1918,
+      "through_step": 1917,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted production and fresh replay prefixes",
+      "compared_rows": 1244,
+      "through_step": 1243,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    },
+    {
+      "comparison": "Original interrupted diagnostic and fresh diagnostic replay prefixes",
+      "compared_rows": 1242,
+      "through_step": 1241,
+      "excluded_timing_columns": [
+        "profile_geometry_s",
+        "profile_middle_s",
+        "profile_solve_s",
+        "profile_total_s"
+      ],
+      "non_timing_fields_match_exactly": true,
+      "difference_count": 0,
+      "first_100_differences": []
+    }
+  ],
+  "no_solver_failure_observed_before_stop": true,
+  "no_steady_state_or_strain_50_claim": true
+}

@@ -1,0 +1,39 @@
+{
+  "scope": "DONTNEED cache hint for task-owned dependency/build regular files; no files modified, no credit-rule changes",
+  "files": 21,
+  "total_file_bytes": 425353817,
+  "before": {
+    "path": "/sys/fs/cgroup",
+    "limit_bytes": 8589934592,
+    "current_bytes": 931966976,
+    "memory_stat": {
+      "anon": 134283264,
+      "file": 701677568,
+      "kernel": 92585984,
+      "inactive_file": 16560128,
+      "active_file": 685117440,
+      "file_dirty": 2027520,
+      "file_writeback": 0,
+      "shmem": 0
+    },
+    "reclaimable_clean_inactive_file_bytes": 14532608,
+    "effective_current_bytes": 917434368
+  },
+  "after": {
+    "path": "/sys/fs/cgroup",
+    "limit_bytes": 8589934592,
+    "current_bytes": 898441216,
+    "memory_stat": {
+      "anon": 134303744,
+      "file": 668909568,
+      "kernel": 91709440,
+      "inactive_file": 16556032,
+      "active_file": 652353536,
+      "file_dirty": 2027520,
+      "file_writeback": 0,
+      "shmem": 0
+    },
+    "reclaimable_clean_inactive_file_bytes": 14528512,
+    "effective_current_bytes": 883912704
+  }
+}

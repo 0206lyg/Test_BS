@@ -1,0 +1,16 @@
+{
+  "compared_rows": 1871,
+  "last_strict_step": 1870,
+  "keys": [
+    "step",
+    "strain",
+    "sigma_xz_Pa",
+    "eta_Pa_s",
+    "newton_iterations",
+    "linear_iterations",
+    "solver_relative_residual",
+    "actual_endpoint_max_overlap_fraction_min_semiaxis"
+  ],
+  "differing_values": 0,
+  "first_differences": []
+}

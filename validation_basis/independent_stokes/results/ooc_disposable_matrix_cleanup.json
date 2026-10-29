@@ -1,0 +1,9 @@
+{
+  "schema": "completed_operator_scratch_cleanup_v1",
+  "path": "/workspace/scratch/581ed100c5ad/ar20_validation/mmap_check/mmap_dense_c1rkhons/operator.f64",
+  "reason": "Disposable exact matrix from completed N2352 storage equivalence diagnostic; source and solution/comparison evidence retained. Reproducible, not a physical density checkpoint.",
+  "size_bytes": 398297088,
+  "free_before": 8012566528,
+  "removed_matrix_sha256": "58c45ba2ea05edf87b7c4f9a61da8d53464da23c7105ad41c3d95a67e357192a",
+  "free_after": 8407203840
+}

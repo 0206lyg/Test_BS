@@ -10,6 +10,7 @@ particles. Its steps are not physical dynamics or strain equilibration.
 
 import argparse
 import hashlib
+import importlib.util
 import itertools
 import json
 import math
@@ -17,9 +18,12 @@ import os
 from pathlib import Path
 import random
 import shutil
+import signal
+import socket
 import subprocess
 import sys
 import tempfile
+import time
 
 
 DEFAULT_PACKER = Path(__file__).resolve().parents[2] / "build" / "lammps-slurry" / "slurry_pack"
@@ -59,6 +63,36 @@ def write_json_atomic(path, record):
     finally:
         if pending.exists():
             pending.unlink()
+
+
+def run_fast_generator(command, diagnostic_path):
+    """One fresh-process retry for SIGBUS, using checked atomic checkpoints.
+
+    This does not retry a numerical gate failure, skip a pose, or accept a
+    partial table. A persistent SIGBUS is still fatal and has a saved record.
+    """
+    attempts = []
+    for attempt in (1, 2):
+        start = time.monotonic()
+        completed = subprocess.run(command)
+        attempts.append({"attempt": attempt, "returncode": completed.returncode,
+                         "elapsed_seconds": time.monotonic() - start})
+        if completed.returncode == 0:
+            if len(attempts) > 1:
+                write_json_atomic(diagnostic_path, {"hostname": socket.gethostname(),
+                    "slurm_job_id": os.environ.get("SLURM_JOB_ID"), "command": command,
+                    "attempts": attempts, "completed_after_sigbus_restart": True})
+            return
+        write_json_atomic(diagnostic_path, {"hostname": socket.gethostname(),
+            "slurm_job_id": os.environ.get("SLURM_JOB_ID"), "command": command,
+            "attempts": attempts, "completed_after_sigbus_restart": False})
+        if completed.returncode == -signal.SIGBUS and attempt == 1:
+            print("Table generator received SIGBUS on {}. Restarting once in a fresh process; "
+                  "only checksum-verified completed checkpoints will be reused. Diagnostic: {}".format(
+                      socket.gethostname(), diagnostic_path), flush=True)
+            continue
+        raise ValueError("Fast-table generation failed with exit {}; no table was activated. "
+                         "Diagnostic: {}".format(completed.returncode, diagnostic_path))
 
 
 def source_gate_summary(path, args, source, fingerprint, film_grid, mode="matched_provider"):
@@ -111,6 +145,16 @@ def resolve_source_gate(args, source, fingerprint, film_grid, destination):
             "checks": checks, "scope": "Direct near basis and matched-provider reference cases; bulk remains untested"}
 
 
+def pair_numerical_records_passed(records):
+    """Use the current validator for both fresh and cached pair diagnostics."""
+    if not isinstance(records, list) or not all(isinstance(record, dict) for record in records):
+        return False
+    spec = importlib.util.spec_from_file_location("slurry_numerical_gate_records", str(DEFAULT_FAST_GATE_RUNNER))
+    gate_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gate_module)
+    return gate_module.numerical_records_passed(records)
+
+
 def resolve_generic_source_gate(args, source, fingerprint, film_grid, destination):
     """AR-parametric numerical checks do not substitute for independent pair data."""
     supplied = getattr(args, "finite_gap_fast_source_gate", None)
@@ -118,14 +162,14 @@ def resolve_generic_source_gate(args, source, fingerprint, film_grid, destinatio
     if supplied is None:
         executable = (getattr(args, "finite_gap_fast_gate_executable", None) or offline_executable(args, "slurry_basis_physical_probe")).expanduser().resolve()
         if not executable.is_file() or not os.access(str(executable), os.X_OK):
-            raise ValueError("Generic-AR table generation requires the isolated spheroid numerical probe; rebuild offline tools")
+            raise ValueError("Generic-AR table generation requires the spheroid pair numerical probe; rebuild offline tools")
         completed = subprocess.run([sys.executable, str(DEFAULT_FAST_GATE_RUNNER), "--executable", str(executable),
-                                    "--basis", str(source), "--mode", "isolated_only", "--film-grid", str(film_grid),
+                                    "--basis", str(source), "--mode", "pair_numerical", "--film-grid", str(film_grid),
                                     "--report", str(report)])
         if completed.returncode != 0:
-            raise ValueError("AR={} isolated spheroid numerical gate failed; no full table was generated".format(args.ar))
+            raise ValueError("AR={} two-particle numerical gate failed; no full table was generated. Report: {}".format(args.ar, report))
     raw = load_json_object(report)
-    for key, expected in (("evaluated_path", "isolated_only"), ("basis_sha256", file_sha256(source)),
+    for key, expected in (("gate", "source_numerical"), ("evaluated_path", "pair_numerical"), ("basis_sha256", file_sha256(source)),
                           ("source_fingerprint", fingerprint), ("compiled_source_fingerprint", fingerprint), ("film_grid", film_grid)):
         if raw.get(key) != expected:
             raise ValueError("Generic-AR numerical gate {} identity mismatch".format(key))
@@ -134,15 +178,19 @@ def resolve_generic_source_gate(args, source, fingerprint, film_grid, destinatio
     isolated = [record for record in raw.get("records", []) if record.get("stage") == "isolated_units"]
     if raw.get("passed") is not True or not isolated or any(record.get("passed") is not True for record in isolated):
         raise ValueError("Generic-AR isolated numerical gate did not pass")
+    if not pair_numerical_records_passed(raw.get("records", [])):
+        raise ValueError("Generic-AR numerical gate lacks the complete passing pair checks")
     for record in isolated:
         for field in ("all11_error", "raw_reciprocity"):
             value = record.get(field)
             if not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= .001:
                 raise ValueError("Generic-AR isolated {} exceeds the 0.1% numerical limit".format(field))
-    numerical = {"status": "passed", "isolated_checks": isolated, "report": str(report),
+    numerical = {"status": "passed", "category": "numerical", "evaluated_path": "pair_numerical",
+                 "isolated_checks": isolated, "report": str(report),
                  "report_sha256": file_sha256(report), "boundary_checks": [],
+                 "pair_checks": [record for record in raw["records"] if record.get("stage") == "pair_numerical"],
                  "compiled_source_fingerprint": fingerprint,
-                 "scope": "Analytic isolated response and available basis boundary diagnostics; no independent pair comparison"}
+                 "scope": "Analytic isolated response, five pair numerical checks and available basis boundary diagnostics; no independent pair comparison"}
     generation = Path(str(source) + ".pipeline.json")
     if generation.is_file():
         provenance = load_json_object(generation)
@@ -206,6 +254,16 @@ def read_fast_manifest(table, args, source=None, fingerprint=None, expected_sett
                     not math.isfinite(limit) or not math.isfinite(error) or not 0 < limit <= maximum or
                     not 0 <= error <= limit):
                 raise ValueError("Fast-table manifest {} pass conflicts with its numerical result".format(label))
+    numerical = manifest.get("source_numerical_gate", {})
+    if not isinstance(numerical, dict):
+        raise ValueError("Fast-table manifest has no valid source numerical gate")
+    if numerical.get("status") == "passed":
+        if numerical.get("category") != "numerical" or numerical.get("evaluated_path") != "pair_numerical":
+            raise ValueError("Cached numerical gate must identify the pair_numerical path and numerical category")
+        isolated, pairs = numerical.get("isolated_checks"), numerical.get("pair_checks")
+        if (not isinstance(isolated, list) or not isinstance(pairs, list) or
+                not pair_numerical_records_passed(isolated + pairs)):
+            raise ValueError("Cached numerical gate lacks the complete currently passing pair checks")
     if manifest.get("table", {}).get("settings", {}).get("profile") == "smoke" and any(
             manifest[key].get("status") == "passed" for key in ("source_gate", "interpolation_gate")):
         raise ValueError("A coarse smoke table cannot be marked physically or interpolation qualified")
@@ -289,35 +347,98 @@ def read_basis_header(path, requested_ar):
             "payload_validation": "C++ provider checks all matrices when loaded"}
 
 
+def basis_generation_settings(args):
+    """Initial geometric resolution, followed by the unchanged numerical gates.
+
+    Confocal source depth stays at c/2. Its smallest surface separation is
+    a-sqrt(a*a-3*c*c/4), asymptotically 3*c*c/(8*a). Thus meridional ring
+    resolution grows with AR and isolated-kernel azimuth resolution with AR^2.
+    Runtime pair quadrature resolves the fixed h/c matching gaps, hence AR.
+    These are starting resolutions, not an accuracy certificate for every AR.
+    """
+    scale = max(1.0, float(args.ar) / 10.0)
+    automatic = {
+        "source_rings": int(math.ceil(96 * scale / 16)) * 16,
+        "source_phi": int(math.ceil(128 * scale / 32)) * 32,
+        "fit_phi": int(math.ceil(4096 * scale * scale / 128)) * 128,
+    }
+    settings = {}
+    for key, default in automatic.items():
+        value = getattr(args, "finite_gap_fast_basis_" + key, None)
+        settings[key] = default if value is None else value
+        integer(settings[key], "finite-gap-fast-basis-" + key.replace("_", "-"), minimum=4)
+    settings["check_phi"] = 2 * settings["fit_phi"]
+    target_factor = getattr(args, "finite_gap_fast_basis_target_factor", 3)
+    integer(target_factor, "finite-gap-fast-basis-target-factor")
+    if target_factor > 8:
+        raise ValueError("Finite-gap target oversampling factor must be between 1 and 8")
+    settings["target_factor"] = target_factor
+    near = getattr(args, "finite_gap_fast_basis_degree", 12)
+    far = getattr(args, "finite_gap_fast_far_degree", 8)
+    for degree in (near, far):
+        integer(degree, "finite-gap basis degree")
+        if degree > 30:
+            raise ValueError("Finite-gap basis degree must not exceed 30")
+        coefficients = 3 * (degree + 1) ** 2 - 1
+        if (3 * target_factor ** 2 * (degree + 3) * (2 * degree + 5) * coefficients > 16000000):
+            raise ValueError("Requested target quadrature exceeds the generator projection storage limit")
+        if settings["source_rings"] * (2 * (degree + 2) + 1) * 3 * coefficients > 16000000:
+            raise ValueError("Requested AR/basis resolution exceeds the generator coefficient storage limit")
+    if (settings["source_rings"] > 512 or settings["source_phi"] > 1024 or
+            settings["source_rings"] * settings["source_phi"] > 100000 or
+            settings["check_phi"] > 1048576):
+        raise ValueError("Requested AR/basis resolution exceeds the generator dimensions; no generation started")
+    settings["degrees"] = {"near": near, "far": far}
+    return settings
+
+
+def check_generated_basis_report(path, ar):
+    """Do not install a generated source that already fails its own diagnostics."""
+    record = load_json_object(path)
+    failures = []
+    if not math.isclose(float(record.get("aspect_ratio", 0)), ar, rel_tol=1e-10):
+        failures.append("AR mismatch")
+    for field, limit in (("isolated_all11_energy_error", .001), ("isolated_reciprocity", .001),
+                         ("offgrid_physical11_weighted_relative", .001),
+                         ("offgrid_basis_weighted_relative", .01)):
+        value = record.get(field)
+        if (not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= limit):
+            failures.append("{}={} (limit {})".format(field, value, limit))
+    if record.get("loader_roundtrip_pass") is not True:
+        failures.append("serialized loader roundtrip did not pass")
+    if failures:
+        raise ValueError("AR={} generated near basis failed: {}. Report: {}. "
+                         "No basis was installed and no table was generated".format(ar, "; ".join(failures), path))
+    return record
+
+
 def resolve_fast_basis(args):
     source = args.finite_gap_fast_source
     if source is None:
         return None
     source = source.expanduser().resolve()
+    settings = (basis_generation_settings(args) if not source.exists() or
+                Path(str(source) + ".pipeline.json").is_file() else None)
     if not source.exists():
         generator = (getattr(args, "finite_gap_fast_basis_generator", None) or offline_executable(args, "slurry_generate_basis")).expanduser().resolve()
         if not generator.is_file() or not os.access(str(generator), os.X_OK):
             raise ValueError("Missing basis {} and executable AR-basis generator {}; build slurry_generate_basis or supply a matching basis".format(source, generator))
-        near_degree = getattr(args, "finite_gap_fast_basis_degree", 12)
-        far_degree = getattr(args, "finite_gap_fast_far_degree", 8)
-        source_rings = getattr(args, "finite_gap_fast_basis_source_rings", 96)
-        source_phi = getattr(args, "finite_gap_fast_basis_source_phi", 128)
-        integer(source_rings, "finite-gap-fast-basis-source-rings", minimum=4)
-        integer(source_phi, "finite-gap-fast-basis-source-phi", minimum=8)
-        for degree in (near_degree, far_degree):
-            integer(degree, "finite-gap basis degree")
-            if degree > 30:
-                raise ValueError("Finite-gap basis degree must not exceed 30")
+        near_degree, far_degree = settings["degrees"]["near"], settings["degrees"]["far"]
+        source_rings, source_phi = settings["source_rings"], settings["source_phi"]
         source.parent.mkdir(parents=True, exist_ok=True)
-        print("Generating actual AR={} scattering bases (far degree {}, near degree {}); physical gate follows separately".format(
-              args.ar, far_degree, near_degree), flush=True)
+        print("Generating actual AR={} scattering bases (far degree {}, near degree {}, source rings {}, "
+              "runtime phi {}, fit/check phi {}/{}, target oversampling {}); pair checks follow separately".format(
+              args.ar, far_degree, near_degree, source_rings, source_phi,
+              settings["fit_phi"], settings["check_phi"], settings["target_factor"]), flush=True)
         with tempfile.TemporaryDirectory(prefix=".basis-build-", dir=str(source.parent)) as temporary:
             far, hybrid = Path(temporary) / "far.ssb", Path(temporary) / "matched.ssb"
             commands = []
             for degree, output, label in ((far_degree, far, "far"), (near_degree, hybrid, "near")):
                 command = [str(generator), "--ar", format_float(args.ar), "--degree", str(degree),
                            "--source-rings", str(source_rings), "--source-phi", str(source_phi),
-                           "--fit-phi", "4096", "--check-phi", "8192",
+                           "--fit-phi", str(settings["fit_phi"]), "--check-phi", str(settings["check_phi"]),
+                           "--target-rings", str(settings["target_factor"] * (degree + 3)),
+                           "--target-phi", str(settings["target_factor"] * (2 * degree + 5)),
                            "--output", str(output), "--report", str(source) + "." + label + "-generation.json"]
                 if label == "near":
                     command += ["--far-basis", str(far), "--hybrid-version", "3", "--anchor-gaps", "0.5,1"]
@@ -329,6 +450,8 @@ def resolve_fast_basis(args):
             header = read_basis_header(hybrid, args.ar)
             if header["format"] != "SLURRY_HYBRID_V3":
                 raise ValueError("Basis generator did not produce the requested V3 source; rebuild the offline generator")
+            # V3 uses only the near slot; do not reject its inactive far slot.
+            check_generated_basis_report(Path(str(source) + ".near-generation.json"), args.ar)
             os.replace(str(far), str(source) + ".far.ssb")
             os.replace(str(hybrid), str(source))
             write_json_atomic(Path(str(source) + ".pipeline.json"), {
@@ -338,6 +461,9 @@ def resolve_fast_basis(args):
                 "source_format": header["format"], "source_policy": header["source_policy"],
                 "source_anchors_over_c": header["anchors_over_c"],
                 "source_rings": source_rings, "source_phi": source_phi,
+                "fit_phi": settings["fit_phi"], "check_phi": settings["check_phi"],
+                "target_factor": settings["target_factor"],
+                "resolution_policy": "confocal_geometry_scaled_target_oversampled_v2",
                 "generation_reports": {label: file_sha256(Path(str(source) + "." + label + "-generation.json")) for label in ("far", "near")},
                 "source_gate": {"status": "not_run"}})
     if not source.is_file():
@@ -345,10 +471,11 @@ def resolve_fast_basis(args):
     pipeline = Path(str(source) + ".pipeline.json")
     if pipeline.is_file():
         record = load_json_object(pipeline)
-        expected = {"degrees": {"near": getattr(args, "finite_gap_fast_basis_degree", 12),
-                                 "far": getattr(args, "finite_gap_fast_far_degree", 8)},
-                    "source_rings": getattr(args, "finite_gap_fast_basis_source_rings", 96),
-                    "source_phi": getattr(args, "finite_gap_fast_basis_source_phi", 128)}
+        # Old pipeline records used fixed quadrature, but did not store these keys.
+        record.setdefault("fit_phi", 4096)
+        record.setdefault("check_phi", 8192)
+        record.setdefault("target_factor", 1)
+        expected = settings
         if record.get("basis_sha256") != file_sha256(source):
             raise ValueError("Generated basis changed without matching provenance; select a coherent basis file")
         for key, value in expected.items():
@@ -467,6 +594,7 @@ def resolve_fast_table(args, a):
     requested_table = args.finite_gap_fast_table
     requested_table = requested_table.expanduser().resolve() if requested_table is not None else None
     source = resolve_fast_basis(args)
+    source_sha256 = file_sha256(source) if source is not None else None
     table = requested_table
     generator = (args.finite_gap_fast_generator or offline_executable(args, "slurry_precompute_fast")).expanduser().resolve()
     film_grid = getattr(args, "finite_gap_fast_film_grid", DEFAULT_FAST_FILM_GRID)
@@ -537,10 +665,7 @@ def resolve_fast_table(args, a):
                 command += ["--angle-intervals", str(settings["angle_intervals"])]
             if smoke:
                 command += ["--smoke", "1"]
-            try:
-                subprocess.run(command, check=True)
-            except subprocess.CalledProcessError as error:
-                raise ValueError("Fast-table generation failed with exit {}; no fallback".format(error.returncode))
+            run_fast_generator(command, Path(str(table) + ".process-diagnostic.json"))
             header = read_fast_table_header(pending, args, a)
             if header["format"] != table_format:
                 raise ValueError("Generated table format does not match the selected source bridge version")
@@ -552,6 +677,8 @@ def resolve_fast_table(args, a):
                     raise ValueError("Generated V2 table joins do not match the selected source anchors")
             if fast_source_fingerprint() != numerical_fingerprint:
                 raise ValueError("Numerical source changed during table generation; incomplete result will not be activated")
+            if file_sha256(source) != source_sha256:
+                raise ValueError("Source basis changed during table generation; mixed input was not activated")
             generator_record = Path(str(pending) + ".json")
             saved_generator_record = Path(str(table) + ".json")
             manifest = {"schema": 1, "ar": args.ar, "geometry": "equal_size_oblate",
@@ -787,8 +914,10 @@ def resolve_lubrication(args, a, resolve_tables=True):
             getattr(args, "finite_gap_fast_nphi", DEFAULT_FAST_NPHI) != DEFAULT_FAST_NPHI or
             getattr(args, "finite_gap_fast_threads", 1) != 1 or getattr(args, "finite_gap_fast_smoke", False) or
             getattr(args, "finite_gap_fast_basis_degree", 12) != 12 or getattr(args, "finite_gap_fast_far_degree", 8) != 8 or
-            getattr(args, "finite_gap_fast_basis_source_rings", 96) != 96 or
-            getattr(args, "finite_gap_fast_basis_source_phi", 128) != 128):
+            getattr(args, "finite_gap_fast_basis_source_rings", None) not in (None, 96) or
+            getattr(args, "finite_gap_fast_basis_source_phi", None) not in (None, 128) or
+            getattr(args, "finite_gap_fast_basis_fit_phi", None) not in (None, 4096) or
+            getattr(args, "finite_gap_fast_basis_target_factor", 3) != 3):
         raise ValueError("finite-gap-fast options require --lubrication-model finite_gap_fast; no implicit model change")
     requested_finite = model == "finite_gap"
     if model == "finite_gap_fast":
@@ -972,7 +1101,8 @@ def prepare(args):
                "--history", str(output/"packing_history.csv"),
                "--growth-fraction", format_float(args.growth_fraction),
                "--overlap-tolerance", format_float(args.overlap_tolerance),
-               "--max-relax", str(args.max_relax)]
+               "--max-relax", str(args.max_relax),
+               "--contact-gap-m", format_float(contact_gap)]
     print(f"Growing N={args.count}, AR={args.ar:g}, phi={initial_phi:g} -> {args.phi:g}", flush=True)
     # Preserve live progress in Slurm stdout and a separate preparation log.
     with (output/"packing.log").open("w") as log:
@@ -1124,7 +1254,7 @@ def main():
     parser.add_argument("--tangential-stiffness", type=float, default=80.0, help="N/m; tangential contact spring")
     parser.add_argument("--count", type=int, default=300)
     parser.add_argument("--viscosity", type=float, default=0.01, help="Newtonian medium, Pa s")
-    parser.add_argument("--normal-stiffness", type=float, default=1.0, help="N/m; finite repulsive spring")
+    parser.add_argument("--normal-stiffness", type=float, default=100.0, help="N/m; finite repulsive spring")
     parser.add_argument("--lubrication-model", choices=("auto", "legacy", "mari", "spheroid", "finite_gap", "finite_gap_fast"), default="auto",
                         help="auto: Mari sphere model at AR=1, local-curvature spheroid extension otherwise")
     parser.add_argument("--lubrication-epsilon-relative", type=float, default=0.001,
@@ -1149,10 +1279,14 @@ def main():
                         help="near basis order for missing-basis generation; candidate setting, not accuracy certification")
     parser.add_argument("--finite-gap-fast-far-degree", type=int, default=8,
                         help="far basis order for missing-basis generation; actual source solve for the requested AR")
-    parser.add_argument("--finite-gap-fast-basis-source-rings", type=int, default=96,
-                        help="meridional source resolution for actual missing-basis generation")
-    parser.add_argument("--finite-gap-fast-basis-source-phi", type=int, default=128,
-                        help="runtime source azimuth resolution for missing-basis generation; refine if its checks fail")
+    parser.add_argument("--finite-gap-fast-basis-source-rings", type=int, default=None,
+                        help="override AR-scaled source rings; automatic: 96 at AR<=10, 192 at AR20")
+    parser.add_argument("--finite-gap-fast-basis-source-phi", type=int, default=None,
+                        help="override AR-scaled runtime quadrature; automatic: 128 at AR<=10, 256 at AR20")
+    parser.add_argument("--finite-gap-fast-basis-fit-phi", type=int, default=None,
+                        help="override AR^2-scaled kernel quadrature; automatic: 4096 at AR<=10, 16384 at AR20; check uses twice this")
+    parser.add_argument("--finite-gap-fast-basis-target-factor", type=int, default=3,
+                        help="surface projection quadrature factor; 3 uses 45x87 targets at near degree 12; independent of source resolution")
     parser.add_argument("--finite-gap-fast-generator", type=Path, default=None,
                         help="offline generator executable; default build/lammps-slurry/slurry_precompute_fast")
     parser.add_argument("--finite-gap-fast-film-grid", type=int, default=DEFAULT_FAST_FILM_GRID,
@@ -1164,7 +1298,7 @@ def main():
     parser.add_argument("--finite-gap-fast-smoke", action="store_true",
                         help="coarse end-to-end connection test only; never a physical/rheology qualification")
     parser.add_argument("--finite-gap-fast-source-gate", type=Path, default=None,
-                        help="AR10 matched report plus sibling .direct.json; other AR isolated-only report; otherwise run checks")
+                        help="AR10 matched report plus sibling .direct.json; other AR pair-numerical report; otherwise run checks")
     parser.add_argument("--finite-gap-fast-gate-executable", type=Path, default=None,
                         help="source physical gate executable; default build/lammps-slurry/slurry_basis_physical_probe")
     parser.add_argument("--finite-gap-fast-interpolation-executable", type=Path, default=None,

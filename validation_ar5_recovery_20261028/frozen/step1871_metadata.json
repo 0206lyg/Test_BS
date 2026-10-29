@@ -1,0 +1,65 @@
+{
+  "physical_case": {
+    "particles": 256,
+    "aspect_ratio": 1,
+    "volume_fraction": 0.34,
+    "normal_stiffness_N_per_m": 300,
+    "sliding_and_rolling_stiffness_N_per_m": 240,
+    "dt_s": 2.5e-06,
+    "shear_rate_per_s": 100
+  },
+  "capture": {
+    "local_step": 1871,
+    "strain": 0.46775,
+    "compiler_optimization": "O3",
+    "phase": "strict hybrid (v3) primary40 failure, recovered naturally by v4",
+    "note": "Independent regression fixture, not the user N1000 AR5 trajectory. Original Newton is faster on this frozen state.",
+    "snapshot_tolerances_are_already_inner": true,
+    "caps_must_be_loaded_separately": true
+  },
+  "hashes": {
+    "inner_snapshot_raw_sha256": "093d45f44240d6a9fed35643e25bdcf492fa72400cc5d6d12891f5814ced6912",
+    "inner_snapshot_gzip_sha256": "180c2349f61a4b67758782889ddef62bec3adfdde9bc7628a24b6d69523219d7",
+    "caps_sha256": "e236992f901a43fdfa7fa0e357ea0ec5619782b62a40f3892d2873cca9f003c3",
+    "initial_particles_sha256": "6dde9c3260d4e19b7a612c0d7c0e19bb5f0917c6e48d689a315762f581d6d362",
+    "input_script_sha256": "80af9341ef91d2a52578dc8a242f2e44ef57189decc682002b4486daa2405fd0",
+    "production_imex_header_sha256": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+    "capture_plugin_sha256": "51073512cd3febe3595d4494001f561b4b8aa766b6c2cbb92a7fe0b2e5307c0d",
+    "portable_replay_binary_sha256": "b81dcfdcc40e88ba6375a31b14e36766d779cd428342be27199c922e2e2c6c5e",
+    "portable_replay_source_sha256": "cc3d817bcb627c18325fcc6502621c50d68696a0c4fa2b7db0c86647be55d9e3",
+    "portable_replay_log_sha256": "4d6ee59ea8b900199fd5504abda886ac701f965def60bb25337677872dafcea6",
+    "snapshot_helper_sha256": "2ba7eecf300593e16ecae3d8d6c4a64a1b466dc8b651f5945d8dffe79fcac41f"
+  },
+  "results": [
+    {
+      "name": "old40",
+      "returncode": 0,
+      "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=0.00073632630620873375 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.13133448 cpu_seconds=0.13133300000000001"
+    },
+    {
+      "name": "hybrid40",
+      "returncode": 1,
+      "result": "FAIL IMEX: convex Newton limit; residual=0.229536; tolerance=0.000736326; iterations=40; primary_limit=40; recovery_limit=0"
+    },
+    {
+      "name": "v4_default",
+      "returncode": 0,
+      "result": "PASS newton=49 linear=1114 residual=1.0048028039490449e-07 tolerance=0.00073632630620873375 relative=1.3646161991512762e-11 majorized=24 line_refinements=21 recoveries=1 recovery_iterations=9 contact_factorizations=1 max_linear_relative=3.5032975597713653e-11 seconds=0.50756584599999999 cpu_seconds=0.50752699999999995"
+    },
+    {
+      "name": "old_reference200",
+      "returncode": 0,
+      "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=0.00073632630620873375 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.136962167 cpu_seconds=0.13696"
+    },
+    {
+      "name": "old_reference_tight",
+      "returncode": 0,
+      "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=7.3632630620873388e-07 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.136376307 cpu_seconds=0.13635900000000001"
+    }
+  ],
+  "root_agreement": {
+    "relative_velocity_difference": 1.1983087037847492e-10,
+    "maximum_absolute_component_difference": 2.4114342970366076e-09
+  },
+  "portable_replay_passed": true
+}

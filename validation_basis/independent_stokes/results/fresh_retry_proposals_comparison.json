@@ -1,0 +1,45 @@
+{
+  "schema": "same_pose_retry_proposals_comparison_v1",
+  "physical_accuracy_qualified": false,
+  "proposals": [
+    {
+      "file": "pair_h150_p6_fresh_retry_minimax_proposal.json",
+      "sha256": "77432da0eacd0f5890db4ff3e8b2bab55cccaf71ca36061fee326a386d6d3328",
+      "order": 6,
+      "nodes": 9947,
+      "patches": 203,
+      "resident_matrix_bytes": 7123882248,
+      "physical_accuracy_qualified": false,
+      "executed": false,
+      "jump_only_projection_proxy_max": 0.008980485874464955,
+      "jump_only_projection_proxy_rms": 0.0031692087927894454,
+      "geometry_interpolation_over_gap_max": 0.0007333229107669449,
+      "unrefined_failing_parent_patches": []
+    },
+    {
+      "file": "pair_h150_p7_fresh_retry_proposal.json",
+      "sha256": "2df3a13f9aec6c73077bf66d358197d6df4237b4bd53f231e677c5d113679165",
+      "order": 7,
+      "nodes": 10048,
+      "patches": 157,
+      "resident_matrix_bytes": 7269285888,
+      "physical_accuracy_qualified": false,
+      "executed": false,
+      "jump_only_projection_proxy_max": 0.011507450287452621,
+      "jump_only_projection_proxy_rms": 0.002747253340448076,
+      "geometry_interpolation_over_gap_max": 0.00014920541136796776,
+      "unrefined_failing_parent_patches": []
+    },
+    {
+      "file": "pair_h150_p8_hpc_refinement_proposal.json",
+      "sha256": "c31dee4a5cee8f08b2d83ad3a10fb3c1cca9cfcc41aeab7969bc98105d9fa5e1",
+      "order": 8,
+      "nodes": 12879,
+      "patches": 159,
+      "resident_matrix_bytes": 11942542152,
+      "physical_accuracy_qualified": false,
+      "executed": false
+    }
+  ],
+  "interpretation": "Projection proxies measure only the change in the explicit beta/2 density jump under order reduction, not complete boundary velocity error, reference uncertainty, or convergence. P7 keeps more polynomial degree on resolved panels; P6 buys more spatial refinement. No candidate is proved better physically. Existing strict cgroup memory checks must approve any execution. P8 preserves order but requires more than8GiB for its LU alone."
+}

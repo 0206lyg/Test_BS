@@ -1,0 +1,16 @@
+{
+  "schema": "independent_reference_runner_adapt_contract_v1",
+  "passed": true,
+  "physical_accuracy_qualified": false,
+  "scope": "Synthetic subprocess routing; no Stokes solve",
+  "runner_sha256": "3d2b8087717af373c3d483f36b68e24d916648e91653edc6616f19eeb9e06ac3",
+  "checks": {
+    "adaptive_parent_json_copied_and_hashed": true,
+    "parent_path_with_spaces": true,
+    "captured_absolute_path_passed_to_all_profiles": true,
+    "same_parent_used_across_profiles": true,
+    "captured_parent_preserved_after_original_mutation": true,
+    "solver_option_forwarded": true
+  },
+  "recorded_at_utc": "2026-10-18T18:54:37.850715+00:00"
+}

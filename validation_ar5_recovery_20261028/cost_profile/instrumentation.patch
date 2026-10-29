@@ -1,0 +1,82 @@
+--- a/slurry_nearfield_imex_solver.h
++++ b/slurry_nearfield_imex_solver.h
+@@ -7,6 +7,7 @@
+ // minimization; changing caps or clipping its accepted forces would change the
+ // solved equation. An opened contact may release its remaining spring history
+ // only when the step is committed, adding dissipation without changing loads.
++#include "profile_cpu.h"
+ #include "slurry_nearfield_solver.h"
+ 
+ namespace SlurryNearfieldImexSolver {
+@@ -143,6 +144,7 @@
+ namespace detail {
+ struct Evaluation {bs::Result state;bs::Vector residual;double norm=0.;};
+ inline Evaluation evaluate(const bs::Problem&p,const FrozenCaps&caps,const bs::Vector&u,const Workspace&w) {
++  CostProfile::Scope profile_scope("evaluate");
+   Evaluation e;auto&s=e.state;s.velocity=u;s.q=bs::detail::embed(u,p.count)+p.prescribed;
+   s.mid_moment.resize(11*p.count);bs::Vector me(11*p.count);
+   for(int i=0;i<p.count;++i) {
+@@ -158,6 +160,7 @@
+ }
+ inline bs::Sparse jacobian(const bs::Problem&p,const Evaluation&e,const Workspace&w,
+                            bool majorize_huber=false) {
++  CostProfile::Scope profile_scope("jacobian_assembly");
+   std::vector<Eigen::Triplet<double>> entries;entries.reserve(144*p.contacts.size());
+   auto add=[&](int i,int j,const bs::Matrix6&a){for(int r=0;r<6;++r)for(int c=0;c<6;++c)
+       if(a(r,c)!=0.)entries.emplace_back(6*i+r,6*j+c,a(r,c));};
+@@ -208,6 +211,7 @@
+ }
+ inline double objective_increment(const bs::Problem&p,const FrozenCaps&caps,const Evaluation&e,
+                                   const bs::Vector&du,const Workspace&w) {
++  CostProfile::Scope profile_scope("objective_increment");
+   const bs::Vector fluid=bs::detail::select(e.state.total_moment,p.count)-p.external,adu=w.matrix*du;
+   long double change=0.;for(int i=0;i<du.size();++i)change+=(long double)du[i]*(fluid[i]+.5L*adu[i]);
+   for(std::size_t k=0;k<p.contacts.size();++k) {
+@@ -231,6 +235,7 @@
+   return double(change);
+ }
+ inline void factorize(const bs::Sparse&j,Workspace&w) {
++  CostProfile::Scope profile_scope("contact_factorization");
+   if(w.jacobian_ready&&bs::detail::same_matrix(j,w.jacobian)){++w.newton_numeric_reuses;++w.numeric_reuses;return;}
+   const bool same=w.jacobian_ready&&bs::detail::same_pattern(j,w.jacobian);w.jacobian_ready=false;w.jacobian=j;
+   if(!same){w.newton_factor.analyzePattern(j);++w.newton_symbolic_analyses;++w.symbolic_analyses;}
+@@ -251,7 +256,7 @@
+     throw std::invalid_argument("IMEX: invalid options or frozen-cap size");
+   for(double load:caps)if(load<0.||!std::isfinite(load))throw std::invalid_argument("IMEX: invalid frozen normal load");
+   const auto start=std::chrono::steady_clock::now();const auto initial_linear=w.krylov_iterations;
+-  bs::Options base=o;base.trace_callback={};const auto cold=ns::solve(p,base,w);
++  bs::Options base=o;base.trace_callback={};const auto cold=[&](){CostProfile::Scope scope("hydro_setup");return ns::solve(p,base,w);}();
+   bs::Vector velocity=cold.velocity;
+   if(warm&&warm->velocity.size()==6*p.count&&warm->velocity.allFinite())velocity=warm->velocity;
+   auto at=detail::evaluate(p,caps,velocity,w);const double scale=rhs_norm(p,caps,w),tolerance=o.absolute_tolerance+o.relative_tolerance*scale;
+@@ -282,9 +287,9 @@
+       ++w.krylov_calls;bs::Options linear=o;linear.workspace=w.linear_workspace;
+       linear.maximum_linear_iterations=std::min(o.maximum_linear_iterations,w.krylov_limit);
+       linear.gmres_restart=std::min(o.gmres_restart,w.krylov_restart);
+-      const bs::Apply apply=[&](const bs::Vector&v){++w.jacobian_products;bs::Vector z=j*v;
++      const bs::Apply apply=[&](const bs::Vector&v){CostProfile::Scope scope("krylov_matvec");++w.jacobian_products;bs::Vector z=j*v;
+         if(!z.allFinite())throw std::runtime_error("IMEX: nonfinite sparse Jacobian product");return z;};
+-      const bs::Apply inverse=[&](const bs::Vector&v){++iterations;++w.krylov_iterations;bs::Vector z;
++      const bs::Apply inverse=[&](const bs::Vector&v){CostProfile::Scope scope("krylov_preconditioner_solve");++iterations;++w.krylov_iterations;bs::Vector z;
+         if(w.use_contact_preconditioner) {
+           z=w.newton_factor.solve(v);++w.contact_preconditioner_solves;
+           if(w.newton_factor.info()!=Eigen::Success||!z.allFinite())
+@@ -295,7 +300,7 @@
+             throw std::runtime_error("IMEX: hydrodynamic preconditioner failed");
+         }
+         return z;};
+-      try {auto answer=bs::detail::fgmres(apply,inverse,-at.residual,target,linear);direction=std::move(answer.x);
++      try {auto answer=[&](){CostProfile::Scope scope("fgmres_total");return bs::detail::fgmres(apply,inverse,-at.residual,target,linear);}();direction=std::move(answer.x);
+         linear_residual=(j*direction+at.residual).norm();
+         if(!direction.allFinite()||!std::isfinite(linear_residual))throw std::runtime_error("IMEX: nonfinite Newton direction");
+         solved=linear_residual<=target;
+--- a/slurry_nearfield_solver.h
++++ b/slurry_nearfield_solver.h
+@@ -118,6 +118,7 @@
+ }
+ 
+ inline void factorize(const bs::Sparse &a, Workspace &w) {
++  CostProfile::Scope profile_scope("hydro_factorization");
+   if (w.ready && bs::detail::same_matrix(w.matrix, a)) {
+     ++w.numeric_reuses;
+     return;

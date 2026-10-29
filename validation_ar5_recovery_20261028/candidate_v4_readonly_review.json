@@ -1,0 +1,63 @@
+{
+  "header_sha256": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2",
+  "fix_sha256": "5987aeafc37ee0a894e01248aa38f952523a7b29c4a0b0aec3e19f239ed35141",
+  "unchanged_sections": {
+    "physical_law_and_residual": true,
+    "objective_and_factorization": true,
+    "final_acceptance": true
+  },
+  "blocking_findings": [],
+  "budget_review": {
+    "default_primary": 40,
+    "default_additional": 80,
+    "default_total_per_inner_solve": 120,
+    "zero_disables_recovery": true,
+    "integer_addition_overflow_guard": true,
+    "same_iterate_continued": true,
+    "same_equation_and_physical_tolerance": true,
+    "extra_counter_increments_only_after_accepted_update": true,
+    "ordinary_below_primary_path_unchanged": true,
+    "outer_geometry_limit": 24,
+    "important_scope": "Additional budget is per inner convex solve, not for the whole physical timestep."
+  },
+  "notice_review": "Counter deltas are sampled before all endpoint inner solves; accepted stderr message is emitted only after solve_imex returns a physically accepted endpoint result. Nonlinear failure before that does not print accepted. No exception catch converts failure into success.",
+  "test_review": "Meaningful analytic-root test exercises majorized phase; forced primary budget1 exercises recovery and compares accepted root/residual; zero and one extra update test exact exit limits and counters; negative budget rejected. Historical replay explicitly disables both globalization and recovery.",
+  "independent_production_scale_sweep": {
+    "distinct_cases": 480,
+    "modes": [
+      "strict40",
+      "primary40_plus_recovery80"
+    ],
+    "settings": {
+      "count": 2,
+      "self_resistance": "identity",
+      "kn": 75000000.0,
+      "kt_kr_kw": 60000000.0,
+      "dt": 0.00025,
+      "frozen_coulomb_caps": 750,
+      "warm_magnitude_range": [
+        0.01,
+        1000
+      ]
+    },
+    "unforced": {
+      "cases_per_mode": 240,
+      "failures_per_mode": 0,
+      "max_newton": 5,
+      "max_absolute_velocity_error": 6.834212814185579e-13
+    },
+    "externally_forced_near_yield": {
+      "cases_per_mode": 240,
+      "drive_over_yield_range": [
+        0.7,
+        1.3
+      ],
+      "failures_per_mode": 0,
+      "max_newton": 16,
+      "max_absolute_velocity_error": 1.3391944457220087e-07,
+      "max_relative_velocity_error": 3.268643303897368e-10,
+      "max_physical_residual_over_tolerance": 0.0025658932538053848
+    },
+    "limitation": "Two-body identity-drag algebra/globalization check; does not replace the N1000 coupled trajectory or force recovery entry at default40. Separate focused test forces primary1 to exercise recovery."
+  }
+}

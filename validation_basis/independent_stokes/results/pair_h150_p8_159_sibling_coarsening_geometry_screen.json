@@ -1,0 +1,5675 @@
+{
+  "schema": "ar20_p8_159_sibling_coarsening_geometry_screen_v1",
+  "contains_new_stokes_solve": false,
+  "physical_accuracy_qualified": false,
+  "contains_new159_solution_data": false,
+  "scope": "Exact recorded AR20 pose at150nm; candidate geometry only. Boundary scores are inherited from the completed p8/123-panel/9963-node solution.",
+  "source_files": {
+    "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_chunked.json": "d4cddc33ecef43db86bf6d166aad7487534e82c193d97799b012839e39393c9a",
+    "validation_basis/independent_stokes/results/pair_h150_p8_hpc_refinement_proposal.json": "c31dee4a5cee8f08b2d83ad3a10fb3c1cca9cfcc41aeab7969bc98105d9fa5e1",
+    "validation_basis/independent_stokes/geometry.py": "205228c5e90ef20a7add6841b16124be04abc098a3db6dd243aec7e6414ede61"
+  },
+  "parent_density_file_not_read": true,
+  "target_order": 8,
+  "target_same_node_cap": 12879,
+  "target_same_panel_cap": 159,
+  "one_dense_matrix_bytes_at_cap": 11942542152,
+  "geometry_sampling": "p8 tensor Legendre interpolant on9x9 Gauss nodes checked against exact analytic spheroid at33x33 Chebyshev-Lobatto sites on each merged panel",
+  "geometry_screen_tolerance_over_gap": 0.001,
+  "inherited_score_ranking_threshold": 0.0001,
+  "total_dyadic_sibling_candidates": 132,
+  "count_below_inherited_score_threshold": 39,
+  "count_passing_both_screens": 28,
+  "maximum_merged_geometry_error_over_gap_all_candidates": 0.009471866031169849,
+  "maximum_merged_geometry_error_over_gap_screened_candidates": 4.507841184815189e-05,
+  "illustrative_greedy_nonoverlapping_screened_pairs_not_a_selected_mesh": [
+    [
+      11,
+      14
+    ],
+    [
+      66,
+      70
+    ],
+    [
+      99,
+      102
+    ],
+    [
+      147,
+      148
+    ],
+    [
+      71,
+      72
+    ],
+    [
+      127,
+      128
+    ],
+    [
+      47,
+      48
+    ],
+    [
+      100,
+      101
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      95,
+      96
+    ],
+    [
+      112,
+      113
+    ],
+    [
+      27,
+      28
+    ],
+    [
+      137,
+      138
+    ],
+    [
+      157,
+      158
+    ],
+    [
+      51,
+      54
+    ],
+    [
+      75,
+      77
+    ],
+    [
+      143,
+      144
+    ],
+    [
+      133,
+      134
+    ],
+    [
+      89,
+      92
+    ],
+    [
+      56,
+      57
+    ],
+    [
+      44,
+      45
+    ],
+    [
+      23,
+      24
+    ]
+  ],
+  "candidate_records": [
+    {
+      "fine159_patch_indices": [
+        95,
+        112
+      ],
+      "inherited123_parent_indices": [
+        75,
+        89
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 5.235755648454564e-07,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758766927,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        7,
+        27
+      ],
+      "inherited123_parent_indices": [
+        4,
+        22
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 5.629181639646692e-07,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758755833,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        48,
+        72
+      ],
+      "inherited123_parent_indices": [
+        38,
+        57
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 7.510345939844374e-07,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758759904,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        128,
+        148
+      ],
+      "inherited123_parent_indices": [
+        101,
+        117
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 8.129779310219906e-07,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758759036,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        11,
+        14
+      ],
+      "inherited123_parent_indices": [
+        8,
+        11
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 8.47435077723115e-06,
+      "merged_p8_exact_position_error_over_gap": 1.5054070997985186e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -0.5,
+            -1.0,
+            1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        11,
+        12
+      ],
+      "inherited123_parent_indices": [
+        8,
+        9
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 9.021375377556078e-06,
+      "merged_p8_exact_position_error_over_gap": 1.5054070990812751e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        66,
+        70
+      ],
+      "inherited123_parent_indices": [
+        52,
+        55
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 1.0923745513485411e-05,
+      "merged_p8_exact_position_error_over_gap": 8.79109167404423e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        99,
+        102
+      ],
+      "inherited123_parent_indices": [
+        79,
+        82
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 1.3824392507792497e-05,
+      "merged_p8_exact_position_error_over_gap": 1.5054070991767381e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        9,
+        29
+      ],
+      "inherited123_parent_indices": [
+        6,
+        24
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 1.4484018795039454e-05,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758760117,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        147,
+        148
+      ],
+      "inherited123_parent_indices": [
+        116,
+        117
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 1.8427516787570424e-05,
+      "merged_p8_exact_position_error_over_gap": 4.5078411764986146e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        71,
+        72
+      ],
+      "inherited123_parent_indices": [
+        56,
+        57
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 1.8716051831289926e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841182035009e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        97,
+        114
+      ],
+      "inherited123_parent_indices": [
+        77,
+        91
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 1.9143052745941454e-05,
+      "merged_p8_exact_position_error_over_gap": 0.003888255229894132,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        99,
+        100
+      ],
+      "inherited123_parent_indices": [
+        79,
+        80
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.102698577705019e-05,
+      "merged_p8_exact_position_error_over_gap": 1.5054070989743352e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        127,
+        128
+      ],
+      "inherited123_parent_indices": [
+        100,
+        101
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.1307472151729655e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841183387627e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        127,
+        147
+      ],
+      "inherited123_parent_indices": [
+        100,
+        116
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.1307472151729655e-05,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031169849,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        47,
+        48
+      ],
+      "inherited123_parent_indices": [
+        37,
+        38
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 2.1487037095785143e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841182922717e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        47,
+        71
+      ],
+      "inherited123_parent_indices": [
+        37,
+        56
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 2.1487037095785143e-05,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031127641,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        50,
+        74
+      ],
+      "inherited123_parent_indices": [
+        40,
+        59
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.153596010831878e-05,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758767289,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        100,
+        101
+      ],
+      "inherited123_parent_indices": [
+        80,
+        81
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.1580366397187706e-05,
+      "merged_p8_exact_position_error_over_gap": 2.981388075734967e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        101,
+        102
+      ],
+      "inherited123_parent_indices": [
+        81,
+        82
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.1580366397187706e-05,
+      "merged_p8_exact_position_error_over_gap": 2.9813880768508197e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        7,
+        8
+      ],
+      "inherited123_parent_indices": [
+        4,
+        5
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 2.4315637283173027e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841181299554e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        95,
+        96
+      ],
+      "inherited123_parent_indices": [
+        75,
+        76
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.4566649552525033e-05,
+      "merged_p8_exact_position_error_over_gap": 4.5078411808970534e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        96,
+        113
+      ],
+      "inherited123_parent_indices": [
+        76,
+        90
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.829882642112267e-05,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031157778,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        112,
+        113
+      ],
+      "inherited123_parent_indices": [
+        89,
+        90
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 2.829882642112267e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841184815189e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        8,
+        28
+      ],
+      "inherited123_parent_indices": [
+        5,
+        23
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 2.8482763300758506e-05,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031141278,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        27,
+        28
+      ],
+      "inherited123_parent_indices": [
+        22,
+        23
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 2.8482763300758506e-05,
+      "merged_p8_exact_position_error_over_gap": 4.507841182637743e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        137,
+        138
+      ],
+      "inherited123_parent_indices": [
+        106,
+        107
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 3.1948835599442144e-05,
+      "merged_p8_exact_position_error_over_gap": 1.505407098471957e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        157,
+        158
+      ],
+      "inherited123_parent_indices": [
+        121,
+        122
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 3.295046682959556e-05,
+      "merged_p8_exact_position_error_over_gap": 1.5054070991623965e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        66,
+        67
+      ],
+      "inherited123_parent_indices": [
+        52,
+        53
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 3.4045447579241393e-05,
+      "merged_p8_exact_position_error_over_gap": 3.425342139223113e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        51,
+        54
+      ],
+      "inherited123_parent_indices": [
+        41,
+        43
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 4.042560939777381e-05,
+      "merged_p8_exact_position_error_over_gap": 2.9813985488766666e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.25,
+            1.0
+          ],
+          [
+            0.0,
+            0.25,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        75,
+        77
+      ],
+      "inherited123_parent_indices": [
+        60,
+        62
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 4.447908540058975e-05,
+      "merged_p8_exact_position_error_over_gap": 2.9813985505481855e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.25,
+            1.0
+          ],
+          [
+            -1.0,
+            0.25,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        143,
+        144
+      ],
+      "inherited123_parent_indices": [
+        112,
+        113
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 5.0486920689552494e-05,
+      "merged_p8_exact_position_error_over_gap": 1.528571181614433e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        133,
+        134
+      ],
+      "inherited123_parent_indices": [
+        103,
+        104
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 6.203537338069802e-05,
+      "merged_p8_exact_position_error_over_gap": 1.1883660321246375e-07,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        89,
+        92
+      ],
+      "inherited123_parent_indices": [
+        69,
+        72
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 6.415474285347856e-05,
+      "merged_p8_exact_position_error_over_gap": 8.791091677856336e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        56,
+        57
+      ],
+      "inherited123_parent_indices": [
+        45,
+        46
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 7.268388059554022e-05,
+      "merged_p8_exact_position_error_over_gap": 1.5054070971518493e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        44,
+        45
+      ],
+      "inherited123_parent_indices": [
+        34,
+        35
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 8.538600502755415e-05,
+      "merged_p8_exact_position_error_over_gap": 8.791091678018875e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        75,
+        76
+      ],
+      "inherited123_parent_indices": [
+        60,
+        61
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 8.772492668334794e-05,
+      "merged_p8_exact_position_error_over_gap": 4.7461251035997664e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            1.0
+          ],
+          [
+            -0.5,
+            0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        23,
+        24
+      ],
+      "inherited123_parent_indices": [
+        18,
+        19
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 9.376922289671097e-05,
+      "merged_p8_exact_position_error_over_gap": 1.528571182109413e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        54,
+        55
+      ],
+      "inherited123_parent_indices": [
+        43,
+        44
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 9.491742419354327e-05,
+      "merged_p8_exact_position_error_over_gap": 4.746124849111318e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": true,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.5,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.5,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        35,
+        36
+      ],
+      "inherited123_parent_indices": [
+        27,
+        28
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00010777482930267227,
+      "merged_p8_exact_position_error_over_gap": 1.5054070980477669e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        15,
+        16
+      ],
+      "inherited123_parent_indices": [
+        12,
+        13
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00011360837429200393,
+      "merged_p8_exact_position_error_over_gap": 1.5054070998543154e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        80,
+        81
+      ],
+      "inherited123_parent_indices": [
+        64,
+        65
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00011922252194577046,
+      "merged_p8_exact_position_error_over_gap": 1.5054070996592245e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        62,
+        65
+      ],
+      "inherited123_parent_indices": [
+        48,
+        51
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00013279109908075063,
+      "merged_p8_exact_position_error_over_gap": 8.791091684388601e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        24,
+        25
+      ],
+      "inherited123_parent_indices": [
+        19,
+        20
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00013298054924519155,
+      "merged_p8_exact_position_error_over_gap": 8.791091651885874e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        141,
+        144
+      ],
+      "inherited123_parent_indices": [
+        110,
+        113
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00015322082625123044,
+      "merged_p8_exact_position_error_over_gap": 8.791091670704833e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        73,
+        74
+      ],
+      "inherited123_parent_indices": [
+        58,
+        59
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0001625950555516835,
+      "merged_p8_exact_position_error_over_gap": 4.507841181449206e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        141,
+        142
+      ],
+      "inherited123_parent_indices": [
+        110,
+        111
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00018900147599581007,
+      "merged_p8_exact_position_error_over_gap": 3.425342139703317e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        142,
+        143
+      ],
+      "inherited123_parent_indices": [
+        111,
+        112
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00018900147599581007,
+      "merged_p8_exact_position_error_over_gap": 2.2444890717464017e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        12,
+        13
+      ],
+      "inherited123_parent_indices": [
+        9,
+        10
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00020632403592919947,
+      "merged_p8_exact_position_error_over_gap": 2.981388078134692e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -0.5,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        13,
+        14
+      ],
+      "inherited123_parent_indices": [
+        10,
+        11
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00020632403592919947,
+      "merged_p8_exact_position_error_over_gap": 2.9813880778554045e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        49,
+        50
+      ],
+      "inherited123_parent_indices": [
+        39,
+        40
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00021995278733117024,
+      "merged_p8_exact_position_error_over_gap": 4.507841182890637e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        49,
+        73
+      ],
+      "inherited123_parent_indices": [
+        39,
+        58
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00021995278733117024,
+      "merged_p8_exact_position_error_over_gap": 0.00947186603113646,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        64,
+        65
+      ],
+      "inherited123_parent_indices": [
+        50,
+        51
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00022613589727173418,
+      "merged_p8_exact_position_error_over_gap": 1.5285711823935635e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            0.0,
+            0.5
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        23,
+        26
+      ],
+      "inherited123_parent_indices": [
+        18,
+        21
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0002450684762107077,
+      "merged_p8_exact_position_error_over_gap": 2.244489067242067e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        25,
+        26
+      ],
+      "inherited123_parent_indices": [
+        20,
+        21
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0002450684762107077,
+      "merged_p8_exact_position_error_over_gap": 3.425342138200434e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        93,
+        110
+      ],
+      "inherited123_parent_indices": [
+        73,
+        87
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.000249495781343197,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758753359,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        126,
+        146
+      ],
+      "inherited123_parent_indices": [
+        99,
+        115
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00026315357131520496,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758754271,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        93,
+        94
+      ],
+      "inherited123_parent_indices": [
+        73,
+        74
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0002682627877341016,
+      "merged_p8_exact_position_error_over_gap": 4.5078411806997036e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        29,
+        30
+      ],
+      "inherited123_parent_indices": [
+        24,
+        25
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00027766065927245943,
+      "merged_p8_exact_position_error_over_gap": 4.507841182350838e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        9,
+        10
+      ],
+      "inherited123_parent_indices": [
+        6,
+        7
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00030865257375651726,
+      "merged_p8_exact_position_error_over_gap": 4.507841180493922e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        10,
+        30
+      ],
+      "inherited123_parent_indices": [
+        7,
+        25
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00030865257375651726,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031136932,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        62,
+        63
+      ],
+      "inherited123_parent_indices": [
+        48,
+        49
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0003087265764928323,
+      "merged_p8_exact_position_error_over_gap": 3.4253421385775e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        63,
+        64
+      ],
+      "inherited123_parent_indices": [
+        49,
+        50
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0003087265764928323,
+      "merged_p8_exact_position_error_over_gap": 2.2444890688356614e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        89,
+        90
+      ],
+      "inherited123_parent_indices": [
+        69,
+        70
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00030988158527569376,
+      "merged_p8_exact_position_error_over_gap": 1.528571180962878e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        145,
+        146
+      ],
+      "inherited123_parent_indices": [
+        114,
+        115
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00032833283980597614,
+      "merged_p8_exact_position_error_over_gap": 4.507841182484385e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        90,
+        91
+      ],
+      "inherited123_parent_indices": [
+        70,
+        71
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0003712737898653401,
+      "merged_p8_exact_position_error_over_gap": 2.244489067458643e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.5,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        91,
+        92
+      ],
+      "inherited123_parent_indices": [
+        71,
+        72
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0003712737898653401,
+      "merged_p8_exact_position_error_over_gap": 3.4253421366823316e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        45,
+        46
+      ],
+      "inherited123_parent_indices": [
+        35,
+        36
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00037617666444490343,
+      "merged_p8_exact_position_error_over_gap": 1.5285711819330896e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        125,
+        126
+      ],
+      "inherited123_parent_indices": [
+        98,
+        99
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00043273741103466354,
+      "merged_p8_exact_position_error_over_gap": 4.507841181891741e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        125,
+        145
+      ],
+      "inherited123_parent_indices": [
+        98,
+        114
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00043273741103466354,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031126399,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        114,
+        115
+      ],
+      "inherited123_parent_indices": [
+        91,
+        92
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0004540362221050905,
+      "merged_p8_exact_position_error_over_gap": 4.217919469263077e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        94,
+        111
+      ],
+      "inherited123_parent_indices": [
+        74,
+        88
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005089927097814964,
+      "merged_p8_exact_position_error_over_gap": 0.009471866031136086,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        110,
+        111
+      ],
+      "inherited123_parent_indices": [
+        87,
+        88
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 1,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005089927097814964,
+      "merged_p8_exact_position_error_over_gap": 4.507841182195014e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        123,
+        124
+      ],
+      "inherited123_parent_indices": [
+        96,
+        97
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0005525086831675787,
+      "merged_p8_exact_position_error_over_gap": 4.5078411799876037e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        122,
+        140
+      ],
+      "inherited123_parent_indices": [
+        95,
+        109
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005587423511956781,
+      "merged_p8_exact_position_error_over_gap": 0.004470704758761423,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        139,
+        140
+      ],
+      "inherited123_parent_indices": [
+        108,
+        109
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005587423511956781,
+      "merged_p8_exact_position_error_over_gap": 4.50784118640352e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        15,
+        19
+      ],
+      "inherited123_parent_indices": [
+        12,
+        15
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0005645537157823574,
+      "merged_p8_exact_position_error_over_gap": 1.5054070996551344e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        97,
+        98
+      ],
+      "inherited123_parent_indices": [
+        77,
+        78
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005749236160996444,
+      "merged_p8_exact_position_error_over_gap": 4.217919470401337e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        98,
+        115
+      ],
+      "inherited123_parent_indices": [
+        78,
+        92
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0005749236160996444,
+      "merged_p8_exact_position_error_over_gap": 0.007180340132948749,
+      "geometry_screen_passed": false,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        43,
+        44
+      ],
+      "inherited123_parent_indices": [
+        33,
+        34
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.000580973173557392,
+      "merged_p8_exact_position_error_over_gap": 3.425342138354474e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        43,
+        46
+      ],
+      "inherited123_parent_indices": [
+        33,
+        36
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.000580973173557392,
+      "merged_p8_exact_position_error_over_gap": 2.2444890684052812e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        36,
+        37
+      ],
+      "inherited123_parent_indices": [
+        28,
+        29
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0006116688737034277,
+      "merged_p8_exact_position_error_over_gap": 1.5054070988362102e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        107,
+        108
+      ],
+      "inherited123_parent_indices": [
+        85,
+        85
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.00093082369728174,
+      "merged_p8_exact_position_error_over_gap": 1.5285711807776262e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        20,
+        21
+      ],
+      "inherited123_parent_indices": [
+        16,
+        16
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0009567678227669077,
+      "merged_p8_exact_position_error_over_gap": 1.5285711818446082e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            0.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        153,
+        154
+      ],
+      "inherited123_parent_indices": [
+        119,
+        119
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0010656473136896906,
+      "merged_p8_exact_position_error_over_gap": 4.7461240494832156e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            -0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        58,
+        59
+      ],
+      "inherited123_parent_indices": [
+        47,
+        47
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0010768447191568443,
+      "merged_p8_exact_position_error_over_gap": 2.9813880748014495e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        58,
+        61
+      ],
+      "inherited123_parent_indices": [
+        47,
+        47
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0010768447191568443,
+      "merged_p8_exact_position_error_over_gap": 2.9813880764168237e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        59,
+        60
+      ],
+      "inherited123_parent_indices": [
+        47,
+        47
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0010768447191568443,
+      "merged_p8_exact_position_error_over_gap": 1.5054070984371071e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.5,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        60,
+        61
+      ],
+      "inherited123_parent_indices": [
+        47,
+        47
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0010768447191568443,
+      "merged_p8_exact_position_error_over_gap": 1.5054070978359288e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        86,
+        87
+      ],
+      "inherited123_parent_indices": [
+        67,
+        67
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0010911454507027537,
+      "merged_p8_exact_position_error_over_gap": 1.5285711839471384e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        68,
+        69
+      ],
+      "inherited123_parent_indices": [
+        54,
+        54
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0011283804260530707,
+      "merged_p8_exact_position_error_over_gap": 6.027912050634668e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.5,
+            0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            0.5
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        38,
+        39
+      ],
+      "inherited123_parent_indices": [
+        30,
+        30
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.001231108849771545,
+      "merged_p8_exact_position_error_over_gap": 1.1883660837255433e-07,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.5,
+            0.5,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        133,
+        135
+      ],
+      "inherited123_parent_indices": [
+        103,
+        105
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0013932181997770561,
+      "merged_p8_exact_position_error_over_gap": 2.981398548086083e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.25,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        134,
+        136
+      ],
+      "inherited123_parent_indices": [
+        104,
+        105
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0013932181997770561,
+      "merged_p8_exact_position_error_over_gap": 2.5243298812727937e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        135,
+        136
+      ],
+      "inherited123_parent_indices": [
+        105,
+        105
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0013932181997770561,
+      "merged_p8_exact_position_error_over_gap": 4.7461227907644336e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.5,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        17,
+        18
+      ],
+      "inherited123_parent_indices": [
+        14,
+        14
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.0014086057267291843,
+      "merged_p8_exact_position_error_over_gap": 1.1883660785691071e-07,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -0.5,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        149,
+        150
+      ],
+      "inherited123_parent_indices": [
+        118,
+        118
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.001708280146824524,
+      "merged_p8_exact_position_error_over_gap": 2.981388077290947e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            -1.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        149,
+        152
+      ],
+      "inherited123_parent_indices": [
+        118,
+        118
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.001708280146824524,
+      "merged_p8_exact_position_error_over_gap": 1.5054070988428879e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            1.0
+          ],
+          [
+            -0.5,
+            1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        150,
+        151
+      ],
+      "inherited123_parent_indices": [
+        118,
+        118
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.001708280146824524,
+      "merged_p8_exact_position_error_over_gap": 2.9813880765649244e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -0.5,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ],
+          [
+            -0.5,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        151,
+        152
+      ],
+      "inherited123_parent_indices": [
+        118,
+        118
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.001708280146824524,
+      "merged_p8_exact_position_error_over_gap": 1.5054070998144187e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        116,
+        117
+      ],
+      "inherited123_parent_indices": [
+        93,
+        93
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.001710146601670198,
+      "merged_p8_exact_position_error_over_gap": 1.5054070980529795e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        116,
+        119
+      ],
+      "inherited123_parent_indices": [
+        93,
+        93
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.001710146601670198,
+      "merged_p8_exact_position_error_over_gap": 2.9813880786230816e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          [
+            0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        117,
+        118
+      ],
+      "inherited123_parent_indices": [
+        93,
+        93
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.001710146601670198,
+      "merged_p8_exact_position_error_over_gap": 1.5054071000485788e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.5,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.5,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        118,
+        119
+      ],
+      "inherited123_parent_indices": [
+        93,
+        93
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.001710146601670198,
+      "merged_p8_exact_position_error_over_gap": 2.981388075303186e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        103,
+        104
+      ],
+      "inherited123_parent_indices": [
+        83,
+        83
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0017324658638947,
+      "merged_p8_exact_position_error_over_gap": 1.5285711832414502e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            0.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        78,
+        79
+      ],
+      "inherited123_parent_indices": [
+        63,
+        63
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0018783751685810598,
+      "merged_p8_exact_position_error_over_gap": 8.187104452929765e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -0.5,
+            0.25,
+            1.0
+          ],
+          [
+            0.0,
+            0.25,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            -0.5,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        129,
+        130
+      ],
+      "inherited123_parent_indices": [
+        102,
+        102
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0019044557544462685,
+      "merged_p8_exact_position_error_over_gap": 2.98138807463088e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        129,
+        132
+      ],
+      "inherited123_parent_indices": [
+        102,
+        102
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0019044557544462685,
+      "merged_p8_exact_position_error_over_gap": 2.9813880773643154e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.5,
+            0.0,
+            1.0
+          ],
+          [
+            0.5,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        130,
+        131
+      ],
+      "inherited123_parent_indices": [
+        102,
+        102
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0019044557544462685,
+      "merged_p8_exact_position_error_over_gap": 1.505407099929201e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.5,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.5,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        131,
+        132
+      ],
+      "inherited123_parent_indices": [
+        102,
+        102
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0019044557544462685,
+      "merged_p8_exact_position_error_over_gap": 1.505407097440039e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            0.0,
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.5,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        41,
+        42
+      ],
+      "inherited123_parent_indices": [
+        32,
+        32
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0021226820091327183,
+      "merged_p8_exact_position_error_over_gap": 1.528571182018714e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            0.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        0,
+        1
+      ],
+      "inherited123_parent_indices": [
+        0,
+        0
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0022570539868521883,
+      "merged_p8_exact_position_error_over_gap": 1.5285711826269847e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        31,
+        32
+      ],
+      "inherited123_parent_indices": [
+        26,
+        26
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.002299961231907888,
+      "merged_p8_exact_position_error_over_gap": 1.5054070980493749e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        31,
+        34
+      ],
+      "inherited123_parent_indices": [
+        26,
+        26
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.002299961231907888,
+      "merged_p8_exact_position_error_over_gap": 2.9813880772208816e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          [
+            0.5,
+            -1.0,
+            1.0
+          ],
+          [
+            0.5,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        32,
+        33
+      ],
+      "inherited123_parent_indices": [
+        26,
+        26
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.002299961231907888,
+      "merged_p8_exact_position_error_over_gap": 1.5054070989318497e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.5,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.5,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        33,
+        34
+      ],
+      "inherited123_parent_indices": [
+        26,
+        26
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.002299961231907888,
+      "merged_p8_exact_position_error_over_gap": 2.9813880763654586e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        52,
+        53
+      ],
+      "inherited123_parent_indices": [
+        42,
+        42
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.0023149414616764554,
+      "merged_p8_exact_position_error_over_gap": 8.187103840315904e-08,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            0.0,
+            0.25,
+            1.0
+          ],
+          [
+            0.5,
+            0.25,
+            1.0
+          ],
+          [
+            0.5,
+            0.5,
+            1.0
+          ],
+          [
+            0.0,
+            0.5,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        4,
+        5
+      ],
+      "inherited123_parent_indices": [
+        2,
+        2
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.002765881692868445,
+      "merged_p8_exact_position_error_over_gap": 1.528571182605881e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            -1.0,
+            1.0,
+            -0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        153,
+        155
+      ],
+      "inherited123_parent_indices": [
+        119,
+        120
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.002834856059586395,
+      "merged_p8_exact_position_error_over_gap": 2.981398550903046e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.25,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        154,
+        156
+      ],
+      "inherited123_parent_indices": [
+        119,
+        120
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.002834856059586395,
+      "merged_p8_exact_position_error_over_gap": 2.5243298821139442e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -1.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.25,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        155,
+        156
+      ],
+      "inherited123_parent_indices": [
+        120,
+        120
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.002834856059586395,
+      "merged_p8_exact_position_error_over_gap": 1.1883660778901654e-07,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            -0.5,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        120,
+        121
+      ],
+      "inherited123_parent_indices": [
+        94,
+        94
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.003193659239825133,
+      "merged_p8_exact_position_error_over_gap": 3.425342137494671e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            1.0,
+            0.0,
+            0.5
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        82,
+        83
+      ],
+      "inherited123_parent_indices": [
+        66,
+        66
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.004107744017486802,
+      "merged_p8_exact_position_error_over_gap": 2.9813880771201077e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        82,
+        85
+      ],
+      "inherited123_parent_indices": [
+        66,
+        66
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.004107744017486802,
+      "merged_p8_exact_position_error_over_gap": 1.5054070988549232e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        83,
+        84
+      ],
+      "inherited123_parent_indices": [
+        66,
+        66
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.004107744017486802,
+      "merged_p8_exact_position_error_over_gap": 2.981388076430682e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -0.5,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -0.5,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        84,
+        85
+      ],
+      "inherited123_parent_indices": [
+        66,
+        66
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 2,
+      "cube_face_sign": -1,
+      "inherited123_max_boundary_score": 0.004107744017486802,
+      "merged_p8_exact_position_error_over_gap": 1.50540709897612e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            -1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            -1.0,
+            -1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        103,
+        105
+      ],
+      "inherited123_parent_indices": [
+        83,
+        84
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00510914866834883,
+      "merged_p8_exact_position_error_over_gap": 2.244489066770234e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            0.5,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        104,
+        106
+      ],
+      "inherited123_parent_indices": [
+        83,
+        84
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00510914866834883,
+      "merged_p8_exact_position_error_over_gap": 8.791091660558027e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.5,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        105,
+        106
+      ],
+      "inherited123_parent_indices": [
+        84,
+        84
+      ],
+      "body": 1,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.00510914866834883,
+      "merged_p8_exact_position_error_over_gap": 3.425342138328282e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        1,
+        [
+          [
+            1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            1.0,
+            1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        0,
+        2
+      ],
+      "inherited123_parent_indices": [
+        0,
+        1
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.007532226462396109,
+      "merged_p8_exact_position_error_over_gap": 8.791091655369617e-06,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        1,
+        3
+      ],
+      "inherited123_parent_indices": [
+        0,
+        1
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.007532226462396109,
+      "merged_p8_exact_position_error_over_gap": 2.2444890673412093e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -0.5,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.0
+          ]
+        ]
+      ]
+    },
+    {
+      "fine159_patch_indices": [
+        2,
+        3
+      ],
+      "inherited123_parent_indices": [
+        1,
+        1
+      ],
+      "body": 0,
+      "cube_face_constant_axis": 0,
+      "cube_face_sign": 1,
+      "inherited123_max_boundary_score": 0.007532226462396109,
+      "merged_p8_exact_position_error_over_gap": 3.42534213787987e-05,
+      "geometry_screen_passed": true,
+      "inherited_score_below_1e_minus4": false,
+      "merged_descriptor": [
+        0,
+        [
+          [
+            1.0,
+            -1.0,
+            -0.5
+          ],
+          [
+            1.0,
+            0.0,
+            -0.5
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            -1.0,
+            0.0
+          ]
+        ]
+      ]
+    }
+  ],
+  "next_procedure_not_executed": [
+    "Wait for completed p8/159 solution and update each candidate with its actual child residuals and all17 density tails.",
+    "Interpolate the solved child densities onto a merged p8 parent and check independent sites, including both sides of the former interface; geometry and inherited boundary scores alone are insufficient.",
+    "Prefer an actual combined-operator application of projected density on the union of independent boundary checks to reject coarsening that amplifies cancellation; the jump-only proxy is not an error bound.",
+    "Each accepted binary merge frees one p8 panel/81 nodes. Spend those panels on directional splits at the new actual boundary hotspots, preserving total<=159.",
+    "If the current result passes, pursue distinct evidence-driven adaptive resolutions and compare full17 energy and separate F/T/S metrics; do not count arbitrary topology perturbations as demonstrated convergence.",
+    "If the current result fails, repair its actual limiting panels first. If no coarsening survives checks, state the present representation/resource limit rather than loosening0.1% or changing the pose/gap."
+  ],
+  "limitations": [
+    "No candidate has been accepted for physical use. All coarsening can introduce density error even when the analytic geometry screen passes.",
+    "The four extremely low-inherited-residual merges95+112,7+27,48+72,128+148 fail geometry with error0.0044707 times gap; low residual alone does not make coarsening safe.",
+    "The current exact operator implementation,alpha,beta and geometry source must remain identical across qualifying runs. Storage bookkeeping changes alone need not change numerical operator identity.",
+    "Three passing distinct meshes are required; nonnested adaptive reallocations must be labeled as such and are not a mathematical error bound."
+  ]
+}

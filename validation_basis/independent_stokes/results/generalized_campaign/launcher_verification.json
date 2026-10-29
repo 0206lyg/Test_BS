@@ -1,0 +1,128 @@
+{
+  "schema": "reference_launcher_synthetic_checks_v1",
+  "scope": "Syntax, synthetic-manifest dry-runs and local sbatch-stub dispatch only; no native computation, network, build or real Slurm submission",
+  "physical_accuracy_qualified": false,
+  "test_directory": "/dev/shm/reference_launcher_tests_hw98zl4o",
+  "checks": [
+    {
+      "name": "default_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/default_dry_run.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/default_dry_run.log",
+      "log_sha256": "5590e9c38d3b4711c59254795f506a0d7dfbf0a5d16da2b6408ba6a3bb6c4df8"
+    },
+    {
+      "name": "large_chunked_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/large_chunked_dry_run.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/large_chunked_dry_run.log",
+      "log_sha256": "b6aa3b43846625fb9eb1ac251123101e04eb6d51dda2c822412870e9ce7b1cd3"
+    },
+    {
+      "name": "worker_offset_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/worker_offset_dry_run.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/worker_offset_dry_run.log",
+      "log_sha256": "a6d85c03d5315276480a293bfe3caa207688444568fcef8368edbb160c5598a0"
+    },
+    {
+      "name": "finalizer_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/finalizer_dry_run.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/finalizer_dry_run.log",
+      "log_sha256": "6be9c9cd3023d8c990f46ba748de3d2dcdde905eef7a37b1c4fc186990498252"
+    },
+    {
+      "name": "changed_artifact_rejected",
+      "passed": true,
+      "returncode": 1,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/changed_artifact_rejected.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/changed_artifact_rejected.log",
+      "log_sha256": "0300eeb63cd21df657d2e32b47713ead314905c27b4a2f65932de28acb86dfc3"
+    },
+    {
+      "name": "unsafe_memory_rejected",
+      "passed": true,
+      "returncode": 2,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/unsafe_memory_rejected.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/unsafe_memory_rejected.log",
+      "log_sha256": "1d46a9f8eacf825f3b38dee30bb4268073736c602853de0144ec34706cc8b328"
+    },
+    {
+      "name": "immutable_campaign_rejected",
+      "passed": true,
+      "returncode": 2,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/immutable_campaign_rejected.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/immutable_campaign_rejected.log",
+      "log_sha256": "97ab94134ba8892bfd9e04038d291620dfc71ea635047c04b9025eccb8e93eec"
+    },
+    {
+      "name": "stubbed_submission_success",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/stubbed_submission_success.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/stubbed_submission_success.log",
+      "log_sha256": "9a996c6bd779a71a71ff7144475c3857b92c34f75f4126f10e4938c5d8623f72"
+    },
+    {
+      "name": "stubbed_partial_submission_finalizes",
+      "passed": true,
+      "returncode": 1,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/stubbed_partial_submission_finalizes.log",
+      "original_log": "/dev/shm/reference_launchers_final_9wuzmwdo/stubbed_partial_submission_finalizes.log",
+      "log_sha256": "c092ef980cc0124379ee0494e3380d9f7824cd44d8793ad70545e8104094436e"
+    },
+    {
+      "name": "pinned_manifest_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/pinned_manifest_dry_run.log",
+      "original_log": "/dev/shm/reference_launcher_tests_hw98zl4o/pinned_manifest_dry_run.log",
+      "log_sha256": "7b4efda35a6a8b175b346a44c74cc43f50368dc5e9106ba6a999148b21010441"
+    },
+    {
+      "name": "pinned_worker_dry_run",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/pinned_worker_dry_run.log",
+      "original_log": "/dev/shm/reference_launcher_tests_hw98zl4o/pinned_worker_dry_run.log",
+      "log_sha256": "3e7a90ebb7af869af7d147e4668b0925efb13c9d9a53d0bfc5ad08d96ee7714a"
+    },
+    {
+      "name": "queued_descriptor_survives_new_top_manifest",
+      "passed": true,
+      "returncode": 0,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/queued_descriptor_survives_new_top_manifest.log",
+      "original_log": "/dev/shm/reference_launcher_tests_hw98zl4o/queued_descriptor_survives_new_top_manifest.log",
+      "log_sha256": "3e7a90ebb7af869af7d147e4668b0925efb13c9d9a53d0bfc5ad08d96ee7714a"
+    },
+    {
+      "name": "queued_build_mutation_rejected",
+      "passed": true,
+      "returncode": 1,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/queued_build_mutation_rejected.log",
+      "original_log": "/dev/shm/reference_launcher_tests_hw98zl4o/queued_build_mutation_rejected.log",
+      "log_sha256": "3d5a954b1026e9f5a150840b3c0cde6daca6d8a5b638eddf06653b7d9ae7b22e"
+    },
+    {
+      "name": "queued_campaign_mutation_rejected",
+      "passed": true,
+      "returncode": 1,
+      "log": "validation_basis/independent_stokes/results/generalized_campaign/launcher_logs/queued_campaign_mutation_rejected.log",
+      "original_log": "/dev/shm/reference_launcher_tests_hw98zl4o/queued_campaign_mutation_rejected.log",
+      "log_sha256": "5926514ad24a6e1b424d686d22147427f05f66d8bc2a9cb7c6958a408b6ba5d4"
+    }
+  ],
+  "all_passed": true,
+  "script_sha256": {
+    "build_reference_tables_cpu.sbatch": "24b066b4a7330d269803dd24744765f0c01deae15817f097b27e89393ed41637",
+    "table_reference_campaign_cpu.sbatch": "0a31dbd5b5534ab461cdcef7d44081124f8bde1fd77bdc621d190aa1950831ba",
+    "submit_reference_tables.sh": "3ed8cdca8063ac9992c4b23e6235303b60441aa0bcb8c112122e6dc37eb745d2"
+  },
+  "final_regression_directory": "/dev/shm/reference_launchers_final_9wuzmwdo",
+  "all_checks_use_recorded_script_sha256": true
+}

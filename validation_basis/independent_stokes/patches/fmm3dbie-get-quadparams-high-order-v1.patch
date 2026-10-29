@@ -1,0 +1,16 @@
+diff --git a/src/quadratures/near_field_routs.f b/src/quadratures/near_field_routs.f
+--- a/src/quadratures/near_field_routs.f
++++ b/src/quadratures/near_field_routs.f
+@@ -924,6 +924,12 @@
+       nqorder_f = 8 
+       nlev = 1
+ 
++c     AR20 reference backend: callers do not pass the panel order.
++c     The local norder was uninitialized.  Preserve the public ABI
++c     and explicitly select the existing high-order policy for this
++c     backend, whose supported panel orders are >= 4.  This does not
++c     change the self GGQ rule or make the binned tolerance exact.
++      norder = 4
+       if(norder.ge.4) then
+         if(iprec.eq.0) then
+           nqorder = 12

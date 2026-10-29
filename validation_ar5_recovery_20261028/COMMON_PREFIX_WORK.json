@@ -1,0 +1,11 @@
+{
+  "scope": "Completed steps1-594; identical initial data/settings, subsequently differing numerical trajectories; work counts, not isolated timing benchmark",
+  "baseline": {
+    "mean_newton": 21.734006734006734,
+    "mean_linear": 483.44781144781143
+  },
+  "candidate_v4": {
+    "mean_newton": 17.318181818181817,
+    "mean_linear": 387.44276094276097
+  }
+}

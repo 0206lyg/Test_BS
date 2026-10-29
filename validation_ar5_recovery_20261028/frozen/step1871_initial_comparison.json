@@ -1,0 +1,27 @@
+[
+  {
+    "name": "old40",
+    "returncode": 0,
+    "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=0.00073632630620873375 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.13133448 cpu_seconds=0.13133300000000001"
+  },
+  {
+    "name": "hybrid40",
+    "returncode": 1,
+    "result": "FAIL IMEX: convex Newton limit; residual=0.229536; tolerance=0.000736326; iterations=40; primary_limit=40; recovery_limit=0"
+  },
+  {
+    "name": "v4_default",
+    "returncode": 0,
+    "result": "PASS newton=49 linear=1114 residual=1.0048028039490449e-07 tolerance=0.00073632630620873375 relative=1.3646161991512762e-11 majorized=24 line_refinements=21 recoveries=1 recovery_iterations=9 contact_factorizations=1 max_linear_relative=3.5032975597713653e-11 seconds=0.50756584599999999 cpu_seconds=0.50752699999999995"
+  },
+  {
+    "name": "old_reference200",
+    "returncode": 0,
+    "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=0.00073632630620873375 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.136962167 cpu_seconds=0.13696"
+  },
+  {
+    "name": "old_reference_tight",
+    "returncode": 0,
+    "result": "PASS newton=12 linear=247 residual=2.1357318259348342e-08 tolerance=7.3632630620873388e-07 relative=2.9005236005107775e-12 majorized=0 line_refinements=3 recoveries=0 recovery_iterations=0 contact_factorizations=1 max_linear_relative=3.8528915380790439e-11 seconds=0.136376307 cpu_seconds=0.13635900000000001"
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "count": 256,
+  "species": [
+    {
+      "species": 0,
+      "count": 188,
+      "volume_equivalent_radius_m": 3.5233339916e-06,
+      "fraction_of_solid_volume": 0.5018793780967027,
+      "octant_counts": {
+        "000": 21,
+        "001": 23,
+        "010": 24,
+        "011": 25,
+        "100": 23,
+        "101": 26,
+        "110": 26,
+        "111": 20
+      },
+      "axis_first_fourier_amplitudes": [
+        0.01875917345214947,
+        0.04011386356943658,
+        0.024447757617455358
+      ]
+    },
+    {
+      "species": 1,
+      "count": 68,
+      "volume_equivalent_radius_m": 4.9326675883e-06,
+      "fraction_of_solid_volume": 0.4981206219032974,
+      "octant_counts": {
+        "000": 11,
+        "001": 7,
+        "010": 8,
+        "011": 9,
+        "100": 7,
+        "101": 7,
+        "110": 9,
+        "111": 10
+      },
+      "axis_first_fourier_amplitudes": [
+        0.023425997444889407,
+        0.010595092789897842,
+        0.05695867627878174
+      ]
+    }
+  ],
+  "actual_phi": 0.3399999999999995,
+  "total_particle_volume_m3": 6.862913871522022e-14,
+  "nominal_total_volume_m3": 6.862913871522022e-14,
+  "mean_volume_relative_error": 0.0,
+  "aspect_ratio_range": [
+    1.0,
+    1.0
+  ],
+  "size_ratio": 1.4000000000170294,
+  "mixing_note": "Octants and Fourier amplitudes are descriptive diagnostics, not certification of equilibrium or absence of ordering."
+}

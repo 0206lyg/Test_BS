@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "scope": "Only constructor/configuration and two-step N1000 equivalence checks; no new long integration.",
+  "default_total": 1000,
+  "primary_iterations": 40,
+  "default_recovery_iterations": 960,
+  "checks": [
+    {
+      "name": "default",
+      "setting": null,
+      "effective_total": 1000,
+      "returncode": 0,
+      "last_step": 2,
+      "non_timing_prefix_identical_to_tested_v4": true
+    },
+    {
+      "name": "explicit120",
+      "setting": "120",
+      "effective_total": 120,
+      "returncode": 0,
+      "last_step": 2,
+      "non_timing_prefix_identical_to_tested_v4": true
+    },
+    {
+      "name": "explicit2400",
+      "setting": "2400",
+      "effective_total": 2400,
+      "returncode": 0,
+      "last_step": 2,
+      "non_timing_prefix_identical_to_tested_v4": true
+    },
+    {
+      "name": "invalid39",
+      "setting": "39",
+      "returncode": 1,
+      "invalid_value_rejected": true
+    },
+    {
+      "name": "invalidtext",
+      "setting": "invalid",
+      "returncode": 1,
+      "invalid_value_rejected": true
+    }
+  ],
+  "plugin_sha256": "1bf076a7faa56a1bcdd990d465565bdf93d815b41600574c242a8053629be994",
+  "source_sha256": {
+    "lammps_slurry/src/fix_slurry_bridge.cpp": "a68a0ee34e1136baf8f5cae380ea37f55902f6be7db3df90c46aea7596bf73a2",
+    "lammps_slurry/src/slurry_nearfield_imex_solver.h": "dce09a7d5ebbf709afea475785bafa8d89efd42a00bed1cfd577d4131f6ee3d2"
+  }
+}

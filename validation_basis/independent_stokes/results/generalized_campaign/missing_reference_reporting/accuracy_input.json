@@ -1,0 +1,1681 @@
+{
+  "schema": "reference17_accuracy_campaign_v1",
+  "groups": [
+    {
+      "id": "AR2",
+      "query_result": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_queried.json",
+      "pipeline_path": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_generated/pipeline.json",
+      "table_path": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_generated/reference.sft",
+      "training_source": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_generated/reference.source17",
+      "training_manifest": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_generated/reference.source17.manifest.json",
+      "generation_report": "/dev/shm/reference_campaign_contract_actualplan/AR2/not_yet_generated/generation.json",
+      "cases": [
+        {
+          "id": "AR2_v00_h00",
+          "query_id": "AR2_v00_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000128/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000129/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v00_h01",
+          "query_id": "AR2_v00_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000130/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000131/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v00_h02",
+          "query_id": "AR2_v00_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000132/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000133/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v00_h03",
+          "query_id": "AR2_v00_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000134/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000135/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v00_h04",
+          "query_id": "AR2_v00_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000136/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000137/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v01_h00",
+          "query_id": "AR2_v01_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000138/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000139/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v01_h01",
+          "query_id": "AR2_v01_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000140/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000141/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v01_h02",
+          "query_id": "AR2_v01_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000142/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000143/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v01_h03",
+          "query_id": "AR2_v01_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000144/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000145/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v01_h04",
+          "query_id": "AR2_v01_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000146/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000147/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v02_h00",
+          "query_id": "AR2_v02_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000148/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000149/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v02_h01",
+          "query_id": "AR2_v02_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000150/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000151/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v02_h02",
+          "query_id": "AR2_v02_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000152/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000153/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v02_h03",
+          "query_id": "AR2_v02_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000154/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000155/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v02_h04",
+          "query_id": "AR2_v02_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000156/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000157/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v03_h00",
+          "query_id": "AR2_v03_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000158/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000159/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v03_h01",
+          "query_id": "AR2_v03_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000160/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000161/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v03_h02",
+          "query_id": "AR2_v03_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000162/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000163/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v03_h03",
+          "query_id": "AR2_v03_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000164/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000165/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v03_h04",
+          "query_id": "AR2_v03_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000166/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000167/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v04_h00",
+          "query_id": "AR2_v04_h00",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000168/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000169/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v04_h01",
+          "query_id": "AR2_v04_h01",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000170/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000171/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v04_h02",
+          "query_id": "AR2_v04_h02",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000172/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000173/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR2_v04_h03",
+          "query_id": "AR2_v04_h03",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 2.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000174/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000175/unavailable_reference.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AR5",
+      "query_result": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_queried.json",
+      "pipeline_path": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_generated/pipeline.json",
+      "table_path": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_generated/reference.sft",
+      "training_source": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_generated/reference.source17",
+      "training_manifest": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_generated/reference.source17.manifest.json",
+      "generation_report": "/dev/shm/reference_campaign_contract_actualplan/AR5/not_yet_generated/generation.json",
+      "cases": [
+        {
+          "id": "AR5_v00_h00",
+          "query_id": "AR5_v00_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000304/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000305/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v00_h01",
+          "query_id": "AR5_v00_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000306/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000307/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v00_h02",
+          "query_id": "AR5_v00_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000308/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000309/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v00_h03",
+          "query_id": "AR5_v00_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000310/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000311/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v00_h04",
+          "query_id": "AR5_v00_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000312/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000313/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v01_h00",
+          "query_id": "AR5_v01_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000314/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000315/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v01_h01",
+          "query_id": "AR5_v01_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000316/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000317/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v01_h02",
+          "query_id": "AR5_v01_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000318/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000319/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v01_h03",
+          "query_id": "AR5_v01_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000320/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000321/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v01_h04",
+          "query_id": "AR5_v01_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000322/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000323/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v02_h00",
+          "query_id": "AR5_v02_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000324/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000325/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v02_h01",
+          "query_id": "AR5_v02_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000326/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000327/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v02_h02",
+          "query_id": "AR5_v02_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000328/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000329/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v02_h03",
+          "query_id": "AR5_v02_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000330/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000331/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v02_h04",
+          "query_id": "AR5_v02_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000332/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000333/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v03_h00",
+          "query_id": "AR5_v03_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000334/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000335/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v03_h01",
+          "query_id": "AR5_v03_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000336/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000337/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v03_h02",
+          "query_id": "AR5_v03_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000338/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000339/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v03_h03",
+          "query_id": "AR5_v03_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000340/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000341/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v03_h04",
+          "query_id": "AR5_v03_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000342/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000343/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v04_h00",
+          "query_id": "AR5_v04_h00",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000344/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000345/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v04_h01",
+          "query_id": "AR5_v04_h01",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000346/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000347/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v04_h02",
+          "query_id": "AR5_v04_h02",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000348/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000349/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR5_v04_h03",
+          "query_id": "AR5_v04_h03",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 5.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000350/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000351/unavailable_reference.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AR10",
+      "query_result": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_queried.json",
+      "pipeline_path": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_generated/pipeline.json",
+      "table_path": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_generated/reference.sft",
+      "training_source": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_generated/reference.source17",
+      "training_manifest": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_generated/reference.source17.manifest.json",
+      "generation_report": "/dev/shm/reference_campaign_contract_actualplan/AR10/not_yet_generated/generation.json",
+      "cases": [
+        {
+          "id": "AR10_v00_h00",
+          "query_id": "AR10_v00_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000480/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000481/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v00_h01",
+          "query_id": "AR10_v00_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000482/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000483/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v00_h02",
+          "query_id": "AR10_v00_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000484/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000485/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v00_h03",
+          "query_id": "AR10_v00_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000486/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000487/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v00_h04",
+          "query_id": "AR10_v00_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000488/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000489/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v01_h00",
+          "query_id": "AR10_v01_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000490/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000491/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v01_h01",
+          "query_id": "AR10_v01_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000492/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000493/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v01_h02",
+          "query_id": "AR10_v01_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000494/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000495/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v01_h03",
+          "query_id": "AR10_v01_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000496/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000497/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v01_h04",
+          "query_id": "AR10_v01_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000498/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000499/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v02_h00",
+          "query_id": "AR10_v02_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000500/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000501/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v02_h01",
+          "query_id": "AR10_v02_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000502/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000503/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v02_h02",
+          "query_id": "AR10_v02_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000504/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000505/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v02_h03",
+          "query_id": "AR10_v02_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000506/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000507/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v02_h04",
+          "query_id": "AR10_v02_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000508/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000509/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v03_h00",
+          "query_id": "AR10_v03_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000510/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000511/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v03_h01",
+          "query_id": "AR10_v03_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000512/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000513/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v03_h02",
+          "query_id": "AR10_v03_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000514/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000515/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v03_h03",
+          "query_id": "AR10_v03_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000516/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000517/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v03_h04",
+          "query_id": "AR10_v03_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000518/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000519/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v04_h00",
+          "query_id": "AR10_v04_h00",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000520/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000521/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v04_h01",
+          "query_id": "AR10_v04_h01",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000522/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000523/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v04_h02",
+          "query_id": "AR10_v04_h02",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000524/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000525/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR10_v04_h03",
+          "query_id": "AR10_v04_h03",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 10.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000526/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000527/unavailable_reference.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AR20",
+      "query_result": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_queried.json",
+      "pipeline_path": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_generated/pipeline.json",
+      "table_path": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_generated/reference.sft",
+      "training_source": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_generated/reference.source17",
+      "training_manifest": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_generated/reference.source17.manifest.json",
+      "generation_report": "/dev/shm/reference_campaign_contract_actualplan/AR20/not_yet_generated/generation.json",
+      "cases": [
+        {
+          "id": "AR20_v00_h00",
+          "query_id": "AR20_v00_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000656/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000657/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v00_h01",
+          "query_id": "AR20_v00_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000658/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000659/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v00_h02",
+          "query_id": "AR20_v00_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000660/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000661/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v00_h03",
+          "query_id": "AR20_v00_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000662/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000663/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v00_h04",
+          "query_id": "AR20_v00_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.004924530359211356,
+            "theta_j": 0.041010932014513654,
+            "phi": 1.7016960206944713,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000664/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000665/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v01_h00",
+          "query_id": "AR20_v01_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000666/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000667/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v01_h01",
+          "query_id": "AR20_v01_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000668/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000669/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v01_h02",
+          "query_id": "AR20_v01_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000670/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000671/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v01_h03",
+          "query_id": "AR20_v01_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000672/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000673/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v01_h04",
+          "query_id": "AR20_v01_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.19634954084936201,
+            "theta_j": 0.7853981633974481,
+            "phi": -2.748893571891069,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000674/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000675/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v02_h00",
+          "query_id": "AR20_v02_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000676/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000677/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v02_h01",
+          "query_id": "AR20_v02_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000678/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000679/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v02_h02",
+          "query_id": "AR20_v02_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000680/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000681/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v02_h03",
+          "query_id": "AR20_v02_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000682/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000683/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v02_h04",
+          "query_id": "AR20_v02_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.7853981633974481,
+            "theta_j": 1.3744467859455343,
+            "phi": 0.39269908169872414,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000684/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000685/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v03_h00",
+          "query_id": "AR20_v03_h00",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000686/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000687/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v03_h01",
+          "query_id": "AR20_v03_h01",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000688/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000689/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v03_h02",
+          "query_id": "AR20_v03_h02",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000690/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000691/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v03_h03",
+          "query_id": "AR20_v03_h03",
+          "heldout_kind": "both",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000692/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000693/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v03_h04",
+          "query_id": "AR20_v03_h04",
+          "heldout_kind": "angle",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 1.3744467859455343,
+            "theta_j": 1.3744467859455343,
+            "phi": 1.9634954084936207,
+            "h_over_c": 1.0
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000694/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000695/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v04_h00",
+          "query_id": "AR20_v04_h00",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.006666666666666667
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000696/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000697/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v04_h01",
+          "query_id": "AR20_v04_h01",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.02333090341053722
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000698/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000699/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v04_h02",
+          "query_id": "AR20_v04_h02",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.0816496580927726
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000700/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000701/unavailable_reference.json"
+          ]
+        },
+        {
+          "id": "AR20_v04_h03",
+          "query_id": "AR20_v04_h03",
+          "heldout_kind": "gap",
+          "geometry": {
+            "aspect_ratio": 20.0,
+            "c_m": 1.5000000000000002e-07,
+            "theta_i": 0.39269908169872403,
+            "theta_j": 1.1780972450961722,
+            "phi": -2.356194490192345,
+            "h_over_c": 0.28574404296987993
+          },
+          "references": [
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000702/unavailable_reference.json",
+            "/dev/shm/reference_campaign_contract_actualplan/tasks/task_000703/unavailable_reference.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

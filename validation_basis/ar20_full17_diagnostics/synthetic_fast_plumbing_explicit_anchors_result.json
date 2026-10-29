@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "suite": "validation_finite_gap/test_fast_plumbing.py",
+  "command": "python validation_finite_gap/test_fast_plumbing.py",
+  "scope": "Synthetic artifact framing, CLI routing, fake generators and mocked gate reports only; no physical Stokes or rheology validation.",
+  "tests_run": 27,
+  "tests_passed": 25,
+  "tests_skipped": 2,
+  "failures": 0,
+  "errors": 0,
+  "skipped_tests": [
+    "test_prepared_input_and_metadata",
+    "test_direct_finite_gap_default_grid"
+  ],
+  "skip_reason": "No real --packer was supplied; actual-packer checks were intentionally skipped.",
+  "elapsed_seconds_reported": 0.576,
+  "table_format": "SLURRY_SPD_LOGFOURIER_V4",
+  "model_revision": "JANOSCHEK_MATCHED_HARDFLOOR_FULL17_V4",
+  "matrix_dimension": 17,
+  "stored_values_per_node": 153,
+  "recorded_at_utc": "2026-10-18T18:37:27.113401+00:00",
+  "provenance": "Persisted from the completed unittest command output after explicit-anchor contract updates; 27 tests ran, 25 passed, 2 real-packer checks skipped. No physical provider was executed.",
+  "source_anchor_contract": "Explicit anchors required for missing-basis generation; fresh/cached numerical reports bind serialized source anchors and do not qualify physical accuracy."
+}

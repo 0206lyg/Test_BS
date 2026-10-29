@@ -1,0 +1,195 @@
+{
+  "purpose": "Diagnostic-only changed constitutive equations; never used in production; do not compare physical viscosity or roots across ablations.",
+  "controls": [
+    "same hydrodynamic matrices",
+    "same normal springs and corrected gaps",
+    "same physical dt",
+    "same frozen normal caps",
+    "same original warm velocity",
+    "same full-model absolute residual acceptance threshold"
+  ],
+  "rows": [
+    {
+      "step": 595,
+      "mode": "full",
+      "budget": 40,
+      "returncode": 1,
+      "results": {
+        "mode": "full",
+        "passed": "0",
+        "newton": "40",
+        "damped": "40",
+        "min_alpha": "0.004412961507515625",
+        "line_refinements": "26",
+        "linear": "901",
+        "residual": "1.2518669062454812",
+        "tolerance": "0.0013344252765414308",
+        "max_linear_relative": "9.7844386635630508e-11"
+      }
+    },
+    {
+      "step": 595,
+      "mode": "full",
+      "budget": 200,
+      "returncode": 0,
+      "results": {
+        "mode": "full",
+        "passed": "1",
+        "newton": "41",
+        "damped": "40",
+        "min_alpha": "0.004412961507515625",
+        "line_refinements": "26",
+        "linear": "915",
+        "residual": "0.000322374233056099",
+        "tolerance": "0.0013344252765414308",
+        "max_linear_relative": "9.7844386635630508e-11"
+      }
+    },
+    {
+      "step": 595,
+      "mode": "no_sliding",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "no_sliding",
+        "passed": "1",
+        "newton": "25",
+        "damped": "23",
+        "min_alpha": "0.012750808490422415",
+        "line_refinements": "14",
+        "linear": "776",
+        "residual": "1.5096176548409585e-05",
+        "tolerance": "0.0013344252765414308",
+        "max_linear_relative": "9.6856743534258344e-11"
+      }
+    },
+    {
+      "step": 595,
+      "mode": "no_rolling",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "no_rolling",
+        "passed": "1",
+        "newton": "34",
+        "damped": "32",
+        "min_alpha": "0.008546666286752231",
+        "line_refinements": "20",
+        "linear": "699",
+        "residual": "1.2982496278138763e-11",
+        "tolerance": "0.0013344252765414308",
+        "max_linear_relative": "9.7397918494972427e-11"
+      }
+    },
+    {
+      "step": 595,
+      "mode": "normal_only",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "normal_only",
+        "passed": "1",
+        "newton": "2",
+        "damped": "0",
+        "min_alpha": "1",
+        "line_refinements": "0",
+        "linear": "46",
+        "residual": "3.6373355547441633e-09",
+        "tolerance": "0.0013344252765414308",
+        "max_linear_relative": "4.2444098404867155e-11"
+      }
+    },
+    {
+      "step": 683,
+      "mode": "full",
+      "budget": 40,
+      "returncode": 1,
+      "results": {
+        "mode": "full",
+        "passed": "0",
+        "newton": "40",
+        "damped": "40",
+        "min_alpha": "0.0023792632398526655",
+        "line_refinements": "30",
+        "linear": "1007",
+        "residual": "3.0809582101520969",
+        "tolerance": "0.0014741771721016328",
+        "max_linear_relative": "9.0232805781027158e-11"
+      }
+    },
+    {
+      "step": 683,
+      "mode": "full",
+      "budget": 200,
+      "returncode": 0,
+      "results": {
+        "mode": "full",
+        "passed": "1",
+        "newton": "46",
+        "damped": "43",
+        "min_alpha": "0.0023792632398526655",
+        "line_refinements": "32",
+        "linear": "1140",
+        "residual": "0.00016112748227336291",
+        "tolerance": "0.0014741771721016328",
+        "max_linear_relative": "9.0232805781027158e-11"
+      }
+    },
+    {
+      "step": 683,
+      "mode": "no_sliding",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "no_sliding",
+        "passed": "1",
+        "newton": "34",
+        "damped": "32",
+        "min_alpha": "0.0176518460300625",
+        "line_refinements": "19",
+        "linear": "982",
+        "residual": "8.5870524472319459e-06",
+        "tolerance": "0.0014741771721016328",
+        "max_linear_relative": "6.2086344049742828e-11"
+      }
+    },
+    {
+      "step": 683,
+      "mode": "no_rolling",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "no_rolling",
+        "passed": "1",
+        "newton": "25",
+        "damped": "23",
+        "min_alpha": "0.0053964284605106019",
+        "line_refinements": "12",
+        "linear": "608",
+        "residual": "0.00016163261982360343",
+        "tolerance": "0.0014741771721016328",
+        "max_linear_relative": "9.8707198290711139e-11"
+      }
+    },
+    {
+      "step": 683,
+      "mode": "normal_only",
+      "budget": 40,
+      "returncode": 0,
+      "results": {
+        "mode": "normal_only",
+        "passed": "1",
+        "newton": "2",
+        "damped": "0",
+        "min_alpha": "1",
+        "line_refinements": "0",
+        "linear": "47",
+        "residual": "3.9114116353833827e-09",
+        "tolerance": "0.0014741771721016328",
+        "max_linear_relative": "3.406418488609234e-11"
+      }
+    }
+  ],
+  "source_sha256": "3ec7e7203f2f410eec396e62ab8f24fe222e3be6eaf92dac36a2770f0c1f70f8",
+  "binary_sha256": "ba312cb8cfbfc71612974b147ead7191bdfde7bb76809dfb228f3bde9673b570"
+}

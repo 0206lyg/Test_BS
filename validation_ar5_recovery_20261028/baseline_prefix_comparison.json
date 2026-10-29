@@ -1,0 +1,96 @@
+{
+  "0": {
+    "sigma_xz_Pa": {
+      "hpc": 2.582149714388495,
+      "local": 2.5821497143884957,
+      "relative_difference": 3.439685990130373e-16
+    },
+    "eta_Pa_s": {
+      "hpc": 0.025821497143884948,
+      "local": 0.02582149714388496,
+      "relative_difference": 4.0308820196840304e-16
+    },
+    "eta_relative": {
+      "hpc": 2.582149714388495,
+      "local": 2.5821497143884957,
+      "relative_difference": 3.439685990130373e-16
+    },
+    "solver_relative_residual": {
+      "hpc": 1.0735363984926694e-09,
+      "local": 1.0735364231587343e-09,
+      "relative_difference": 2.297645835560792e-08
+    },
+    "newton_iterations": {
+      "hpc": 2.0,
+      "local": 2.0,
+      "relative_difference": 0.0
+    },
+    "linear_iterations": {
+      "hpc": 2.0,
+      "local": 2.0,
+      "relative_difference": 0.0
+    },
+    "contacts": {
+      "hpc": 1.0,
+      "local": 1.0,
+      "relative_difference": 0.0
+    },
+    "near_pairs": {
+      "hpc": 2019.0,
+      "local": 2019.0,
+      "relative_difference": 0.0
+    },
+    "actual_endpoint_max_overlap_fraction_min_semiaxis": {
+      "hpc": 1.1228956535713763e-06,
+      "local": 1.1228956535713763e-06,
+      "relative_difference": 0.0
+    }
+  },
+  "400": {
+    "sigma_xz_Pa": {
+      "hpc": 4.512035367370503,
+      "local": 4.454314956220141,
+      "relative_difference": 0.012792544040717368
+    },
+    "eta_Pa_s": {
+      "hpc": 0.04512035367370503,
+      "local": 0.044543149562201415,
+      "relative_difference": 0.012792544040717398
+    },
+    "eta_relative": {
+      "hpc": 4.512035367370503,
+      "local": 4.454314956220141,
+      "relative_difference": 0.012792544040717368
+    },
+    "solver_relative_residual": {
+      "hpc": 1.3185779779837247e-08,
+      "local": 1.39639996490318e-08,
+      "relative_difference": 0.055730441761255044
+    },
+    "newton_iterations": {
+      "hpc": 21.0,
+      "local": 19.0,
+      "relative_difference": 0.09523809523809523
+    },
+    "linear_iterations": {
+      "hpc": 446.0,
+      "local": 467.0,
+      "relative_difference": 0.044967880085653104
+    },
+    "contacts": {
+      "hpc": 271.0,
+      "local": 272.0,
+      "relative_difference": 0.003676470588235294
+    },
+    "near_pairs": {
+      "hpc": 2011.0,
+      "local": 2011.0,
+      "relative_difference": 0.0
+    },
+    "actual_endpoint_max_overlap_fraction_min_semiaxis": {
+      "hpc": 3.3810487301555454e-05,
+      "local": 3.094236344036716e-05,
+      "relative_difference": 0.08482941507490033
+    }
+  }
+}

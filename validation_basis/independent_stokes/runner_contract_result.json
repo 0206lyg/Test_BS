@@ -1,0 +1,26 @@
+{
+  "schema": "independent_reference_runner_contract_v1",
+  "passed": true,
+  "physical_accuracy_qualified": false,
+  "scope": "Shell/embedded-Python syntax and synthetic subprocess routing only; no Stokes solve was executed by these tests.",
+  "runner_sha256": "5db49845e6f2065c2d8c4acfbc5dba03e0563829380fcf54d521430897bdfaed",
+  "checks": {
+    "bash_syntax": true,
+    "embedded_python_syntax": true,
+    "source_and_library_snapshot": true,
+    "fixed_gap_multiple_profiles": true,
+    "failure_stops_later_profiles": true,
+    "failed_run_files_retained": true,
+    "existing_output_not_overwritten": true,
+    "operator_and_isolated_report_snapshots": true,
+    "input_paths_with_spaces": true,
+    "dependency_build_manifest_bound_to_library_hash": true,
+    "job_manifest_does_not_claim_physical_qualification": true
+  },
+  "limitations": [
+    "Mock run_reference.py processes were used for routing checks.",
+    "The current real shared library was copied and inspected with ldd, but no physical library solve was called.",
+    "Non-system dependency copying was syntax-reviewed; this environment resolved the library dependencies through system paths."
+  ],
+  "recorded_at_utc": "2026-10-18T18:44:06.319341+00:00"
+}

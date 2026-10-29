@@ -1,0 +1,11 @@
+{
+  "reason": "User overlap criterion exceeded. Deliberate stop of soft-stiffness comparison; not a solver breakdown.",
+  "criterion_max_overlap_min_semiaxis": 0.05,
+  "last_observed_step": 1341,
+  "last_observed_strain": 0.33525000000000005,
+  "last_observed_overlap_fraction": 0.1315274983469583,
+  "terminated_pids": [],
+  "interrupt_method": "SIGINT via tool session6494",
+  "last_completed_step": 1358,
+  "last_completed_strain": 0.3395
+}

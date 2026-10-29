@@ -1,0 +1,6 @@
+{
+  "reason": "Hydro-only preconditioner reference deliberately interrupted. Final contact-preconditioned v2 run continues with identical constitutive law and tolerance. No solver failure.",
+  "last_completed_step": 748,
+  "last_completed_strain": 0.187,
+  "interrupt_method": "SIGINT via tool session93547"
+}

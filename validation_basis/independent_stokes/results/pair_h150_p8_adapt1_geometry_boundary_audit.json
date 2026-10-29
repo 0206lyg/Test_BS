@@ -1,0 +1,270 @@
+{
+  "schema": "recorded_ar20_saved_boundary_geometry_audit_v1",
+  "physical_accuracy_qualified": false,
+  "contains_new_stokes_solve": false,
+  "excludes_operator_or_self_quadrature_error": false,
+  "scope": "Geometry interpolation and density-tail indicators at saved/reconstructed off-grid sites; no kernel evaluation",
+  "report": "/workspace/scratch/581ed100c5ad/Test_BS/validation_basis/independent_stokes/results/pair_h150_p8_adapt1.json",
+  "report_sha256": "5d569664bbc1b82d41cac86ab7dc4cc8de053dc17413f149e1183532ac2066fc",
+  "sample_velocity_file": "validation_basis/independent_stokes/results/pair_h150_p8_adapt1_quadrature_probe_patched.velocities.npz",
+  "sample_velocity_sha256": "b84af06c8fb43a511350789e1e2573f63b67fea0de3c3946894905bdd149b46a",
+  "patches": [
+    {
+      "patch": 35,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.02589861230597417,
+      "max_position_error_c": 3.322177514358177e-08,
+      "max_normal_error": 8.951217368157556e-10,
+      "max_interpolated_analytic_derivative_relative_error": 1.4905578242862553e-08,
+      "max_position_derivative_consistency_relative_error": 9.736004575537131e-08,
+      "density_directional_tail_indicators": [
+        8.828696610634071e-05,
+        0.003505218125010388
+      ],
+      "sampled_worst_mode": 2,
+      "sampled_max_boundary_error": 0.02589835014336481,
+      "worst_uv": [
+        0.5210573010525773,
+        0.7802020268556786
+      ],
+      "worst_point_nm": [
+        -32.24003468817128,
+        1212.5688656900352,
+        -12.890868084413256
+      ],
+      "opposite_body_projected_ellipse_level": 1.0735731243092215,
+      "alternative_mesh_resolution_indicators": [
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_proposal.json",
+          "order": 8,
+          "patch": 63,
+          "cube_coordinate_spans": [
+            0.5,
+            0.25,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            1347.5211306224346,
+            570.7864154665159
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            149.7245700691594,
+            63.42071282961288
+          ]
+        },
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p6_anisotropic_proposal.json",
+          "order": 6,
+          "patch": 88,
+          "cube_coordinate_spans": [
+            0.25,
+            0.125,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            673.7605653112173,
+            285.39320773325795
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            96.2515093301739,
+            40.77045824760828
+          ]
+        }
+      ]
+    },
+    {
+      "patch": 25,
+      "body": 0,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.02546203199432334,
+      "max_position_error_c": 3.405706772334555e-08,
+      "max_normal_error": 8.595728640896427e-10,
+      "max_interpolated_analytic_derivative_relative_error": 1.1787733815276779e-08,
+      "max_position_derivative_consistency_relative_error": 6.219211203909467e-08,
+      "density_directional_tail_indicators": [
+        6.36940916538835e-05,
+        0.003716697890521563
+      ],
+      "sampled_worst_mode": 2,
+      "sampled_max_boundary_error": 0.02546212577323239,
+      "worst_uv": [
+        -0.8692989798978037,
+        0.46793939389374417
+      ],
+      "worst_point_nm": [
+        385.98608710463867,
+        1033.0678954621,
+        -10.42787182665664
+      ],
+      "opposite_body_projected_ellipse_level": 0.9469383210617771,
+      "alternative_mesh_resolution_indicators": [
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_proposal.json",
+          "order": 8,
+          "patch": 42,
+          "cube_coordinate_spans": [
+            0.5,
+            0.25,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            1406.264396033342,
+            620.4506202168651
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            156.25159955926023,
+            68.9389578018739
+          ]
+        },
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p6_anisotropic_proposal.json",
+          "order": 6,
+          "patch": 56,
+          "cube_coordinate_spans": [
+            0.25,
+            0.125,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            703.132198016671,
+            310.2253101084325
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            100.44745685952444,
+            44.31790144406178
+          ]
+        }
+      ]
+    },
+    {
+      "patch": 52,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.017780810422630747,
+      "max_position_error_c": 7.464696935817928e-06,
+      "max_normal_error": 1.9167511033084205e-07,
+      "max_interpolated_analytic_derivative_relative_error": 4.999793527197257e-06,
+      "max_position_derivative_consistency_relative_error": 1.3906922407507528e-05,
+      "density_directional_tail_indicators": [
+        0.0008292474409062362,
+        0.008566701039020456
+      ],
+      "sampled_worst_mode": 8,
+      "sampled_max_boundary_error": 0.017780736823826363,
+      "worst_uv": [
+        -0.8692989798978037,
+        0.46793939389374417
+      ],
+      "worst_point_nm": [
+        435.89433115685534,
+        -2643.7728410006193,
+        520.7317605825754
+      ],
+      "opposite_body_projected_ellipse_level": 0.778873870880317,
+      "alternative_mesh_resolution_indicators": [
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_proposal.json",
+          "order": 8,
+          "patch": 92,
+          "cube_coordinate_spans": [
+            1.0,
+            0.5,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            2882.2978833126117,
+            1351.7812284119116
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            320.25532036806794,
+            150.19791426799017
+          ]
+        },
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p6_anisotropic_proposal.json",
+          "order": 6,
+          "patch": 130,
+          "cube_coordinate_spans": [
+            0.5,
+            0.5,
+            0.0
+          ],
+          "local_tangent_panel_scales_nm": [
+            1441.1489416563059,
+            1351.7812284119116
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            205.8784202366151,
+            193.1116040588445
+          ]
+        }
+      ]
+    },
+    {
+      "patch": 41,
+      "body": 1,
+      "check_site_count": 9,
+      "recorded_patch_boundary_error": 0.015590826032618068,
+      "max_position_error_c": 6.887827226815256e-06,
+      "max_normal_error": 7.984583362089626e-06,
+      "max_interpolated_analytic_derivative_relative_error": 1.687308502046227e-05,
+      "max_position_derivative_consistency_relative_error": 2.381569514984649e-05,
+      "density_directional_tail_indicators": [
+        0.0003413836883343238,
+        0.007468973409375746
+      ],
+      "sampled_worst_mode": 8,
+      "sampled_max_boundary_error": 0.015590725535141722,
+      "worst_uv": [
+        0.5210573010525773,
+        0.7802020268556786
+      ],
+      "worst_point_nm": [
+        942.3657806891632,
+        1017.4971252804136,
+        213.74758097172867
+      ],
+      "opposite_body_projected_ellipse_level": 0.16184227175828422,
+      "alternative_mesh_resolution_indicators": [
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p8_anisotropic_proposal.json",
+          "order": 8,
+          "patch": 74,
+          "cube_coordinate_spans": [
+            1.0,
+            0.0,
+            0.5
+          ],
+          "local_tangent_panel_scales_nm": [
+            2821.2361209238866,
+            169.21725875855716
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            313.47068010265406,
+            18.801917639839687
+          ]
+        },
+        {
+          "proposal": "validation_basis/independent_stokes/results/pair_h150_p6_anisotropic_proposal.json",
+          "order": 6,
+          "patch": 104,
+          "cube_coordinate_spans": [
+            1.0,
+            0.0,
+            0.5
+          ],
+          "local_tangent_panel_scales_nm": [
+            2821.2361209238866,
+            169.21725875855716
+          ],
+          "tangent_scale_divided_by_nodes_per_axis_nm": [
+            403.0337315605552,
+            24.17389410836531
+          ]
+        }
+      ]
+    }
+  ],
+  "source_sha256": "437d1dbc37cc96de13282e8e2548f84f87259637fcd4773be1cb5f6936f0e215"
+}

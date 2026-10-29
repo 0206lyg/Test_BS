@@ -1,0 +1,30 @@
+{
+  "schema": "reference_retry_resource_outcome_v1",
+  "reference_report": "pair_h150_p7_159_cow.json",
+  "reference_report_sha256": "8aa6b29370e34b471d9ac26cb6d2465de1f9cffca9ea74394c994fa5b994e105",
+  "scope": "Recorded AR20 pose at 150 nm; p7 and 159 panels",
+  "physical_accuracy_qualified": false,
+  "linear_solution_available": false,
+  "status": "linear_solve_failed",
+  "failure_stage": "before_LU_factorization",
+  "failure_type": "MemoryError",
+  "failure_message": "Cgroup has 7.374 GB headroom after reserve; this stage needs an estimated 7.820 GB (limit 8.590 GB)",
+  "nodes": 10176,
+  "patches": 159,
+  "assembly_completed_targets": 10176,
+  "assembly_seconds": 674.0448830710011,
+  "wall_seconds_until_failure": 681.3916640959978,
+  "factor_estimated_additional_bytes": 7819841536,
+  "available_bytes_after_reserve": 7374237056,
+  "cgroup_limit_bytes": 8589934592,
+  "no_new_physical_quantities": [
+    "force",
+    "torque",
+    "stresslet",
+    "surface_velocity",
+    "153_value_encoding"
+  ],
+  "assessment": "The exact operator assembly completed, but the unchanged memory guard rejected LU. No density or response matrix was computed. This attempt supplies no evidence of improved or degraded physical accuracy.",
+  "next_prepared_retry": "pair_h150_p8_hpc_refinement_proposal.json; execution instructions in ../README.md; not executed",
+  "same_pose_and_gap_preserved": true
+}

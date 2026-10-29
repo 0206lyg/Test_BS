@@ -1,0 +1,2618 @@
+{
+  "release": "20261028-bidisperse-imex",
+  "bundle_release": "20261028-bidisperse-imex",
+  "count": 435,
+  "matches": 435,
+  "files": [
+    {
+      "path": "lammps_slurry/CMakeLists.txt",
+      "expected_sha256": "257656c25d6c8852583a01c11bfe0b0fdeb89c7a80a20e42a6d689775fc9cefd",
+      "local_sha256": "257656c25d6c8852583a01c11bfe0b0fdeb89c7a80a20e42a6d689775fc9cefd",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/lammps-version.json",
+      "expected_sha256": "4cfe43fb4a7f45f3c713e9b2f1b5e3cd54d625827ee846c513db0f5e248d4f2e",
+      "local_sha256": "4cfe43fb4a7f45f3c713e9b2f1b5e3cd54d625827ee846c513db0f5e248d4f2e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_bridge.cpp",
+      "expected_sha256": "a4f4714cd01bf51c99b7ad3d2dbd4bd44e4a824ff5dcc68ee67cf52c083bdef4",
+      "local_sha256": "a4f4714cd01bf51c99b7ad3d2dbd4bd44e4a824ff5dcc68ee67cf52c083bdef4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_bridge.h",
+      "expected_sha256": "5154a0c0234654243a33a882af912e0b3f2bf7a1ff383429fbee4e6c048c6f05",
+      "local_sha256": "5154a0c0234654243a33a882af912e0b3f2bf7a1ff383429fbee4e6c048c6f05",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_drag.cpp",
+      "expected_sha256": "9a25000f0584680e63f9fdb0dfe4df9410816ec6935c16ea7ee4321a8b31e403",
+      "local_sha256": "9a25000f0584680e63f9fdb0dfe4df9410816ec6935c16ea7ee4321a8b31e403",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_drag.h",
+      "expected_sha256": "33f9d111616b4fd2857510efa3f988584f2c2a5d2a5af89a60a3ffbaffe50e24",
+      "local_sha256": "33f9d111616b4fd2857510efa3f988584f2c2a5d2a5af89a60a3ffbaffe50e24",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_implicit.cpp",
+      "expected_sha256": "6c033039257f99806150523a055abe46c279e56a35b5c417d3f6f80f0625003d",
+      "local_sha256": "6c033039257f99806150523a055abe46c279e56a35b5c417d3f6f80f0625003d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/fix_slurry_implicit.h",
+      "expected_sha256": "8bdfb0d2d1bfec7afc8b08c17128712d2086593a9a14fdc13914649dd3cc23d9",
+      "local_sha256": "8bdfb0d2d1bfec7afc8b08c17128712d2086593a9a14fdc13914649dd3cc23d9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/pack_spheroids.cpp",
+      "expected_sha256": "41967d86b538a714fba449f961ddd742f66e5c4df95be14175d5d8c58f8988f5",
+      "local_sha256": "41967d86b538a714fba449f961ddd742f66e5c4df95be14175d5d8c58f8988f5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/pair_slurry_spheroid.cpp",
+      "expected_sha256": "0b68b8e1e1110cd9dfafd1675473f037667f5dc3e7d3f27cee7cc5608096e1a8",
+      "local_sha256": "0b68b8e1e1110cd9dfafd1675473f037667f5dc3e7d3f27cee7cc5608096e1a8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/pair_slurry_spheroid.h",
+      "expected_sha256": "b036298845618885b05f014d177b207ed6c44145f168dd9a39f36e4f00745019",
+      "local_sha256": "b036298845618885b05f014d177b207ed6c44145f168dd9a39f36e4f00745019",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/plugin.cpp",
+      "expected_sha256": "6c5a2e8c7022a82d934ca078501aa9525c00b0c8a8847aa714224a4a78c1ddac",
+      "local_sha256": "6c5a2e8c7022a82d934ca078501aa9525c00b0c8a8847aa714224a4a78c1ddac",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_anchor_cache.h",
+      "expected_sha256": "fb35ae47bee4881c1b0122dad7e51329e08dbab37c820c1152482a7c230f1ed7",
+      "local_sha256": "fb35ae47bee4881c1b0122dad7e51329e08dbab37c820c1152482a7c230f1ed7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_contact_solver.h",
+      "expected_sha256": "c5c86fd941fabddab3d95a505331f414dd4a97256d6df0e86f5708d5d6a805cc",
+      "local_sha256": "c5c86fd941fabddab3d95a505331f414dd4a97256d6df0e86f5708d5d6a805cc",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_images.h",
+      "expected_sha256": "5d08c36d6ab0927cf7ca6871235cae6e1e59fe376f9cca9d2c85312107ac31df",
+      "local_sha256": "5d08c36d6ab0927cf7ca6871235cae6e1e59fe376f9cca9d2c85312107ac31df",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_linear_solver.h",
+      "expected_sha256": "efbbdbeabb67ec1ed8e2e41f81d1fdf254997fb578d1c4a0a97010967998ad9e",
+      "local_sha256": "efbbdbeabb67ec1ed8e2e41f81d1fdf254997fb578d1c4a0a97010967998ad9e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_shape.h",
+      "expected_sha256": "a6fd54a2c6175ded69c63fc5c99197e8aa664ca52728d34a42f115f6603fd3e2",
+      "local_sha256": "a6fd54a2c6175ded69c63fc5c99197e8aa664ca52728d34a42f115f6603fd3e2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_solver.h",
+      "expected_sha256": "bc9691846931620ce9f2f778e7ba717774051893d3138ba23be712ffe289e10a",
+      "local_sha256": "bc9691846931620ce9f2f778e7ba717774051893d3138ba23be712ffe289e10a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_step.h",
+      "expected_sha256": "a76ea379cdae0ba61b959781f090d24b1ec363fa098d98a1e66e3177e4846644",
+      "local_sha256": "a76ea379cdae0ba61b959781f090d24b1ec363fa098d98a1e66e3177e4846644",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_bridge_workspace.h",
+      "expected_sha256": "5f26f433e03bf10675afc00bf9dac9f7b786e82c2ac3bdf9285a95f0ac58a5eb",
+      "local_sha256": "5f26f433e03bf10675afc00bf9dac9f7b786e82c2ac3bdf9285a95f0ac58a5eb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_compact_bridge.h",
+      "expected_sha256": "b3d5cd93e8fd07d2a5a4c403a083671ce3e7adfb7676db311315c5fc345b2a96",
+      "local_sha256": "b3d5cd93e8fd07d2a5a4c403a083671ce3e7adfb7676db311315c5fc345b2a96",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_cylinder_film.h",
+      "expected_sha256": "5d4a0f5eaa598085a9c1839aeb2bcf545da817a61123755ba9fe514bf99f3529",
+      "local_sha256": "5d4a0f5eaa598085a9c1839aeb2bcf545da817a61123755ba9fe514bf99f3529",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_cylinder_geometry.h",
+      "expected_sha256": "938922294867cf5e420bfa60971651bde87c53e2b226378644148a69ad554103",
+      "local_sha256": "938922294867cf5e420bfa60971651bde87c53e2b226378644148a69ad554103",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_cylinder_packing.h",
+      "expected_sha256": "ddaee8aef90df28cc7bbc0e4100cf152eb7f7911d7d4b2d579bbf34a0e09b600",
+      "local_sha256": "ddaee8aef90df28cc7bbc0e4100cf152eb7f7911d7d4b2d579bbf34a0e09b600",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_cylinder_pair.h",
+      "expected_sha256": "1952e3f207f2281a104ad520c95e9639e60a47faeff44e4d95925294ada2324a",
+      "local_sha256": "1952e3f207f2281a104ad520c95e9639e60a47faeff44e4d95925294ada2324a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_eigen_ilu_math.h",
+      "expected_sha256": "305b7c61ce6f0841f9fa2e4f85b408fff09a19d87e8d4927df475e0b22c533df",
+      "local_sha256": "305b7c61ce6f0841f9fa2e4f85b408fff09a19d87e8d4927df475e0b22c533df",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_eigen_lu_math.h",
+      "expected_sha256": "0b43b766efde58082db79d35f99ad2c25222753f983269ce784afc838a8d02aa",
+      "local_sha256": "0b43b766efde58082db79d35f99ad2c25222753f983269ce784afc838a8d02aa",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_fft_plans.h",
+      "expected_sha256": "d06c8b87162e86fe337f8067fa80fea0841cc5f4d6a174ba6193dd4245f101c7",
+      "local_sha256": "d06c8b87162e86fe337f8067fa80fea0841cc5f4d6a174ba6193dd4245f101c7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_finite_gap_math.h",
+      "expected_sha256": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+      "local_sha256": "8c21194bce180d3b3bbce4c447214862d5832f4b32858c31c48f1da431359c58",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_flake_diagnostics.h",
+      "expected_sha256": "ea0685893f092f459d6bc1617cdaae25580d18c1ffde9f38cef9c032da04bc63",
+      "local_sha256": "ea0685893f092f459d6bc1617cdaae25580d18c1ffde9f38cef9c032da04bc63",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_model.cpp",
+      "expected_sha256": "47bed371fd0555932e31dafe139827add3b9c86246d6c05ebe708d5300d950c9",
+      "local_sha256": "47bed371fd0555932e31dafe139827add3b9c86246d6c05ebe708d5300d950c9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_model.h",
+      "expected_sha256": "60a45a46dc599d2df970bf7f3221d8b6edd1a8c6764392fa0dc6266837e7d9f1",
+      "local_sha256": "60a45a46dc599d2df970bf7f3221d8b6edd1a8c6764392fa0dc6266837e7d9f1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_near.cpp",
+      "expected_sha256": "2ce45089dbebf74f156ba7886009d540d93edc56f3372ca5cdbfde04791c84ca",
+      "local_sha256": "2ce45089dbebf74f156ba7886009d540d93edc56f3372ca5cdbfde04791c84ca",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_near.h",
+      "expected_sha256": "aa4dd417e416a8284aee5df39631a707e1109cefd48c141371f4a234538a6733",
+      "local_sha256": "aa4dd417e416a8284aee5df39631a707e1109cefd48c141371f4a234538a6733",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_outer.cpp",
+      "expected_sha256": "162b8751c72d03ec432591990124dc57980793d7c5f1fca5a7ce0e8db0ac3962",
+      "local_sha256": "162b8751c72d03ec432591990124dc57980793d7c5f1fca5a7ce0e8db0ac3962",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_outer.h",
+      "expected_sha256": "2249ee615db421110d349b8841d3fcbea4d99a35f68133a8d2eaece039328901",
+      "local_sha256": "2249ee615db421110d349b8841d3fcbea4d99a35f68133a8d2eaece039328901",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_provider.cpp",
+      "expected_sha256": "eaed1ba134608cd5a34015f6f22e0744b68430ec3c7234b1dc81de1668aa91c1",
+      "local_sha256": "eaed1ba134608cd5a34015f6f22e0744b68430ec3c7234b1dc81de1668aa91c1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_provider.h",
+      "expected_sha256": "2cad1bdda3ddff91540d26b2b008633c3c8d4939533f8a2da79a49cc7098c01f",
+      "local_sha256": "2cad1bdda3ddff91540d26b2b008633c3c8d4939533f8a2da79a49cc7098c01f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_general_types.h",
+      "expected_sha256": "923ae681b7bcac09e64b17809932c02864126bd79a7e483240ea328d5f011398",
+      "local_sha256": "923ae681b7bcac09e64b17809932c02864126bd79a7e483240ea328d5f011398",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_grand_pair_lookup.h",
+      "expected_sha256": "51379d903c620b52324c5b2beeee0adfe8c6ba30b8533cd0a78f8720f258f7eb",
+      "local_sha256": "51379d903c620b52324c5b2beeee0adfe8c6ba30b8533cd0a78f8720f258f7eb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_grand_pair_math.h",
+      "expected_sha256": "fe2b593722339c7eb3562527523fc1442cd543ae63e3ceb8732c5b468cbfa167",
+      "local_sha256": "fe2b593722339c7eb3562527523fc1442cd543ae63e3ceb8732c5b468cbfa167",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_grand_system_check.h",
+      "expected_sha256": "396037d6e1347ffa1d5029d135b5f735f2878a183c5aeca7c165211dd38f5fe7",
+      "local_sha256": "396037d6e1347ffa1d5029d135b5f735f2878a183c5aeca7c165211dd38f5fe7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_history_math.h",
+      "expected_sha256": "3f4f1ab549c92138b6c07417263e787d99ef04c7978b65f09ef1efcffb222a94",
+      "local_sha256": "3f4f1ab549c92138b6c07417263e787d99ef04c7978b65f09ef1efcffb222a94",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_hydro_math.h",
+      "expected_sha256": "b2d8edd970e06339a06cb52fc16fde6fced55d9e926eafb736ce8d3775d352e1",
+      "local_sha256": "b2d8edd970e06339a06cb52fc16fde6fced55d9e926eafb736ce8d3775d352e1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_implicit_math.h",
+      "expected_sha256": "49f86f6179620cde908e9a2207e0134176a8cae53d06d9f52ae39405998902cb",
+      "local_sha256": "49f86f6179620cde908e9a2207e0134176a8cae53d06d9f52ae39405998902cb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_nearfield_hydro.h",
+      "expected_sha256": "817ea28ca5fb6f0beaca8821153d6811130a655d4c028e161346e14265328be7",
+      "local_sha256": "817ea28ca5fb6f0beaca8821153d6811130a655d4c028e161346e14265328be7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_nearfield_imex_solver.h",
+      "expected_sha256": "78d986b1a2ff3d30ba14c1dd400c223139150349ef2474f4b506bf5c1e73825b",
+      "local_sha256": "78d986b1a2ff3d30ba14c1dd400c223139150349ef2474f4b506bf5c1e73825b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_nearfield_implicit_solver.h",
+      "expected_sha256": "143baf95c7cf015a4b77aed0c999f8609eaa019eca1d3fabcfff8c7cd6cfec04",
+      "local_sha256": "143baf95c7cf015a4b77aed0c999f8609eaa019eca1d3fabcfff8c7cd6cfec04",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_nearfield_solver.h",
+      "expected_sha256": "cfdfb83d129eb54dd2d9776688496a6aeb82b4afdc576381618739346cbf9c9c",
+      "local_sha256": "cfdfb83d129eb54dd2d9776688496a6aeb82b4afdc576381618739346cbf9c9c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_nearfield_step.h",
+      "expected_sha256": "19f54a1d775c56c7cd89360580a5b09104da62d574d9d522ccf3203893284e25",
+      "local_sha256": "19f54a1d775c56c7cd89360580a5b09104da62d574d9d522ccf3203893284e25",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_objective_film.h",
+      "expected_sha256": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
+      "local_sha256": "d5da02ec0b3307a69a18532a5855f455b233d60d3ed7b4dd6e07b6738a4595de",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_pair_hydro_math.h",
+      "expected_sha256": "7765ac59f3265f69629f54e73c50590044a2387e56afd7b50d27b588d4fa468a",
+      "local_sha256": "7765ac59f3265f69629f54e73c50590044a2387e56afd7b50d27b588d4fa468a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_periodic_mesh.h",
+      "expected_sha256": "c99319020e3f7d24c6fa167930df964f6a1803ef37a155ba27d5d0014cd9680a",
+      "local_sha256": "c99319020e3f7d24c6fa167930df964f6a1803ef37a155ba27d5d0014cd9680a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_periodic_mobility.h",
+      "expected_sha256": "bd372a70e63feee7fd351001e6874b097dbb6f5b061036c0acf94d23bfbb1de5",
+      "local_sha256": "bd372a70e63feee7fd351001e6874b097dbb6f5b061036c0acf94d23bfbb1de5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_reference_source17.h",
+      "expected_sha256": "9e5c79966b2a0322848d0107cf79680dcd2779c5f90be375ce3559e7bc79426a",
+      "local_sha256": "9e5c79966b2a0322848d0107cf79680dcd2779c5f90be375ce3559e7bc79426a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_rough_surface.h",
+      "expected_sha256": "a2e65e1c7895e943a2798477008a24975a13ec1548e6d8338097f67dcd23357a",
+      "local_sha256": "a2e65e1c7895e943a2798477008a24975a13ec1548e6d8338097f67dcd23357a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_scattering_math.h",
+      "expected_sha256": "1efdb2112ba90b82511e218c13843ed070e3356ebce41d35aeb45889e7c11d8c",
+      "local_sha256": "1efdb2112ba90b82511e218c13843ed070e3356ebce41d35aeb45889e7c11d8c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_scattering_provider.h",
+      "expected_sha256": "3661ae6fdb75c61be9c1d44a4ef8bce2ffecb9deb286109803e036ed32dab01d",
+      "local_sha256": "3661ae6fdb75c61be9c1d44a4ef8bce2ffecb9deb286109803e036ed32dab01d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_singular_pair.h",
+      "expected_sha256": "9bbbd0d50043a87ee7e2b98876a05ea1c892b9fa8a4376f5a20d885b0922395e",
+      "local_sha256": "9bbbd0d50043a87ee7e2b98876a05ea1c892b9fa8a4376f5a20d885b0922395e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_solver_workspace.h",
+      "expected_sha256": "128b9beb396fc6cfca965d9d33a8c07f2ebe5f417f6dc3fcfe0c8f02f51ceb34",
+      "local_sha256": "128b9beb396fc6cfca965d9d33a8c07f2ebe5f417f6dc3fcfe0c8f02f51ceb34",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_sparse_math.h",
+      "expected_sha256": "0e5b2ffd030161dca343d502c0ce8bb8432489aca643843c7c12e0c142f36324",
+      "local_sha256": "0e5b2ffd030161dca343d502c0ce8bb8432489aca643843c7c12e0c142f36324",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_spd_coordinates.h",
+      "expected_sha256": "9b1a250a51b6cc77061c0c210e63cac173f1455451c8b497ecb9e64a4241961d",
+      "local_sha256": "9b1a250a51b6cc77061c0c210e63cac173f1455451c8b497ecb9e64a4241961d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_spd_coordinates17.h",
+      "expected_sha256": "3ac110cb0177d4c1bf9b74baeee116357733c174ed8f5d6297aa189de363264a",
+      "local_sha256": "3ac110cb0177d4c1bf9b74baeee116357733c174ed8f5d6297aa189de363264a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_spd_table.h",
+      "expected_sha256": "61425c6d3c2b8a756800c353fcb1c4d566d76b49907391abc6d93fb4c97edc38",
+      "local_sha256": "61425c6d3c2b8a756800c353fcb1c4d566d76b49907391abc6d93fb4c97edc38",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_spd_table17.h",
+      "expected_sha256": "8f9184990c3d25c8c192480422a36348df39fc1e3e42618ca7018780ef9ec560",
+      "local_sha256": "8f9184990c3d25c8c192480422a36348df39fc1e3e42618ca7018780ef9ec560",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_spheroid_hydro_math.h",
+      "expected_sha256": "645930243114a39f966f0ad77e73c0b7b7022460f0f36a7a83e6f4e72ee08954",
+      "local_sha256": "645930243114a39f966f0ad77e73c0b7b7022460f0f36a7a83e6f4e72ee08954",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/src/slurry_stress_math.h",
+      "expected_sha256": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad",
+      "local_sha256": "e46205ef1be3dfb9a68a9d1f007e71feb49e29d5cd3e332ab580eb1d562cb6ad",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tests/test_basis_physical.cpp",
+      "expected_sha256": "3409209fc60dd75932c1e0a956f8baa4f3ec06c95bfbdf743a78506e41b54144",
+      "local_sha256": "3409209fc60dd75932c1e0a956f8baa4f3ec06c95bfbdf743a78506e41b54144",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tests/test_table_interpolation.cpp",
+      "expected_sha256": "fe799c84d35a8ac4236296a8689fd53bd33e29f438f2520b80bcfad43881081d",
+      "local_sha256": "fe799c84d35a8ac4236296a8689fd53bd33e29f438f2520b80bcfad43881081d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/basis_cylindrical_kernel.h",
+      "expected_sha256": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
+      "local_sha256": "30775b78bb8b9d5384db1ec83abd831b86b4822ffad58e1458e7cc26ff1bd57a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/build.py",
+      "expected_sha256": "5272821d54f814728dd1bf718676148d43db40760c424d42e2d5994c9408b7d0",
+      "local_sha256": "5272821d54f814728dd1bf718676148d43db40760c424d42e2d5994c9408b7d0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/bundle_guard.py",
+      "expected_sha256": "83b7859d55aaffec25a795f5ba60f4562b3834b42bf4c8a12f741439f90fb3b5",
+      "local_sha256": "83b7859d55aaffec25a795f5ba60f4562b3834b42bf4c8a12f741439f90fb3b5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/precompute_fast.cpp",
+      "expected_sha256": "9606dc8c215e18cf7eb9a40f17c2c942109ebb0fd2b3d40ac5bab78e83d946f3",
+      "local_sha256": "9606dc8c215e18cf7eb9a40f17c2c942109ebb0fd2b3d40ac5bab78e83d946f3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/prepare_bridge.py",
+      "expected_sha256": "4b7742287a58978a766387f30a5fc5951cd081c056dc45d8ed14fa63bb8386fd",
+      "local_sha256": "4b7742287a58978a766387f30a5fc5951cd081c056dc45d8ed14fa63bb8386fd",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/prepare_case.py",
+      "expected_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
+      "local_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/run_bridge.py",
+      "expected_sha256": "6800c4189cc92c232fae00734ce1ae58e6058dc4c39fdd3805642d534c27258e",
+      "local_sha256": "6800c4189cc92c232fae00734ce1ae58e6058dc4c39fdd3805642d534c27258e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/runtime_snapshot.py",
+      "expected_sha256": "d26e8b9453ac693b0c3872e939d1968ead31f7237ee9ea17d25cb1b08f5bb408",
+      "local_sha256": "d26e8b9453ac693b0c3872e939d1968ead31f7237ee9ea17d25cb1b08f5bb408",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/slurry_generate_basis.cpp",
+      "expected_sha256": "20a84f336c5aeda885a6d621bb15d4a2fab05e754708759710abe6fba69e65cc",
+      "local_sha256": "20a84f336c5aeda885a6d621bb15d4a2fab05e754708759710abe6fba69e65cc",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/tools/summarize_bridge.py",
+      "expected_sha256": "4ecfc1646b13fef6aa35f78daf88bc29446bdcc214aded065169ca51f63ef205",
+      "local_sha256": "4ecfc1646b13fef6aa35f78daf88bc29446bdcc214aded065169ca51f63ef205",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.APACHE",
+      "expected_sha256": "03379001a7b12a2ec997a25554247d985270b353c10d5bafee9ac8d6519820b7",
+      "local_sha256": "03379001a7b12a2ec997a25554247d985270b353c10d5bafee9ac8d6519820b7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.BSD",
+      "expected_sha256": "51928dce36213c5333ba3172e847d735d4c6e9b7ff2722a326c49067155b82eb",
+      "local_sha256": "51928dce36213c5333ba3172e847d735d4c6e9b7ff2722a326c49067155b82eb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.GPL",
+      "expected_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "local_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.LGPL",
+      "expected_sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "local_sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.MINPACK",
+      "expected_sha256": "c87b7f8ee88f6195e91743820c00354833583aef091b72e2d4a49c8e28e798a0",
+      "local_sha256": "c87b7f8ee88f6195e91743820c00354833583aef091b72e2d4a49c8e28e798a0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.MPL2",
+      "expected_sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "local_sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.NOTICES",
+      "expected_sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+      "local_sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/COPYING.README",
+      "expected_sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+      "local_sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Cholesky",
+      "expected_sha256": "48c72c2d7b98fdb451675d2ee03850ecfdc97ea41bce55ed754b03da4ab09bd0",
+      "local_sha256": "48c72c2d7b98fdb451675d2ee03850ecfdc97ea41bce55ed754b03da4ab09bd0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/CholmodSupport",
+      "expected_sha256": "26f0d1bd0677785394f1f4eb2cddf763423f703c0941b3e58373e955b0130327",
+      "local_sha256": "26f0d1bd0677785394f1f4eb2cddf763423f703c0941b3e58373e955b0130327",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Core",
+      "expected_sha256": "b8ae5f77a30d48bcaf622a56f7047baa8b2fb790f5db7361aa1d57f424fa3c1e",
+      "local_sha256": "b8ae5f77a30d48bcaf622a56f7047baa8b2fb790f5db7361aa1d57f424fa3c1e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Dense",
+      "expected_sha256": "5325c9d4d693e504ee012c5275ad4b10b135a701cbd87c14466d2ea21ea22ee5",
+      "local_sha256": "5325c9d4d693e504ee012c5275ad4b10b135a701cbd87c14466d2ea21ea22ee5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Eigen",
+      "expected_sha256": "b0473b5d7c0cd9311d4a90548162e8cf160904476871f7fb749e9624e9b3dfd1",
+      "local_sha256": "b0473b5d7c0cd9311d4a90548162e8cf160904476871f7fb749e9624e9b3dfd1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Eigenvalues",
+      "expected_sha256": "f1958a9acf3cd3e1f518d871d7dc602e8101b33ce35008b8ee8e1720845bda07",
+      "local_sha256": "f1958a9acf3cd3e1f518d871d7dc602e8101b33ce35008b8ee8e1720845bda07",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Geometry",
+      "expected_sha256": "f38a145ee513d1fa75bfcfc794fbc47c9de65a3af5d9fb719e057ac63302c2f8",
+      "local_sha256": "f38a145ee513d1fa75bfcfc794fbc47c9de65a3af5d9fb719e057ac63302c2f8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Householder",
+      "expected_sha256": "1a18ea2659db15ce93de0f5aff135a536af9701da9af4f026710e56def23a559",
+      "local_sha256": "1a18ea2659db15ce93de0f5aff135a536af9701da9af4f026710e56def23a559",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/IterativeLinearSolvers",
+      "expected_sha256": "84ffa38ac1ef3be005bff500b78b529c1e164fc50637836ff8648fea127b74f7",
+      "local_sha256": "84ffa38ac1ef3be005bff500b78b529c1e164fc50637836ff8648fea127b74f7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Jacobi",
+      "expected_sha256": "af3020c91b8e92d0734c113fb1511d96a0d6b058128911d898e0177628a358c8",
+      "local_sha256": "af3020c91b8e92d0734c113fb1511d96a0d6b058128911d898e0177628a358c8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/KLUSupport",
+      "expected_sha256": "bc4631eba44254d2d102287f01c02b0ca793291c976b509b7c3528157fed2f64",
+      "local_sha256": "bc4631eba44254d2d102287f01c02b0ca793291c976b509b7c3528157fed2f64",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/LU",
+      "expected_sha256": "d00fab176922cdd4a231ff33ead58fc2db21a9d93034bcf7ba0c2a351a654ba4",
+      "local_sha256": "d00fab176922cdd4a231ff33ead58fc2db21a9d93034bcf7ba0c2a351a654ba4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/MetisSupport",
+      "expected_sha256": "e46d51d3065962408a403480f2c9cad4e7d61fb509c1e4a695274751274969a2",
+      "local_sha256": "e46d51d3065962408a403480f2c9cad4e7d61fb509c1e4a695274751274969a2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/OrderingMethods",
+      "expected_sha256": "25fac81cac3358017e4dcb20f93afd0f9ce65d6041376f2ff5d96fd9d084bd72",
+      "local_sha256": "25fac81cac3358017e4dcb20f93afd0f9ce65d6041376f2ff5d96fd9d084bd72",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/PaStiXSupport",
+      "expected_sha256": "f423b95716b804f9521234dfbc58ad1a2fad9a16f84bcf16df0bb88aeecc8543",
+      "local_sha256": "f423b95716b804f9521234dfbc58ad1a2fad9a16f84bcf16df0bb88aeecc8543",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/PardisoSupport",
+      "expected_sha256": "50ec5003df399fabf518620e220f71c717ff3a03a7218b8650a974dc3ad06b15",
+      "local_sha256": "50ec5003df399fabf518620e220f71c717ff3a03a7218b8650a974dc3ad06b15",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/QR",
+      "expected_sha256": "e77ae1010e9df1dcb0e5a8756048c3880ceb023711e8d1b569e01b039f130820",
+      "local_sha256": "e77ae1010e9df1dcb0e5a8756048c3880ceb023711e8d1b569e01b039f130820",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/QtAlignedMalloc",
+      "expected_sha256": "c466291c6e7d230e8b76b725cdad1ed82c249bf01f5ec3bcb6f3f6501ed0ff97",
+      "local_sha256": "c466291c6e7d230e8b76b725cdad1ed82c249bf01f5ec3bcb6f3f6501ed0ff97",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SPQRSupport",
+      "expected_sha256": "4fa2d73b998c0794682d63dffbfff795bea41a7d18665840b1c357e66ff1c89d",
+      "local_sha256": "4fa2d73b998c0794682d63dffbfff795bea41a7d18665840b1c357e66ff1c89d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SVD",
+      "expected_sha256": "1155a32efd664cb43333a34fa8acbcbc26fa33adaedfee8e20eddf67436ae886",
+      "local_sha256": "1155a32efd664cb43333a34fa8acbcbc26fa33adaedfee8e20eddf67436ae886",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/Sparse",
+      "expected_sha256": "be351b6ee652a7a20e3953d0eae216d4d01c2c26ba7b6a464bf908db3449907b",
+      "local_sha256": "be351b6ee652a7a20e3953d0eae216d4d01c2c26ba7b6a464bf908db3449907b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SparseCholesky",
+      "expected_sha256": "6e364a72115dea57061e136a6ec804cf21c5d3cd79aa4439fd2b352f589dea9b",
+      "local_sha256": "6e364a72115dea57061e136a6ec804cf21c5d3cd79aa4439fd2b352f589dea9b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SparseCore",
+      "expected_sha256": "2323c1e3179dfc6abf348161b78c1bf5ecd0caa8f452c70caca9a1cdfdd6a6ae",
+      "local_sha256": "2323c1e3179dfc6abf348161b78c1bf5ecd0caa8f452c70caca9a1cdfdd6a6ae",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SparseLU",
+      "expected_sha256": "5e746ec763054931f16ede5c588aab2b44d755febdaf299f5ee4cca0346a85b6",
+      "local_sha256": "5e746ec763054931f16ede5c588aab2b44d755febdaf299f5ee4cca0346a85b6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SparseQR",
+      "expected_sha256": "7433458ae0082f26aac3b544f08e5718a5d122c479a9314252b411ccf1d9b8fb",
+      "local_sha256": "7433458ae0082f26aac3b544f08e5718a5d122c479a9314252b411ccf1d9b8fb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/StdDeque",
+      "expected_sha256": "c1885167a447825ab7c35573422c3efa23dec62f5b630ac322ffe658e0ee5242",
+      "local_sha256": "c1885167a447825ab7c35573422c3efa23dec62f5b630ac322ffe658e0ee5242",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/StdList",
+      "expected_sha256": "03540e297ae96ed03e828d9a433bb7f5a5e93aa83c6f50a6c271c78f9283d667",
+      "local_sha256": "03540e297ae96ed03e828d9a433bb7f5a5e93aa83c6f50a6c271c78f9283d667",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/StdVector",
+      "expected_sha256": "7e8b1060757a1140298ff3905df70edb59ad1083f505681df30dc9dc9963d8ab",
+      "local_sha256": "7e8b1060757a1140298ff3905df70edb59ad1083f505681df30dc9dc9963d8ab",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/SuperLUSupport",
+      "expected_sha256": "8aa601f3fa1e6bfc03b799666bf39ebc42d44917a5fb2aaa489beafd63901f72",
+      "local_sha256": "8aa601f3fa1e6bfc03b799666bf39ebc42d44917a5fb2aaa489beafd63901f72",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/UmfPackSupport",
+      "expected_sha256": "003d41fa08cde68b1c4698499fa9bf9c803cebb27ae748615851519f42dc56ac",
+      "local_sha256": "003d41fa08cde68b1c4698499fa9bf9c803cebb27ae748615851519f42dc56ac",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Cholesky/LDLT.h",
+      "expected_sha256": "cc6362ddcddea1403ea9ec1cbea2ca6eaf1c5874630f1b13084f51c78f339d78",
+      "local_sha256": "cc6362ddcddea1403ea9ec1cbea2ca6eaf1c5874630f1b13084f51c78f339d78",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Cholesky/LLT.h",
+      "expected_sha256": "362fe6b080c9b67d11106f821f926fa84ed24b2120fbdba2a09efb0869eef1ec",
+      "local_sha256": "362fe6b080c9b67d11106f821f926fa84ed24b2120fbdba2a09efb0869eef1ec",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Cholesky/LLT_LAPACKE.h",
+      "expected_sha256": "1efc3720834ec96ba0df4a0622aa20c3a80ae48d90d60cfaad5e0bf9c1cfa04b",
+      "local_sha256": "1efc3720834ec96ba0df4a0622aa20c3a80ae48d90d60cfaad5e0bf9c1cfa04b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/CholmodSupport/CholmodSupport.h",
+      "expected_sha256": "fd788dbcb353cd1f0eca9fa6ff65760b3358fbb445ee7defef1fa7c9834a5e79",
+      "local_sha256": "fd788dbcb353cd1f0eca9fa6ff65760b3358fbb445ee7defef1fa7c9834a5e79",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ArithmeticSequence.h",
+      "expected_sha256": "f2f81c23a86e2fbac5847d8348f7dd10f0fe39812834d34b54446e1bca44fbaf",
+      "local_sha256": "f2f81c23a86e2fbac5847d8348f7dd10f0fe39812834d34b54446e1bca44fbaf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Array.h",
+      "expected_sha256": "dfd7ca3f27664e4e391a251de4da52b457507fc942516a21ab3e8b9fa4fe8da4",
+      "local_sha256": "dfd7ca3f27664e4e391a251de4da52b457507fc942516a21ab3e8b9fa4fe8da4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ArrayBase.h",
+      "expected_sha256": "87a5c07a596b5225d49b0da2585d81d146f7f23b7a0da7a20c51eb5b746afc5e",
+      "local_sha256": "87a5c07a596b5225d49b0da2585d81d146f7f23b7a0da7a20c51eb5b746afc5e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ArrayWrapper.h",
+      "expected_sha256": "8bd0a78e64c08c3cbde4af3536ffe6e062a12ce9c7321c43a1469704a937cce4",
+      "local_sha256": "8bd0a78e64c08c3cbde4af3536ffe6e062a12ce9c7321c43a1469704a937cce4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Assign.h",
+      "expected_sha256": "74a400998f745e1897a3f29de0c1f10e6ad2e97269f72945abb259e6617f3b62",
+      "local_sha256": "74a400998f745e1897a3f29de0c1f10e6ad2e97269f72945abb259e6617f3b62",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/AssignEvaluator.h",
+      "expected_sha256": "1395011c35047d223939e6acf3d096e83aec761286e9a109674a5b75e06d65a3",
+      "local_sha256": "1395011c35047d223939e6acf3d096e83aec761286e9a109674a5b75e06d65a3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Assign_MKL.h",
+      "expected_sha256": "74f63085b8537072933ec173b91b4370bed151778c6435a272a941b678f8b490",
+      "local_sha256": "74f63085b8537072933ec173b91b4370bed151778c6435a272a941b678f8b490",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/BandMatrix.h",
+      "expected_sha256": "66eb0ca50b93f4dcdc083aa21f431dd9052c319911356d9025576f0cd9c6c893",
+      "local_sha256": "66eb0ca50b93f4dcdc083aa21f431dd9052c319911356d9025576f0cd9c6c893",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Block.h",
+      "expected_sha256": "1092867fec68004388b0ba38d37ad603cc7cb5d034dc28b6fe3a82e92ad888ad",
+      "local_sha256": "1092867fec68004388b0ba38d37ad603cc7cb5d034dc28b6fe3a82e92ad888ad",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/BooleanRedux.h",
+      "expected_sha256": "51dbe1e82d3639ba7d30b794e0a9982cf8b3bf989955688970d4bcd723c70aa5",
+      "local_sha256": "51dbe1e82d3639ba7d30b794e0a9982cf8b3bf989955688970d4bcd723c70aa5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CommaInitializer.h",
+      "expected_sha256": "a8027642762277db0114a8f4ef40903035484121d5b4edf9a50d5c10e11a1b20",
+      "local_sha256": "a8027642762277db0114a8f4ef40903035484121d5b4edf9a50d5c10e11a1b20",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ConditionEstimator.h",
+      "expected_sha256": "b9276dfb980b45f22ede4e08eee447f5e00847400e66f267967692233e424c27",
+      "local_sha256": "b9276dfb980b45f22ede4e08eee447f5e00847400e66f267967692233e424c27",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CoreEvaluators.h",
+      "expected_sha256": "e89d28c6eb156cb659f58a86197fde240ac4c8611a3dd2911e41a2a70d027a33",
+      "local_sha256": "e89d28c6eb156cb659f58a86197fde240ac4c8611a3dd2911e41a2a70d027a33",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CoreIterators.h",
+      "expected_sha256": "30bc5387d90ca841e6ec85686d2125318a19d4fdaa05a87fae6ffab0848f749a",
+      "local_sha256": "30bc5387d90ca841e6ec85686d2125318a19d4fdaa05a87fae6ffab0848f749a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CwiseBinaryOp.h",
+      "expected_sha256": "0316cc07e8eb45487ae4f2432791168e1c13407120014ebb3f41613ffc6e302c",
+      "local_sha256": "0316cc07e8eb45487ae4f2432791168e1c13407120014ebb3f41613ffc6e302c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CwiseNullaryOp.h",
+      "expected_sha256": "70f5b90290fd0ddc75d0b361df6e2eff4fbbbd997f5b8932140ac581802024df",
+      "local_sha256": "70f5b90290fd0ddc75d0b361df6e2eff4fbbbd997f5b8932140ac581802024df",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CwiseTernaryOp.h",
+      "expected_sha256": "97d9e03c73e1a101352d8b00ee191013b6b6acf00e90c887dd54bea4551de7be",
+      "local_sha256": "97d9e03c73e1a101352d8b00ee191013b6b6acf00e90c887dd54bea4551de7be",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CwiseUnaryOp.h",
+      "expected_sha256": "a6d4fe54959a3aad044a15f126688b445ba317c8cd8f60c3a4e18632e3015c90",
+      "local_sha256": "a6d4fe54959a3aad044a15f126688b445ba317c8cd8f60c3a4e18632e3015c90",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/CwiseUnaryView.h",
+      "expected_sha256": "e59aa61f61a67532d4a6ba173844703c7e98e28d7b8c7e9cee0aa9d30d6b9675",
+      "local_sha256": "e59aa61f61a67532d4a6ba173844703c7e98e28d7b8c7e9cee0aa9d30d6b9675",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/DenseBase.h",
+      "expected_sha256": "868ea8559aa11e574ce734a14ea56f5ce5032746b2d73f4c8c7930f89c598227",
+      "local_sha256": "868ea8559aa11e574ce734a14ea56f5ce5032746b2d73f4c8c7930f89c598227",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/DenseCoeffsBase.h",
+      "expected_sha256": "b212b3f08925bc43f7803709976f08cf4a83dadd545d558ba91599e92a009659",
+      "local_sha256": "b212b3f08925bc43f7803709976f08cf4a83dadd545d558ba91599e92a009659",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/DenseStorage.h",
+      "expected_sha256": "235e92f381291ff75dde3f5bd838dcf7e4c6c80ba83940550e26f7ee4b7c0c88",
+      "local_sha256": "235e92f381291ff75dde3f5bd838dcf7e4c6c80ba83940550e26f7ee4b7c0c88",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Diagonal.h",
+      "expected_sha256": "0e8854fc839b941abf3b09652b5fec4fa5a7cd3a44acfcb5274a7773b69b2fff",
+      "local_sha256": "0e8854fc839b941abf3b09652b5fec4fa5a7cd3a44acfcb5274a7773b69b2fff",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/DiagonalMatrix.h",
+      "expected_sha256": "2a0d43560b3cceafa37ad26cc7b44a951545e56a87d17e78b896c6d063c64718",
+      "local_sha256": "2a0d43560b3cceafa37ad26cc7b44a951545e56a87d17e78b896c6d063c64718",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/DiagonalProduct.h",
+      "expected_sha256": "ffa71f347a5914c9e9341ea82bb42bf7b6f7b8d0454bc17bc5629addb82138cb",
+      "local_sha256": "ffa71f347a5914c9e9341ea82bb42bf7b6f7b8d0454bc17bc5629addb82138cb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Dot.h",
+      "expected_sha256": "4959d72a6f76f94171e56245e7332d555a7751d29dcbe04b3aaea2c8418e0ef5",
+      "local_sha256": "4959d72a6f76f94171e56245e7332d555a7751d29dcbe04b3aaea2c8418e0ef5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/EigenBase.h",
+      "expected_sha256": "f6743198aace0229364aef3842d7a4caec4c648268112d5dc88750d139f0261a",
+      "local_sha256": "f6743198aace0229364aef3842d7a4caec4c648268112d5dc88750d139f0261a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ForceAlignedAccess.h",
+      "expected_sha256": "839ba4e8d4998ef37384cdb8fe66e4aba037aefa824dac63b102f016b3670175",
+      "local_sha256": "839ba4e8d4998ef37384cdb8fe66e4aba037aefa824dac63b102f016b3670175",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Fuzzy.h",
+      "expected_sha256": "4da4a3ce3d7a85b30d35977658415e48a4c1051ed6ba1dd4c61cbc8d350027d3",
+      "local_sha256": "4da4a3ce3d7a85b30d35977658415e48a4c1051ed6ba1dd4c61cbc8d350027d3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/GeneralProduct.h",
+      "expected_sha256": "bb7a50eea61bf87cebb8c5ff2553e3641e1e77d62f561838e1265bf42ac883a0",
+      "local_sha256": "bb7a50eea61bf87cebb8c5ff2553e3641e1e77d62f561838e1265bf42ac883a0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/GenericPacketMath.h",
+      "expected_sha256": "15ab400433df502dc3961993455b563c55d5fa47c5a93204d12ad2a79730afdd",
+      "local_sha256": "15ab400433df502dc3961993455b563c55d5fa47c5a93204d12ad2a79730afdd",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/GlobalFunctions.h",
+      "expected_sha256": "3531619ec23b938dff23039a3f0dd892be533f63d681c7d6596659dbb0ae31a2",
+      "local_sha256": "3531619ec23b938dff23039a3f0dd892be533f63d681c7d6596659dbb0ae31a2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/IO.h",
+      "expected_sha256": "89a4eb492f4a4a0a9e21eff6666383152d0f45ef82d4a1879e61277dafb4ad4f",
+      "local_sha256": "89a4eb492f4a4a0a9e21eff6666383152d0f45ef82d4a1879e61277dafb4ad4f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/IndexedView.h",
+      "expected_sha256": "5fa91088fba62f34cf0ab4e6cbbaba88a36b7c4b195de6d2f67c96e293f32fec",
+      "local_sha256": "5fa91088fba62f34cf0ab4e6cbbaba88a36b7c4b195de6d2f67c96e293f32fec",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Inverse.h",
+      "expected_sha256": "5eef2f26e105349881eb1408cc2eb674b264c924d45ba3f6bfcebbcadfe6b10c",
+      "local_sha256": "5eef2f26e105349881eb1408cc2eb674b264c924d45ba3f6bfcebbcadfe6b10c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Map.h",
+      "expected_sha256": "37d3c3611a846089cb30a0d78dddc45d322985bb63fa4df5680f6f33c016a07b",
+      "local_sha256": "37d3c3611a846089cb30a0d78dddc45d322985bb63fa4df5680f6f33c016a07b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/MapBase.h",
+      "expected_sha256": "eeecf78d69227844bb2914dc936d54db6acd9fa8ef8d0e29a9272b84938de1a0",
+      "local_sha256": "eeecf78d69227844bb2914dc936d54db6acd9fa8ef8d0e29a9272b84938de1a0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/MathFunctions.h",
+      "expected_sha256": "b3c6cd173d4ac879e568ac5708042dd0bb160805c6ba9c55da05c8134656f758",
+      "local_sha256": "b3c6cd173d4ac879e568ac5708042dd0bb160805c6ba9c55da05c8134656f758",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/MathFunctionsImpl.h",
+      "expected_sha256": "96f735785742399ffc6109a6d8a41bf2392789b5a713c9cbfb2f089767491247",
+      "local_sha256": "96f735785742399ffc6109a6d8a41bf2392789b5a713c9cbfb2f089767491247",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Matrix.h",
+      "expected_sha256": "fd84dfc1c70b042952d299f39f05694f82ca1f17ca013eb336757a3cf71e6d11",
+      "local_sha256": "fd84dfc1c70b042952d299f39f05694f82ca1f17ca013eb336757a3cf71e6d11",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/MatrixBase.h",
+      "expected_sha256": "3fca778dd610923f7c089fe6f63e600005f14fedc156851591fca999a28e592b",
+      "local_sha256": "3fca778dd610923f7c089fe6f63e600005f14fedc156851591fca999a28e592b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/NestByValue.h",
+      "expected_sha256": "5e93bda8542a8ebfb321dc9199b110a53ae2fb8f2c20e10b6f24e4379b0a27cb",
+      "local_sha256": "5e93bda8542a8ebfb321dc9199b110a53ae2fb8f2c20e10b6f24e4379b0a27cb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/NoAlias.h",
+      "expected_sha256": "229d6ce4cb8a1921cacd634f6fe64e698c54077302487c62202b845a7446618d",
+      "local_sha256": "229d6ce4cb8a1921cacd634f6fe64e698c54077302487c62202b845a7446618d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/NumTraits.h",
+      "expected_sha256": "6039578b4c17f244eb6e0b18f29b8089cb4affbd4431365e4fe8b248259199f1",
+      "local_sha256": "6039578b4c17f244eb6e0b18f29b8089cb4affbd4431365e4fe8b248259199f1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/PartialReduxEvaluator.h",
+      "expected_sha256": "863ec1c5b7dedcb8cebda4cb9c38b6fc77dc75d2290dbff2c39a7db98ce33a38",
+      "local_sha256": "863ec1c5b7dedcb8cebda4cb9c38b6fc77dc75d2290dbff2c39a7db98ce33a38",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/PermutationMatrix.h",
+      "expected_sha256": "c4ea371dc8fd72bc610d97b9e8e241d9765c08d8d6a93e66d851fc095cd9ce60",
+      "local_sha256": "c4ea371dc8fd72bc610d97b9e8e241d9765c08d8d6a93e66d851fc095cd9ce60",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/PlainObjectBase.h",
+      "expected_sha256": "faa54cb79fd74db5fd5fb3c6f60fc252398ebc3529e9607cfde2232244162335",
+      "local_sha256": "faa54cb79fd74db5fd5fb3c6f60fc252398ebc3529e9607cfde2232244162335",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Product.h",
+      "expected_sha256": "47958609570712d8c066c8e7529fce3346f0cc794accd390f753d9703d4842cf",
+      "local_sha256": "47958609570712d8c066c8e7529fce3346f0cc794accd390f753d9703d4842cf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ProductEvaluators.h",
+      "expected_sha256": "d8863af78cf309c898d34f0e8b38bb4c1b370b5622a48064211f5b3b0ad91eb0",
+      "local_sha256": "d8863af78cf309c898d34f0e8b38bb4c1b370b5622a48064211f5b3b0ad91eb0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Random.h",
+      "expected_sha256": "fc95b14bef2692647c0891b25906cac988e9519e5f719db0fd9e64e0faf0a6c2",
+      "local_sha256": "fc95b14bef2692647c0891b25906cac988e9519e5f719db0fd9e64e0faf0a6c2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Redux.h",
+      "expected_sha256": "dcdb68827c7f9063af745c9a0e1e85cf53c0a69b67d3d4880134a2ef8ed1f3f6",
+      "local_sha256": "dcdb68827c7f9063af745c9a0e1e85cf53c0a69b67d3d4880134a2ef8ed1f3f6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Ref.h",
+      "expected_sha256": "f4a08654c367bde51b9589279956c23a1b747a78a5b94eb4c7e43f16ae262ebc",
+      "local_sha256": "f4a08654c367bde51b9589279956c23a1b747a78a5b94eb4c7e43f16ae262ebc",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Replicate.h",
+      "expected_sha256": "6f77a1da5cd4bcebe1cbb90d52fd7fc23d19a46e8b1b8f2a808ed0ecbf9bdbee",
+      "local_sha256": "6f77a1da5cd4bcebe1cbb90d52fd7fc23d19a46e8b1b8f2a808ed0ecbf9bdbee",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Reshaped.h",
+      "expected_sha256": "5101b12821837460013e70adb2d542f5e623cdd6541d3604af628d2a78de7e14",
+      "local_sha256": "5101b12821837460013e70adb2d542f5e623cdd6541d3604af628d2a78de7e14",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/ReturnByValue.h",
+      "expected_sha256": "8a385498f0ba0c67466fe151af42e5537bd3c5d75b89d40b73bc103c77309665",
+      "local_sha256": "8a385498f0ba0c67466fe151af42e5537bd3c5d75b89d40b73bc103c77309665",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Reverse.h",
+      "expected_sha256": "9660864ae4cfc85dec40d82e79a598b71e5c58f53034bdd30c74093c5ab9a154",
+      "local_sha256": "9660864ae4cfc85dec40d82e79a598b71e5c58f53034bdd30c74093c5ab9a154",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Select.h",
+      "expected_sha256": "0b9bee78d59350121108778bbad203a463d81c71bfb5cd732b859c02605a1eb5",
+      "local_sha256": "0b9bee78d59350121108778bbad203a463d81c71bfb5cd732b859c02605a1eb5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/SelfAdjointView.h",
+      "expected_sha256": "6b05fc31cae6f946db7fcf4439efa13eb21cd9b1903ae7910cc74a611b95f68f",
+      "local_sha256": "6b05fc31cae6f946db7fcf4439efa13eb21cd9b1903ae7910cc74a611b95f68f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/SelfCwiseBinaryOp.h",
+      "expected_sha256": "4d0f02140378c8fd28bb05d2f13dc50dd867bdbc2dddce223fe37b82dbf17ab5",
+      "local_sha256": "4d0f02140378c8fd28bb05d2f13dc50dd867bdbc2dddce223fe37b82dbf17ab5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Solve.h",
+      "expected_sha256": "d1411e4c37b3443d3422dffba6225a70ae186b0ed90a3f09bbec14727edf86f2",
+      "local_sha256": "d1411e4c37b3443d3422dffba6225a70ae186b0ed90a3f09bbec14727edf86f2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/SolveTriangular.h",
+      "expected_sha256": "f29b27b474efe5692bbbf1f1863f0ddb4ccf039e3eda02796f54c33889dc86a1",
+      "local_sha256": "f29b27b474efe5692bbbf1f1863f0ddb4ccf039e3eda02796f54c33889dc86a1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/SolverBase.h",
+      "expected_sha256": "339ee50a16430116e2be23b29441ec7fb90b73ff2bf6be8a39e1c74fb3e171ae",
+      "local_sha256": "339ee50a16430116e2be23b29441ec7fb90b73ff2bf6be8a39e1c74fb3e171ae",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/StableNorm.h",
+      "expected_sha256": "488e4d101a3d0013b191b80c18fc1c42e988733b6109b704bfa40ccf77d3d187",
+      "local_sha256": "488e4d101a3d0013b191b80c18fc1c42e988733b6109b704bfa40ccf77d3d187",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/StlIterators.h",
+      "expected_sha256": "cae751132eb5be81f1974936f9a9041935aa8a91d7d0065b48301e4cf57b10c4",
+      "local_sha256": "cae751132eb5be81f1974936f9a9041935aa8a91d7d0065b48301e4cf57b10c4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Stride.h",
+      "expected_sha256": "5ef8631f1222d499e9c273266ecbb8077891268b20dd11c7bf57e83b3fb7c37d",
+      "local_sha256": "5ef8631f1222d499e9c273266ecbb8077891268b20dd11c7bf57e83b3fb7c37d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Swap.h",
+      "expected_sha256": "72add24f5533477f1aa3de05213be772eeea9a13d67db82d02f74fcce501ea40",
+      "local_sha256": "72add24f5533477f1aa3de05213be772eeea9a13d67db82d02f74fcce501ea40",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Transpose.h",
+      "expected_sha256": "aa104b2fdf7371831d4fcee2383deca5300c49805b99a3c883e13f40b1225750",
+      "local_sha256": "aa104b2fdf7371831d4fcee2383deca5300c49805b99a3c883e13f40b1225750",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Transpositions.h",
+      "expected_sha256": "390f37b9c86bed1f1708c5f7786b4609665820370a437a222da320a30c7b9867",
+      "local_sha256": "390f37b9c86bed1f1708c5f7786b4609665820370a437a222da320a30c7b9867",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/TriangularMatrix.h",
+      "expected_sha256": "cc4c2090bbf9ed02b0a36129809fb2c39a32d2bd2efea05d0debb1eafe848111",
+      "local_sha256": "cc4c2090bbf9ed02b0a36129809fb2c39a32d2bd2efea05d0debb1eafe848111",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/VectorBlock.h",
+      "expected_sha256": "d7f545fba1479e339e3040799ec1a0008b242cbafb456100cb95e7cd64586b49",
+      "local_sha256": "d7f545fba1479e339e3040799ec1a0008b242cbafb456100cb95e7cd64586b49",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/VectorwiseOp.h",
+      "expected_sha256": "b5a10c9e4ef1a0048e8bd17e514354b1e1647b1d700d59076c1fa34ecf04bc3d",
+      "local_sha256": "b5a10c9e4ef1a0048e8bd17e514354b1e1647b1d700d59076c1fa34ecf04bc3d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/Visitor.h",
+      "expected_sha256": "d32f1b4fb0065a312bf13a2861cf3c3d2ff08d2bef4ad8b014b50061ae8802a4",
+      "local_sha256": "d32f1b4fb0065a312bf13a2861cf3c3d2ff08d2bef4ad8b014b50061ae8802a4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX/Complex.h",
+      "expected_sha256": "4d178124b64acb5f5915a96f29e97f2ebe3dc44208085199bd092c37c8416f10",
+      "local_sha256": "4d178124b64acb5f5915a96f29e97f2ebe3dc44208085199bd092c37c8416f10",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX/MathFunctions.h",
+      "expected_sha256": "738a0df89554cfda21a52c3ba46e47bdff9e35199c788dd8dd4d9ba3c1598105",
+      "local_sha256": "738a0df89554cfda21a52c3ba46e47bdff9e35199c788dd8dd4d9ba3c1598105",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX/PacketMath.h",
+      "expected_sha256": "2344a8cc87e4c35891534a7ac7dde73e012935e0cd65699b18ee77bbe697fe40",
+      "local_sha256": "2344a8cc87e4c35891534a7ac7dde73e012935e0cd65699b18ee77bbe697fe40",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX/TypeCasting.h",
+      "expected_sha256": "2cabb8f3dea66b916017058b63e542d218a1ed8f59ec396ff21ae3574b59726c",
+      "local_sha256": "2cabb8f3dea66b916017058b63e542d218a1ed8f59ec396ff21ae3574b59726c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX512/Complex.h",
+      "expected_sha256": "ba0af7273126239fb7b47251be282a7c0b9eea6796dfb0f7c411be5f3b0923c4",
+      "local_sha256": "ba0af7273126239fb7b47251be282a7c0b9eea6796dfb0f7c411be5f3b0923c4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX512/MathFunctions.h",
+      "expected_sha256": "d395757ee69c05b7ff210129bd7f54207bf8ab644909a282f5184c8c356e3247",
+      "local_sha256": "d395757ee69c05b7ff210129bd7f54207bf8ab644909a282f5184c8c356e3247",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX512/PacketMath.h",
+      "expected_sha256": "394147fddc34b07d8a7a28bc80a5edd1fa5ef3f65101b5356ce168d07f71c31f",
+      "local_sha256": "394147fddc34b07d8a7a28bc80a5edd1fa5ef3f65101b5356ce168d07f71c31f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AVX512/TypeCasting.h",
+      "expected_sha256": "7520e93ada4015cb38bcb41359235a8bae936d2539dff86cd4afa76831751a3b",
+      "local_sha256": "7520e93ada4015cb38bcb41359235a8bae936d2539dff86cd4afa76831751a3b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/Complex.h",
+      "expected_sha256": "0944a8651cca7c25f17907c42e521be72f3bf7f9ec92e60f3e901adf800351e1",
+      "local_sha256": "0944a8651cca7c25f17907c42e521be72f3bf7f9ec92e60f3e901adf800351e1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/MathFunctions.h",
+      "expected_sha256": "1a4c8e0b6d0f2cacdb516d922613f3a92bc77f8d637d98dca2668066ce0dd74b",
+      "local_sha256": "1a4c8e0b6d0f2cacdb516d922613f3a92bc77f8d637d98dca2668066ce0dd74b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/MatrixProduct.h",
+      "expected_sha256": "a87e086b0361e64082e5ed84798bdb87c97505f625c9230ee2b0c0a96b4eaac6",
+      "local_sha256": "a87e086b0361e64082e5ed84798bdb87c97505f625c9230ee2b0c0a96b4eaac6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/MatrixProductCommon.h",
+      "expected_sha256": "04e7139eff7b385865b97f12f87f9ce34810128ba99bd06a5cf3aafcfa09fb4e",
+      "local_sha256": "04e7139eff7b385865b97f12f87f9ce34810128ba99bd06a5cf3aafcfa09fb4e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/MatrixProductMMA.h",
+      "expected_sha256": "3112535947d405562c0ecd7cf47d682017a86306caf746a7671275c3f66a93d1",
+      "local_sha256": "3112535947d405562c0ecd7cf47d682017a86306caf746a7671275c3f66a93d1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/AltiVec/PacketMath.h",
+      "expected_sha256": "a0f61d6868ddd83b777f56f76006f35395bbddc808cfbfda0e1cd0e7e21e4a2f",
+      "local_sha256": "a0f61d6868ddd83b777f56f76006f35395bbddc808cfbfda0e1cd0e7e21e4a2f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/CUDA/Complex.h",
+      "expected_sha256": "a1fef89efd39c77dd8d3d247034e829e93069e128cfbec9aef028e8b95c786ed",
+      "local_sha256": "a1fef89efd39c77dd8d3d247034e829e93069e128cfbec9aef028e8b95c786ed",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/BFloat16.h",
+      "expected_sha256": "1c3faf2e812a463d0be1c7dab3368ede6afe84d34f042c007bc5dad375e96bd9",
+      "local_sha256": "1c3faf2e812a463d0be1c7dab3368ede6afe84d34f042c007bc5dad375e96bd9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/ConjHelper.h",
+      "expected_sha256": "fad5548a5fd3f3e4bcb16fe28549ee73c1ede5f9e29f6c9022bd4d8ad3eaa520",
+      "local_sha256": "fad5548a5fd3f3e4bcb16fe28549ee73c1ede5f9e29f6c9022bd4d8ad3eaa520",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h",
+      "expected_sha256": "e3ef23672902a6a0fef39c9b6c5952ba9ed69e6a0eb32f0ecc13004fc660052d",
+      "local_sha256": "e3ef23672902a6a0fef39c9b6c5952ba9ed69e6a0eb32f0ecc13004fc660052d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h",
+      "expected_sha256": "6bd2e4d5286176d0b823708e1a699cf4694cb74ebf54f2ddb678270db5c46717",
+      "local_sha256": "6bd2e4d5286176d0b823708e1a699cf4694cb74ebf54f2ddb678270db5c46717",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/Half.h",
+      "expected_sha256": "bcdf4205c17eddcacbc175c1a5d188db2b36c9e5029b3829076d05dfda406f4d",
+      "local_sha256": "bcdf4205c17eddcacbc175c1a5d188db2b36c9e5029b3829076d05dfda406f4d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/Settings.h",
+      "expected_sha256": "41b87a95edc400e7545f7273c59742abc95defae6ca7cd85f962d51a7a8fb790",
+      "local_sha256": "41b87a95edc400e7545f7273c59742abc95defae6ca7cd85f962d51a7a8fb790",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/Default/TypeCasting.h",
+      "expected_sha256": "4efe3b7a0099da41b42040000a9c4b92bd48efb35b9505c453b5f3d304fb4f75",
+      "local_sha256": "4efe3b7a0099da41b42040000a9c4b92bd48efb35b9505c453b5f3d304fb4f75",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/GPU/MathFunctions.h",
+      "expected_sha256": "58d0579333d6cd9c7e6bd5582abfeedc0da64bcd1e011c2263c2dd7e54664f57",
+      "local_sha256": "58d0579333d6cd9c7e6bd5582abfeedc0da64bcd1e011c2263c2dd7e54664f57",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/GPU/PacketMath.h",
+      "expected_sha256": "d8a2a3529c220e0cdbc4c5e847007b160e41b3df0db069fd456aa0bddd0ba03d",
+      "local_sha256": "d8a2a3529c220e0cdbc4c5e847007b160e41b3df0db069fd456aa0bddd0ba03d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/GPU/TypeCasting.h",
+      "expected_sha256": "1d1d4e3872dbf4d9ab22c5b67644418265a0a641e26d6c340d4809caa3bc2e98",
+      "local_sha256": "1d1d4e3872dbf4d9ab22c5b67644418265a0a641e26d6c340d4809caa3bc2e98",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/HIP/hcc/math_constants.h",
+      "expected_sha256": "4d86a4154ef20638d72ab2f585ec61f6c0881908d986a2b4ffb44efa97f97246",
+      "local_sha256": "4d86a4154ef20638d72ab2f585ec61f6c0881908d986a2b4ffb44efa97f97246",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/MSA/Complex.h",
+      "expected_sha256": "983d7be618a33cb2ae3d6320246f139f5739bb25337512cc252cde6364879164",
+      "local_sha256": "983d7be618a33cb2ae3d6320246f139f5739bb25337512cc252cde6364879164",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/MSA/MathFunctions.h",
+      "expected_sha256": "f160e1405034b3fbbd2cd64e87a27c0d0faf90072139b937bf6eb71f36983f28",
+      "local_sha256": "f160e1405034b3fbbd2cd64e87a27c0d0faf90072139b937bf6eb71f36983f28",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/MSA/PacketMath.h",
+      "expected_sha256": "3dac6c302dca476b5fbdde9e5871b7faf48473fd74d2602c07e7483a2cb864ce",
+      "local_sha256": "3dac6c302dca476b5fbdde9e5871b7faf48473fd74d2602c07e7483a2cb864ce",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/NEON/Complex.h",
+      "expected_sha256": "cb2278d5839544bac8ab0b38f4375b8badffb1c746a8d6af99766fe764afedf6",
+      "local_sha256": "cb2278d5839544bac8ab0b38f4375b8badffb1c746a8d6af99766fe764afedf6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h",
+      "expected_sha256": "54d3101e149f291848d1170a2616a5388f2c91b878a74f2d3163da82207ea7a7",
+      "local_sha256": "54d3101e149f291848d1170a2616a5388f2c91b878a74f2d3163da82207ea7a7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h",
+      "expected_sha256": "8cd8f6d69e1b8c60eaa88c0f951eab619b8ece903393d7f90d726aa487da816e",
+      "local_sha256": "8cd8f6d69e1b8c60eaa88c0f951eab619b8ece903393d7f90d726aa487da816e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h",
+      "expected_sha256": "3e13180a0dd01b9a69bd17f17aa869c38c4515df1cc83043b88f43d9a131b75f",
+      "local_sha256": "3e13180a0dd01b9a69bd17f17aa869c38c4515df1cc83043b88f43d9a131b75f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/NEON/TypeCasting.h",
+      "expected_sha256": "736c98b778932aba5914b418fd810a13557a2eb786b5d11e736828a9f3ee7081",
+      "local_sha256": "736c98b778932aba5914b418fd810a13557a2eb786b5d11e736828a9f3ee7081",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SSE/Complex.h",
+      "expected_sha256": "87a6f05e1122f886550a985ccb79150be09999352d7cbce86bbeed648a2157a9",
+      "local_sha256": "87a6f05e1122f886550a985ccb79150be09999352d7cbce86bbeed648a2157a9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SSE/MathFunctions.h",
+      "expected_sha256": "7007304a115b9f42b483e4e2ca836a0ec578d68a89a3f90c048ddebf074673e5",
+      "local_sha256": "7007304a115b9f42b483e4e2ca836a0ec578d68a89a3f90c048ddebf074673e5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SSE/PacketMath.h",
+      "expected_sha256": "a5e086e96bf7876bd9da0c43117f482435d04cdcbc4cf9c104c1724429804130",
+      "local_sha256": "a5e086e96bf7876bd9da0c43117f482435d04cdcbc4cf9c104c1724429804130",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SSE/TypeCasting.h",
+      "expected_sha256": "52ad99dd125e1b5b7b6480a8a5219344e7b30def71c08fe74d14304856842e60",
+      "local_sha256": "52ad99dd125e1b5b7b6480a8a5219344e7b30def71c08fe74d14304856842e60",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SVE/MathFunctions.h",
+      "expected_sha256": "02b207493b1cbbbefa644a22b61d4cbd5d7a07114086f57788b61d0b8cd81e32",
+      "local_sha256": "02b207493b1cbbbefa644a22b61d4cbd5d7a07114086f57788b61d0b8cd81e32",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SVE/PacketMath.h",
+      "expected_sha256": "1319cfeb0c5e4dffa6b90125d241aaa7d685ac6e9907558445a124449c57eaff",
+      "local_sha256": "1319cfeb0c5e4dffa6b90125d241aaa7d685ac6e9907558445a124449c57eaff",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SVE/TypeCasting.h",
+      "expected_sha256": "7aecdde0b05a3dc66fbaa138c3658c885cb2b1049813f368f4c76a19f3bbbe34",
+      "local_sha256": "7aecdde0b05a3dc66fbaa138c3658c885cb2b1049813f368f4c76a19f3bbbe34",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SYCL/InteropHeaders.h",
+      "expected_sha256": "d86e4da28f7f77f32f2686deccdf5ec57d737af7d6fe5a3a95feb76358f53934",
+      "local_sha256": "d86e4da28f7f77f32f2686deccdf5ec57d737af7d6fe5a3a95feb76358f53934",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SYCL/MathFunctions.h",
+      "expected_sha256": "4b3ba6d7dfe783fa17f93b7fa3290e1ee107b14905f3c815e4e137e9a32ea43f",
+      "local_sha256": "4b3ba6d7dfe783fa17f93b7fa3290e1ee107b14905f3c815e4e137e9a32ea43f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SYCL/PacketMath.h",
+      "expected_sha256": "75992417c92ed3317ffe971893214d09e904860df1062f4d0cf4e65038b0a4b5",
+      "local_sha256": "75992417c92ed3317ffe971893214d09e904860df1062f4d0cf4e65038b0a4b5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SYCL/SyclMemoryModel.h",
+      "expected_sha256": "2083acd84d60e7f88a69eb85f9a0bcca0270ead6fc2a70cbce494c864c064359",
+      "local_sha256": "2083acd84d60e7f88a69eb85f9a0bcca0270ead6fc2a70cbce494c864c064359",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/SYCL/TypeCasting.h",
+      "expected_sha256": "07fa00a20f141e40e7da538ef8385546801a0164f65ade6c04758020a0bdffba",
+      "local_sha256": "07fa00a20f141e40e7da538ef8385546801a0164f65ade6c04758020a0bdffba",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/ZVector/Complex.h",
+      "expected_sha256": "e64803d7d661abd130c48ecf864441c0b9c0d5c5c3e2e8a8508a3b87f0db2c5f",
+      "local_sha256": "e64803d7d661abd130c48ecf864441c0b9c0d5c5c3e2e8a8508a3b87f0db2c5f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/ZVector/MathFunctions.h",
+      "expected_sha256": "00be6ff296decb639ebb277be64555983e8edaaf7cc1a4a790a627b33375f44b",
+      "local_sha256": "00be6ff296decb639ebb277be64555983e8edaaf7cc1a4a790a627b33375f44b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/arch/ZVector/PacketMath.h",
+      "expected_sha256": "174d47bf730813229a9ddfd5c52e24bd51cc832042e18a1a7a99e984f2a22176",
+      "local_sha256": "174d47bf730813229a9ddfd5c52e24bd51cc832042e18a1a7a99e984f2a22176",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h",
+      "expected_sha256": "d8f1b1224441face5efe4271d7354683ec16b5cbe8ec89e7c728c13ff85bf160",
+      "local_sha256": "d8f1b1224441face5efe4271d7354683ec16b5cbe8ec89e7c728c13ff85bf160",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/BinaryFunctors.h",
+      "expected_sha256": "0b07cd6d40cbf96561824eb80aae5af719dcfe1c4d349b011100acdb57821997",
+      "local_sha256": "0b07cd6d40cbf96561824eb80aae5af719dcfe1c4d349b011100acdb57821997",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/NullaryFunctors.h",
+      "expected_sha256": "190a630e8482bc0b94383c67b9b5d7a41f3c26cb10894d54597cfde3d73ba70b",
+      "local_sha256": "190a630e8482bc0b94383c67b9b5d7a41f3c26cb10894d54597cfde3d73ba70b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/StlFunctors.h",
+      "expected_sha256": "71823e6fcbe89847bb7caef19e837b1eed1c32442cdf8d104103888c4ffe4bb0",
+      "local_sha256": "71823e6fcbe89847bb7caef19e837b1eed1c32442cdf8d104103888c4ffe4bb0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/TernaryFunctors.h",
+      "expected_sha256": "0fc3c1aa2a5ad2f1ca9cdbcf37a633712cc0452b107ed63f6a4cf10d67111168",
+      "local_sha256": "0fc3c1aa2a5ad2f1ca9cdbcf37a633712cc0452b107ed63f6a4cf10d67111168",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/functors/UnaryFunctors.h",
+      "expected_sha256": "905b211c94fccc6047ae262673c644ab829c8275e98b6f4b8978c73cb349462a",
+      "local_sha256": "905b211c94fccc6047ae262673c644ab829c8275e98b6f4b8978c73cb349462a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h",
+      "expected_sha256": "b1824739dc829bdd5c87d4e2035794230f5ea8e3007977e378399e19562b98f3",
+      "local_sha256": "b1824739dc829bdd5c87d4e2035794230f5ea8e3007977e378399e19562b98f3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h",
+      "expected_sha256": "df7aa1bd01e45c47e71ea38ce579d81f5b79aa55ded40f21685802946564ec20",
+      "local_sha256": "df7aa1bd01e45c47e71ea38ce579d81f5b79aa55ded40f21685802946564ec20",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h",
+      "expected_sha256": "b415ab39c5c03ea6f2f3f749ba623424b9f1e0f7ea1e7df71e160f2ee391796e",
+      "local_sha256": "b415ab39c5c03ea6f2f3f749ba623424b9f1e0f7ea1e7df71e160f2ee391796e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular_BLAS.h",
+      "expected_sha256": "973de070289ba262340b5d463fd59625f2f125691fa3322e69e28f58da7c2a84",
+      "local_sha256": "973de070289ba262340b5d463fd59625f2f125691fa3322e69e28f58da7c2a84",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix_BLAS.h",
+      "expected_sha256": "79cd720f0506bcadc600ea2de3405a4457536e4a35beb4078161f75f76134f67",
+      "local_sha256": "79cd720f0506bcadc600ea2de3405a4457536e4a35beb4078161f75f76134f67",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixVector.h",
+      "expected_sha256": "ea08550845627bf3d7c0ad30ed7061d5eb9590b1fb548fd3d8fde906707b11f3",
+      "local_sha256": "ea08550845627bf3d7c0ad30ed7061d5eb9590b1fb548fd3d8fde906707b11f3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/GeneralMatrixVector_BLAS.h",
+      "expected_sha256": "999b5819ab540b4f9bba07cb57763cd433c9cbc1fea66e05da12aa41064e7693",
+      "local_sha256": "999b5819ab540b4f9bba07cb57763cd433c9cbc1fea66e05da12aa41064e7693",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/Parallelizer.h",
+      "expected_sha256": "2c54b4e297c0cb187ee47aec319eead343a6fcfdb3f414d42758bfd68ff4938d",
+      "local_sha256": "2c54b4e297c0cb187ee47aec319eead343a6fcfdb3f414d42758bfd68ff4938d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix.h",
+      "expected_sha256": "e204012c3add3c045207b5e4e7eeea5f83bf3da9d0c6f7e287acea1c58a4b22d",
+      "local_sha256": "e204012c3add3c045207b5e4e7eeea5f83bf3da9d0c6f7e287acea1c58a4b22d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointMatrixMatrix_BLAS.h",
+      "expected_sha256": "74ed10cd34a5118d0300b7c91cd08bbfe56ac9659d18a383eb8d2aaf3a070cec",
+      "local_sha256": "74ed10cd34a5118d0300b7c91cd08bbfe56ac9659d18a383eb8d2aaf3a070cec",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h",
+      "expected_sha256": "5fd54cb6290c9437875265e5b673797f4cdb6e45c791fe0247b41e098e331055",
+      "local_sha256": "5fd54cb6290c9437875265e5b673797f4cdb6e45c791fe0247b41e098e331055",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector_BLAS.h",
+      "expected_sha256": "10aad74414d67ae92cd458c5267f84c441dd2c3de826cd4f9333aa042cc76b1c",
+      "local_sha256": "10aad74414d67ae92cd458c5267f84c441dd2c3de826cd4f9333aa042cc76b1c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointProduct.h",
+      "expected_sha256": "0e47b0162e6cfd1d8dc314d7cbc105529936b03a802f546c1226d11b6a38dbe6",
+      "local_sha256": "0e47b0162e6cfd1d8dc314d7cbc105529936b03a802f546c1226d11b6a38dbe6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/SelfadjointRank2Update.h",
+      "expected_sha256": "1a3064b1b2d3521f1d4b022ba0103314065dde9366686ce0c2af72fc07b38406",
+      "local_sha256": "1a3064b1b2d3521f1d4b022ba0103314065dde9366686ce0c2af72fc07b38406",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix.h",
+      "expected_sha256": "8a726cee8a7523991eaf9d5a4cef2b691c318394d64f4b2f55e13588a599ed16",
+      "local_sha256": "8a726cee8a7523991eaf9d5a4cef2b691c318394d64f4b2f55e13588a599ed16",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularMatrixMatrix_BLAS.h",
+      "expected_sha256": "b09bbec2fc888d442697d26d62571f1a991b4a12f347748930f3592d537c39da",
+      "local_sha256": "b09bbec2fc888d442697d26d62571f1a991b4a12f347748930f3592d537c39da",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularMatrixVector.h",
+      "expected_sha256": "a45c7b2e4fa32c52372f9d635c6599a1844f9053edd9108774e64972b0bdc8fe",
+      "local_sha256": "a45c7b2e4fa32c52372f9d635c6599a1844f9053edd9108774e64972b0bdc8fe",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularMatrixVector_BLAS.h",
+      "expected_sha256": "4ac4ff35409d8875e57af5cec80ae7c537b64034e2720d401fbeba4ec7268749",
+      "local_sha256": "4ac4ff35409d8875e57af5cec80ae7c537b64034e2720d401fbeba4ec7268749",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularSolverMatrix.h",
+      "expected_sha256": "7bbe79b4abbec7879feb1c84c2bf92b8e5039baa7a7bcfeee9decb3abf544550",
+      "local_sha256": "7bbe79b4abbec7879feb1c84c2bf92b8e5039baa7a7bcfeee9decb3abf544550",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularSolverMatrix_BLAS.h",
+      "expected_sha256": "d9c296e7a71f502a2804bbf8a704b4f5e866b5978d6f941685c3548ba5e6a842",
+      "local_sha256": "d9c296e7a71f502a2804bbf8a704b4f5e866b5978d6f941685c3548ba5e6a842",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/products/TriangularSolverVector.h",
+      "expected_sha256": "5febd767c379a570c5f918b07890f75c87bf9ae4d6b0f565456f275b308d10be",
+      "local_sha256": "5febd767c379a570c5f918b07890f75c87bf9ae4d6b0f565456f275b308d10be",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/BlasUtil.h",
+      "expected_sha256": "478865886bd886a3b0f6e221ff9b811be3742274d1fa260c7fbd525a2bc55716",
+      "local_sha256": "478865886bd886a3b0f6e221ff9b811be3742274d1fa260c7fbd525a2bc55716",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/ConfigureVectorization.h",
+      "expected_sha256": "3eec3fdfce850c87aca7bac45ce2bf1898804a845e29a9548c3e98e4c82ad35a",
+      "local_sha256": "3eec3fdfce850c87aca7bac45ce2bf1898804a845e29a9548c3e98e4c82ad35a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/Constants.h",
+      "expected_sha256": "b6d536a1e9b8cc1c685f7c6cf794ebe70a672099370fe57e475f6ca1739236a0",
+      "local_sha256": "b6d536a1e9b8cc1c685f7c6cf794ebe70a672099370fe57e475f6ca1739236a0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h",
+      "expected_sha256": "62dab2d7be4090aaa05e3d2c6581b249b7365726bb7506cdc910552fc8386c55",
+      "local_sha256": "62dab2d7be4090aaa05e3d2c6581b249b7365726bb7506cdc910552fc8386c55",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/ForwardDeclarations.h",
+      "expected_sha256": "661744e9dc5ad6fbd6325a068f188d56a7d4c53a2e577bdf02d2032e83f93541",
+      "local_sha256": "661744e9dc5ad6fbd6325a068f188d56a7d4c53a2e577bdf02d2032e83f93541",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/IndexedViewHelper.h",
+      "expected_sha256": "e88f96baa8297511a439002d23b0ae30045e9c5438a4b9b3680e4182d6e2b6d5",
+      "local_sha256": "e88f96baa8297511a439002d23b0ae30045e9c5438a4b9b3680e4182d6e2b6d5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/IntegralConstant.h",
+      "expected_sha256": "32c1a018fdf7bd1f36e310773032566f351aff3b5a00d5f239e24d0c2809ee69",
+      "local_sha256": "32c1a018fdf7bd1f36e310773032566f351aff3b5a00d5f239e24d0c2809ee69",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/MKL_support.h",
+      "expected_sha256": "487f0c220d40b8418876b5c7d9032d3597374cdff790d4022e8f4eea932cf620",
+      "local_sha256": "487f0c220d40b8418876b5c7d9032d3597374cdff790d4022e8f4eea932cf620",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/Macros.h",
+      "expected_sha256": "8d73259b4ba482e6dbd11b31d8887fd350dfb0836700d32793446bba6ab1ae7a",
+      "local_sha256": "8d73259b4ba482e6dbd11b31d8887fd350dfb0836700d32793446bba6ab1ae7a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/Memory.h",
+      "expected_sha256": "e25565aa6ae3e612c26b92cfe731a5df90d7edfa667be5b987c2801c70b2c95c",
+      "local_sha256": "e25565aa6ae3e612c26b92cfe731a5df90d7edfa667be5b987c2801c70b2c95c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/Meta.h",
+      "expected_sha256": "4ee6855c8f37669b8c86483342c56f9ad06f2dfc69abfe4691298a8d2a944202",
+      "local_sha256": "4ee6855c8f37669b8c86483342c56f9ad06f2dfc69abfe4691298a8d2a944202",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/NonMPL2.h",
+      "expected_sha256": "45e90a0556a27623a911bf6c9bc81cb3dfcbc9ec82dce28e4af7f8255ea5dad7",
+      "local_sha256": "45e90a0556a27623a911bf6c9bc81cb3dfcbc9ec82dce28e4af7f8255ea5dad7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h",
+      "expected_sha256": "e0200d2f76f2944831e0c12973faa72fabb0445bbafd65c7ae516ab8cd67ade5",
+      "local_sha256": "e0200d2f76f2944831e0c12973faa72fabb0445bbafd65c7ae516ab8cd67ade5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/ReshapedHelper.h",
+      "expected_sha256": "22248d610522a08d515c72596f8e69a5bd0f6930545a9846c575da55119b3512",
+      "local_sha256": "22248d610522a08d515c72596f8e69a5bd0f6930545a9846c575da55119b3512",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/StaticAssert.h",
+      "expected_sha256": "16ecc74d0318e07c847799e6757a8b4ddd7769d6f07077a180a7def3eeb6d1bd",
+      "local_sha256": "16ecc74d0318e07c847799e6757a8b4ddd7769d6f07077a180a7def3eeb6d1bd",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/SymbolicIndex.h",
+      "expected_sha256": "db1f06b723a94199dc28c614e4d91d25ab51612d3c1bd705627376ff1d0c9efe",
+      "local_sha256": "db1f06b723a94199dc28c614e4d91d25ab51612d3c1bd705627376ff1d0c9efe",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Core/util/XprHelper.h",
+      "expected_sha256": "f75169c4a2ca3e51a8e6ac423ff34ad827bf73264ccbbdfa3b11ad19f8ef10de",
+      "local_sha256": "f75169c4a2ca3e51a8e6ac423ff34ad827bf73264ccbbdfa3b11ad19f8ef10de",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h",
+      "expected_sha256": "b250df4b92be54eaf46979f8338413d887d011c1e81fe5b71dca98a85a8a6357",
+      "local_sha256": "b250df4b92be54eaf46979f8338413d887d011c1e81fe5b71dca98a85a8a6357",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h",
+      "expected_sha256": "6712338e5d075ddd3da52d2f28ba29b192ea479211c097161844dcd0182ea79a",
+      "local_sha256": "6712338e5d075ddd3da52d2f28ba29b192ea479211c097161844dcd0182ea79a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/ComplexSchur_LAPACKE.h",
+      "expected_sha256": "fd6553437ebd9249d16e31ae2aeed73c983cafa3cab835cc9829343e5ccefa4f",
+      "local_sha256": "fd6553437ebd9249d16e31ae2aeed73c983cafa3cab835cc9829343e5ccefa4f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/EigenSolver.h",
+      "expected_sha256": "764e4b1848ee16fbd42450a100b8b1e965f1f92f41ba48beb2bb6010ba0b8440",
+      "local_sha256": "764e4b1848ee16fbd42450a100b8b1e965f1f92f41ba48beb2bb6010ba0b8440",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h",
+      "expected_sha256": "82385783f608b22cec0699df6e58e3b8e9fbce6b40933d257afbd1651cd74f87",
+      "local_sha256": "82385783f608b22cec0699df6e58e3b8e9fbce6b40933d257afbd1651cd74f87",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h",
+      "expected_sha256": "e3fac33dfc12461ba86cbbca58bb12d9d4750bfd4eea87d63d7f3524a5d3b084",
+      "local_sha256": "e3fac33dfc12461ba86cbbca58bb12d9d4750bfd4eea87d63d7f3524a5d3b084",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h",
+      "expected_sha256": "3b956b75ba5931285e0ac53f6d4b2bed51ffb09528e4687c460f83d2712de95b",
+      "local_sha256": "3b956b75ba5931285e0ac53f6d4b2bed51ffb09528e4687c460f83d2712de95b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h",
+      "expected_sha256": "bb128af249c17734931952429fcaadd3b27f4aa183b4d7d3ededb3e30ab525e8",
+      "local_sha256": "bb128af249c17734931952429fcaadd3b27f4aa183b4d7d3ededb3e30ab525e8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/RealQZ.h",
+      "expected_sha256": "f3bd8d77d945ad3090c21b4b582c80b6765e1b59a76865a2d50eb422a556198a",
+      "local_sha256": "f3bd8d77d945ad3090c21b4b582c80b6765e1b59a76865a2d50eb422a556198a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/RealSchur.h",
+      "expected_sha256": "60870a96d42c0195cfadf9169cce3895602f881e040d0f31ff564a95a3ea672f",
+      "local_sha256": "60870a96d42c0195cfadf9169cce3895602f881e040d0f31ff564a95a3ea672f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/RealSchur_LAPACKE.h",
+      "expected_sha256": "30aafb5459f8297d6851aa6a8b651275565d9faa451332d04af50713c043562b",
+      "local_sha256": "30aafb5459f8297d6851aa6a8b651275565d9faa451332d04af50713c043562b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h",
+      "expected_sha256": "0bdabc304df900248cc79eef7e1b9df57a6b2586b3b9d93d421344b806c26ee6",
+      "local_sha256": "0bdabc304df900248cc79eef7e1b9df57a6b2586b3b9d93d421344b806c26ee6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver_LAPACKE.h",
+      "expected_sha256": "595ae077aa38318a867fa6543fea9fb5e6a545532f27d676958cc1fae6ef6fa4",
+      "local_sha256": "595ae077aa38318a867fa6543fea9fb5e6a545532f27d676958cc1fae6ef6fa4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h",
+      "expected_sha256": "9a794635df375a50699403e22410f6a6dc7ccfec85b6a6ac1fba04ca01051047",
+      "local_sha256": "9a794635df375a50699403e22410f6a6dc7ccfec85b6a6ac1fba04ca01051047",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/AlignedBox.h",
+      "expected_sha256": "2c95fadc8549fa236d6f8aa38022badf9186d63aed12a102bb806bcf0f6d522e",
+      "local_sha256": "2c95fadc8549fa236d6f8aa38022badf9186d63aed12a102bb806bcf0f6d522e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/AngleAxis.h",
+      "expected_sha256": "856101e8feca9153a3503ca23e475567bbf53e87c3508405403560b871b27425",
+      "local_sha256": "856101e8feca9153a3503ca23e475567bbf53e87c3508405403560b871b27425",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/EulerAngles.h",
+      "expected_sha256": "32f9878596c7d0d7fd633646f01f188d7bc75d0b16cf75bc1d8f9b6c25e85fa9",
+      "local_sha256": "32f9878596c7d0d7fd633646f01f188d7bc75d0b16cf75bc1d8f9b6c25e85fa9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Homogeneous.h",
+      "expected_sha256": "1ae6f1571132c5216266218c4df967edd997c376b2ab9e48add27947ea316fdf",
+      "local_sha256": "1ae6f1571132c5216266218c4df967edd997c376b2ab9e48add27947ea316fdf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Hyperplane.h",
+      "expected_sha256": "2f9aa22b1ec7f26869bdfdde5e13c2a5cb9dcff8f0e1727b9ef684b72f36aad7",
+      "local_sha256": "2f9aa22b1ec7f26869bdfdde5e13c2a5cb9dcff8f0e1727b9ef684b72f36aad7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/OrthoMethods.h",
+      "expected_sha256": "3d403f7f2ce47d4a06d7a4e5be2f362c2b0ed8bc7c2c044de7a09fb231956c44",
+      "local_sha256": "3d403f7f2ce47d4a06d7a4e5be2f362c2b0ed8bc7c2c044de7a09fb231956c44",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/ParametrizedLine.h",
+      "expected_sha256": "fd7066d3470cbb61af4b173f56ad0bc37098ea03d03e62eb7ae8f7f998469121",
+      "local_sha256": "fd7066d3470cbb61af4b173f56ad0bc37098ea03d03e62eb7ae8f7f998469121",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Quaternion.h",
+      "expected_sha256": "8e281fe29f4971828e790f334653fcaaafe34a7853b0eece4224a63a1ccf1fa8",
+      "local_sha256": "8e281fe29f4971828e790f334653fcaaafe34a7853b0eece4224a63a1ccf1fa8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Rotation2D.h",
+      "expected_sha256": "649177f4b89e0f22d573cdb00818dcbfef3d5d49a38223fcfc51ad5b8961bce3",
+      "local_sha256": "649177f4b89e0f22d573cdb00818dcbfef3d5d49a38223fcfc51ad5b8961bce3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/RotationBase.h",
+      "expected_sha256": "122a302f2f3593ac3951e4408c7d1404360a031baa0380617ba1dd6dd64518cc",
+      "local_sha256": "122a302f2f3593ac3951e4408c7d1404360a031baa0380617ba1dd6dd64518cc",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Scaling.h",
+      "expected_sha256": "54fd4bf3253dfa48d7811a4944343f3286e6e05e9ce3b58142edaa17be6a6cec",
+      "local_sha256": "54fd4bf3253dfa48d7811a4944343f3286e6e05e9ce3b58142edaa17be6a6cec",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Transform.h",
+      "expected_sha256": "fcbc9705bef43e82d419e6aced39194400c11fc807289a74d6e8bb4662667ac3",
+      "local_sha256": "fcbc9705bef43e82d419e6aced39194400c11fc807289a74d6e8bb4662667ac3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Translation.h",
+      "expected_sha256": "3107a52aa3043cc603c41c7fa3f0629f58f89e52f9690aee9f3dff4d8adc4639",
+      "local_sha256": "3107a52aa3043cc603c41c7fa3f0629f58f89e52f9690aee9f3dff4d8adc4639",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/Umeyama.h",
+      "expected_sha256": "f1606af01abe78e0b008fa42109bc257801d1bd8bef8c60fb884337a48e5b470",
+      "local_sha256": "f1606af01abe78e0b008fa42109bc257801d1bd8bef8c60fb884337a48e5b470",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Geometry/arch/Geometry_SIMD.h",
+      "expected_sha256": "2b4a5474d7503125279f1de2bae8ef56f99ac52dfecd3218fff5d79027779a7a",
+      "local_sha256": "2b4a5474d7503125279f1de2bae8ef56f99ac52dfecd3218fff5d79027779a7a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Householder/BlockHouseholder.h",
+      "expected_sha256": "813fa52ae65ce67f45ca5437740445e52d1aecce09f77993ee847323cecaa1ae",
+      "local_sha256": "813fa52ae65ce67f45ca5437740445e52d1aecce09f77993ee847323cecaa1ae",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Householder/Householder.h",
+      "expected_sha256": "4a6f35c282bd96fad7f18717a8b4ad66a7681f2594c4ef5594b3b313688e8b2d",
+      "local_sha256": "4a6f35c282bd96fad7f18717a8b4ad66a7681f2594c4ef5594b3b313688e8b2d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Householder/HouseholderSequence.h",
+      "expected_sha256": "a89c7bbc9a8e7f0ba4d9b382c13fea480e2e411039b832b4ee584c3a624d4ce8",
+      "local_sha256": "a89c7bbc9a8e7f0ba4d9b382c13fea480e2e411039b832b4ee584c3a624d4ce8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h",
+      "expected_sha256": "60c090eb1e3ff9defd825139aee3e5cda77ace7850158d3682a574ca698676c6",
+      "local_sha256": "60c090eb1e3ff9defd825139aee3e5cda77ace7850158d3682a574ca698676c6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h",
+      "expected_sha256": "2403309090c32abbcca5a2b8882650def8576aa6c395e32c01a7c47edf006b2d",
+      "local_sha256": "2403309090c32abbcca5a2b8882650def8576aa6c395e32c01a7c47edf006b2d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h",
+      "expected_sha256": "6c07bb017ccea21a1e478840497312e90287b76188030bc45cdd73c1adf611d3",
+      "local_sha256": "6c07bb017ccea21a1e478840497312e90287b76188030bc45cdd73c1adf611d3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h",
+      "expected_sha256": "97fa9e7bae5bfc0c85e783504c486a8909f8c29c45d043a041fae3cca33e67ea",
+      "local_sha256": "97fa9e7bae5bfc0c85e783504c486a8909f8c29c45d043a041fae3cca33e67ea",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h",
+      "expected_sha256": "f4de992f883b769435f82fc0601af68d5e11d67ad3a18820d42252b2d4fc5484",
+      "local_sha256": "f4de992f883b769435f82fc0601af68d5e11d67ad3a18820d42252b2d4fc5484",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h",
+      "expected_sha256": "455524dc3f734e24a1cd1ebca3c378aa5b2b6e7bb7c47018fb10873fbf48c6ca",
+      "local_sha256": "455524dc3f734e24a1cd1ebca3c378aa5b2b6e7bb7c47018fb10873fbf48c6ca",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h",
+      "expected_sha256": "8714d9c87d2f7cdb46b9c16b73f2679666819ef9db630a55ea59c956b4190c1f",
+      "local_sha256": "8714d9c87d2f7cdb46b9c16b73f2679666819ef9db630a55ea59c956b4190c1f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h",
+      "expected_sha256": "b24501200d464e6de972131a8309fe434bc496c6c12b2397a957d9e8883d829d",
+      "local_sha256": "b24501200d464e6de972131a8309fe434bc496c6c12b2397a957d9e8883d829d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/Jacobi/Jacobi.h",
+      "expected_sha256": "7aaafa09ea25c02f6cf78c9e08594617f31d4afced1aa0ebf0e2e74fa5c3a74f",
+      "local_sha256": "7aaafa09ea25c02f6cf78c9e08594617f31d4afced1aa0ebf0e2e74fa5c3a74f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/KLUSupport/KLUSupport.h",
+      "expected_sha256": "b718e630511ba765f6c4298f30385e646b51fb003f0274164824a79fbb005514",
+      "local_sha256": "b718e630511ba765f6c4298f30385e646b51fb003f0274164824a79fbb005514",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/Determinant.h",
+      "expected_sha256": "123f081581c38e07a204cf0cb28a220a96d93051fc7c00c8d19b9a186fc2fb27",
+      "local_sha256": "123f081581c38e07a204cf0cb28a220a96d93051fc7c00c8d19b9a186fc2fb27",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/FullPivLU.h",
+      "expected_sha256": "702ed2ee3e70425633198292e989cf308559e64fda172284daf475519312a471",
+      "local_sha256": "702ed2ee3e70425633198292e989cf308559e64fda172284daf475519312a471",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/InverseImpl.h",
+      "expected_sha256": "61c32ebf15d645a38a24981fe98cc02fa51a9e15bbb15030832c963926a155e4",
+      "local_sha256": "61c32ebf15d645a38a24981fe98cc02fa51a9e15bbb15030832c963926a155e4",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/PartialPivLU.h",
+      "expected_sha256": "2dbea49a53a0ecc035f167804008f4cb4652e49fa1899fa4888cd7d1f6c0a64b",
+      "local_sha256": "2dbea49a53a0ecc035f167804008f4cb4652e49fa1899fa4888cd7d1f6c0a64b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h",
+      "expected_sha256": "e34e5e8934c5c1a591ca3eafd1a7045898c404a95b93eeb374466a1278c44625",
+      "local_sha256": "e34e5e8934c5c1a591ca3eafd1a7045898c404a95b93eeb374466a1278c44625",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/LU/arch/InverseSize4.h",
+      "expected_sha256": "8c4a357bce437b540a2b9829481df051c8879ef9abe10812e184e10cd2203502",
+      "local_sha256": "8c4a357bce437b540a2b9829481df051c8879ef9abe10812e184e10cd2203502",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/MetisSupport/MetisSupport.h",
+      "expected_sha256": "c7b5f60a7baf958a7a0b46bf484518b9e49d56bc98ef8965c5433bd7c64f264f",
+      "local_sha256": "c7b5f60a7baf958a7a0b46bf484518b9e49d56bc98ef8965c5433bd7c64f264f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/OrderingMethods/Amd.h",
+      "expected_sha256": "73b83bbbfefd50d0ccc1086a2cb17e8a8e9df38dee64cef310190bf81acd319c",
+      "local_sha256": "73b83bbbfefd50d0ccc1086a2cb17e8a8e9df38dee64cef310190bf81acd319c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h",
+      "expected_sha256": "68655daf6bae480b8e9f2c24d3a3b1e624702f15ac1e8c481ee3a9ba260980eb",
+      "local_sha256": "68655daf6bae480b8e9f2c24d3a3b1e624702f15ac1e8c481ee3a9ba260980eb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/OrderingMethods/Ordering.h",
+      "expected_sha256": "cd068f665a798696c534a9b1450c78db323a63713db936bb75db79b4fff52c93",
+      "local_sha256": "cd068f665a798696c534a9b1450c78db323a63713db936bb75db79b4fff52c93",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/PaStiXSupport/PaStiXSupport.h",
+      "expected_sha256": "82e23d321598e464e3ad85c7596448ea65db51f681db7a28344813337e5f2ef0",
+      "local_sha256": "82e23d321598e464e3ad85c7596448ea65db51f681db7a28344813337e5f2ef0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/PardisoSupport/PardisoSupport.h",
+      "expected_sha256": "c2c56429248b33f3f24faa24904fbaf0263e8bdbb0e4940af89ff8f5be772b4c",
+      "local_sha256": "c2c56429248b33f3f24faa24904fbaf0263e8bdbb0e4940af89ff8f5be772b4c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/ColPivHouseholderQR.h",
+      "expected_sha256": "191a654a935f1fdbb58468fe50eff4012ac9b2a530d57f3bdf31f295ff7c32c8",
+      "local_sha256": "191a654a935f1fdbb58468fe50eff4012ac9b2a530d57f3bdf31f295ff7c32c8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h",
+      "expected_sha256": "3e0e20fee012834d4652f2aff391d9d7499c2c86f64ec0407bc4f150853331bb",
+      "local_sha256": "3e0e20fee012834d4652f2aff391d9d7499c2c86f64ec0407bc4f150853331bb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h",
+      "expected_sha256": "2bcd1741daadb7b1ad68eeadad27bd77ee92bf017f7666244caf9a8a9d343fd6",
+      "local_sha256": "2bcd1741daadb7b1ad68eeadad27bd77ee92bf017f7666244caf9a8a9d343fd6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/FullPivHouseholderQR.h",
+      "expected_sha256": "d263bac11d8ecf82e43beeb77628b1b62e6646913094ad63e894295d38e49e1e",
+      "local_sha256": "d263bac11d8ecf82e43beeb77628b1b62e6646913094ad63e894295d38e49e1e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/HouseholderQR.h",
+      "expected_sha256": "6ee0d450a2a447b1adb86e7d9c69a764e1cfb8f39f9d6a99fa89a162aedeeedf",
+      "local_sha256": "6ee0d450a2a447b1adb86e7d9c69a764e1cfb8f39f9d6a99fa89a162aedeeedf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/QR/HouseholderQR_LAPACKE.h",
+      "expected_sha256": "8a8486145c909c2108aaf1bbd5b448f91c0bb2553070da5e4e1b38661b76aa87",
+      "local_sha256": "8a8486145c909c2108aaf1bbd5b448f91c0bb2553070da5e4e1b38661b76aa87",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SPQRSupport/SuiteSparseQRSupport.h",
+      "expected_sha256": "68145b7331a5b821425b4cface3f953efddf3e7b1e192e58fcb5ad0933efba01",
+      "local_sha256": "68145b7331a5b821425b4cface3f953efddf3e7b1e192e58fcb5ad0933efba01",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SVD/BDCSVD.h",
+      "expected_sha256": "fd6e4b1d4a5383ba44e3c8c20aaa197fa25b193b94050efac781049273fd12bf",
+      "local_sha256": "fd6e4b1d4a5383ba44e3c8c20aaa197fa25b193b94050efac781049273fd12bf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SVD/JacobiSVD.h",
+      "expected_sha256": "8409c413f2193d51ea9669c2f0b7d280319da95265a35c323fabc65f8a407108",
+      "local_sha256": "8409c413f2193d51ea9669c2f0b7d280319da95265a35c323fabc65f8a407108",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h",
+      "expected_sha256": "91aeb6dcd05f0eb685d7171ae98f953599493d651c3eec3b0c8df90e59d22e9a",
+      "local_sha256": "91aeb6dcd05f0eb685d7171ae98f953599493d651c3eec3b0c8df90e59d22e9a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SVD/SVDBase.h",
+      "expected_sha256": "ec1658c7f805aac8a2621a1b1e63fa84a8fed21c7f24e176ec862a945562300a",
+      "local_sha256": "ec1658c7f805aac8a2621a1b1e63fa84a8fed21c7f24e176ec862a945562300a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SVD/UpperBidiagonalization.h",
+      "expected_sha256": "e88a6624218c9b6933ce125e2c03d036df9c4a67439be51c78e9b940d0d21f5f",
+      "local_sha256": "e88a6624218c9b6933ce125e2c03d036df9c4a67439be51c78e9b940d0d21f5f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h",
+      "expected_sha256": "a09cf71c03a05bd9df970ef39e4cbdeda3ff489cfb4bdbf084e85e9567d77bf0",
+      "local_sha256": "a09cf71c03a05bd9df970ef39e4cbdeda3ff489cfb4bdbf084e85e9567d77bf0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h",
+      "expected_sha256": "7457696be14e26568e8abc32f4c65a76c9cc8deb2feefc07a57595932e5b48f3",
+      "local_sha256": "7457696be14e26568e8abc32f4c65a76c9cc8deb2feefc07a57595932e5b48f3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/AmbiVector.h",
+      "expected_sha256": "e6b6ce53a2e6ba872e6df9439691c95be2d5f116cb56de763f194dc000fedb84",
+      "local_sha256": "e6b6ce53a2e6ba872e6df9439691c95be2d5f116cb56de763f194dc000fedb84",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/CompressedStorage.h",
+      "expected_sha256": "29bb2668e1022d7fbf742af0e25e4e1fca9262d85c365e75947114ace00495f5",
+      "local_sha256": "29bb2668e1022d7fbf742af0e25e4e1fca9262d85c365e75947114ace00495f5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h",
+      "expected_sha256": "3524c2d34cb5a5e3c4db2d7535a5a22a457e719ee2403bb80f4b907655f5688e",
+      "local_sha256": "3524c2d34cb5a5e3c4db2d7535a5a22a457e719ee2403bb80f4b907655f5688e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/MappedSparseMatrix.h",
+      "expected_sha256": "2ea4abaa6fc437a2974174c5204c6bdb0e40cc6b59dfd33bd020d9c2dd660eda",
+      "local_sha256": "2ea4abaa6fc437a2974174c5204c6bdb0e40cc6b59dfd33bd020d9c2dd660eda",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseAssign.h",
+      "expected_sha256": "57dfc1270120b32e37def64f69990d733ed51da52dc45b72f03ac6db2ec16f2d",
+      "local_sha256": "57dfc1270120b32e37def64f69990d733ed51da52dc45b72f03ac6db2ec16f2d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseBlock.h",
+      "expected_sha256": "07f468bbf114d435ec9da04d6ca0b940f1fd7d63b62548c7f9d8130550b42451",
+      "local_sha256": "07f468bbf114d435ec9da04d6ca0b940f1fd7d63b62548c7f9d8130550b42451",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseColEtree.h",
+      "expected_sha256": "871be15fce8853900437445ee4913bba0c9c3d6af08e6313f3deb9cb916e9344",
+      "local_sha256": "871be15fce8853900437445ee4913bba0c9c3d6af08e6313f3deb9cb916e9344",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseCompressedBase.h",
+      "expected_sha256": "8bf4030149985e1fe8fe8afc3a873af8e1f0ce5f3c3c52232b580ad6e4f110d7",
+      "local_sha256": "8bf4030149985e1fe8fe8afc3a873af8e1f0ce5f3c3c52232b580ad6e4f110d7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h",
+      "expected_sha256": "50cf08b13aa7a8e215bdc54f34c23be25906bb44c2edcd7edce1c3e04d3453b5",
+      "local_sha256": "50cf08b13aa7a8e215bdc54f34c23be25906bb44c2edcd7edce1c3e04d3453b5",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseCwiseUnaryOp.h",
+      "expected_sha256": "1adefb0d699b143db5fb6b609b75021c3141def16a834ed9ccf3a62b5b18754f",
+      "local_sha256": "1adefb0d699b143db5fb6b609b75021c3141def16a834ed9ccf3a62b5b18754f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseDenseProduct.h",
+      "expected_sha256": "4be488722a9e43c0aad1e4678ddc0ed16fa7253756ac9f5c0d2c94a532839f04",
+      "local_sha256": "4be488722a9e43c0aad1e4678ddc0ed16fa7253756ac9f5c0d2c94a532839f04",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseDiagonalProduct.h",
+      "expected_sha256": "aa5d600eb466743c6ead15ca60ab77e79f15579eabc24920dfdab5ae6363519f",
+      "local_sha256": "aa5d600eb466743c6ead15ca60ab77e79f15579eabc24920dfdab5ae6363519f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseDot.h",
+      "expected_sha256": "a8d305b52c1dc6e66b2402dfb6ec1cd54967f1d5cf1e7ecef81e876277d78767",
+      "local_sha256": "a8d305b52c1dc6e66b2402dfb6ec1cd54967f1d5cf1e7ecef81e876277d78767",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseFuzzy.h",
+      "expected_sha256": "f87bcc4641b02eea1e015454cda4f124e65eacad4b2a817bcc88549edce91370",
+      "local_sha256": "f87bcc4641b02eea1e015454cda4f124e65eacad4b2a817bcc88549edce91370",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseMap.h",
+      "expected_sha256": "2c43629c60e0ccffb47d22f17bd202d909931a9bf0ebe5a6619a2ecbdf061fa0",
+      "local_sha256": "2c43629c60e0ccffb47d22f17bd202d909931a9bf0ebe5a6619a2ecbdf061fa0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseMatrix.h",
+      "expected_sha256": "51a85c9f28e393d7a7ab5694be59ea235779cc17874aff2b1c38d5afc04ab9fb",
+      "local_sha256": "51a85c9f28e393d7a7ab5694be59ea235779cc17874aff2b1c38d5afc04ab9fb",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseMatrixBase.h",
+      "expected_sha256": "bcab93293b4e63a50002881a13bc9548f125bda9c10aa241e2883907b908db58",
+      "local_sha256": "bcab93293b4e63a50002881a13bc9548f125bda9c10aa241e2883907b908db58",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparsePermutation.h",
+      "expected_sha256": "30e0a30a0418db9a58b4f31086f1af91193c9285ae18ef1d93441132a4ad88cf",
+      "local_sha256": "30e0a30a0418db9a58b4f31086f1af91193c9285ae18ef1d93441132a4ad88cf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseProduct.h",
+      "expected_sha256": "5cbdbbf2c0ebb1c9b91f50a56ccc96b69f73305f8aa0cfaf79c77e7d7126659d",
+      "local_sha256": "5cbdbbf2c0ebb1c9b91f50a56ccc96b69f73305f8aa0cfaf79c77e7d7126659d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseRedux.h",
+      "expected_sha256": "f3e68290cad5fbbba0ecf8284fa238a52072108e3368c0632f8c90816b41dc91",
+      "local_sha256": "f3e68290cad5fbbba0ecf8284fa238a52072108e3368c0632f8c90816b41dc91",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseRef.h",
+      "expected_sha256": "2a9584cb3f8148342bda3905638d6aa65f35935c686ddd3d32ba097807adf740",
+      "local_sha256": "2a9584cb3f8148342bda3905638d6aa65f35935c686ddd3d32ba097807adf740",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseSelfAdjointView.h",
+      "expected_sha256": "a4a31af4749955fe130eb4acdd640f1e6f35fb2bd858dfd7dd06c31976610a1b",
+      "local_sha256": "a4a31af4749955fe130eb4acdd640f1e6f35fb2bd858dfd7dd06c31976610a1b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseSolverBase.h",
+      "expected_sha256": "fc525e230bdb66f4ba4d79d02386ea716d3b01eba5b734533a171f043a20a479",
+      "local_sha256": "fc525e230bdb66f4ba4d79d02386ea716d3b01eba5b734533a171f043a20a479",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseSparseProductWithPruning.h",
+      "expected_sha256": "a09f7932bf0fa3106555cbb2224f37c409c0f41f014c5f122c516bf092f331c8",
+      "local_sha256": "a09f7932bf0fa3106555cbb2224f37c409c0f41f014c5f122c516bf092f331c8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseTranspose.h",
+      "expected_sha256": "bf3180918315deb7dc433fa0d4f388d7a4209fa430783cc9d80373ab88bfd72e",
+      "local_sha256": "bf3180918315deb7dc433fa0d4f388d7a4209fa430783cc9d80373ab88bfd72e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseTriangularView.h",
+      "expected_sha256": "c0bce29b40b11481ed84f3e77fe0444e7788c43a6be68b3b58c9a6db6221a6cf",
+      "local_sha256": "c0bce29b40b11481ed84f3e77fe0444e7788c43a6be68b3b58c9a6db6221a6cf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseUtil.h",
+      "expected_sha256": "41b25d1cb05756294f1cc611949529bb6e362185c2ca58ee45653a1a0d021f21",
+      "local_sha256": "41b25d1cb05756294f1cc611949529bb6e362185c2ca58ee45653a1a0d021f21",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseVector.h",
+      "expected_sha256": "1574760419588cdef8fd8ec71adff12b5e2a198f7796664e2e2ec5119356e21f",
+      "local_sha256": "1574760419588cdef8fd8ec71adff12b5e2a198f7796664e2e2ec5119356e21f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/SparseView.h",
+      "expected_sha256": "b6ded852f6d8ab8142ee8f0e8cc44013910d300c838018c9430db77e41712982",
+      "local_sha256": "b6ded852f6d8ab8142ee8f0e8cc44013910d300c838018c9430db77e41712982",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseCore/TriangularSolver.h",
+      "expected_sha256": "e9caf168bfdea718fa900283448395de5791b237683df10caf0b453cf4ed314f",
+      "local_sha256": "e9caf168bfdea718fa900283448395de5791b237683df10caf0b453cf4ed314f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU.h",
+      "expected_sha256": "d23afc1552ea6d7958792a10149080f33f56a75814663fab33ff19cfb0dde053",
+      "local_sha256": "d23afc1552ea6d7958792a10149080f33f56a75814663fab33ff19cfb0dde053",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLUImpl.h",
+      "expected_sha256": "c6a155332ca1b7894e00f3f7ea5cfe38b4ca0cb2d5e3f69b025c40137e7c0e40",
+      "local_sha256": "c6a155332ca1b7894e00f3f7ea5cfe38b4ca0cb2d5e3f69b025c40137e7c0e40",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_Memory.h",
+      "expected_sha256": "d11b69a99c2fd957a86272f513fd96e7965ff90f062417c21962a725548c34aa",
+      "local_sha256": "d11b69a99c2fd957a86272f513fd96e7965ff90f062417c21962a725548c34aa",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_Structs.h",
+      "expected_sha256": "8a204a6a9409586135ff5218420dc6e1389fcdae1cfe072750fd4478a8394614",
+      "local_sha256": "8a204a6a9409586135ff5218420dc6e1389fcdae1cfe072750fd4478a8394614",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h",
+      "expected_sha256": "5c4b0609b55b46e37b9f77eb2f0ac6ba9586f6f2a19181c1cc55666d8e957e5a",
+      "local_sha256": "5c4b0609b55b46e37b9f77eb2f0ac6ba9586f6f2a19181c1cc55666d8e957e5a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_Utils.h",
+      "expected_sha256": "55f6cb16d53c850699977b228d2b3428a2753a4e1e1f4919c1f4a5003d427210",
+      "local_sha256": "55f6cb16d53c850699977b228d2b3428a2753a4e1e1f4919c1f4a5003d427210",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_column_bmod.h",
+      "expected_sha256": "504173ccf9d9a0cbe9feaee1c9a34968c41a8af9ee28681f53c38c70b918f44a",
+      "local_sha256": "504173ccf9d9a0cbe9feaee1c9a34968c41a8af9ee28681f53c38c70b918f44a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_column_dfs.h",
+      "expected_sha256": "ff5ba498aa4288fc6a2c73ffb16ef0c091747f9f0b3732666f5d9d97576e3b77",
+      "local_sha256": "ff5ba498aa4288fc6a2c73ffb16ef0c091747f9f0b3732666f5d9d97576e3b77",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h",
+      "expected_sha256": "c6e7a3007e53f7bde5668c57adf4df64cae9e5dfc6596384533792b2a45a1639",
+      "local_sha256": "c6e7a3007e53f7bde5668c57adf4df64cae9e5dfc6596384533792b2a45a1639",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_gemm_kernel.h",
+      "expected_sha256": "134ca932dcb40ad27d8f28900256ec06b51d814dedd481e12d7a2aff6f643fa2",
+      "local_sha256": "134ca932dcb40ad27d8f28900256ec06b51d814dedd481e12d7a2aff6f643fa2",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h",
+      "expected_sha256": "e87e76a8d5b5f4e4c081a1800ac7154b7d2bf5966392d1d8cd2e1a108c453cb9",
+      "local_sha256": "e87e76a8d5b5f4e4c081a1800ac7154b7d2bf5966392d1d8cd2e1a108c453cb9",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_kernel_bmod.h",
+      "expected_sha256": "c2c4d8f589e9134eb8669fada7bf6f86c9f7d65795e2b9079955648d06955825",
+      "local_sha256": "c2c4d8f589e9134eb8669fada7bf6f86c9f7d65795e2b9079955648d06955825",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_panel_bmod.h",
+      "expected_sha256": "13464c3e6539f5036bc592c114341a7d9a5b5b7d3276ecf060826ec78d7d035d",
+      "local_sha256": "13464c3e6539f5036bc592c114341a7d9a5b5b7d3276ecf060826ec78d7d035d",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_panel_dfs.h",
+      "expected_sha256": "1c7c706c25786c3783570a3a3e5efb8e14e70950229c2435d26da8ce2d3fc43c",
+      "local_sha256": "1c7c706c25786c3783570a3a3e5efb8e14e70950229c2435d26da8ce2d3fc43c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_pivotL.h",
+      "expected_sha256": "5ad1a6b28183f605213c8987d9fe15dd17d57876dbc958210ec3ed0213306c5b",
+      "local_sha256": "5ad1a6b28183f605213c8987d9fe15dd17d57876dbc958210ec3ed0213306c5b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h",
+      "expected_sha256": "c5b9134a43ba6361061875b2f331c355b1203942639bf6d02db1d5ece3a159bc",
+      "local_sha256": "c5b9134a43ba6361061875b2f331c355b1203942639bf6d02db1d5ece3a159bc",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h",
+      "expected_sha256": "c665a42771eb09e631fe8d9bed5d4db53c28b2482df381739a0e4e1cee1924d6",
+      "local_sha256": "c665a42771eb09e631fe8d9bed5d4db53c28b2482df381739a0e4e1cee1924d6",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SparseQR/SparseQR.h",
+      "expected_sha256": "6fb9085f495fb163845ec7058ef89a50e28c9227859c69cf7641cd3880b4ee6b",
+      "local_sha256": "6fb9085f495fb163845ec7058ef89a50e28c9227859c69cf7641cd3880b4ee6b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/StlSupport/StdDeque.h",
+      "expected_sha256": "9f070bc41ce79c22be5d7215ccb8fa9b74c4f6f35fea1081e6b13056094432d0",
+      "local_sha256": "9f070bc41ce79c22be5d7215ccb8fa9b74c4f6f35fea1081e6b13056094432d0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/StlSupport/StdList.h",
+      "expected_sha256": "fcfa0ff498e9331147c91b7689eac3d3b90a630e5809a43e9b6b9f7fff5bbfd0",
+      "local_sha256": "fcfa0ff498e9331147c91b7689eac3d3b90a630e5809a43e9b6b9f7fff5bbfd0",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/StlSupport/StdVector.h",
+      "expected_sha256": "64c1533368abc7e66b98d0cc2180b2a11456bdf35d69bd7c5d754ded66208788",
+      "local_sha256": "64c1533368abc7e66b98d0cc2180b2a11456bdf35d69bd7c5d754ded66208788",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/StlSupport/details.h",
+      "expected_sha256": "3785c06753150648f95aaa9fd29babcf0f01376a0132a91e9cfc820bb6541781",
+      "local_sha256": "3785c06753150648f95aaa9fd29babcf0f01376a0132a91e9cfc820bb6541781",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/SuperLUSupport/SuperLUSupport.h",
+      "expected_sha256": "c269eba6730543628a819276619d2c1b0b6739159f341eb3571ef257ffa62333",
+      "local_sha256": "c269eba6730543628a819276619d2c1b0b6739159f341eb3571ef257ffa62333",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/UmfPackSupport/UmfPackSupport.h",
+      "expected_sha256": "b68ea08ecb59deeec50370c111e91ccd233050fe629d8f54a124727923feea76",
+      "local_sha256": "b68ea08ecb59deeec50370c111e91ccd233050fe629d8f54a124727923feea76",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/Image.h",
+      "expected_sha256": "f8f9fb664c1462056175f956d9377bedd150e8c45fb89a39ef4463b63686c4a1",
+      "local_sha256": "f8f9fb664c1462056175f956d9377bedd150e8c45fb89a39ef4463b63686c4a1",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/Kernel.h",
+      "expected_sha256": "2088910ed3d2fd24df3d2f7cd3164bc8457c782a8e0058b7f4adf228a1d3eeba",
+      "local_sha256": "2088910ed3d2fd24df3d2f7cd3164bc8457c782a8e0058b7f4adf228a1d3eeba",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/RealSvd2x2.h",
+      "expected_sha256": "5fe0795f45cd92a09b48c02259ef743bacbbe86f890cb0c0725c0c03fb56886a",
+      "local_sha256": "5fe0795f45cd92a09b48c02259ef743bacbbe86f890cb0c0725c0c03fb56886a",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/blas.h",
+      "expected_sha256": "74e5a8752672edadd93637f6dc7feb8a50427ea94f9ac5d1ed56dc2dae0fad67",
+      "local_sha256": "74e5a8752672edadd93637f6dc7feb8a50427ea94f9ac5d1ed56dc2dae0fad67",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/lapack.h",
+      "expected_sha256": "ffdfe0aa46cb3221202a9f2582e39ecf6d5ad66626cdfd70f409859521d68346",
+      "local_sha256": "ffdfe0aa46cb3221202a9f2582e39ecf6d5ad66626cdfd70f409859521d68346",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/lapacke.h",
+      "expected_sha256": "06673e96af65b907c83d42495b754361b42bdbf9efc6353d51f2e702396caeb7",
+      "local_sha256": "06673e96af65b907c83d42495b754361b42bdbf9efc6353d51f2e702396caeb7",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/misc/lapacke_mangling.h",
+      "expected_sha256": "7d71fdee53a1e0cd01568aba2f152f2e1e4fbb849e84d740e3b031e819fbfa22",
+      "local_sha256": "7d71fdee53a1e0cd01568aba2f152f2e1e4fbb849e84d740e3b031e819fbfa22",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h",
+      "expected_sha256": "dc9ebce46c9243ec3d013746ff25392b6fde9e87eb3c1063858cc16875c19d49",
+      "local_sha256": "dc9ebce46c9243ec3d013746ff25392b6fde9e87eb3c1063858cc16875c19d49",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h",
+      "expected_sha256": "2f0f0334476bad09adaf5ba3eb8c2528c2b6ab3ae47210832cbd276388513f4c",
+      "local_sha256": "2f0f0334476bad09adaf5ba3eb8c2528c2b6ab3ae47210832cbd276388513f4c",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/BlockMethods.h",
+      "expected_sha256": "54fe460d2f69168b0db431756e96b4a5467dbaaa426acdc21b87a507a7c26b0f",
+      "local_sha256": "54fe460d2f69168b0db431756e96b4a5467dbaaa426acdc21b87a507a7c26b0f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/CommonCwiseBinaryOps.h",
+      "expected_sha256": "1f8a9bec47fcd5f7f529d5956e15da2d0d32511879bdf613d39fb22fbc9b4498",
+      "local_sha256": "1f8a9bec47fcd5f7f529d5956e15da2d0d32511879bdf613d39fb22fbc9b4498",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h",
+      "expected_sha256": "2a8ba7687292c6b301ccfeec51c51275210b3744218c2497b1865b5370d83256",
+      "local_sha256": "2a8ba7687292c6b301ccfeec51c51275210b3744218c2497b1865b5370d83256",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/IndexedViewMethods.h",
+      "expected_sha256": "5e9583f2c6105e3bf013ddc1afe2a0685b4aba060ef6110446e9379754046548",
+      "local_sha256": "5e9583f2c6105e3bf013ddc1afe2a0685b4aba060ef6110446e9379754046548",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h",
+      "expected_sha256": "90ea8491924c90080397fb1e3f33d0e1a842f5a3b80b99fc52a20651958c6982",
+      "local_sha256": "90ea8491924c90080397fb1e3f33d0e1a842f5a3b80b99fc52a20651958c6982",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h",
+      "expected_sha256": "8410b62cad9a1ed8be0ea7a5b1f1821b0e7330cc6a6858c8c9dfc327e49dd7b3",
+      "local_sha256": "8410b62cad9a1ed8be0ea7a5b1f1821b0e7330cc6a6858c8c9dfc327e49dd7b3",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/Eigen/src/plugins/ReshapedMethods.h",
+      "expected_sha256": "398c8eff2a19dd32fb5fc185ac85be20aceab3fd4b6ccd0cf7a1c9c990153a2f",
+      "local_sha256": "398c8eff2a19dd32fb5fc185ac85be20aceab3fd4b6ccd0cf7a1c9c990153a2f",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/bench/btl/COPYING",
+      "expected_sha256": "b8d0e2bcbf36f6af3cdbf94055ad2ea675d5a19fc623eb0ec82febb2b08e719b",
+      "local_sha256": "b8d0e2bcbf36f6af3cdbf94055ad2ea675d5a19fc623eb0ec82febb2b08e719b",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/provenance.json",
+      "expected_sha256": "e8c7ffd244bcad274b4b81a1685a7199fc6caae98369b5e63e433ed4d3a7c85e",
+      "local_sha256": "e8c7ffd244bcad274b4b81a1685a7199fc6caae98369b5e63e433ed4d3a7c85e",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/eigen3/signature_of_eigen3_matrix_library",
+      "expected_sha256": "53d918103d7e49332302666ecd19c69f413f94ac06f037f20e13dcf2160554bf",
+      "local_sha256": "53d918103d7e49332302666ecd19c69f413f94ac06f037f20e13dcf2160554bf",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/gr_re2/LICENSE",
+      "expected_sha256": "8ca08e2b72280d2ec5a92a1c847d4070bcad50187d00d2e89d605e5f0f9273a8",
+      "local_sha256": "8ca08e2b72280d2ec5a92a1c847d4070bcad50187d00d2e89d605e5f0f9273a8",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/gr_re2/ellipsoidGap.h",
+      "expected_sha256": "a862ecbf7b57d7367876f9d772f199459fd02078ac44c2b3fbbfc94f62683b60",
+      "local_sha256": "a862ecbf7b57d7367876f9d772f199459fd02078ac44c2b3fbbfc94f62683b60",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/gr_re2/nearFieldResistance.h",
+      "expected_sha256": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983",
+      "local_sha256": "2157eba85108c1d0e9249ea6ef911a77ff3dbeadc7267adca3acfcbebcbcd983",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/gr_re2/particleMath.h",
+      "expected_sha256": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62",
+      "local_sha256": "c3d5bdcc069dd332b467c1c344075727989142341ee56075b72da5bdb299ea62",
+      "match": true
+    },
+    {
+      "path": "lammps_slurry/vendor/gr_re2/provenance.json",
+      "expected_sha256": "6f850991a19701e0f5cb723290de10adba00fab93dbc45f89940161bc9fec6c1",
+      "local_sha256": "6f850991a19701e0f5cb723290de10adba00fab93dbc45f89940161bc9fec6c1",
+      "match": true
+    },
+    {
+      "path": "release.json",
+      "expected_sha256": "54c875b8721d273657f89ece955ea82678948ba088e5b3f869700514bccbde43",
+      "local_sha256": "54c875b8721d273657f89ece955ea82678948ba088e5b3f869700514bccbde43",
+      "match": true
+    },
+    {
+      "path": "validation_basis/run_interpolation_gate.py",
+      "expected_sha256": "b7a52314fb85594f0debbeb6684498f289e34da1066fdfb98aeeec26662abe66",
+      "local_sha256": "b7a52314fb85594f0debbeb6684498f289e34da1066fdfb98aeeec26662abe66",
+      "match": true
+    },
+    {
+      "path": "validation_basis/run_physical_gate.py",
+      "expected_sha256": "4fa7b73381ad156d496da697fda5aa0035e83073ce81642cf4c93be95a04e6eb",
+      "local_sha256": "4fa7b73381ad156d496da697fda5aa0035e83073ce81642cf4c93be95a04e6eb",
+      "match": true
+    }
+  ]
+}

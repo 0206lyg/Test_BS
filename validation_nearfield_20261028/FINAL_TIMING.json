@@ -1,0 +1,17 @@
+{
+  "scope": "Same host, one thread, same500-particle initial fixtures; first20 completed steps. Previous mesh+Heun kn0.3 versus new nearfield+IMEX kn30. Whole-configuration startup timing, not an identical-physics kernel benchmark or a strain10 runtime prediction.",
+  "cases": {
+    "AR1": {
+      "previous_mesh_mean_step_s": 13.684689712524413,
+      "new_nearfield_mean_step_s": 0.07285497188568116,
+      "speed_ratio": 187.8346715169619,
+      "steps": 20
+    },
+    "AR5": {
+      "previous_mesh_mean_step_s": 8.584928476810456,
+      "new_nearfield_mean_step_s": 0.24232017993927002,
+      "speed_ratio": 35.428037726622684,
+      "steps": 20
+    }
+  }
+}

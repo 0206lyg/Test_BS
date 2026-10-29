@@ -1,0 +1,91 @@
+{
+  "schema": "fmm3dbie_single_object_patch_build_v1",
+  "upstream_revision": "be6b2b3700b77e9cbf20c512ff4f0922aaee45d9",
+  "patch_policy": "get_quadparams_adap_high_order_p_ge_4_v1",
+  "supported_panel_order_minimum": 4,
+  "physical_accuracy_qualified": false,
+  "compiler": "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpif90",
+  "compiler_version": "GNU Fortran (Spack GCC) 12.2.0",
+  "compile_flags": [
+    "-fPIC",
+    "-O3",
+    "-std=legacy",
+    "-w",
+    "-fopenmp",
+    "-J",
+    "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/.mod"
+  ],
+  "blas_link_flags": "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2 -lpthread -lm -ldl -Xlinker -rpath -Xlinker /apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib",
+  "commands": [
+    [
+      "patch",
+      "--batch",
+      "--fuzz=0",
+      "-p1",
+      "-i",
+      "/home/lee6456/slurry/distance_scan_work/validation_basis/independent_stokes/patches/fmm3dbie-get-quadparams-high-order-v1.patch"
+    ],
+    [
+      "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpif90",
+      "-fPIC",
+      "-O3",
+      "-std=legacy",
+      "-w",
+      "-fopenmp",
+      "-J",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/.mod",
+      "-c",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/src/quadratures/near_field_routs.f",
+      "-o",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/near_field_routs.o"
+    ],
+    [
+      "ar",
+      "r",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/lib-static/libfmm3dbie.a",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/near_field_routs.o"
+    ],
+    [
+      "ranlib",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/lib-static/libfmm3dbie.a"
+    ],
+    [
+      "/apps/spack/negishi/apps/openmpi/4.1.4-gcc-12.2.0-aqmmssy/bin/mpif90",
+      "-shared",
+      "-fPIC",
+      "-fopenmp",
+      "-Wl,--whole-archive",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/lib-static/libfmm3dbie.a",
+      "-Wl,--no-whole-archive",
+      "-o",
+      "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/lib/libfmm3dbie.so",
+      "-lm",
+      "-lstdc++",
+      "-lgomp",
+      "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib/libmkl_rt.so.2",
+      "-lpthread",
+      "-lm",
+      "-ldl",
+      "-Xlinker",
+      "-rpath",
+      "-Xlinker",
+      "/apps/spack/negishi/apps/anaconda/2024.02-py311-gcc-8.5.0-lr57z2f/lib"
+    ]
+  ],
+  "upstream_files_sha256": {
+    "/home/lee6456/slurry/.connection_build/deps/fmm3dbie/src/quadratures/near_field_routs.f": "298c2580f8129f7a998394c4323ef6c19f33899661b7082e2d13c63b898e2241",
+    "/home/lee6456/slurry/.connection_build/deps/fmm3dbie/lib-static/libfmm3dbie.a": "6d0b0f205bf6293acc8a49b9fae1c771ce392fae4e376aba210712fe68a01382",
+    "/home/lee6456/slurry/.connection_build/deps/fmm3dbie/lib/libfmm3dbie.so": "817da50088effcd1ada1a2913a937cdb4e710d79ed6b2dfe33579090c8469315"
+  },
+  "patch_sha256": "6025b63528c2c504f7aa5931048e17aa8db7a2df1967299779ac75a993694433",
+  "patched_source_sha256": "1ffe5aee371099c5843c94a2f648f4934b639a7f120e3ba85a88f2725f2f5891",
+  "patched_object_sha256": "fc4b3d1e2c2de0adc7e0fdda0231d14a12993e62fdf39966cb3fbab5ceb770f2",
+  "patched_archive_sha256": "31f100ac6326b3275308d3687b9c9c207cf967ab53bc4c9b8e329a346b8c1628",
+  "library": "/home/lee6456/slurry/.connection_build/deps/quadparams_highorder_v1/lib/libfmm3dbie.so",
+  "library_sha256": "545043f0c3becd1501146799a9cafe5ee6d074d3e6b44930322f5423bde841fb",
+  "changed_archive_members": [
+    "near_field_routs.o"
+  ],
+  "unchanged_archive_member_count": 131,
+  "original_artifacts_unchanged": true
+}

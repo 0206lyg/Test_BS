@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/workspace/scratch/581ed100c5ad/check_ar20_reduction",
+    "--reference-json",
+    "/workspace/scratch/581ed100c5ad/ar20_validation/L22_h050_t3_p256.json",
+    "--h",
+    ".5"
+  ],
+  "returncode": 0,
+  "wall_seconds": 0.007372583999313065,
+  "stderr": "",
+  "physical_accuracy_qualified": false
+}

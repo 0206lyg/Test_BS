@@ -8,6 +8,7 @@
 // Coefficients use c=eta=1; multiply the returned matrix by eta*c.
 // This is an approximation; callers must enforce validated domain and gates.
 #include <Eigen/Dense>
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <fstream>
@@ -122,9 +123,17 @@ class Basis {
     const Mat3 transform=source.rotation.transpose()*target.rotation;
     const Vec3 shift=source.rotation.transpose()*(target.center-source.center);
     const int nt=targets.rows(),nr=fourier_rings.rows(),nm=fourier_modes;
-    Matrix kernel(3*nt,nr*nm*3),ring_kernel(9,fourier_nphi),ring_modes(9,nm);
+    // Target quadrature refinement must not allocate its full dense kernel per
+    // OpenMP worker. Independent target rows have the same source contraction;
+    // blocking them changes no quadrature nodes, basis coefficients or model.
+    constexpr int target_block=32;
+    Matrix kernel(3*std::min(nt,target_block),nr*nm*3),ring_kernel(9,fourier_nphi),ring_modes(9,nm);
+    Matrix field(3*nt,fourier_density.cols());
     const double inv8pi=1./(8*std::acos(-1.));
-    for(int t=0;t<nt;++t) {
+    for(int begin=0;begin<nt;begin+=target_block) {
+      const int count=std::min(target_block,nt-begin);
+      for(int local=0;local<count;++local) {
+      const int t=begin+local;
       const Vec3 x=transform*targets.row(t).transpose()+shift;
       for(int r=0;r<nr;++r) {
         for(int q=0;q<fourier_nphi;++q) {
@@ -137,10 +146,11 @@ class Basis {
         }
         ring_modes.noalias()=ring_kernel*fourier_harmonics;
         for(int m=0;m<nm;++m)for(int i=0;i<3;++i)for(int j=0;j<3;++j)
-          kernel(3*t+i,3*(r*nm+m)+j)=ring_modes(3*i+j,m);
+          kernel(3*local+i,3*(r*nm+m)+j)=ring_modes(3*i+j,m);
       }
+      }
+      field.middleRows(3*begin,3*count).noalias()=kernel.topRows(3*count)*fourier_density;
     }
-    Matrix field=kernel*fourier_density;
     for(int t=0;t<nt;++t)
       field.middleRows(3*t,3)=(transform.transpose()*field.middleRows(3*t,3)).eval();
     return projection*field;

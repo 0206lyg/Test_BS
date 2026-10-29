@@ -1,0 +1,18 @@
+{
+  "scope": "Analytic production helper default regression and configurable metadata; no other-AR Stokes solve",
+  "physical_accuracy_qualified": false,
+  "default_matrices_bitwise_equal": {
+    "isolated17": true,
+    "leading17": true,
+    "isolated_bodies17": true,
+    "centers": true
+  },
+  "generic_metadata": {
+    "aspect_ratio": 5,
+    "c_nm": 200,
+    "theta_i": 0.3,
+    "theta_j": 0.7,
+    "phi": -0.8
+  },
+  "new_executable_sha256": "9e4a5bceaf76621235227c0d0240085210ad244b9a15a9ea40a6ad48ca719fe1"
+}

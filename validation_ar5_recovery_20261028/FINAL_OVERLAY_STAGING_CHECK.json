@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "overlay_extraction_preserves_run_and_sweep": true,
+  "helper_applied_to_fresh_overlay": true,
+  "shell_syntax_passed": true,
+  "source_guard_passed": true,
+  "run_script_after_helper_sha256": "21b17af9ad2361f6fde4a7d63cc706af77a4499ee86ff346387e239d7671906e"
+}

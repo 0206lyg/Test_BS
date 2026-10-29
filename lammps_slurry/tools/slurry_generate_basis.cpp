@@ -167,7 +167,13 @@ Settings parse(int argc,char**argv) {
     if(s.anchor_gaps[0]!=.5||s.anchor_gaps[1]!=1.)throw std::runtime_error("Hybrid V3 requires anchors0.5,1");
     s.anchor_gaps[2]=0.;
   }
-  if(s.source_order<0)s.source_order=s.degree+2;if(s.ntarget<0)s.ntarget=s.degree+3;if(s.target_phi<0)s.target_phi=2*s.degree+5;if(s.nfit<0)s.nfit=std::max(2*s.nsource,4*s.degree+24);if(s.ncheck<0)s.ncheck=s.nfit+7;
+  // Isolated fitting and cross-body surface projection are separate quadratures.
+  // A grid only just resolving the retained harmonics aliases the neighbouring
+  // body's non-polynomial field; oversample that projection independently.
+  if(s.source_order<0)s.source_order=s.degree+2;
+  if(s.ntarget<0)s.ntarget=3*(s.degree+3);
+  if(s.target_phi<0)s.target_phi=3*(2*s.degree+5);
+  if(s.nfit<0)s.nfit=std::max(2*s.nsource,4*s.degree+24);if(s.ncheck<0)s.ncheck=s.nfit+7;
   if(!std::isfinite(s.ar)||s.ar<1||s.degree<1||s.degree>30||!(s.depth>0&&s.depth<1)||!(s.rcond>0&&s.rcond<1e-2)||s.output.empty()||s.report.empty())throw std::runtime_error("Invalid generator physical parameters or output/report path");
   if(s.nsource<4||s.nsource>512||s.ntarget>512||s.target_phi>1024||s.nfit>2048||s.ncheck>2048||s.nsource*s.source_phi>100000||static_cast<long long>(3*s.ntarget)*s.target_phi*(3*(s.degree+1)*(s.degree+1)-1)>16000000||s.source_order>32||s.fit_phi>1048576||s.check_phi>1048576||s.ntarget<s.degree+1||s.target_phi<2*s.degree+1||s.nfit<s.nsource||s.ncheck<1||s.source_order<s.degree+2||s.source_phi<=2*s.source_order||s.source_phi>1024||s.fit_phi<4*s.source_order+4||s.check_phi<s.fit_phi||static_cast<long long>(s.nsource)*(2*s.source_order+1)*3*(3*(s.degree+1)*(s.degree+1)-1)>16000000)throw std::runtime_error("Invalid/too large numerical resolution or storage dimensions");
   return s;

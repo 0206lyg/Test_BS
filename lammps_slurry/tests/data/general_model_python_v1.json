@@ -1,0 +1,15 @@
+{
+  "fixture": "general_model_python_v1.txt",
+  "sha256": "05a0ad3470a28f08e7113a1b417ab624ff75d1ff1dbe2dfead10209138166dcc",
+  "source_sha256": {
+    "model.py": "9c7c4dfca1a3a1399c36a560b56cfbbb00928da14286ea16a06a6d0c34800496",
+    "adaptive.py": "58717f50a9df4e320a5e11c7828269214017cfb69959572ea56501211f55228a",
+    "numerics.py": "0be5a05a256a7ece8f6d25d267b37f791b101b0fa996e0d250e1ca8f8ec827a5",
+    "outer.py": "0151b995101fdfedf3b04c4edd49b90cffd7459a2085f9a23ba05e19e8871786",
+    "near.py": "00d95be7e9d5c31835fcc52af116fa373bf961d2aba697b1d5d5e642866b7d53"
+  },
+  "cases": 5,
+  "scope": "Combined C++ port and same-geometry adaptive quadrature parity, not independent hydrodynamic or viscosity validation",
+  "runtime_input": false,
+  "format": "Header then cases: AR h theta_i theta_j phi nrad nphi; grand17, outer17, near17, isolated17, each 17 rows"
+}

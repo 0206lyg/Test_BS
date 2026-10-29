@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-28T23:47:13Z",
+  "status": "INTERRUPTED_RUNS_NOT_COUNTED_AS_COMPLETE",
+  "observations": [
+    "Both original tool session handles returned Unknown process id on attempted polling after the session resumed.",
+    "Both run directories contain partial history and console logs but no summary.json or final.data.",
+    "Original console logs end during an inner solve without a logged LAMMPS ERROR.",
+    "The available evidence does not identify the interruption cause; no solver failure is inferred from an absent process or truncated run."
+  ],
+  "runs": {
+    "candidate_v4": {
+      "recorded_history_rows": 1244,
+      "first_accepted_step": 0,
+      "last_accepted_step": 1243,
+      "last_recorded_strain": 0.31075,
+      "last_recorded_time_s": 0.0031075000000000005,
+      "last_log_line": "bridge solve step=1244 phase=nearfield_imex_convex stage=0 stiffness_scale=1 friction_scale=1 iteration=1 newton_total=1 residual=1.449057301e+03 merit=1.449057301e+03 tolerance=2.265247957e-03 alpha=0.0972622 linear=1 linear_total=1 linear_residual=1.242328e-09 linear_target=3.171343e-06 linear_defect=0.000000e+00 active=510 sliding=36 reselections=0 yield_distance=1.000000e+00 descent=0 breakpoint=0 elapsed_s=0.150605",
+      "console_contains_error": false,
+      "summary_present": false,
+      "final_data_present": false,
+      "latest_trajectory_step": 1200,
+      "max_relative_residual": 9.989885253762181e-08,
+      "max_overlap_fraction_min_semiaxis": 0.00014329656447720218,
+      "accepted_recoveries": [],
+      "history_sha256": "2177f92a0ace013cbc2707fb68b4b82d981f926d53d26aa0904f7bbdf6e9a7bd",
+      "console_sha256": "ec3af787b0369138ce2e0359f3a311ccf7cf0299eb2b9b2e8e9f7ed1516c6740",
+      "validation_status": "PARTIAL_INTERRUPTED_WITHOUT_COMPLETION_RECORD"
+    },
+    "diagnostic_v4_run": {
+      "recorded_history_rows": 1242,
+      "first_accepted_step": 0,
+      "last_accepted_step": 1241,
+      "last_recorded_strain": 0.31025,
+      "last_recorded_time_s": 0.0031025000000000002,
+      "last_log_line": "bridge solve step=1242 phase=nearfield_imex_convex stage=0 stiffness_scale=1 friction_scale=1 iteration=5 newton_total=5 residual=1.635933082e+02 merit=1.635933082e+02 tolerance=2.252202759e-03 alpha=0.00973481 linear=160 linear_total=641 linear_residual=1.142588e-10 linear_target=2.412025e-07 linear_defect=0.000000e+00 active=513 sliding=22 reselections=0 yield_distance=1.000000e+00 descent=0 breakpoint=0 elapsed_s=1.23605",
+      "console_contains_error": false,
+      "summary_present": false,
+      "final_data_present": false,
+      "latest_trajectory_step": 1200,
+      "max_relative_residual": 9.989885253762181e-08,
+      "max_overlap_fraction_min_semiaxis": 0.00014329656447720218,
+      "accepted_recoveries": [],
+      "history_sha256": "d7c98d81c2ecf14604a0ee0b5967d68aea5e6eb836d63e1f9230720957f617ea",
+      "console_sha256": "2c9a8728a8be274ca0ffa46aeb0203f59517e89aafb65cad887ebcdb93c96127",
+      "validation_status": "PARTIAL_INTERRUPTED_WITHOUT_COMPLETION_RECORD"
+    }
+  },
+  "partial_trajectory_equivalence": {
+    "compared_rows": 1242,
+    "through_step": 1241,
+    "excluded_timing_columns": [
+      "profile_geometry_s",
+      "profile_middle_s",
+      "profile_solve_s",
+      "profile_total_s"
+    ],
+    "comparison": "Exact CSV field strings for every non-timing column, including identical NaN average fields before the averaging window.",
+    "same_physical_prefix": true,
+    "difference_count": 0,
+    "differences_first_100": []
+  },
+  "restart_audit": {
+    "restart_files_present": false,
+    "input_restart_command_present": false,
+    "fix_restart_serialization_present": false,
+    "physical_state_missing": [
+      "accepted pairwise sliding contact history",
+      "accepted pairwise rolling contact history"
+    ],
+    "numerical_state_missing": [
+      "warm solution and private solver workspaces"
+    ],
+    "exact_resume_from_saved_dump_supported": false,
+    "reason": "The saved dump records particle states and aggregate force diagnostics, but does not serialize private pairwise contact histories in FixSlurryBridge::Impl. Loading the latest dump would reset those histories and would be a different experiment.",
+    "selected_continuation": "Fresh 4000-step replay from the original supplied particle fixture with the same immutable production v4 plugin, in candidate_v4_restarted."
+  },
+  "completed_4000_validation_pass": false,
+  "production_source_modified_by_this_audit": false
+}

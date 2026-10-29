@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 
-RELEASE_ID = "20261018-ar-basis-pipeline-trial"
+RELEASE_ID = "20261028-imex-huber-recovery"
 MANIFEST_SCHEMA = 1
 OFFLINE_TOOLS = ("slurry_generate_basis", "slurry_precompute_fast", "slurry_basis_physical_probe", "slurry_table_interpolation_probe")
 
@@ -38,6 +38,31 @@ def check_source(root, expected_release=RELEASE_ID):
     required = (
         "lammps_slurry/CMakeLists.txt", "lammps_slurry/lammps-version.json",
         "lammps_slurry/src/fix_slurry_implicit.cpp",
+        "lammps_slurry/src/fix_slurry_bridge.cpp",
+        "lammps_slurry/src/slurry_compact_bridge.h",
+        "lammps_slurry/src/slurry_rough_surface.h",
+        "lammps_slurry/src/slurry_periodic_mobility.h",
+        "lammps_slurry/src/slurry_periodic_mesh.h",
+        "lammps_slurry/src/slurry_fft_plans.h",
+        "lammps_slurry/src/slurry_bridge_solver.h",
+        "lammps_slurry/src/slurry_bridge_workspace.h",
+        "lammps_slurry/src/slurry_bridge_contact_solver.h",
+        "lammps_slurry/src/slurry_bridge_linear_solver.h",
+        "lammps_slurry/src/slurry_nearfield_solver.h",
+        "lammps_slurry/src/slurry_nearfield_implicit_solver.h",
+        "lammps_slurry/src/slurry_nearfield_imex_solver.h",
+        "lammps_slurry/src/slurry_nearfield_step.h",
+        "lammps_slurry/src/slurry_nearfield_hydro.h",
+        "lammps_slurry/src/slurry_bridge_step.h",
+        "lammps_slurry/src/slurry_bridge_shape.h",
+        "lammps_slurry/src/slurry_cylinder_geometry.h",
+        "lammps_slurry/src/slurry_cylinder_packing.h",
+        "lammps_slurry/src/slurry_cylinder_film.h",
+        "lammps_slurry/src/slurry_cylinder_pair.h",
+        "lammps_slurry/src/slurry_bridge_images.h",
+        "lammps_slurry/tools/prepare_bridge.py",
+        "lammps_slurry/tools/run_bridge.py",
+        "lammps_slurry/tools/summarize_bridge.py",
         "lammps_slurry/src/slurry_spheroid_hydro_math.h",
         "lammps_slurry/src/slurry_solver_workspace.h",
         "lammps_slurry/src/slurry_eigen_ilu_math.h",
@@ -45,6 +70,7 @@ def check_source(root, expected_release=RELEASE_ID):
         "lammps_slurry/src/slurry_spd_coordinates.h",
         "lammps_slurry/src/slurry_objective_film.h",
         "lammps_slurry/tools/prepare_case.py", "lammps_slurry/tools/build.py",
+        "lammps_slurry/tools/runtime_snapshot.py",
         "lammps_slurry/tools/precompute_fast.cpp",
         "lammps_slurry/tools/slurry_generate_basis.cpp",
         "lammps_slurry/tools/basis_cylindrical_kernel.h",
@@ -60,12 +86,14 @@ def check_source(root, expected_release=RELEASE_ID):
         if not (root / relative).is_file():
             raise RuntimeError("Incomplete source bundle: missing {}. Re-extract the "
                                "complete matching ZIP.".format(root / relative))
-    prepare = root / "lammps_slurry/tools/prepare_case.py"
-    expected_prepare = release.get("prepare_case_sha256")
-    if not expected_prepare or sha256_file(prepare) != expected_prepare:
-        raise RuntimeError("prepare_case.py does not match release {}. The source bundle "
-                           "may contain an older input generator; re-extract the complete "
-                           "matching ZIP.".format(expected_release))
+    for filename, field in (("prepare_case.py", "prepare_case_sha256"),
+                            ("prepare_bridge.py", "prepare_bridge_sha256")):
+        prepare = root / "lammps_slurry/tools" / filename
+        expected_prepare = release.get(field)
+        if not expected_prepare or sha256_file(prepare) != expected_prepare:
+            raise RuntimeError("{} does not match release {}. The source bundle "
+                               "may contain an older input generator; re-extract the complete "
+                               "matching ZIP.".format(filename, expected_release))
     return release
 
 
@@ -77,6 +105,9 @@ def source_snapshot(root):
         root / "release.json", project / "CMakeLists.txt",
         project / "lammps-version.json", project / "tools/prepare_case.py",
         project / "tools/build.py", project / "tools/bundle_guard.py",
+        project / "tools/runtime_snapshot.py",
+        project / "tools/prepare_bridge.py", project / "tools/run_bridge.py",
+        project / "tools/summarize_bridge.py",
         project / "tools/precompute_fast.cpp",
         project / "tools/slurry_generate_basis.cpp", project / "tools/basis_cylindrical_kernel.h",
         project / "tests/test_basis_physical.cpp", root / "validation_basis/run_physical_gate.py",

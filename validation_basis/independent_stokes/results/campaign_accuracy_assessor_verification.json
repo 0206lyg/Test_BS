@@ -1,0 +1,27 @@
+{
+  "schema": "campaign_accuracy_assessor_verification_v1",
+  "created_utc": "2026-10-19T01:26:07.269621+00:00",
+  "synthetic_unit_data_only": true,
+  "contains_stokes_solve": false,
+  "physical_accuracy_qualified": false,
+  "tests_run": 17,
+  "tests_passed": true,
+  "test_output": ".................\n----------------------------------------------------------------------\nRan 17 tests in 0.109s\n\nOK\n",
+  "source_sha256": {
+    "assess_campaign_accuracy.py": "f5335065ec4d96f6e00c62263bc90898d2d703279099b20c5d7ea1ca0c3ff4f3",
+    "test_assess_campaign_accuracy.py": "73ee1e85efeeeaf0e1eb5b09c016dd33ec994a9a467c10281622559961c87c66"
+  },
+  "cli_synthetic_checked_reference_smoke": {
+    "returncode": 0,
+    "stdout": "{\"report\": \"/dev/shm/campaign_assessor_final_smoke/assessment.json\", \"counts\": {\"PASS\": 1, \"FAIL\": 0, \"UNRESOLVED\": 0}, \"physical_accuracy_qualified\": false}\n",
+    "stderr": "",
+    "json_csv_png_written": true
+  },
+  "cli_all_four_AR_missing_smoke": {
+    "returncode": 0,
+    "stdout": "{\"report\": \"/dev/shm/campaign_assessor_missing_smoke/assessment.json\", \"counts\": {\"PASS\": 0, \"FAIL\": 0, \"UNRESOLVED\": 4}, \"physical_accuracy_qualified\": false}\n",
+    "stderr": "",
+    "json_csv_png_written": true
+  },
+  "plot_visual_review": "Single-AR title/labels checked and fixed to avoid clipping; missing references explicitly annotated, no interpolated curves or unsampled-range claims."
+}

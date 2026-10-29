@@ -1,11 +1,108 @@
 {
-  "release_id": "20261018-ar-basis-pipeline-trial",
-  "status": "EXPERIMENTAL_AR_PARAMETRIC_PIPELINE",
-  "prepare_case_sha256": "6be7b352f409f3843f03013ce6fbfe132ccbda5c8aa0120b6e05b7c508d47ce4",
-  "plugin_build_and_bulk_validation": "V3_SERIAL_BUILD_AND_2_8_PARTICLE_INTEGRATION_PASSED; EQUILIBRIUM_BULK_NOT_RUN",
-  "full_orientation_table": "V3_COARSE_SMOKE_COMPLETE_AND_RESUME_PASSED; FULL_RESOLUTION_TABLE_NOT_GENERATED",
-  "details": "RESULT.json",
-  "model_stage": "HYBRID_V3",
-  "numerical_source_fingerprint": "f401ce23cc065f522ff2e4b5aa97dad5d3053cdd09fc0d3597d828bb58ee730c",
-  "selected_model_sha256": "1174cd0044611029e60cb2bf07eac1acf79cf197dfd29aa8f763a0201dc328c6"
+  "release_id": "20261028-imex-huber-recovery",
+  "status": "PASS_BOUNDED_VALIDATION_USER_STOPPED",
+  "baseline_git_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
+  "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
+  "prepare_bridge_sha256": "4b7742287a58978a766387f30a5fc5951cd081c056dc45d8ed14fa63bb8386fd",
+  "details": "docs/AR5_SOLVER_RECOVERY.md",
+  "legacy_release": "20261028-bidisperse-imex",
+  "model_stage": "NEARFIELD_LUBRICATION_WITH_ISOLATED_SPHEROID_DRAG",
+  "periodic_middle": "omitted in default nearfield model; periodicity retained for geometry and imposed shear",
+  "periodic_mobility_backend": "nearfield",
+  "production_numerics": {
+    "hydrodynamic_solver": "reduced 6N resistance/contact Newton solve",
+    "fft": "unused by nearfield; legacy mesh remains available",
+    "sparse_factorization": "Sparse 6N current-Jacobian FGMRES; reused SPD contact-Jacobian LDLT preconditioner refreshed after >40 iterations; checked SPD direct fallback. Reference coupled scheme uses hydro LDLT and LU fallback.",
+    "contact_integration": "IMEX implicit normal/sliding/rolling springs with immutable current-load friction caps and endpoint normal-gap correction",
+    "globalization": "Exact convex Newton with original Armijo/directional search; after a damped exact step, one Huber quadratic-majorizer direction restores radial curvature for yielded sliding/rolling/twisting. Forces, frozen caps, timestep and physical residual gates unchanged. Primary budget 40 per inner solve; production wrapper permits up to 1000 total updates by default (40+960), configurable through SLURRY_IMEX_MAX_ITERATIONS. Recovery retains the current iterate and begins with a forced majorized direction. Convergence exits early; increasing the ceiling does not force extra work. Recovery use is logged; unmet residual is never accepted.",
+    "nonlinear_iteration_limits": {
+      "environment_variable": "SLURRY_IMEX_MAX_ITERATIONS",
+      "production_default_total_per_inner_solve": 1000,
+      "primary_updates": 40,
+      "production_default_additional_updates": 960,
+      "library_workspace_default_additional_updates": 80,
+      "archived_v4_integration_total_per_inner_solve": 120,
+      "batch_KRYLOV_ITERATIONS_controls": "Linear Krylov iteration limit for each direction; does not set the nonlinear ceiling",
+      "outer_endpoint_correction_limit": 24,
+      "line_search_guards": "unchanged",
+      "converged_solves_exit_early": true,
+      "minimum_total": 40,
+      "total_40_disables_additional_recovery": true,
+      "nearfield_linear_fast_path_limit": "min(KRYLOV_ITERATIONS, 160), then checked direct fallback",
+      "line_search_trial_limit": 30,
+      "batch_settings_helper": "apply_solver_limits.py adds IMEX_MAX_ITERATIONS and environment export while preserving existing run settings"
+    }
+  },
+  "run_batch": "run_slurry_cpu.sbatch",
+  "particle_shapes": [
+    "spheroid"
+  ],
+  "supported_aspect_ratio": [
+    1.0,
+    5.0
+  ],
+  "nominal_volume_equivalent_diameter_m": 8e-06,
+  "reference_radius_m": 4e-06,
+  "computational_length_m": 4e-06,
+  "lubrication_epsilon": 0.001,
+  "lubrication_regularization_m": null,
+  "lubrication_gap_rule": "max(actual_signed_gap,0)+epsilon*(r_i+r_j)/2",
+  "mechanical_contact_gap_m": 0.0,
+  "contact_model": "Implicit springs; Coulomb caps lagged from current physical normal load; finite-timestep cap-lag error is measured",
+  "contact_trial": {
+    "sliding_friction": 10.0,
+    "rolling_friction": 10.0,
+    "normal_stiffness_N_m": 30.0,
+    "tangential_stiffness_N_m": 24.0,
+    "rolling_stiffness_N_m": 24.0,
+    "rolling_length_definition": "aij=2*a_ref_i*a_ref_j/(a_ref_i+a_ref_j); monodisperse aij=D/2",
+    "rolling_angular_stiffness_definition": "kr_N_per_m*aij^2",
+    "basis": "Preserved default kn30, kt=kr24 N/m from the prior release. Current bidisperse high-stiffness tests use kn300, kt=kr240 at unchanged dt; see validation_report for finite tested ranges."
+  },
+  "initialization": "stratified random two-species dilute seed; unconstrained growth/FIRE; actual per-particle spheroid periodic surface clearance certification",
+  "equilibrium_bulk_viscosity_tested": false,
+  "scope": "Mari sphere lubrication plus local-curvature spheroid extension; isolated spheroid hydrodynamics; no many-body far-field model",
+  "default_timestep_stability_passed": true,
+  "timestep_stability_report": "docs/AR5_SOLVER_RECOVERY.md",
+  "validation_scope": "User requested stopping long tests and packaging. Exact supplied N=1000, AR=5, phi=0.20 initial particles; kn=300 and kt=kr=240 N/m; dt=2.5e-6 s; eta=0.01 Pa.s; shear=100/s: accepted through step 1974, strain 0.4935, then Ctrl-C exit 130. Instrumented companion stopped after step 1917. Neither is a completed 4000-step test. Two v4 N=256 integrations completed: AR=1, phi=0.34 through strain 1 and AR=5, phi=0.24 through strain 0.25. Captured failures and finite transient checks pass; no strain-50 or attraction validation.",
+  "integration": {
+    "method": "Nearfield frozen-cap IMEX; coupled endpoint Coulomb optional; legacy mesh/direct Heun",
+    "default_timestep_s": 2.5e-06,
+    "default_steps": 200000,
+    "default_output_interval": 40,
+    "default_total_strain": 50.0
+  },
+  "validation_report": "validation_ar5_recovery_20261028/FINAL_VALIDATION.json",
+  "packaging_revision": "20261028-ar5-recovery1",
+  "particle_size_distribution": {
+    "default": "bidisperse",
+    "size_ratio": 1.4,
+    "composition": "approximately equal solid volumes; nearest integer counts",
+    "nominal_diameter_definition": "cube root of mean particle volume-equivalent diameter cubed",
+    "same_aspect_ratio_for_both_species": true
+  },
+  "default_particle_count": 1000,
+  "high_stiffness_validation": {
+    "normal_stiffness_N_m": 300.0,
+    "tangential_stiffness_N_m": 240.0,
+    "rolling_stiffness_N_m": 240.0,
+    "timestep_s": 2.5e-06,
+    "completed_cases": 2,
+    "scope": "Two completed N=256 finite transients and a user-stopped N=1000 partial trajectory through strain 0.4935 with v4 and a 40+80 budget; the final production wrapper raises the configurable default ceiling to 1000 and is checked separately. No universal stability bound.",
+    "partial_N1000_case": {
+      "particles": 1000,
+      "aspect_ratio": 5.0,
+      "volume_fraction": 0.2,
+      "last_accepted_step": 1974,
+      "last_accepted_strain": 0.4935,
+      "requested_steps": 4000,
+      "completed_requested_run": false,
+      "returncode": 130,
+      "stop_reason": "User requested stopping long tests and packaging current overlay",
+      "maximum_overlap_percent_min_semiaxis": 0.04519484496950943,
+      "maximum_physical_relative_residual": 9.9966238251605e-08,
+      "tested_total_nonlinear_limit": 120
+    }
+  },
+  "default_timestep_stability_scope": "Finite validation only: exact supplied N=1000, AR=5, phi=0.20 case accepted through step 1974, strain 0.4935, plus the two completed N=256 cases. Does not certify strain 50, steady state, or attraction. Long integrations used v4 with 40+80 updates; the final configurable-ceiling wrapper has separate short validation in validation_report."
 }

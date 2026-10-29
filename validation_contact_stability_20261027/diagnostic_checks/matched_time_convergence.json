@@ -1,0 +1,144 @@
+{
+  "1": {
+    "horizon_s": 0.0001,
+    "matching_times": 101,
+    "kn": 0.1,
+    "kt": 0.08,
+    "kr": 0.08,
+    "mu_s": 10,
+    "mu_r": 10,
+    "time_steps_s": [
+      1e-06,
+      5e-07,
+      2.5e-07
+    ],
+    "fields": {
+      "eta_relative": {
+        "coarse_medium_max_diff": 2.608478821830573e-07,
+        "medium_fine_max_diff": 6.698100141200314e-08,
+        "endpoint_values": [
+          1.1598167661644854,
+          1.1598165803298277,
+          1.1598165345554554
+        ],
+        "endpoint_diff_ratio": 4.059796963994752,
+        "finest_max_abs": 1.1598165345554554
+      },
+      "sigma_contact_Pa": {
+        "coarse_medium_max_diff": 9.757940253561637e-09,
+        "medium_fine_max_diff": 6.536339221610565e-10,
+        "endpoint_values": [
+          0.007000155360232277,
+          0.007000145602292024,
+          0.0070001449486581015
+        ],
+        "endpoint_diff_ratio": 14.928754342032548,
+        "finest_max_abs": 0.0070001449486581015
+      },
+      "max_overlap_m": {
+        "coarse_medium_max_diff": 3.329705400190039e-16,
+        "medium_fine_max_diff": 3.1525448930893864e-17,
+        "endpoint_values": [
+          2.418423755927712e-10,
+          2.418420426222312e-10,
+          2.4184201109678227e-10
+        ],
+        "endpoint_diff_ratio": 10.56196029908726,
+        "finest_max_abs": 2.4184201109678227e-10
+      },
+      "tangential_elastic_energy_J": {
+        "coarse_medium_max_diff": 5.498434530828083e-28,
+        "medium_fine_max_diff": 1.1378830512431835e-27,
+        "endpoint_values": [
+          6.519020904431858e-24,
+          6.518471060978775e-24,
+          6.519608944030018e-24
+        ],
+        "endpoint_diff_ratio": 0.48321613761808124,
+        "finest_max_abs": 6.519608944030018e-24
+      },
+      "rolling_elastic_energy_J": {
+        "coarse_medium_max_diff": 1.9077837926511972e-36,
+        "medium_fine_max_diff": 6.934762218650227e-37,
+        "endpoint_values": [
+          5.623642722489936e-38,
+          8.122444539658513e-37,
+          1.0488767419166414e-36
+        ],
+        "endpoint_diff_ratio": 3.194864205928528,
+        "finest_max_abs": 1.1114094965706837e-36
+      }
+    }
+  },
+  "5": {
+    "horizon_s": 0.0001,
+    "matching_times": 101,
+    "kn": 0.1,
+    "kt": 0.08,
+    "kr": 0.08,
+    "mu_s": 10,
+    "mu_r": 10,
+    "time_steps_s": [
+      1e-06,
+      5e-07,
+      2.5e-07
+    ],
+    "fields": {
+      "eta_relative": {
+        "coarse_medium_max_diff": 2.0169655923218954e-07,
+        "medium_fine_max_diff": 1.8295353076958065e-07,
+        "endpoint_values": [
+          1.0135913743617924,
+          1.0135913899512135,
+          1.0135913950800868
+        ],
+        "endpoint_diff_ratio": 3.039541064157193,
+        "finest_max_abs": 1.0135913950800868
+      },
+      "sigma_contact_Pa": {
+        "coarse_medium_max_diff": 1.2373091280652292e-06,
+        "medium_fine_max_diff": 2.9825270674022075e-07,
+        "endpoint_values": [
+          -0.0012258383278880443,
+          -0.0012258455667844147,
+          -0.0012258510985170663
+        ],
+        "endpoint_diff_ratio": 1.3086128391032128,
+        "finest_max_abs": 0.002014992381064639
+      },
+      "max_overlap_m": {
+        "coarse_medium_max_diff": 7.924706409295196e-15,
+        "medium_fine_max_diff": 1.893431356492099e-15,
+        "endpoint_values": [
+          2.968581058885516e-10,
+          2.9685838289435027e-10,
+          2.968583404616103e-10
+        ],
+        "endpoint_diff_ratio": 6.528114821464549,
+        "finest_max_abs": 2.968583404616103e-10
+      },
+      "tangential_elastic_energy_J": {
+        "coarse_medium_max_diff": 9.396920018140461e-24,
+        "medium_fine_max_diff": 2.267611751051117e-24,
+        "endpoint_values": [
+          1.9857458357537315e-20,
+          1.9857565384607264e-20,
+          1.9857625200302185e-20
+        ],
+        "endpoint_diff_ratio": 1.7892807245909117,
+        "finest_max_abs": 1.9857625200302185e-20
+      },
+      "rolling_elastic_energy_J": {
+        "coarse_medium_max_diff": 4.736829857948476e-25,
+        "medium_fine_max_diff": 1.1821951477450084e-25,
+        "endpoint_values": [
+          1.5267767288269173e-21,
+          1.5267925498536649e-21,
+          1.5267857132891257e-21
+        ],
+        "endpoint_diff_ratio": 2.3141779261933006,
+        "finest_max_abs": 1.5267857132891257e-21
+      }
+    }
+  }
+}

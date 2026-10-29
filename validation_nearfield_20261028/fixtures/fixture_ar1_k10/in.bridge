@@ -1,0 +1,24 @@
+# Periodic spheroid mobility + Mari gap regularization + sliding/rolling contact
+plugin load ${slurry_plugin}
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+comm_modify vel yes
+pair_style zero 3.9999999999999998e-06
+pair_coeff * *
+neighbor 7.9999999999999996e-07 bin
+neigh_modify every 1 delay 0 check yes
+timestep 2.5e-6
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge 0.01 100 7.9999999999999996e-06 0.001 10 contact 10 8 rolling 10 8 shape spheroid mobility_backend nearfield spectral 2 spectral_tolerance 1e-08 tolerance 9.9999999999999995e-07 iterations 1000 history history.csv 1 5
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
+dump trajectory all custom 1 trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
+dump_modify trajectory sort id format float %.17g
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 1000
+write_data final.data nocoeff

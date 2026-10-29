@@ -1,0 +1,20 @@
+{
+  "trajectory_max_csv_differences": {
+    "eta_relative": 3.0908742232327313e-10,
+    "max_overlap_m": 1.0342781002051727e-18,
+    "normal_elastic_energy_J": 2.786298221030915e-29,
+    "tangential_elastic_energy_J": 8.789139107095969e-28,
+    "rolling_elastic_energy_J": 7.838528215656047e-29
+  },
+  "final_state_max_differences": {
+    "Atoms": 1.3403449357352049e-17,
+    "Ellipsoids": 3.380303285063075e-12
+  },
+  "gap_consistency_all_nan": true,
+  "linear_gap_defect_max_m": 1.2248146681316475e-15,
+  "max_timer_parts_minus_total_s": -1.9073486328125e-05,
+  "forward_time_error": 4.0234064994579266e-21,
+  "yield_diagnostic_max_count": 1.0,
+  "yield_diagnostic_max_work_J": 1.6800384842227296e-25,
+  "yield_diagnostic_W_dt_error": 0.0
+}

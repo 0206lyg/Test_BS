@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "regression_ar1_n256",
+      "status": "PASS",
+      "particle_count": 256,
+      "aspect_ratio": 1.0,
+      "volume_fraction": 0.34,
+      "steps": 4000,
+      "strain": 1.0,
+      "normal_stiffness_N_m": 300.0,
+      "tangential_and_rolling_stiffness_N_m": 240.0,
+      "timestep_s": 2.5e-06,
+      "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+      "particles_sha256": "6dde9c3260d4e19b7a612c0d7c0e19bb5f0917c6e48d689a315762f581d6d362",
+      "input_sha256": "0f1542a28dc1b3faa531336b3401d8d1db66193f8b12321e4cb83b4ed2876c52",
+      "maximum_physical_relative_residual": 9.994207141509112e-08,
+      "maximum_overlap_fraction_min_semiaxis": 0.0019069987496338223,
+      "maximum_overlap_percent_min_semiaxis": 0.19069987496338223,
+      "maximum_inner_updates": 49,
+      "maximum_aggregate_step_updates": 52.0,
+      "mean_aggregate_step_updates": 10.030992251937016,
+      "recoveries": [
+        {
+          "step": 1871,
+          "inner_solves": 1,
+          "additional_updates": 9,
+          "relative_residual": 7.128065151e-08
+        }
+      ],
+      "recovered_steps": 1,
+      "additional_recovery_updates": 9,
+      "wall_seconds": 537.3979230609984,
+      "timing_scope": "Concurrent shared-host runs; not an isolated performance benchmark",
+      "steady_state_certified": false,
+      "attraction_tested": false,
+      "summary_sha256": "afd52f6c1122c54ed50aea5921b81321d2a845d3a43aac92222a89c16e9a36d3"
+    },
+    {
+      "name": "regression_ar5_n256",
+      "status": "PASS",
+      "particle_count": 256,
+      "aspect_ratio": 5.0,
+      "volume_fraction": 0.24,
+      "steps": 1000,
+      "strain": 0.25,
+      "normal_stiffness_N_m": 300.0,
+      "tangential_and_rolling_stiffness_N_m": 240.0,
+      "timestep_s": 2.5e-06,
+      "plugin_sha256": "7e186ffdc0c0b89e84ffce98c5057e0a49ce6082712d3c3ac618831dbd8ed9b8",
+      "particles_sha256": "c85b085d9e4baa733c004bb3ff4196717adedecaf3c95dfc4a4a4f7e180a0626",
+      "input_sha256": "0659b2ba217e495c42bd8182a8bf3c80a8bef313873b51179207a8b98610cd1a",
+      "maximum_physical_relative_residual": 9.996375166761061e-08,
+      "maximum_overlap_fraction_min_semiaxis": 0.0003919437732746722,
+      "maximum_overlap_percent_min_semiaxis": 0.03919437732746722,
+      "maximum_inner_updates": 31,
+      "maximum_aggregate_step_updates": 32.0,
+      "mean_aggregate_step_updates": 15.225774225774225,
+      "recoveries": [],
+      "recovered_steps": 0,
+      "additional_recovery_updates": 0,
+      "wall_seconds": 204.42138823999994,
+      "timing_scope": "Concurrent shared-host runs; not an isolated performance benchmark",
+      "steady_state_certified": false,
+      "attraction_tested": false,
+      "summary_sha256": "5393bb3b794606ccf434da0a5c15c7341074fe464ea8af22b1c98933cd084c2e"
+    }
+  ]
+}

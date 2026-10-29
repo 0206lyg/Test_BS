@@ -1,0 +1,8 @@
+{
+  "lammps_slurry/src/fix_slurry_bridge.cpp": "a4f4714cd01bf51c99b7ad3d2dbd4bd44e4a824ff5dcc68ee67cf52c083bdef4",
+  "lammps_slurry/src/slurry_nearfield_hydro.h": "817ea28ca5fb6f0beaca8821153d6811130a655d4c028e161346e14265328be7",
+  "lammps_slurry/src/slurry_nearfield_imex_solver.h": "78d986b1a2ff3d30ba14c1dd400c223139150349ef2474f4b506bf5c1e73825b",
+  "lammps_slurry/src/slurry_nearfield_implicit_solver.h": "143baf95c7cf015a4b77aed0c999f8609eaa019eca1d3fabcfff8c7cd6cfec04",
+  "lammps_slurry/src/slurry_nearfield_solver.h": "cfdfb83d129eb54dd2d9776688496a6aeb82b4afdc576381618739346cbf9c9c",
+  "lammps_slurry/src/slurry_nearfield_step.h": "19f54a1d775c56c7cd89360580a5b09104da62d574d9d522ccf3203893284e25"
+}

@@ -1,0 +1,93 @@
+LAMMPS (30 Sep 2026)
+# Table-free periodic ellipsoid mobility + compact bridge v4
+plugin load ${slurry_plugin}
+plugin load "/workspace/scratch/0520ed9b6708/solver500_approved_ar10/runtime/bin/libslurry.so"
+Loading plugin: Spheroid lubrication and repulsive contact by Test_BS contributors
+Loading plugin: Spheroid drag and Jeffery rotation in simple shear by Test_BS contributors
+Loading plugin: Coupled overdamped spheroid resistance and implicit elastic contact by Test_BS contributors
+Loading plugin: Compact spheroid lubrication, periodic mobility and implicit contact by Test_BS contributors
+units si
+dimension 3
+boundary p p p
+atom_style ellipsoid
+atom_modify map array
+read_data particles.data
+Reading data file ...
+  triclinic box = (0 0 0) to (1.4334208e-05 1.4334208e-05 1.4334208e-05) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  500 atoms
+  500 ellipsoids
+  reading velocities ...
+  500 velocities
+  read_data CPU = 0.006 seconds
+comm_modify vel yes
+pair_style zero 1.5000000000000002e-07
+pair_coeff * *
+neighbor 3.0000000000000004e-08 bin
+neigh_modify every 1 delay 0 check yes
+timestep 9.9999999999999995e-07
+fix shear all deform 0 xz erate 100 remap v units box
+fix hydro all slurry/bridge 0.01 100 1.0000000000000001e-09 1 contact 3.0000000000000004e-09 0.10000000000000001 80 spectral 2 spectral_tolerance 1e-08 tolerance 9.9999999999999995e-07 iterations 1000 history history.csv 1 0
+compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
+dump trajectory all custom 1 trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
+dump_modify trajectory sort id format float %.17g
+thermo 1
+thermo_style custom step time atoms f_hydro[1] f_hydro[2] f_hydro[3] f_hydro[4]
+thermo_modify flush yes lost error
+run 10
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.8e-07
+  ghost atom cutoff = 1.8e-07
+  binsize = 9e-08, bins = 160 160 160
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 21.91 | 21.91 | 21.91 Mbytes
+   Step          Time         Atoms      f_hydro[1]     f_hydro[2]     f_hydro[3]     f_hydro[4]  
+         0   0                    500   4.1829214      0.041829214    1496           888          
+         1   1e-06                500   4.8977451      0.048977451    1497           899          
+         2   2e-06                500   5.5311727      0.055311727    1497           893          
+         3   3e-06                500   5.8757799      0.058757799    1497           897          
+         4   4e-06                500   6.0645417      0.060645417    1496           882          
+         5   5e-06                500   6.1122129      0.061122129    1495           873          
+         6   6e-06                500   6.1043093      0.061043093    1495           858          
+         7   7e-06                500   6.0499129      0.060499129    1495           842          
+         8   8e-06                500   5.9610923      0.059610923    1495           831          
+         9   9e-06                500   5.8539163      0.058539163    1494           815          
+        10   1e-05                500   5.780774       0.05780774     1493           792          
+Loop time of 52.2239 on 1 procs for 10 steps with 500 atoms
+
+511.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 3.6826e-05 | 3.6826e-05 | 3.6826e-05 |   0.0 |  0.00
+Neigh   | 0.0015166  | 0.0015166  | 0.0015166  |   0.0 |  0.00
+Comm    | 8.6737e-05 | 8.6737e-05 | 8.6737e-05 |   0.0 |  0.00
+Output  | 0.035579   | 0.035579   | 0.035579   |   0.0 |  0.07
+Modify  | 52.187     | 52.187     | 52.187     |   0.0 | 99.93
+Other   |            | 0.0001096  |            |       |  0.00
+
+Nlocal:            500 ave         500 max         500 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:             37 ave          37 max          37 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 1
+Dangerous builds = 0
+write_data final.data nocoeff
+System init for write_data ...
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Total wall time: 0:01:01

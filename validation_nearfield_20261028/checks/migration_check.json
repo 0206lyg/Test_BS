@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "idempotent": true,
+  "only_four_settings_changed": true,
+  "timestep_preserved": true,
+  "settings": {
+    "MOBILITY_BACKEND": "nearfield",
+    "NORMAL_STIFFNESS": "30",
+    "TANGENTIAL_STIFFNESS": "24",
+    "ROLLING_STIFFNESS": "24"
+  },
+  "preserved_custom_values": {
+    "dt_s": 3e-06,
+    "AR": 5,
+    "COUNT": 673,
+    "cpus_per_task": 49,
+    "output": "/tmp/my_runs",
+    "build_env": "/tmp/custom_env.sh"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "scope": "Implementation and algebra contracts; does not qualify the AR20 Stokes anchor or physical table accuracy",
+  "standalone_cxx_build": {
+    "passed": true,
+    "targets": 11,
+    "parallel_jobs": 1,
+    "lammps_plugin": false
+  },
+  "ctest": {
+    "passed": 12,
+    "failed": 0,
+    "tests": [
+      "slurry_grand_pair_math",
+      "slurry_grand_pair_lookup",
+      "slurry_grand_reduced",
+      "slurry_hardfloor_table_contract",
+      "slurry_hardfloor_preparation_contract",
+      "slurry_basis_serialization_contract",
+      "slurry_janoschek_raw_coefficients",
+      "slurry_grand_system_passivity",
+      "slurry_spheroid_lubrication_algebra",
+      "slurry_mari_pair_lubrication",
+      "slurry_hydro_analytic_limits",
+      "slurry_stress_analytic_limits"
+    ],
+    "log": "ctest_contracts.log"
+  },
+  "python_compile_files": 13,
+  "process_recovery_tests": {
+    "passed": 5,
+    "failed": 0
+  },
+  "runtime_snapshot_tests": {
+    "passed": 1,
+    "failed": 0
+  },
+  "synthetic_plumbing_report": "synthetic_fast_plumbing_result.json",
+  "synthetic_checkpoint_report": "../../validation_finite_gap/checkpoint_runtime_full17_result.json",
+  "physical_accuracy_qualified": false,
+  "historical_ar10_tests_executed": false
+}

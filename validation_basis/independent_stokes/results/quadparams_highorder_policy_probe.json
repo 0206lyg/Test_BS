@@ -1,0 +1,763 @@
+{
+  "schema": "fmm3dbie_quadparams_policy_probe_v1",
+  "physical_accuracy_qualified": false,
+  "scope": "Parameter selection and ABI only; no operator or physical accuracy qualification",
+  "old": {
+    "library": "/workspace/scratch/581ed100c5ad/reference_deps/fmm3dbie/lib/libfmm3dbie.so",
+    "library_sha256": "72416a77f0f03392cbb19a04368502bd4dd0514762fe2838d989988b46e03e44",
+    "output_columns": [
+      "nqorder",
+      "eps_adap",
+      "nlev",
+      "nqorder_f"
+    ],
+    "records": [
+      {
+        "eps": 0.01,
+        "patch_type": 1,
+        "iprec": 0,
+        "values": [
+          8,
+          0.01,
+          1,
+          4
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.001,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0001,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-07,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-09,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-11,
+        "patch_type": 1,
+        "iprec": 4,
+        "values": [
+          24,
+          2e-10,
+          1,
+          26
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.005,
+        "patch_type": 1,
+        "iprec": 0,
+        "values": [
+          8,
+          0.01,
+          1,
+          4
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.004999999999999999,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0005,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0004999999999999999,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 5e-07,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 4.999999999999999e-07,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 5e-10,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 4.999999999999999e-10,
+        "patch_type": 1,
+        "iprec": 4,
+        "values": [
+          24,
+          2e-10,
+          1,
+          26
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.01,
+        "patch_type": 11,
+        "iprec": 0,
+        "values": [
+          8,
+          0.01,
+          1,
+          4
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.001,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0001,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-07,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-09,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 1e-11,
+        "patch_type": 11,
+        "iprec": 4,
+        "values": [
+          24,
+          2e-10,
+          1,
+          26
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.005,
+        "patch_type": 11,
+        "iprec": 0,
+        "values": [
+          8,
+          0.01,
+          1,
+          4
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.004999999999999999,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0005,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          8,
+          0.002,
+          1,
+          6
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 0.0004999999999999999,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 5e-07,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          12,
+          1e-05,
+          1,
+          12
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 4.999999999999999e-07,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 5e-10,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          16,
+          3e-08,
+          1,
+          20
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      },
+      {
+        "eps": 4.999999999999999e-10,
+        "patch_type": 11,
+        "iprec": 4,
+        "values": [
+          24,
+          2e-10,
+          1,
+          26
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": false
+      }
+    ],
+    "all_repeatable": true,
+    "all_match_high_order_policy": false
+  },
+  "new": {
+    "library": "/workspace/scratch/581ed100c5ad/reference_deps_quadparams_highorder_v1/lib/libfmm3dbie.so",
+    "library_sha256": "c173caecdc37b51ce7887a92d14a746d9463d59d497ae99ecbef15204e66b052",
+    "output_columns": [
+      "nqorder",
+      "eps_adap",
+      "nlev",
+      "nqorder_f"
+    ],
+    "records": [
+      {
+        "eps": 0.01,
+        "patch_type": 1,
+        "iprec": 0,
+        "values": [
+          12,
+          0.01,
+          1,
+          8
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.001,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0001,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-07,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-09,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-11,
+        "patch_type": 1,
+        "iprec": 4,
+        "values": [
+          30,
+          3e-10,
+          1,
+          30
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.005,
+        "patch_type": 1,
+        "iprec": 0,
+        "values": [
+          12,
+          0.01,
+          1,
+          8
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.004999999999999999,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0005,
+        "patch_type": 1,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0004999999999999999,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 5e-07,
+        "patch_type": 1,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 4.999999999999999e-07,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 5e-10,
+        "patch_type": 1,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 4.999999999999999e-10,
+        "patch_type": 1,
+        "iprec": 4,
+        "values": [
+          30,
+          3e-10,
+          1,
+          30
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.01,
+        "patch_type": 11,
+        "iprec": 0,
+        "values": [
+          12,
+          0.01,
+          1,
+          8
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.001,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0001,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-07,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-09,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 1e-11,
+        "patch_type": 11,
+        "iprec": 4,
+        "values": [
+          30,
+          3e-10,
+          1,
+          30
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.005,
+        "patch_type": 11,
+        "iprec": 0,
+        "values": [
+          12,
+          0.01,
+          1,
+          8
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.004999999999999999,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0005,
+        "patch_type": 11,
+        "iprec": 1,
+        "values": [
+          12,
+          0.002,
+          1,
+          10
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 0.0004999999999999999,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 5e-07,
+        "patch_type": 11,
+        "iprec": 2,
+        "values": [
+          16,
+          1e-05,
+          1,
+          16
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 4.999999999999999e-07,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 5e-10,
+        "patch_type": 11,
+        "iprec": 3,
+        "values": [
+          22,
+          7e-08,
+          1,
+          22
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      },
+      {
+        "eps": 4.999999999999999e-10,
+        "patch_type": 11,
+        "iprec": 4,
+        "values": [
+          30,
+          3e-10,
+          1,
+          30
+        ],
+        "repeatable": true,
+        "matches_high_order_policy": true
+      }
+    ],
+    "all_repeatable": true,
+    "all_match_high_order_policy": true
+  },
+  "passed": true,
+  "changed_case_count": 28
+}

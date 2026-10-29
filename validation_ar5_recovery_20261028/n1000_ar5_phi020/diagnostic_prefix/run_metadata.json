@@ -1,0 +1,17 @@
+{
+  "fixture": "/workspace/scratch/af0f332bc475/ar5_recovery_20261028/user_failure",
+  "plugin": "/workspace/scratch/af0f332bc475/ar5_recovery_20261028/diagnostic_v4/libdiagnostic.so",
+  "plugin_sha256": "590027eb132baae02d594a8852755a7a1fb21278584c31b8baf825fed4284809",
+  "particles_sha256": "1887841a1e76a79f807dbfaaa8ec70fec07ddb6c095dd1c4b695b0d9f58a891c",
+  "input_sha256": "c52cfb6edcd6d0d05cd5940ebe6dc1ea3871ff810b30a78cbc038d945c989a0e",
+  "steps": 4000,
+  "dt_s": 2.5e-06,
+  "kn_N_per_m": 300.0,
+  "kt_kr_N_per_m": 240.0,
+  "threads": 1,
+  "history_interval_steps": 1,
+  "backend": "nearfield",
+  "contact_scheme": "imex",
+  "steady_state_certified": false,
+  "attraction_tested": false
+}
