@@ -48,7 +48,8 @@ int main()
     close(lengths.rolling_radius,2*size_ratio*scale/(1+size_ratio),scale,"Reduced rolling radius");
     const double eta=.7,epsilon=lengths.epsilon,cutoff=lengths.cutoff,L=1.7*scale;
     const auto result=nf::evaluate(a,b,gap,eta,L,epsilon,cutoff);
-    const auto pair=sh::make_pair(a,b,gap,eta,epsilon,cutoff);
+    validation::Diagnostic diagnostic;
+    const auto pair=validation::candidate(a,b,gap,eta,epsilon,cutoff,diagnostic,64,SLURRY_VALIDATION_TAPER_POLICY);
     require(result.active==pair.active,"Same cutoff activity");
     require(result.exact_sphere==(ar==1.),"Exact sphere dispatch");
     if(!result.active)continue;
@@ -132,3 +133,4 @@ int main()
   std::cout<<"Near-field grand adapter: "<<cases
     <<" equal/unequal sphere/AR2/AR5 dimensionless and SI cases passed; exact helper forces, torques, summed stress, dissipation, reciprocity, label invariance, PSD, units and cutoff.\n";
 }
+

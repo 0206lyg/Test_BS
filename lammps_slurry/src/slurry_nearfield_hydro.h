@@ -6,6 +6,10 @@
 
 #include "slurry_grand_pair_math.h"
 #include "slurry_spheroid_hydro_math.h"
+#include "slurry_hi_validation_candidate.h"
+#ifndef SLURRY_VALIDATION_TAPER_POLICY
+#define SLURRY_VALIDATION_TAPER_POLICY 2
+#endif
 #include <Eigen/Core>
 
 namespace SlurryNearfieldHydro {
@@ -67,7 +71,8 @@ inline Result evaluate(const gr::Body& bi,const gr::Body& bj,const gr::GapResult
 {
   if (!(reference_length>0) || !std::isfinite(reference_length))
     throw std::invalid_argument("Near-field adapter requires a finite positive reference length");
-  const auto pair=sh::make_pair(bi,bj,gap,eta,epsilon,cutoff);
+  validation::Diagnostic diagnostic;
+  const auto pair=validation::candidate(bi,bj,gap,eta,epsilon,cutoff,diagnostic,64,SLURRY_VALIDATION_TAPER_POLICY);
   Result out;
   out.active=pair.active;out.exact_sphere=pair.exact_sphere;
   out.gap=pair.gap;out.regularized_gap=pair.regularized_gap;
