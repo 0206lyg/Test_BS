@@ -1,0 +1,1226 @@
+{
+  "scope": "Rigorous matched-fixture/physics first-interval audit; no100us extrapolation",
+  "candidate": {
+    "name": "practical_on_n1000_1ms",
+    "directory": "/workspace/scratch/4c068228d8a6/Test_BS/validation_practical_20261102/runs/practical_on_n1000_1ms",
+    "initial_particle_sha256": "df5cde59b4bf4655fb4fc27483a3d133f17cd223e74b678e3fb7f9665544f246",
+    "launch_particle_hash_matches_file": true,
+    "metadata_physics": {
+      "count": 1000,
+      "ar": 4.0,
+      "phi": 0.24,
+      "shear_rate": 100.0,
+      "viscosity": 0.00089,
+      "lubrication_epsilon": 0.001,
+      "normal_stiffness": 900.0,
+      "tangential_stiffness": 300.0,
+      "rolling_stiffness": 300.0,
+      "friction": 10.0,
+      "rolling_friction": 10.0,
+      "cohesion_work": 0.02124348772860551,
+      "cohesion_range": 6.7e-10,
+      "background_enabled": true,
+      "hamaker_J": 9.9e-20,
+      "background_h0_m": 2e-09,
+      "background_sigma_m": 4.197e-10
+    },
+    "actual_input_physics": {
+      "viscosity": 0.00089,
+      "shear_rate": 100.0,
+      "nominal_diameter_m": 8e-06,
+      "lubrication_epsilon": 0.001,
+      "normal_stiffness": 900.0,
+      "cohesion_work": 0.02124348772860551,
+      "background_enabled": true,
+      "friction": 10.0,
+      "tangential_stiffness": 300.0,
+      "rolling_friction": 10.0,
+      "rolling_stiffness": 300.0,
+      "shape": "spheroid",
+      "mobility_backend": "nearfield",
+      "contact_scheme": "imex",
+      "cohesion_range": 6.7e-10,
+      "hamaker_J": 9.9e-20,
+      "background_h0_m": 2e-09,
+      "background_sigma_m": 4.197e-10,
+      "macro_dt_s": 1e-06
+    },
+    "effective_numerics": {
+      "surface_adaptive": 0.0,
+      "tolerance": 0.0001,
+      "surface_linear": 0.0001,
+      "iterations": 1000.0,
+      "surface_roundoff": "yes",
+      "surface_integrator": "practical",
+      "iterations_option_role": "linear Krylov cap",
+      "SLURRY_IMEX_MAX_ITERATIONS_recorded": null,
+      "nonlinear_iteration_limits_from_console": {
+        "primary": 40,
+        "recovery": 60,
+        "total": 100
+      },
+      "source": "Effective last occurrence in actual in.bridge; falls back to recorded parameters/defaults when omitted"
+    },
+    "first_achieved_1us": {
+      "requested_start_s": 0,
+      "requested_end_s": 1e-06,
+      "actual_start_s": 0.0,
+      "actual_end_s": 1e-06,
+      "physical_duration_s": 1e-06,
+      "achieved_strain": 9.999999999999999e-05,
+      "macro_intervals": 1,
+      "profile_sums": {
+        "profile_total_s": 0.3895854030000123,
+        "profile_solve_s": 0.27092523999999685,
+        "profile_geometry_s": 0.10977283900001567,
+        "profile_middle_s": 0.004660437000040929
+      },
+      "counts": {
+        "substeps": 1.0,
+        "substep_rejections": 0,
+        "newton_iterations": 3.0,
+        "linear_iterations": 6.0,
+        "geometry_iterations": 2.0,
+        "surface_quadrature_evaluations": 0
+      },
+      "throughput": {
+        "strain_per_profile_elapsed_second": 0.00025668312834605054,
+        "physical_us_per_profile_elapsed_second": 2.566831283460506,
+        "elapsed_seconds_per_physical_us": 0.3895854030000123,
+        "elapsed_seconds_per_unit_strain": 3895.8540300001237,
+        "solve_fraction": 0.6954193815110374,
+        "accepted_substeps_per_macro": 1.0,
+        "rejected_fraction_of_attempts": 0.0
+      },
+      "distributions": {
+        "sigma_xz_Pa": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.25169414234094234,
+          "std": 0.0,
+          "minimum": 0.25169414234094234,
+          "p05": 0.25169414234094234,
+          "median": 0.25169414234094234,
+          "p95": 0.25169414234094234,
+          "maximum": 0.25169414234094234
+        },
+        "sigma_hydro_Pa": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.6186076547645646,
+          "std": 0.0,
+          "minimum": 0.6186076547645646,
+          "p05": 0.6186076547645646,
+          "median": 0.6186076547645646,
+          "p95": 0.6186076547645646,
+          "maximum": 0.6186076547645646
+        },
+        "sigma_contact_Pa": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 2.2513106508772207,
+          "std": 0.0,
+          "minimum": 2.2513106508772207,
+          "p05": 2.2513106508772207,
+          "median": 2.2513106508772207,
+          "p95": 2.2513106508772207,
+          "maximum": 2.2513106508772207
+        },
+        "sigma_cohesion_Pa": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": -2.583299253694391,
+          "std": 0.0,
+          "minimum": -2.583299253694391,
+          "p05": -2.583299253694391,
+          "median": -2.583299253694391,
+          "p95": -2.583299253694391,
+          "maximum": -2.583299253694391
+        },
+        "sigma_background_Pa": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": -0.12392490960645199,
+          "std": 1.3877787807814457e-17,
+          "minimum": -0.123924909606452,
+          "p05": -0.123924909606452,
+          "median": -0.123924909606452,
+          "p95": -0.123924909606452,
+          "maximum": -0.123924909606452
+        },
+        "hydro_dissipation_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 1.9669413324349502e-09,
+          "std": 0.0,
+          "minimum": 1.9669413324349502e-09,
+          "p05": 1.9669413324349502e-09,
+          "median": 1.9669413324349502e-09,
+          "p95": 1.9669413324349502e-09,
+          "maximum": 1.9669413324349502e-09
+        },
+        "contact_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 8.721831416256408e-09,
+          "std": 0.0,
+          "minimum": 8.721831416256408e-09,
+          "p05": 8.721831416256408e-09,
+          "median": 8.721831416256408e-09,
+          "p95": 8.721831416256408e-09,
+          "maximum": 8.721831416256408e-09
+        },
+        "stress_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 2.811450554772939e-11,
+          "std": 3.2311742677852644e-27,
+          "minimum": 2.8114505547729394e-11,
+          "p05": 2.8114505547729394e-11,
+          "median": 2.8114505547729394e-11,
+          "p95": 2.8114505547729394e-11,
+          "maximum": 2.8114505547729394e-11
+        },
+        "cohesion_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": -1.0092881499102918e-08,
+          "std": 0.0,
+          "minimum": -1.0092881499102918e-08,
+          "p05": -1.0092881499102918e-08,
+          "median": -1.0092881499102918e-08,
+          "p95": -1.0092881499102918e-08,
+          "maximum": -1.0092881499102918e-08
+        },
+        "background_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": -5.677795836720339e-10,
+          "std": 0.0,
+          "minimum": -5.677795836720339e-10,
+          "p05": -5.677795836720339e-10,
+          "median": -5.677795836720339e-10,
+          "p95": -5.677795836720339e-10,
+          "maximum": -5.677795836720339e-10
+        },
+        "rolling_plastic_dissipation_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.0,
+          "std": 0.0,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.0
+        },
+        "rolling_contact_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.0,
+          "std": 0.0,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.0
+        },
+        "power_balance_error_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 2.839631322949419e-15,
+          "std": 0.0,
+          "minimum": 2.839631322949419e-15,
+          "p05": 2.839631322949419e-15,
+          "median": 2.839631322949419e-15,
+          "p95": 2.839631322949419e-15,
+          "maximum": 2.839631322949419e-15
+        },
+        "sliding_plastic_dissipation_W": null,
+        "twisting_plastic_dissipation_W": null,
+        "surface_potential_change_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.0,
+          "std": 0.0,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.0
+        },
+        "surface_path_work_power_W": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.0,
+          "std": 0.0,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.0
+        },
+        "contacts": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 95.0,
+          "std": 0.0,
+          "minimum": 95.0,
+          "p05": 95.0,
+          "median": 95.0,
+          "p95": 95.0,
+          "maximum": 95.0
+        },
+        "near_pairs": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 2192.0,
+          "std": 0.0,
+          "minimum": 2192.0,
+          "p05": 2192.0,
+          "median": 2192.0,
+          "p95": 2192.0,
+          "maximum": 2192.0
+        },
+        "cohesive_pairs": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 85.0,
+          "std": 0.0,
+          "minimum": 85.0,
+          "p05": 85.0,
+          "median": 85.0,
+          "p95": 85.0,
+          "maximum": 85.0
+        },
+        "background_pairs": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 1607.0,
+          "std": 0.0,
+          "minimum": 1607.0,
+          "p05": 1607.0,
+          "median": 1607.0,
+          "p95": 1607.0,
+          "maximum": 1607.0
+        },
+        "rolling_yield_contacts": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 0.0,
+          "std": 0.0,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.0
+        },
+        "normal_cap_lag_l1_fraction": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 1.0,
+          "std": 0.0,
+          "minimum": 1.0,
+          "p05": 1.0,
+          "median": 1.0,
+          "p95": 1.0,
+          "maximum": 1.0
+        }
+      },
+      "integrated_work_J": {
+        "hydro_dissipation_J": 1.9669413324349503e-15,
+        "contact_power_J": 8.721831416256408e-15,
+        "stress_power_J": 2.811450554772939e-17,
+        "cohesion_power_J": -1.0092881499102917e-14,
+        "background_power_J": -5.677795836720338e-16,
+        "rolling_plastic_dissipation_J": 0.0,
+        "rolling_contact_power_J": 0.0,
+        "power_balance_error_J": 2.8396313229494187e-21,
+        "sliding_plastic_dissipation_J": null,
+        "twisting_plastic_dissipation_J": null,
+        "surface_potential_change_power_J": 0.0,
+        "surface_path_work_power_J": 0.0
+      },
+      "rolling_projection_work_J": 0,
+      "true_total_contact_plastic_dissipation_J": null,
+      "surface_path_work_balance": {
+        "columns_available": true,
+        "dg_enabled": false,
+        "sign_convention": "defect = potential_change + path_work; conservative surface work is minus potential change",
+        "scope": "Accepted-path pair sums; distinct from the algebraic power_balance_error_W. Absolute macro defects cannot detect cancellation between pairs/substeps within a macro interval.",
+        "evaluated": false
+      },
+      "endpoint_elastic_and_surface_energy_samples": {
+        "normal_elastic_energy_J": {
+          "first_endpoint": 3.248396098699618e-15,
+          "last_endpoint": 3.248396098699618e-15
+        },
+        "tangential_elastic_energy_J": {
+          "first_endpoint": 0.0,
+          "last_endpoint": 0.0
+        },
+        "rolling_elastic_energy_J": {
+          "first_endpoint": 0.0,
+          "last_endpoint": 0.0
+        },
+        "cohesion_energy_J": {
+          "first_endpoint": -4.226518196153498e-15,
+          "last_endpoint": -4.226518196153498e-15
+        },
+        "background_energy_J": {
+          "first_endpoint": -5.4081328003387314e-15,
+          "last_endpoint": -5.4081328003387314e-15
+        }
+      },
+      "safety_maxima": {
+        "solver_acceptance_ratio": 0.002207155825460812,
+        "solver_relative_residual": 2.2163545354207717e-07,
+        "actual_endpoint_max_overlap_fraction_min_semiaxis": 0.0006670608665222398,
+        "max_sliding_cap_excess_N": 0.0,
+        "max_rolling_cap_excess_N_m": 0.0,
+        "maximum_surface_error": 0.013341217330444795,
+        "surface_quadrature_max_relative_work_defect": 0.0,
+        "surface_quadrature_max_panels": 0.0
+      },
+      "interval_cost_s": {
+        "sample_count": 1,
+        "duration_s": 1e-06,
+        "mean": 0.3895854030000123,
+        "std": 0.0,
+        "minimum": 0.3895854030000123,
+        "p05": 0.3895854030000123,
+        "median": 0.3895854030000123,
+        "p95": 0.3895854030000123,
+        "maximum": 0.3895854030000123
+      }
+    },
+    "run_achieved_time_s": 0.000607,
+    "run_completed": false,
+    "process_wall_s": 300.0471764590038,
+    "plugin_sha256": "6d3d73e0b0828b24f54f3f46a2b064d7176bea87f29fa1023cba7345a7311f35"
+  },
+  "references": [
+    {
+      "name": "baseline_fresh_n1000_1us",
+      "directory": "/workspace/scratch/4c068228d8a6/Test_BS/validation_surface_fast/runs/baseline_fresh_n1000_1us",
+      "initial_particle_sha256": "df5cde59b4bf4655fb4fc27483a3d133f17cd223e74b678e3fb7f9665544f246",
+      "launch_particle_hash_matches_file": true,
+      "metadata_physics": {
+        "count": 1000,
+        "ar": 4.0,
+        "phi": 0.24,
+        "shear_rate": 100.0,
+        "viscosity": 0.00089,
+        "lubrication_epsilon": 0.001,
+        "normal_stiffness": 900.0,
+        "tangential_stiffness": 300.0,
+        "rolling_stiffness": 300.0,
+        "friction": 10.0,
+        "rolling_friction": 10.0,
+        "cohesion_work": 0.02124348772860551,
+        "cohesion_range": 6.7e-10,
+        "background_enabled": true,
+        "hamaker_J": 9.9e-20,
+        "background_h0_m": 2e-09,
+        "background_sigma_m": 4.197e-10
+      },
+      "actual_input_physics": {
+        "viscosity": 0.00089,
+        "shear_rate": 100.0,
+        "nominal_diameter_m": 8e-06,
+        "lubrication_epsilon": 0.001,
+        "normal_stiffness": 900.0,
+        "cohesion_work": 0.02124348772860551,
+        "background_enabled": true,
+        "friction": 10.0,
+        "tangential_stiffness": 300.0,
+        "rolling_friction": 10.0,
+        "rolling_stiffness": 300.0,
+        "shape": "spheroid",
+        "mobility_backend": "nearfield",
+        "contact_scheme": "imex",
+        "cohesion_range": 6.7e-10,
+        "hamaker_J": 9.9e-20,
+        "background_h0_m": 2e-09,
+        "background_sigma_m": 4.197e-10,
+        "macro_dt_s": 1e-06
+      },
+      "effective_numerics": {
+        "surface_adaptive": 0.1,
+        "tolerance": 1e-06,
+        "surface_linear": 1e-10,
+        "iterations": 1000.0,
+        "surface_roundoff": "yes",
+        "surface_integrator": "reuse",
+        "iterations_option_role": "linear Krylov cap",
+        "SLURRY_IMEX_MAX_ITERATIONS_recorded": null,
+        "nonlinear_iteration_limits_from_console": {
+          "primary": 40,
+          "recovery": 960,
+          "total": 1000
+        },
+        "source": "Effective last occurrence in actual in.bridge; falls back to recorded parameters/defaults when omitted"
+      },
+      "first_achieved_1us": {
+        "requested_start_s": 0,
+        "requested_end_s": 1e-06,
+        "actual_start_s": 0.0,
+        "actual_end_s": 1e-06,
+        "physical_duration_s": 1e-06,
+        "achieved_strain": 9.999999999999999e-05,
+        "macro_intervals": 1,
+        "profile_sums": {
+          "profile_total_s": 89.98651849800012,
+          "profile_solve_s": 63.24247768699911,
+          "profile_geometry_s": 18.48883740300448,
+          "profile_middle_s": 0.28397445000473454
+        },
+        "counts": {
+          "substeps": 1360.0,
+          "substep_rejections": 104.0,
+          "newton_iterations": 1500.0,
+          "linear_iterations": 5993.0,
+          "geometry_iterations": 1399.0,
+          "surface_quadrature_evaluations": 0
+        },
+        "throughput": {
+          "strain_per_profile_elapsed_second": 1.1112775743426767e-06,
+          "physical_us_per_profile_elapsed_second": 0.011112775743426768,
+          "elapsed_seconds_per_physical_us": 89.98651849800012,
+          "elapsed_seconds_per_unit_strain": 899865.1849800013,
+          "solve_fraction": 0.7027994719942924,
+          "accepted_substeps_per_macro": 1360.0,
+          "rejected_fraction_of_attempts": 0.07103825136612021
+        },
+        "distributions": {
+          "sigma_xz_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.27818333138320905,
+            "std": 0.0,
+            "minimum": 0.27818333138320905,
+            "p05": 0.27818333138320905,
+            "median": 0.27818333138320905,
+            "p95": 0.27818333138320905,
+            "maximum": 0.27818333138320905
+          },
+          "sigma_hydro_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.8822350161412378,
+            "std": 0.0,
+            "minimum": 0.8822350161412378,
+            "p05": 0.8822350161412378,
+            "median": 0.8822350161412378,
+            "p95": 0.8822350161412378,
+            "maximum": 0.8822350161412378
+          },
+          "sigma_contact_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.8040649701189122,
+            "std": 0.0,
+            "minimum": 0.8040649701189122,
+            "p05": 0.8040649701189122,
+            "median": 0.8040649701189122,
+            "p95": 0.8040649701189122,
+            "maximum": 0.8040649701189122
+          },
+          "sigma_cohesion_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -1.3839106729332606,
+            "std": 0.0,
+            "minimum": -1.3839106729332606,
+            "p05": -1.3839106729332606,
+            "median": -1.3839106729332606,
+            "p95": -1.3839106729332606,
+            "maximum": -1.3839106729332606
+          },
+          "sigma_background_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -0.11320598194368343,
+            "std": 0.0,
+            "minimum": -0.11320598194368343,
+            "p05": -0.11320598194368343,
+            "median": -0.11320598194368343,
+            "p95": -0.11320598194368343,
+            "maximum": -0.11320598194368343
+          },
+          "hydro_dissipation_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.645775136800018e-08,
+            "std": 0.0,
+            "minimum": 1.645775136800018e-08,
+            "p05": 1.645775136800018e-08,
+            "median": 1.645775136800018e-08,
+            "p95": 1.645775136800018e-08,
+            "maximum": 1.645775136800018e-08
+          },
+          "contact_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 9.029840578398722e-09,
+            "std": 0.0,
+            "minimum": 9.029840578398722e-09,
+            "p05": 9.029840578398722e-09,
+            "median": 9.029840578398722e-09,
+            "p95": 9.029840578398722e-09,
+            "maximum": 9.029840578398722e-09
+          },
+          "stress_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 3.1073376363542253e-11,
+            "std": 0.0,
+            "minimum": 3.1073376363542253e-11,
+            "p05": 3.1073376363542253e-11,
+            "median": 3.1073376363542253e-11,
+            "p95": 3.1073376363542253e-11,
+            "maximum": 3.1073376363542253e-11
+          },
+          "cohesion_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -2.4472385881834758e-08,
+            "std": 0.0,
+            "minimum": -2.4472385881834758e-08,
+            "p05": -2.4472385881834758e-08,
+            "median": -2.4472385881834758e-08,
+            "p95": -2.4472385881834758e-08,
+            "maximum": -2.4472385881834758e-08
+          },
+          "background_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -9.841326892421059e-10,
+            "std": 0.0,
+            "minimum": -9.841326892421059e-10,
+            "p05": -9.841326892421059e-10,
+            "median": -9.841326892421059e-10,
+            "p95": -9.841326892421059e-10,
+            "maximum": -9.841326892421059e-10
+          },
+          "rolling_plastic_dissipation_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 6.910591150223907e-15,
+            "std": 7.888609052210118e-31,
+            "minimum": 6.910591150223906e-15,
+            "p05": 6.910591150223906e-15,
+            "median": 6.910591150223906e-15,
+            "p95": 6.910591150223906e-15,
+            "maximum": 6.910591150223906e-15
+          },
+          "rolling_contact_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.2594958155536932e-12,
+            "std": 0.0,
+            "minimum": 1.2594958155536932e-12,
+            "p05": 1.2594958155536932e-12,
+            "median": 1.2594958155536932e-12,
+            "p95": 1.2594958155536932e-12,
+            "maximum": 1.2594958155536932e-12
+          },
+          "power_balance_error_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0414569384831348e-18,
+            "std": 0.0,
+            "minimum": 1.0414569384831348e-18,
+            "p05": 1.0414569384831348e-18,
+            "median": 1.0414569384831348e-18,
+            "p95": 1.0414569384831348e-18,
+            "maximum": 1.0414569384831348e-18
+          },
+          "sliding_plastic_dissipation_W": null,
+          "twisting_plastic_dissipation_W": null,
+          "surface_potential_change_power_W": null,
+          "surface_path_work_power_W": null,
+          "contacts": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 124.00000000000001,
+            "std": 1.4210854715202004e-14,
+            "minimum": 124.0,
+            "p05": 124.0,
+            "median": 124.0,
+            "p95": 124.0,
+            "maximum": 124.0
+          },
+          "near_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 2192.0,
+            "std": 0.0,
+            "minimum": 2192.0,
+            "p05": 2192.0,
+            "median": 2192.0,
+            "p95": 2192.0,
+            "maximum": 2192.0
+          },
+          "cohesive_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 128.0,
+            "std": 0.0,
+            "minimum": 128.0,
+            "p05": 128.0,
+            "median": 128.0,
+            "p95": 128.0,
+            "maximum": 128.0
+          },
+          "background_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1607.0,
+            "std": 0.0,
+            "minimum": 1607.0,
+            "p05": 1607.0,
+            "median": 1607.0,
+            "p95": 1607.0,
+            "maximum": 1607.0
+          },
+          "rolling_yield_contacts": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0,
+            "std": 0.0,
+            "minimum": 1.0,
+            "p05": 1.0,
+            "median": 1.0,
+            "p95": 1.0,
+            "maximum": 1.0
+          },
+          "normal_cap_lag_l1_fraction": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0,
+            "std": 0.0,
+            "minimum": 1.0,
+            "p05": 1.0,
+            "median": 1.0,
+            "p95": 1.0,
+            "maximum": 1.0
+          }
+        },
+        "integrated_work_J": {
+          "hydro_dissipation_J": 1.645775136800018e-14,
+          "contact_power_J": 9.029840578398722e-15,
+          "stress_power_J": 3.1073376363542255e-17,
+          "cohesion_power_J": -2.4472385881834756e-14,
+          "background_power_J": -9.841326892421058e-16,
+          "rolling_plastic_dissipation_J": 6.910591150223907e-21,
+          "rolling_contact_power_J": 1.259495815553693e-18,
+          "power_balance_error_J": 1.0414569384831348e-24,
+          "sliding_plastic_dissipation_J": null,
+          "twisting_plastic_dissipation_J": null,
+          "surface_potential_change_power_J": null,
+          "surface_path_work_power_J": null
+        },
+        "rolling_projection_work_J": 6.910591150223907e-21,
+        "true_total_contact_plastic_dissipation_J": null,
+        "surface_path_work_balance": {
+          "columns_available": false,
+          "dg_enabled": false,
+          "sign_convention": "defect = potential_change + path_work; conservative surface work is minus potential change",
+          "scope": "Accepted-path pair sums; distinct from the algebraic power_balance_error_W. Absolute macro defects cannot detect cancellation between pairs/substeps within a macro interval.",
+          "evaluated": false
+        },
+        "endpoint_elastic_and_surface_energy_samples": {
+          "normal_elastic_energy_J": {
+            "first_endpoint": 8.943090453949113e-15,
+            "last_endpoint": 8.943090453949113e-15
+          },
+          "tangential_elastic_energy_J": {
+            "first_endpoint": 1.6052870508668159e-21,
+            "last_endpoint": 1.6052870508668159e-21
+          },
+          "rolling_elastic_energy_J": {
+            "first_endpoint": 1.3254254167219917e-20,
+            "last_endpoint": 1.3254254167219917e-20
+          },
+          "cohesion_energy_J": {
+            "first_endpoint": -2.3270606355872764e-14,
+            "last_endpoint": -2.3270606355872764e-14
+          },
+          "background_energy_J": {
+            "first_endpoint": -6.12355407791464e-15,
+            "last_endpoint": -6.12355407791464e-15
+          }
+        },
+        "safety_maxima": {
+          "solver_acceptance_ratio": 0.0997665652482695,
+          "solver_relative_residual": 3.655973902504616e-07,
+          "actual_endpoint_max_overlap_fraction_min_semiaxis": 0.0009592326645607494,
+          "max_sliding_cap_excess_N": 0.0,
+          "max_rolling_cap_excess_N_m": 0.0,
+          "maximum_surface_error": 0.9980867400343453,
+          "surface_quadrature_max_relative_work_defect": null,
+          "surface_quadrature_max_panels": null
+        },
+        "interval_cost_s": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 89.98651849800012,
+          "std": 0.0,
+          "minimum": 89.98651849800012,
+          "p05": 89.98651849800012,
+          "median": 89.98651849800012,
+          "p95": 89.98651849800012,
+          "maximum": 89.98651849800012
+        }
+      },
+      "run_achieved_time_s": 1e-06,
+      "run_completed": true,
+      "process_wall_s": 141.3006167229978,
+      "plugin_sha256": "12e033c0517320ac338944738a312652a602a7409e824a4d176c3c7e9128f907"
+    },
+    {
+      "name": "fast_v3_sparse_n1000_a010_1us",
+      "directory": "/workspace/scratch/4c068228d8a6/Test_BS/validation_surface_fast/runs/fast_v3_sparse_n1000_a010_1us",
+      "initial_particle_sha256": "df5cde59b4bf4655fb4fc27483a3d133f17cd223e74b678e3fb7f9665544f246",
+      "launch_particle_hash_matches_file": true,
+      "metadata_physics": {
+        "count": 1000,
+        "ar": 4.0,
+        "phi": 0.24,
+        "shear_rate": 100.0,
+        "viscosity": 0.00089,
+        "lubrication_epsilon": 0.001,
+        "normal_stiffness": 900.0,
+        "tangential_stiffness": 300.0,
+        "rolling_stiffness": 300.0,
+        "friction": 10.0,
+        "rolling_friction": 10.0,
+        "cohesion_work": 0.02124348772860551,
+        "cohesion_range": 6.7e-10,
+        "background_enabled": true,
+        "hamaker_J": 9.9e-20,
+        "background_h0_m": 2e-09,
+        "background_sigma_m": 4.197e-10
+      },
+      "actual_input_physics": {
+        "viscosity": 0.00089,
+        "shear_rate": 100.0,
+        "nominal_diameter_m": 8e-06,
+        "lubrication_epsilon": 0.001,
+        "normal_stiffness": 900.0,
+        "cohesion_work": 0.02124348772860551,
+        "background_enabled": true,
+        "friction": 10.0,
+        "tangential_stiffness": 300.0,
+        "rolling_friction": 10.0,
+        "rolling_stiffness": 300.0,
+        "shape": "spheroid",
+        "mobility_backend": "nearfield",
+        "contact_scheme": "imex",
+        "cohesion_range": 6.7e-10,
+        "hamaker_J": 9.9e-20,
+        "background_h0_m": 2e-09,
+        "background_sigma_m": 4.197e-10,
+        "macro_dt_s": 1e-06
+      },
+      "effective_numerics": {
+        "surface_adaptive": 0.1,
+        "tolerance": 1e-06,
+        "surface_linear": 1e-10,
+        "iterations": 1000.0,
+        "surface_roundoff": "yes",
+        "surface_integrator": "reuse",
+        "iterations_option_role": "linear Krylov cap",
+        "SLURRY_IMEX_MAX_ITERATIONS_recorded": null,
+        "nonlinear_iteration_limits_from_console": {
+          "primary": 40,
+          "recovery": 960,
+          "total": 1000
+        },
+        "source": "Effective last occurrence in actual in.bridge; falls back to recorded parameters/defaults when omitted"
+      },
+      "first_achieved_1us": {
+        "requested_start_s": 0,
+        "requested_end_s": 1e-06,
+        "actual_start_s": 0.0,
+        "actual_end_s": 1e-06,
+        "physical_duration_s": 1e-06,
+        "achieved_strain": 9.999999999999999e-05,
+        "macro_intervals": 1,
+        "profile_sums": {
+          "profile_total_s": 87.10320091247559,
+          "profile_solve_s": 61.26854133605957,
+          "profile_geometry_s": 17.316009283065796,
+          "profile_middle_s": 0.2739834785461426
+        },
+        "counts": {
+          "substeps": 1360.0,
+          "substep_rejections": 104.0,
+          "newton_iterations": 1500.0,
+          "linear_iterations": 5993.0,
+          "geometry_iterations": 1399.0,
+          "surface_quadrature_evaluations": 0
+        },
+        "throughput": {
+          "strain_per_profile_elapsed_second": 1.1480634345514303e-06,
+          "physical_us_per_profile_elapsed_second": 0.011480634345514303,
+          "elapsed_seconds_per_physical_us": 87.10320091247559,
+          "elapsed_seconds_per_unit_strain": 871032.009124756,
+          "solve_fraction": 0.7034017199623283,
+          "accepted_substeps_per_macro": 1360.0,
+          "rejected_fraction_of_attempts": 0.07103825136612021
+        },
+        "distributions": {
+          "sigma_xz_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.27818333138320905,
+            "std": 0.0,
+            "minimum": 0.27818333138320905,
+            "p05": 0.27818333138320905,
+            "median": 0.27818333138320905,
+            "p95": 0.27818333138320905,
+            "maximum": 0.27818333138320905
+          },
+          "sigma_hydro_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.8822350161412378,
+            "std": 0.0,
+            "minimum": 0.8822350161412378,
+            "p05": 0.8822350161412378,
+            "median": 0.8822350161412378,
+            "p95": 0.8822350161412378,
+            "maximum": 0.8822350161412378
+          },
+          "sigma_contact_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 0.8040649701189122,
+            "std": 0.0,
+            "minimum": 0.8040649701189122,
+            "p05": 0.8040649701189122,
+            "median": 0.8040649701189122,
+            "p95": 0.8040649701189122,
+            "maximum": 0.8040649701189122
+          },
+          "sigma_cohesion_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -1.3839106729332606,
+            "std": 0.0,
+            "minimum": -1.3839106729332606,
+            "p05": -1.3839106729332606,
+            "median": -1.3839106729332606,
+            "p95": -1.3839106729332606,
+            "maximum": -1.3839106729332606
+          },
+          "sigma_background_Pa": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -0.11320598194368343,
+            "std": 0.0,
+            "minimum": -0.11320598194368343,
+            "p05": -0.11320598194368343,
+            "median": -0.11320598194368343,
+            "p95": -0.11320598194368343,
+            "maximum": -0.11320598194368343
+          },
+          "hydro_dissipation_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.645775136800018e-08,
+            "std": 0.0,
+            "minimum": 1.645775136800018e-08,
+            "p05": 1.645775136800018e-08,
+            "median": 1.645775136800018e-08,
+            "p95": 1.645775136800018e-08,
+            "maximum": 1.645775136800018e-08
+          },
+          "contact_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 9.029840578398722e-09,
+            "std": 0.0,
+            "minimum": 9.029840578398722e-09,
+            "p05": 9.029840578398722e-09,
+            "median": 9.029840578398722e-09,
+            "p95": 9.029840578398722e-09,
+            "maximum": 9.029840578398722e-09
+          },
+          "stress_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 3.1073376363542253e-11,
+            "std": 0.0,
+            "minimum": 3.1073376363542253e-11,
+            "p05": 3.1073376363542253e-11,
+            "median": 3.1073376363542253e-11,
+            "p95": 3.1073376363542253e-11,
+            "maximum": 3.1073376363542253e-11
+          },
+          "cohesion_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -2.4472385881834758e-08,
+            "std": 0.0,
+            "minimum": -2.4472385881834758e-08,
+            "p05": -2.4472385881834758e-08,
+            "median": -2.4472385881834758e-08,
+            "p95": -2.4472385881834758e-08,
+            "maximum": -2.4472385881834758e-08
+          },
+          "background_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": -9.841326892421059e-10,
+            "std": 0.0,
+            "minimum": -9.841326892421059e-10,
+            "p05": -9.841326892421059e-10,
+            "median": -9.841326892421059e-10,
+            "p95": -9.841326892421059e-10,
+            "maximum": -9.841326892421059e-10
+          },
+          "rolling_plastic_dissipation_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 6.910591150223907e-15,
+            "std": 7.888609052210118e-31,
+            "minimum": 6.910591150223906e-15,
+            "p05": 6.910591150223906e-15,
+            "median": 6.910591150223906e-15,
+            "p95": 6.910591150223906e-15,
+            "maximum": 6.910591150223906e-15
+          },
+          "rolling_contact_power_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.2594958155536932e-12,
+            "std": 0.0,
+            "minimum": 1.2594958155536932e-12,
+            "p05": 1.2594958155536932e-12,
+            "median": 1.2594958155536932e-12,
+            "p95": 1.2594958155536932e-12,
+            "maximum": 1.2594958155536932e-12
+          },
+          "power_balance_error_W": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0414569384831348e-18,
+            "std": 0.0,
+            "minimum": 1.0414569384831348e-18,
+            "p05": 1.0414569384831348e-18,
+            "median": 1.0414569384831348e-18,
+            "p95": 1.0414569384831348e-18,
+            "maximum": 1.0414569384831348e-18
+          },
+          "sliding_plastic_dissipation_W": null,
+          "twisting_plastic_dissipation_W": null,
+          "surface_potential_change_power_W": null,
+          "surface_path_work_power_W": null,
+          "contacts": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 124.00000000000001,
+            "std": 1.4210854715202004e-14,
+            "minimum": 124.0,
+            "p05": 124.0,
+            "median": 124.0,
+            "p95": 124.0,
+            "maximum": 124.0
+          },
+          "near_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 2192.0,
+            "std": 0.0,
+            "minimum": 2192.0,
+            "p05": 2192.0,
+            "median": 2192.0,
+            "p95": 2192.0,
+            "maximum": 2192.0
+          },
+          "cohesive_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 128.0,
+            "std": 0.0,
+            "minimum": 128.0,
+            "p05": 128.0,
+            "median": 128.0,
+            "p95": 128.0,
+            "maximum": 128.0
+          },
+          "background_pairs": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1607.0,
+            "std": 0.0,
+            "minimum": 1607.0,
+            "p05": 1607.0,
+            "median": 1607.0,
+            "p95": 1607.0,
+            "maximum": 1607.0
+          },
+          "rolling_yield_contacts": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0,
+            "std": 0.0,
+            "minimum": 1.0,
+            "p05": 1.0,
+            "median": 1.0,
+            "p95": 1.0,
+            "maximum": 1.0
+          },
+          "normal_cap_lag_l1_fraction": {
+            "sample_count": 1,
+            "duration_s": 1e-06,
+            "mean": 1.0,
+            "std": 0.0,
+            "minimum": 1.0,
+            "p05": 1.0,
+            "median": 1.0,
+            "p95": 1.0,
+            "maximum": 1.0
+          }
+        },
+        "integrated_work_J": {
+          "hydro_dissipation_J": 1.645775136800018e-14,
+          "contact_power_J": 9.029840578398722e-15,
+          "stress_power_J": 3.1073376363542255e-17,
+          "cohesion_power_J": -2.4472385881834756e-14,
+          "background_power_J": -9.841326892421058e-16,
+          "rolling_plastic_dissipation_J": 6.910591150223907e-21,
+          "rolling_contact_power_J": 1.259495815553693e-18,
+          "power_balance_error_J": 1.0414569384831348e-24,
+          "sliding_plastic_dissipation_J": null,
+          "twisting_plastic_dissipation_J": null,
+          "surface_potential_change_power_J": null,
+          "surface_path_work_power_J": null
+        },
+        "rolling_projection_work_J": 6.910591150223907e-21,
+        "true_total_contact_plastic_dissipation_J": null,
+        "surface_path_work_balance": {
+          "columns_available": false,
+          "dg_enabled": false,
+          "sign_convention": "defect = potential_change + path_work; conservative surface work is minus potential change",
+          "scope": "Accepted-path pair sums; distinct from the algebraic power_balance_error_W. Absolute macro defects cannot detect cancellation between pairs/substeps within a macro interval.",
+          "evaluated": false
+        },
+        "endpoint_elastic_and_surface_energy_samples": {
+          "normal_elastic_energy_J": {
+            "first_endpoint": 8.943090453949113e-15,
+            "last_endpoint": 8.943090453949113e-15
+          },
+          "tangential_elastic_energy_J": {
+            "first_endpoint": 1.6052870508668159e-21,
+            "last_endpoint": 1.6052870508668159e-21
+          },
+          "rolling_elastic_energy_J": {
+            "first_endpoint": 1.3254254167219917e-20,
+            "last_endpoint": 1.3254254167219917e-20
+          },
+          "cohesion_energy_J": {
+            "first_endpoint": -2.3270606355872764e-14,
+            "last_endpoint": -2.3270606355872764e-14
+          },
+          "background_energy_J": {
+            "first_endpoint": -6.12355407791464e-15,
+            "last_endpoint": -6.12355407791464e-15
+          }
+        },
+        "safety_maxima": {
+          "solver_acceptance_ratio": 0.0997665652482695,
+          "solver_relative_residual": 3.655973902504616e-07,
+          "actual_endpoint_max_overlap_fraction_min_semiaxis": 0.0009592326645607494,
+          "max_sliding_cap_excess_N": 0.0,
+          "max_rolling_cap_excess_N_m": 0.0,
+          "maximum_surface_error": 0.9980867400343453,
+          "surface_quadrature_max_relative_work_defect": null,
+          "surface_quadrature_max_panels": null
+        },
+        "interval_cost_s": {
+          "sample_count": 1,
+          "duration_s": 1e-06,
+          "mean": 87.10320091247559,
+          "std": 0.0,
+          "minimum": 87.10320091247559,
+          "p05": 87.10320091247559,
+          "median": 87.10320091247559,
+          "p95": 87.10320091247559,
+          "maximum": 87.10320091247559
+        }
+      },
+      "run_achieved_time_s": 1e-06,
+      "run_completed": true,
+      "process_wall_s": 134.66998871100077,
+      "plugin_sha256": "c033a4038b41f4fc6195d035663bb2ea14091a87311b55abd94da10dc9d65d97"
+    }
+  ],
+  "comparisons": [
+    {
+      "reference": "baseline_fresh_n1000_1us",
+      "same_fixture_actual_input_and_metadata_physics": true,
+      "actual_input_differences": {},
+      "metadata_differences": {},
+      "first_interval_comparison_available": true,
+      "scope": "First achieved0\u20131us/strain0\u20130.0001 ONLY. This ratio does not compare100us runtimes and is not a sustained speedup or accuracy certificate. Legacy stress is not a truth target.",
+      "candidate_first_cost_s": 0.3895854030000123,
+      "reference_first_cost_s": 89.98651849800012,
+      "reference_over_candidate_first_cost_ratio": 230.9802107703642,
+      "candidate_first_stress_Pa": 0.25169414234094234,
+      "reference_first_stress_Pa": 0.27818333138320905,
+      "signed_first_stress_difference_Pa": -0.026489189042266714,
+      "relative_first_stress_difference": -0.09522205701741615,
+      "candidate_first_counts": {
+        "substeps": 1.0,
+        "substep_rejections": 0,
+        "newton_iterations": 3.0,
+        "linear_iterations": 6.0,
+        "geometry_iterations": 2.0,
+        "surface_quadrature_evaluations": 0
+      },
+      "reference_first_counts": {
+        "substeps": 1360.0,
+        "substep_rejections": 104.0,
+        "newton_iterations": 1500.0,
+        "linear_iterations": 5993.0,
+        "geometry_iterations": 1399.0,
+        "surface_quadrature_evaluations": 0
+      }
+    },
+    {
+      "reference": "fast_v3_sparse_n1000_a010_1us",
+      "same_fixture_actual_input_and_metadata_physics": true,
+      "actual_input_differences": {},
+      "metadata_differences": {},
+      "first_interval_comparison_available": true,
+      "scope": "First achieved0\u20131us/strain0\u20130.0001 ONLY. This ratio does not compare100us runtimes and is not a sustained speedup or accuracy certificate. Legacy stress is not a truth target.",
+      "candidate_first_cost_s": 0.3895854030000123,
+      "reference_first_cost_s": 87.10320091247559,
+      "reference_over_candidate_first_cost_ratio": 223.579220991688,
+      "candidate_first_stress_Pa": 0.25169414234094234,
+      "reference_first_stress_Pa": 0.27818333138320905,
+      "signed_first_stress_difference_Pa": -0.026489189042266714,
+      "relative_first_stress_difference": -0.09522205701741615,
+      "candidate_first_counts": {
+        "substeps": 1.0,
+        "substep_rejections": 0,
+        "newton_iterations": 3.0,
+        "linear_iterations": 6.0,
+        "geometry_iterations": 2.0,
+        "surface_quadrature_evaluations": 0
+      },
+      "reference_first_counts": {
+        "substeps": 1360.0,
+        "substep_rejections": 104.0,
+        "newton_iterations": 1500.0,
+        "linear_iterations": 5993.0,
+        "geometry_iterations": 1399.0,
+        "surface_quadrature_evaluations": 0
+      }
+    }
+  ]
+}

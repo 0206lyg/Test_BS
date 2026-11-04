@@ -1,0 +1,143 @@
+#!/bin/bash
+#SBATCH --job-name=slurry_practical
+#SBATCH --account=ardekani
+#SBATCH --partition=cpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --hint=nomultithread
+#SBATCH --mem=32G
+#SBATCH --time=7-00:00:00
+#SBATCH --output=slurry_practical_%j.out
+
+# Edit this section, then submit from the slurry repository: sbatch run_slurry_practical_cpu.sbatch
+# Exactly one simulation is launched. No command-line parameters are needed.
+PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
+AR=4
+PHI=0.24
+COUNT=1000
+STEPS=500000  # target strain = shear_rate * timestep * steps = 50
+OUTPUT_INTERVAL=400
+TIMESTEP=1e-6  # s; practical fixed-step IMEX
+AVERAGE_START_STRAIN=5
+# Production uses the nominal timestep; microscopic pair variation does not subdivide it.
+
+NOMINAL_DIAMETER_UM=8                 # volume-equivalent D; fixed while AR changes
+SIZE_RATIO=1.4
+SIZE_DISTRIBUTION=bidisperse
+LUBRICATION_EPSILON=0.001             # additive gap epsilon*(D/2) = 4 nm at D=8 um
+DENSITY=2400
+VISCOSITY=0.00089
+SHEAR_RATE=100
+FRICTION=10
+NORMAL_STIFFNESS=900  # N/m
+TANGENTIAL_STIFFNESS=300  # N/m
+ROLLING_FRICTION=10
+ROLLING_STIFFNESS=300  # N/m
+
+# Physical interactions match the current N1000 attraction benchmark settings.
+# Packing matches its bidisperse 1.4-ratio, random-seed-1729 fixture (733/267).
+# The original run_slurry_cpu.sbatch remains unchanged.
+COHESION_WORK=0.0212434877286055  # J/m^2
+COHESION_RANGE=6.7e-10  # m; 0.67 nm retained
+BACKGROUND_HAMAKER=9.9e-20  # J
+BACKGROUND_REFERENCE_GAP=2e-9  # m; potential reference, not contact onset
+BACKGROUND_SIGMA=4.197e-10  # m
+SURFACE_ADAPTIVE=0  # practical mode uses the requested fixed timestep
+SURFACE_ROUNDOFF=yes
+SURFACE_INTEGRATOR=practical
+SURFACE_LINEAR=1e-4
+
+INITIALIZATION=random                 # random or aligned; no automatic switch
+SEED=1729
+INITIAL_PHI=0.05
+GROWTH_FRACTION=0.02
+OVERLAP_TOLERANCE=1e-6
+MAX_RELAX=20000
+
+MOBILITY_BACKEND=nearfield  # isolated spheroid drag + local lubrication; no FFT
+SPECTRAL=2
+SPECTRAL_TOLERANCE=1e-8
+SOLVER_TOLERANCE=1e-4
+KRYLOV_ITERATIONS=1000
+
+OUTPUT_DIR=""                         # empty: runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>
+BUILD_ENV=""                          # empty: build/lammps/env.sh
+PREPARE_ONLY=0
+TRACE_SOLVER=0
+IMEX_MAX_ITERATIONS=100  # bounded nonlinear updates before solver retry
+export SLURRY_IMEX_MAX_ITERATIONS="$IMEX_MAX_ITERATIONS"
+# End of run settings. Resource requests are the #SBATCH lines above.
+
+set -Eeuo pipefail
+if (( $# != 0 )); then
+    printf 'Edit the settings in run_slurry_practical_cpu.sbatch, then submit it without arguments.\n' >&2
+    exit 2
+fi
+case "$PARTICLE_SHAPE" in
+    spheroid) ;;
+    *) printf 'PARTICLE_SHAPE must be spheroid for the contact-overlap model.\n' >&2; exit 2 ;;
+esac
+SLURRY_BASE="${SLURRY_ROOT:-${SLURM_SUBMIT_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}}"
+if [[ "$(basename -- "$SLURRY_BASE")" == lammps_slurry ]]; then
+    SLURRY_BASE="$(cd -- "$SLURRY_BASE/.." && pwd)"
+fi
+SLURRY_BASE="$(cd -- "$SLURRY_BASE" && pwd)"
+if [[ ! -f "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" ]]; then
+    printf 'Cannot find slurry sources in %s; submit from the repository root.\n' "$SLURRY_BASE" >&2
+    exit 2
+fi
+if type module >/dev/null 2>&1; then
+    module purge
+    module load "${SLURRY_PYTHON_MODULE:-anaconda/2024.02-py311}"
+    module load "${SLURRY_GCC_MODULE:-gcc/12.2.0}"
+    module load "${SLURRY_MPI_MODULE:-openmpi/4.1.4}"
+fi
+export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-16}"
+export OMP_DYNAMIC=FALSE OMP_PLACES=cores OMP_PROC_BIND=close OMP_MAX_ACTIVE_LEVELS=1
+export MKL_NUM_THREADS="$OMP_NUM_THREADS" MKL_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1
+export PYTHONUNBUFFERED=1 SLURRY_BRIDGE_TRACE="$TRACE_SOLVER"
+if [[ -z "$OUTPUT_DIR" ]]; then
+    SLURRY_RUN_ID="${SLURM_JOB_ID:-local_$(date -u +%Y%m%dT%H%M%SZ)_$$}"
+    OUTPUT_DIR="${SLURRY_RESULTS_ROOT:-$SLURRY_BASE/runs}/practical_${PARTICLE_SHAPE}_ar${AR}_phi${PHI}_n${COUNT}_${SLURRY_RUN_ID}"
+elif [[ "$OUTPUT_DIR" != /* ]]; then
+    OUTPUT_DIR="$SLURRY_BASE/$OUTPUT_DIR"
+fi
+if [[ -z "$BUILD_ENV" ]]; then
+    BUILD_ENV="$SLURRY_BASE/build/lammps/env.sh"
+elif [[ "$BUILD_ENV" != /* ]]; then
+    BUILD_ENV="$SLURRY_BASE/$BUILD_ENV"
+fi
+SLURRY_ARGUMENTS=(
+    --output "$OUTPUT_DIR" --build-env "$BUILD_ENV"
+    --shape "$PARTICLE_SHAPE"
+    --size-distribution "$SIZE_DISTRIBUTION" --size-ratio "$SIZE_RATIO"
+    --ar "$AR" --phi "$PHI" --count "$COUNT" --steps "$STEPS"
+    --output-interval "$OUTPUT_INTERVAL" --timestep "$TIMESTEP"
+    --average-start-strain "$AVERAGE_START_STRAIN"
+    --nominal-diameter-um "$NOMINAL_DIAMETER_UM" --density "$DENSITY"
+    --viscosity "$VISCOSITY" --shear-rate "$SHEAR_RATE"
+    --lubrication-epsilon "$LUBRICATION_EPSILON"
+    --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
+    --tangential-stiffness "$TANGENTIAL_STIFFNESS"
+    --rolling-friction "$ROLLING_FRICTION" --rolling-stiffness "$ROLLING_STIFFNESS"
+    --cohesion-work "$COHESION_WORK" --cohesion-range "$COHESION_RANGE"
+    --background-hamaker "$BACKGROUND_HAMAKER"
+    --background-reference-gap "$BACKGROUND_REFERENCE_GAP" --background-sigma "$BACKGROUND_SIGMA"
+    --surface-adaptive "$SURFACE_ADAPTIVE" --surface-roundoff "$SURFACE_ROUNDOFF"
+    --surface-integrator "$SURFACE_INTEGRATOR" --surface-linear "$SURFACE_LINEAR"
+    --initialization "$INITIALIZATION" --seed "$SEED" --initial-phi "$INITIAL_PHI"
+    --growth-fraction "$GROWTH_FRACTION" --overlap-tolerance "$OVERLAP_TOLERANCE"
+    --max-relax "$MAX_RELAX" --mobility-backend "$MOBILITY_BACKEND"
+    --spectral "$SPECTRAL" --spectral-tolerance "$SPECTRAL_TOLERANCE"
+    --tolerance "$SOLVER_TOLERANCE" --iterations "$KRYLOV_ITERATIONS"
+)
+if [[ "$PREPARE_ONLY" == 1 ]]; then
+    SLURRY_ARGUMENTS+=(--prepare-only)
+elif [[ "$PREPARE_ONLY" != 0 ]]; then
+    printf 'PREPARE_ONLY must be 0 or 1.\n' >&2
+    exit 2
+fi
+printf 'SHAPE=%s AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
+    "$PARTICLE_SHAPE" "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
+exec python3 "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" "${SLURRY_ARGUMENTS[@]}"

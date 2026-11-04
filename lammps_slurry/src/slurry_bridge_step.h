@@ -8,6 +8,8 @@
 #include "slurry_bridge_contact_solver.h"
 #include "slurry_bridge_linear_solver.h"
 #include "slurry_bridge_images.h"
+#include "slurry_verlet_images.h"
+#include "slurry_support_bound.h"
 #include "../vendor/gr_re2/ellipsoidGap.h"
 #include "slurry_bridge_shape.h"
 #include <Eigen/Geometry>
@@ -17,6 +19,7 @@
 #include <cstring>
 #include <sstream>
 #include <tuple>
+#include <memory>
 
 namespace SlurryBridgeStep {
 namespace bs = SlurryBridgeSolver;
@@ -37,10 +40,33 @@ inline Eigen::Quaterniond rotate(const Eigen::Quaterniond &q, const Vec3 &omega,
                             factor * omega[1], factor * omega[2]) * q).normalized();
 }
 
+// d Exp(phi) = [J_left(phi) dphi]x Exp(phi). The small-angle series avoids
+// cancellation without replacing the finite-rotation chain rule by dt*I.
+inline Mat3 rotation_left_jacobian(const Vec3 &phi) {
+  const double angle2=phi.squaredNorm();
+  double a,b;
+  if(angle2<1e-8) {
+    a=.5-angle2/24.+angle2*angle2/720.;
+    b=1./6.-angle2/120.+angle2*angle2/5040.;
+  } else {
+    const double angle=std::sqrt(angle2);
+    a=(1.-std::cos(angle))/angle2;
+    b=(angle-std::sin(angle))/(angle2*angle);
+  }
+  Mat3 cross;cross<<0.,-phi[2],phi[1],phi[2],0.,-phi[0],-phi[1],phi[0],0.;
+  return Mat3::Identity()+a*cross+b*cross*cross;
+}
+
 struct Endpoint {
   std::vector<gr::Body> bodies;
   Mat3 lattice;
   std::vector<double> gaps;
+  // Filled only when requested by the monolithic endpoint solver. At a
+  // smooth support optimum the envelope theorem supplies dg without
+  // differentiating the closest-normal iteration itself.
+  std::vector<gr::GapResult> pair_geometry;
+  std::vector<Eigen::Matrix<double,1,6>> gap_derivative_i,gap_derivative_j;
+  std::vector<Vec3> rotation_increments;
 };
 struct Geometry {
   std::vector<gr::Body> bodies;
@@ -50,16 +76,30 @@ struct Geometry {
   Mat3 lattice = Mat3::Identity(), kappa = Mat3::Zero();
   Vec3 ambient_rotation = Vec3::Zero();
   double contact_onset = 0.;
+  // Endpoint support validation is independent of mechanical contact onset.
+  // A positive value rejects an omitted pair entering a surface-force range;
+  // it never creates a positive-gap contact or changes a constitutive force.
+  double validation_support = 0.;
   bool flake = false;
   double gap_tolerance = 1e-10;
   bool enforce_work_balance = false;
   std::vector<Image> images;
+  // Optional exact broad-phase reuse. The owner must build this cache with
+  // a fixed center cutoff at least bounding_i + bounding_j plus the certified
+  // candidate_cache_support for every pair. The default certificate remains
+  // zero. Unsupported shapes/supports or an invalid endpoint certificate
+  // retain exhaustive search.
+  std::shared_ptr<const SlurryVerletImages::Cache> candidate_cache;
+  double candidate_cache_support = 0.;
 
   Endpoint advance(const bs::Problem &p, const bs::Vector &velocity,
-                   bool check_candidates = true) const {
+                   bool check_candidates = true, bool endpoint_derivatives = false) const {
     if (int(bodies.size()) != p.count || images.size() != p.contacts.size() ||
         quaternions.size() != bodies.size())
       throw std::invalid_argument("bridge endpoint geometry size mismatch");
+    if (!(validation_support >= 0.) || !std::isfinite(validation_support) ||
+        !(candidate_cache_support >= 0.) || !std::isfinite(candidate_cache_support))
+      throw std::invalid_argument("bridge endpoint validation support must be finite and nonnegative");
     Endpoint out;
     out.bodies = bodies;
     // fix deform 0 updates xz after INITIAL_INTEGRATE. In the supported
@@ -82,9 +122,9 @@ struct Geometry {
         if(!flake) {
           gr::GapCache cache;
           if(normal){cache.normal=array(*normal);cache.valid=true;}
-          return gr::closestEllipsoidGap(first,second,&cache).gap;
+          return gr::closestEllipsoidGap(first,second,&cache);
         }
-        return SlurryBridgeShape::closest_gap(first,second,flake,gap_tolerance).gap;
+        return SlurryBridgeShape::closest_gap(first,second,flake,gap_tolerance);
       } catch(const std::exception &e) {
         std::ostringstream diagnostic;
         diagnostic << e.what() << "; endpoint_phase=" << phase
@@ -96,21 +136,76 @@ struct Geometry {
     };
     std::set<Key> candidates;
     out.gaps.reserve(p.contacts.size());
+    std::vector<Mat3> rotation_derivative;
+    if(endpoint_derivatives) {
+      out.pair_geometry.reserve(p.contacts.size());
+      out.gap_derivative_i.reserve(p.contacts.size());
+      out.gap_derivative_j.reserve(p.contacts.size());
+      out.rotation_increments.reserve(p.count);
+      rotation_derivative.reserve(p.count);
+      for(int i=0;i<p.count;++i) {
+        out.rotation_increments.push_back(p.dt*(velocity.segment<3>(6*i+3)+ambient_rotation));
+        rotation_derivative.push_back(p.dt*rotation_left_jacobian(out.rotation_increments.back()));
+      }
+    }
     for (std::size_t k = 0; k < p.contacts.size(); ++k) {
       const auto &c = p.contacts[k];
       auto second = out.bodies[c.j];
       second.position = array(vector(second.position) + out.lattice * images[k].cast<double>());
-      out.gaps.push_back(gap_at(out.bodies[c.i],second,c.i,c.j,images[k],"listed pair",&c.normal));
+      const auto gap=gap_at(out.bodies[c.i],second,c.i,c.j,images[k],"listed pair",&c.normal);
+      out.gaps.push_back(gap.gap);
+      if(endpoint_derivatives) {
+        const Vec3 normal=vector(gap.normal);
+        Eigen::Matrix<double,1,6> first,second_row;
+        first.head<3>()=-p.dt*normal.transpose();
+        second_row.head<3>()=p.dt*normal.transpose();
+        first.tail<3>()=-vector(gap.leverI).cross(normal).transpose()*rotation_derivative[c.i];
+        second_row.tail<3>()=vector(gap.leverJ).cross(normal).transpose()*rotation_derivative[c.j];
+        out.pair_geometry.push_back(gap);
+        out.gap_derivative_i.push_back(first);out.gap_derivative_j.push_back(second_row);
+      }
       if (check_candidates)
         candidates.emplace(c.i, c.j, images[k][0], images[k][1], images[k][2]);
     }
     if (!check_candidates)
       return out;
-    double onset = contact_onset;
+    double onset = std::max(contact_onset, validation_support);
     for (const auto &c : p.contacts)
       onset = std::max(onset, c.onset);
     // Independent endpoint broad phase: a new contact must never silently
     // bypass the force solve just because it was outside the old near list.
+    auto check_unlisted = [&](int i, int j, const Image &image, const Vec3 &displacement) {
+      if (i == j && !im::positive_image(image)) return;
+      if (candidates.count(Key(i, j, image[0], image[1], image[2]))) return;
+      auto second = out.bodies[j];
+      second.position = array(vector(out.bodies[i].position) + displacement);
+      if (!flake && SlurrySupportBound::separated(
+          out.bodies[i],second,array(displacement),onset)) return;
+      if (gap_at(out.bodies[i],second,i,j,image,"new candidate").gap < onset) {
+        std::ostringstream diagnostic;
+        diagnostic << "bridge endpoint gained an unlisted contact; reduce timestep"
+                   << "; pair_indices=" << i << ',' << j << "; image=" << image.transpose();
+        throw std::runtime_error(diagnostic.str());
+      }
+    };
+    if (!flake && onset <= candidate_cache_support && candidate_cache &&
+        candidate_cache->valid(out.bodies, out.lattice)) {
+      for (const auto &candidate : candidate_cache->candidates()) {
+        const int i = candidate.i, j = candidate.j;
+        const double ai=SlurryBridgeShape::bounding_radius(bodies[i],false);
+        const double aj=SlurryBridgeShape::bounding_radius(bodies[j],false);
+        const double radius=ai+aj+onset;
+        const Vec3 d=vector(out.bodies[j].position)-vector(out.bodies[i].position);
+        const Vec3 shift=out.lattice*candidate.image.cast<double>();
+        const Vec3 displacement=d+shift;
+        const double tolerance=64.*std::numeric_limits<double>::epsilon()*
+            std::max({radius,d.norm(),shift.norm(),std::numeric_limits<double>::min()});
+        // Match ImageEnumerator's original Euclidean cutoff and roundoff margin.
+        if (displacement.norm() <= radius+tolerance)
+          check_unlisted(i,j,candidate.image,displacement);
+      }
+      return out;
+    }
     const im::ImageEnumerator image_enumerator(out.lattice);
     for (int i = 0; i < p.count; ++i)
       for (int j = i; j < p.count; ++j) {
@@ -118,18 +213,7 @@ struct Geometry {
         const double aj=SlurryBridgeShape::bounding_radius(bodies[j],flake);
         const Vec3 d = vector(out.bodies[j].position) - vector(out.bodies[i].position);
         for (const auto &image : image_enumerator.within(d, ai + aj + onset)) {
-          if (i == j && !im::positive_image(image.image))
-            continue;
-          if (candidates.count(Key(i, j, image.image[0], image.image[1], image.image[2])))
-            continue;
-          auto second = out.bodies[j];
-          second.position = array(vector(out.bodies[i].position) + image.displacement);
-          if (gap_at(out.bodies[i],second,i,j,image.image,"new candidate") < onset) {
-            std::ostringstream diagnostic;
-            diagnostic << "bridge endpoint gained an unlisted contact; reduce timestep"
-                       << "; pair_indices=" << i << ',' << j << "; image=" << image.image.transpose();
-            throw std::runtime_error(diagnostic.str());
-          }
+          check_unlisted(i,j,image.image,image.displacement);
         }
       }
     return out;

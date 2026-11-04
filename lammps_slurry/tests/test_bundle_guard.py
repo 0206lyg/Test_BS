@@ -68,6 +68,21 @@ class BundleGuardTest(unittest.TestCase):
             generator.write_text(generator.read_text() + "\n# deliberately altered test copy\n")
             self.assert_rejected(self.run_guard(root), "prepare_bridge.py does not match release")
 
+    def test_missing_surface_or_adaptive_header_is_rejected(self):
+        with self.source_fixture() as root:
+            for name in ("slurry_surface_cohesion.h", "slurry_surface_background.h",
+                         "slurry_surface_coupled_step.h", "slurry_surface_discrete_gradient.h", "slurry_adaptive_step.h"):
+                with self.subTest(header=name):
+                    header = root / "lammps_slurry/src" / name
+                    original = header.read_bytes()
+                    header.unlink()
+                    try:
+                        process = self.run_guard(root)
+                        self.assert_rejected(process, "Incomplete source bundle: missing")
+                        self.assertIn(name, process.stderr)
+                    finally:
+                        header.write_bytes(original)
+
     def test_stale_release_is_rejected(self):
         with self.source_fixture() as root:
             path = root / "release.json"

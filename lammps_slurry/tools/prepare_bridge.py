@@ -372,12 +372,24 @@ def parser():
                    help="nearfield: isolated spheroid drag plus local lubrication; mesh/direct retain legacy periodic hydrodynamics")
     p.add_argument("--contact-scheme", choices=("imex", "coupled"), default="imex",
                    help="nearfield contact integration: current-load frozen caps, or fully coupled endpoint Coulomb reference")
+    p.add_argument("--surface-roundoff", choices=("yes", "no"), default="no",
+                   help="include derived floating-point budget for surface/contact force cancellation")
+    p.add_argument("--surface-integrator", choices=("variation", "reuse", "coupled", "pc", "dg", "practical"),
+                   default=None, help="optional surface integration mode; omitted preserves the runtime default")
+    p.add_argument("--surface-linear", type=float, default=None,
+                   help="optional relative linear-solve target for surface/contact solves, in (0,1)")
     for name, default, help_text in (
             ("ar", 2., "equatorial/polar semiaxis ratio, 1 <= AR <= 5"),
             ("nominal-diameter-um", 8., "cubic-volume mean diameter D in micrometers; fixed across AR"),
             ("lubrication-epsilon", .001, "dimensionless additive gap regularization, normalized by D/2"),
             ("friction", 10., "sliding Coulomb coefficient; 10 is a strong-friction trial, not a graphite fit"),
             ("rolling-friction", 10., "rolling Coulomb coefficient; 0 disables rolling resistance"),
+            ("cohesion-work", 0., "cohesive excess work in J/m^2; 0 disables surface attraction"),
+            ("cohesion-range", .67e-9, "physical cohesive opening range in m; independent of lubrication epsilon"),
+            ("background-hamaker", 0., "Test_LB background Hamaker energy in J; zero disables background"),
+            ("background-reference-gap", 2e-9, "potential reference h0 in m; does not move mechanical contact"),
+            ("background-sigma", 4.197e-10, "background LJ sigma in m"),
+            ("surface-adaptive", 0., "surface variation fraction for coupled internal substeps; zero disables"),
             ("normal-stiffness", 30., "normal spring stiffness in N/m"),
             ("tangential-stiffness", 24., "sliding spring stiffness in N/m"),
             ("rolling-stiffness", 24., "rolling quasi-force spring stiffness in N/m; not N m/rad")):
@@ -411,11 +423,11 @@ def validate_args(args):
     for name in ("ar", "phi", "nominal_diameter_um", "density", "viscosity",
                  "lubrication_epsilon", "normal_stiffness", "tangential_stiffness",
                  "rolling_stiffness", "timestep", "initial_phi", "growth_fraction",
-                 "overlap_tolerance", "tolerance", "spectral", "spectral_tolerance"):
+                 "overlap_tolerance", "tolerance", "spectral", "spectral_tolerance", "cohesion_range", "background_reference_gap", "background_sigma"):
         value = getattr(args, name)
         if not math.isfinite(value) or value <= 0:
             raise ValueError(name+" must be finite and positive")
-    for name in ("friction", "rolling_friction", "average_start_strain"):
+    for name in ("friction", "rolling_friction", "average_start_strain", "cohesion_work", "background_hamaker", "surface_adaptive"):
         if not math.isfinite(getattr(args, name)) or getattr(args, name) < 0:
             raise ValueError(name+" must be finite and nonnegative")
     if (not math.isfinite(args.shear_rate) or not 1 <= args.ar <= 5 or args.phi >= 1 or
@@ -423,6 +435,21 @@ def validate_args(args):
         raise ValueError("Require finite shear, 1<=AR<=5, 0<phi<1 and 0<tolerance<1")
     if args.shape != "spheroid":
         raise ValueError("The contact-overlap model requires spheroid particles")
+    if args.surface_adaptive >= 1 or args.background_reference_gap >= 5e-9:
+        raise ValueError("Require surface-adaptive < 1 and background reference gap < 5 nm")
+    if args.surface_linear is not None and (not math.isfinite(args.surface_linear) or
+                                            not 0 < args.surface_linear < 1):
+        raise ValueError("surface-linear must be finite and in (0,1)")
+    if args.surface_integrator in ("coupled", "pc", "dg", "practical"):
+        if args.mobility_backend != "nearfield" or args.contact_scheme != "imex":
+            raise ValueError("surface-integrator requires nearfield IMEX")
+        if args.surface_integrator == "practical":
+            if args.surface_adaptive != 0:
+                raise ValueError("practical surface-integrator requires surface-adaptive = 0")
+        elif args.surface_adaptive <= 0 or not (args.cohesion_work > 0 or args.background_hamaker > 0):
+            raise ValueError("coupled/pc/dg surface-integrator requires surface forces and surface-adaptive > 0")
+    if (args.cohesion_work > 0 or args.background_hamaker > 0) and (args.mobility_backend != "nearfield" or args.contact_scheme != "imex"):
+        raise ValueError("Surface cohesion requires nearfield frozen-cap IMEX")
     for name in ("count", "output_interval", "max_relax", "iterations"):
         if getattr(args, name) < 1:
             raise ValueError(name+" must be a positive integer")
@@ -475,7 +502,7 @@ neighbor {skin} bin
 neigh_modify every 1 delay 0 check yes
 timestep {dt}
 fix shear all deform 0 xz erate {rate} remap v units box
-fix hydro all slurry/bridge {eta} {rate} {diameter} {epsilon} {kn} contact {mu} {kt} rolling {mur} {kr} shape spheroid mobility_backend {backend} contact_scheme {contact_scheme} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
+fix hydro all slurry/bridge {eta} {rate} {diameter} {epsilon} {kn} contact {mu} {kt} rolling {mur} {kr} shape spheroid mobility_backend {backend} contact_scheme {contact_scheme}{cohesion}{background}{surface_options} spectral {spectral} spectral_tolerance {spectral_tolerance} tolerance {tolerance} iterations {iterations} history history.csv {interval} {average}
 compute shape all property/atom shapex shapey shapez quatw quati quatj quatk angmomx angmomy angmomz
 dump trajectory all custom {interval} trajectory.lammpstrj id type x y z vx vy vz c_shape[*] f_hydro[*]
 dump_modify trajectory sort id format float %.17g
@@ -490,6 +517,13 @@ write_data final.data nocoeff
            diameter=f(nominal_diameter), epsilon=f(args.lubrication_epsilon), kn=f(args.normal_stiffness),
            mu=f(args.friction), kt=f(args.tangential_stiffness), mur=f(args.rolling_friction),
            kr=f(args.rolling_stiffness), backend=args.mobility_backend, contact_scheme=args.contact_scheme,
+           cohesion=(" cohesion "+f(args.cohesion_work)+" "+f(args.cohesion_range) if args.cohesion_work>0 else ""),
+           background=(" background "+f(args.background_hamaker)+" "+f(args.background_reference_gap)+" "+f(args.background_sigma)
+                       if args.background_hamaker>0 else ""),
+           surface_options=((" surface_adaptive "+f(args.surface_adaptive) if args.surface_adaptive>0 else "")+
+                            (" surface_roundoff yes" if args.surface_roundoff=="yes" else "")+
+                            (" surface_integrator "+args.surface_integrator if args.surface_integrator is not None else "")+
+                            (" surface_linear "+f(args.surface_linear) if args.surface_linear is not None else "")),
            spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
            slurry_plugin="{slurry_plugin}")

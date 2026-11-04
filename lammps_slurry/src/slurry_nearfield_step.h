@@ -19,11 +19,17 @@ template<class Workspace,class Solver,class Response,class Metric>
 inline step::Result solve_endpoint(const bs::Problem &original,const step::Geometry &geometry,
                           const bs::Options &options,Workspace &workspace,
                           const bs::Result *warm,Solver solve_inner,
-                          Response endpoint_response,Metric acceptance_metric) {
+                          Response endpoint_response,Metric acceptance_metric,
+                          bool defer_candidate_validation=false,
+                          double inner_tolerance_fraction=.1,
+                          bool require_constitutive_match=true) {
+  if(!(inner_tolerance_fraction>0.)||inner_tolerance_fraction>1.||
+      !std::isfinite(inner_tolerance_fraction))
+    throw std::invalid_argument("nearfield endpoint inner tolerance fraction must be in (0,1]");
   bs::Problem corrected=original;
   bs::Options inner=options;
-  inner.relative_tolerance*=.1;
-  inner.absolute_tolerance*=.1;
+  inner.relative_tolerance*=inner_tolerance_fraction;
+  inner.absolute_tolerance*=inner_tolerance_fraction;
   bs::Result previous;
   int newton=0,linear=0,descent=0,breakpoints=0,stages=0,retries=0,
       applications=0,reselections=0;
@@ -52,7 +58,7 @@ inline step::Result solve_endpoint(const bs::Problem &original,const step::Geome
     descent+=state.descent_steps;breakpoints+=state.breakpoint_steps;
     stages+=state.continuation_stages;retries+=state.continuation_retries;
     applications+=state.mobility_applications;reselections+=state.kink_reselections;
-    auto endpoint=geometry.advance(original,state.velocity,true);
+    auto endpoint=geometry.advance(original,state.velocity,!defer_candidate_validation);
     std::vector<bs::ContactResponse> exact;
     exact.reserve(original.contacts.size());
     bool constitutive_ok=true;
@@ -87,7 +93,14 @@ inline step::Result solve_endpoint(const bs::Problem &original,const step::Geome
                    iteration+1,metric.residual_norm,metric.tolerance,gap_error,constitutive_ratio);
       std::fflush(stderr);
     }
-    if(constitutive_ok&&metric.residual_norm<=metric.tolerance) {
+    // The optional pairwise iterate-match gate is additional to physical
+    // force balance. Even without it, only ORIGINAL-step exact endpoint
+    // responses may pass the unchanged global metric and become committed.
+    if((!require_constitutive_match||constitutive_ok)&&metric.residual_norm<=metric.tolerance) {
+      // Re-run the deterministic accepted endpoint with the independent global
+      // candidate check enabled. An unlisted new contact still rejects the
+      // whole step before positions or histories can be committed.
+      if(defer_candidate_validation)endpoint=geometry.advance(original,state.velocity,true);
       state.contacts=std::move(exact);
       state.residual_norm=metric.residual_norm;
       state.relative_residual=metric.residual_norm/std::max({metric.rhs_norm,
@@ -109,9 +122,9 @@ inline step::Result solve_endpoint(const bs::Problem &original,const step::Geome
     // Bound each inner solve by a fraction of the fixed original tolerance,
     // even when a geometric preload correction changes its own RHS norm.
     const auto shifted=acceptance_metric(corrected,state,state.contacts,workspace,options);
-    const double target=.1*metric.tolerance;
-    inner.absolute_tolerance=std::min(.1*options.absolute_tolerance,.5*target);
-    inner.relative_tolerance=std::min(.1*options.relative_tolerance,
+    const double target=inner_tolerance_fraction*metric.tolerance;
+    inner.absolute_tolerance=std::min(inner_tolerance_fraction*options.absolute_tolerance,.5*target);
+    inner.relative_tolerance=std::min(inner_tolerance_fraction*options.relative_tolerance,
         (target-inner.absolute_tolerance)/std::max(shifted.rhs_norm,std::numeric_limits<double>::min()));
     last_residual=metric.residual_norm;last_tolerance=metric.tolerance;
     last_gap_error=gap_error;last_constitutive_ratio=constitutive_ratio;
@@ -147,14 +160,49 @@ inline step::Result solve_imex(const bs::Problem &original,const imex::FrozenCap
                           imex::Workspace &workspace,const bs::Result *warm=nullptr) {
   // The caller freezes N_n from original physical gaps, never from the shifted
   // gaps used solely to solve endpoint normal compression consistently.
-  return detail::solve_endpoint(original,geometry,options,workspace,warm,
+  if(workspace.use_roundoff_budget) {
+    workspace.contact_roundoff_length.resize(original.contacts.size());
+    if(geometry.bodies.size()!=std::size_t(original.count)||
+        geometry.images.size()!=original.contacts.size())
+      throw std::invalid_argument("IMEX: roundoff geometry size mismatch");
+    for(std::size_t k=0;k<original.contacts.size();++k) {
+      const auto& c=original.contacts[k];const auto& a=geometry.bodies[c.i];
+      const auto& b=geometry.bodies[c.j];
+      const auto image=geometry.lattice*geometry.images[k].cast<double>();
+      // The gap subtracts centers and two support radii. Positions include the
+      // actual periodic image shift; the factor two covers original and trial
+      // support evaluations. gamma_64 in the force bound covers the scalar
+      // support/matrix arithmetic, rather than imposing a physical gap floor.
+      workspace.contact_roundoff_length[k]=2.*(step::vector(a.position).lpNorm<1>()+
+          step::vector(b.position).lpNorm<1>()+image.lpNorm<1>()+
+          *std::max_element(a.axes.begin(),a.axes.end())+
+          *std::max_element(b.axes.begin(),b.axes.end()));
+    }
+  } else workspace.contact_roundoff_length.clear();
+  imex::Metric last_metric;
+  auto result=detail::solve_endpoint(original,geometry,options,workspace,warm,
       [&](const auto &p,const auto &o,auto &w,const auto *seed){return imex::solve(p,caps,o,w,seed);},
       [&](std::size_t k,const auto &c,const auto &u,double dt,double gap){
         return imex::contact_response(c,caps[k],u,dt,gap);
       },
       [&](const auto &p,const auto &state,const auto &contacts,const auto &w,const auto &o){
-        return imex::acceptance_metric(p,caps,state,contacts,w,o);
-      });
+        last_metric=imex::acceptance_metric(p,caps,state,contacts,w,o);
+        return last_metric;
+      },workspace.defer_candidate_validation,workspace.endpoint_inner_tolerance_fraction,
+      workspace.require_endpoint_constitutive_match);
+  if(workspace.defer_candidate_validation)++workspace.deferred_candidate_checks;
+  if(workspace.use_roundoff_budget) {
+    // solve_endpoint returns immediately after the ORIGINAL-step full
+    // physical metric passes. The independent candidate check changes no
+    // velocity/load, so this is that same accepted metric, not a stale cache.
+    const auto&metric=last_metric;
+    workspace.last_roundoff_tolerance=metric.roundoff_tolerance;
+    workspace.last_acceptance_tolerance=metric.tolerance;
+    workspace.last_acceptance_ratio=metric.residual_norm/std::max(metric.tolerance,std::numeric_limits<double>::min());
+    workspace.maximum_roundoff_tolerance=std::max(workspace.maximum_roundoff_tolerance,metric.roundoff_tolerance);
+    if(metric.residual_norm>metric.tolerance-metric.roundoff_tolerance)++workspace.roundoff_acceptances;
+  }
+  return result;
 }
 } // namespace SlurryNearfieldStep
 #endif

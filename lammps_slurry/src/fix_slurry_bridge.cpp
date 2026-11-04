@@ -23,6 +23,13 @@
 #include "slurry_nearfield_hydro.h"
 #include "slurry_nearfield_solver.h"
 #include "slurry_nearfield_step.h"
+#include "slurry_surface_cohesion.h"
+#include "slurry_surface_background.h"
+#include "slurry_verlet_images.h"
+#include "slurry_support_bound.h"
+#include "slurry_adaptive_step.h"
+#include "slurry_surface_coupled_step.h"
+#include "slurry_surface_discrete_gradient.h"
 #include "slurry_periodic_mobility.h"
 #include "update.h"
 #include "utils.h"
@@ -97,10 +104,20 @@ struct FixSlurryBridge::Impl {
   double eta = 0, shear = 0, nominal_diameter = 0, epsilon = 0, kn = 0;
   double reference_radius = 0, regularization_length = 0;
   double mu = 10., kt = 2.4, mu_roll = 10., kr = 2.4; // kn, kt, kr: N/m
+  double cohesion_work = 0., cohesion_range = .67e-9; // J/m^2, m; disabled by default
+  SlurrySurfaceBackground::Parameters background;
+  double surface_adaptive=0., suggested_surface_step=0.;
+  bool surface_roundoff=false, direct_advance=false;
+  bool surface_reuse=true,surface_defer=true;
+  bool surface_lagged_hydro=false, surface_neighbors=true, surface_sparse=false;
+  bool surface_coupled=false, surface_pc=false, surface_dg=false, surface_practical=false, surface_direct=false;
+  bool tolerance_specified=false,surface_linear_specified=false;
+  int surface_refresh=40;
+  double surface_linear=1e-10;
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
   std::ofstream csv;
-  std::array<double, 52> diag{};
+  std::array<double, 72> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
   long double selected_integral = 0;
@@ -111,13 +128,14 @@ struct FixSlurryBridge::Impl {
   // Near-field BE exposes its prepared step velocity through atom v/angmom.
   // Legacy Heun exposes current velocities and stores its private average.
   std::vector<tagint> advance_tags;
-  Eigen::VectorXd advance_velocity;
+  Eigen::VectorXd advance_velocity, advance_endpoint; // xyz + quaternion per particle
   bs::Result warm;
   // Reuse FFT plans/buffers and exact solver caches across physical steps.
   // reset() still refreshes all position, orientation and lattice coefficients.
   pm::Mobility mobility;
   ni::Workspace nearfield_workspace;
   imex::Workspace imex_workspace;
+  SlurrySurfaceCoupledStep::Workspace coupled_workspace;
   std::shared_ptr<bs::detail::SolverWorkspace> solver_workspace =
       std::make_shared<bs::detail::SolverWorkspace>();
   bool have_warm = false;
@@ -136,8 +154,12 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
                       "[contact mu_s kt] [rolling mu_r kr_N_per_m] [shape spheroid] "
                       "[spectral xi_a] [spectral_tolerance tol] [mobility_backend nearfield|mesh|direct] "
                       "[contact_scheme imex|coupled] "
+                      "[cohesion work_J_per_m2 opening_range_m] "
+                      "[background AH_J h0_m sigma_m] [surface_adaptive fraction] [surface_roundoff yes|no] "
+                      "[surface_reuse yes|no] [surface_defer yes|no] "
                       "[tolerance rtol] [iterations maxit] [history file interval average_start_strain]");
   auto &p = *p_;
+  p.background.hamaker=0.; // optional background, exact disabled path
   // Freeze a positive-definite contact Jacobian as the Krylov preconditioner;
   // every linear solve still checks the current exact Jacobian residual.
   p.imex_workspace.use_contact_preconditioner = true;
@@ -168,6 +190,58 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
       p.mu_roll = utils::numeric(FLERR, arg[k + 1], false, lmp);
       p.kr = utils::numeric(FLERR, arg[k + 2], false, lmp);
       k += 3;
+    } else if (!std::strcmp(arg[k], "cohesion") && k + 2 < narg) {
+      p.cohesion_work = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      p.cohesion_range = utils::numeric(FLERR, arg[k + 2], false, lmp);
+      k += 3;
+    } else if (!std::strcmp(arg[k], "background") && k + 3 < narg) {
+      p.background.hamaker=utils::numeric(FLERR,arg[k+1],false,lmp);
+      p.background.reference_gap=utils::numeric(FLERR,arg[k+2],false,lmp);
+      p.background.sigma=utils::numeric(FLERR,arg[k+3],false,lmp);
+      k+=4;
+    } else if (!std::strcmp(arg[k], "surface_adaptive") && k + 1 < narg) {
+      p.surface_adaptive=utils::numeric(FLERR,arg[k+1],false,lmp);k+=2;
+    } else if (!std::strcmp(arg[k], "surface_integrator") && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"variation")&&std::strcmp(arg[k+1],"reuse")&&
+          std::strcmp(arg[k+1],"coupled")&&std::strcmp(arg[k+1],"pc")&&std::strcmp(arg[k+1],"dg")&&
+          std::strcmp(arg[k+1],"practical"))
+        error->all(FLERR,"surface_integrator must be variation, reuse, coupled, pc, dg or practical");
+      p.surface_practical=!std::strcmp(arg[k+1],"practical");
+      p.surface_dg=!std::strcmp(arg[k+1],"dg");
+      p.surface_coupled=p.surface_dg||!std::strcmp(arg[k+1],"coupled");
+      p.surface_pc=!std::strcmp(arg[k+1],"pc");
+      p.surface_lagged_hydro=p.surface_coupled||p.surface_pc||p.surface_practical||!std::strcmp(arg[k+1],"reuse");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_direct") && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"yes")&&std::strcmp(arg[k+1],"no"))
+        error->all(FLERR,"surface_direct must be yes or no");
+      p.surface_direct=!std::strcmp(arg[k+1],"yes");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_linear") && k + 1 < narg) {
+      p.surface_linear=utils::numeric(FLERR,arg[k+1],false,lmp);
+      p.surface_linear_specified=true;
+      if(!(p.surface_linear>0.&&p.surface_linear<1.))
+        error->all(FLERR,"surface_linear must be in (0,1)");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_refresh") && k + 1 < narg) {
+      p.surface_refresh=utils::inumeric(FLERR,arg[k+1],false,lmp);
+      if(p.surface_refresh<=0)error->all(FLERR,"surface_refresh must be positive");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_sparse") && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"yes")&&std::strcmp(arg[k+1],"no"))
+        error->all(FLERR,"surface_sparse must be yes or no");
+      p.surface_sparse=!std::strcmp(arg[k+1],"yes");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_neighbors") && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"yes")&&std::strcmp(arg[k+1],"no"))
+        error->all(FLERR,"surface_neighbors must be yes or no");
+      p.surface_neighbors=!std::strcmp(arg[k+1],"yes");k+=2;
+    } else if (!std::strcmp(arg[k], "surface_roundoff") && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"yes")&&std::strcmp(arg[k+1],"no"))
+        error->all(FLERR,"surface_roundoff must be yes or no");
+      p.surface_roundoff=!std::strcmp(arg[k+1],"yes");k+=2;
+    } else if ((!std::strcmp(arg[k], "surface_reuse") || !std::strcmp(arg[k], "surface_defer")) && k + 1 < narg) {
+      if(std::strcmp(arg[k+1],"yes")&&std::strcmp(arg[k+1],"no"))
+        error->all(FLERR,"surface_reuse and surface_defer require yes or no");
+      const bool enabled=!std::strcmp(arg[k+1],"yes");
+      if(!std::strcmp(arg[k],"surface_reuse"))p.surface_reuse=enabled;
+      else p.surface_defer=enabled;
+      k+=2;
     } else if (!std::strcmp(arg[k], "shape") && k + 1 < narg) {
       if (std::strcmp(arg[k+1],"spheroid"))
         error->all(FLERR,"slurry/bridge surface-contact model requires shape spheroid");
@@ -192,6 +266,7 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
       k+=2;
     } else if (!std::strcmp(arg[k], "tolerance") && k + 1 < narg) {
       p.rtol = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      p.tolerance_specified=true;
       k += 2;
     } else if (!std::strcmp(arg[k], "iterations") && k + 1 < narg) {
       p.maxit = utils::inumeric(FLERR, arg[k + 1], false, lmp);
@@ -204,6 +279,12 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     } else
       error->all(FLERR, "Unknown or incomplete slurry/bridge option: {}", arg[k]);
   }
+  if(p.surface_practical) {
+    if(!p.nearfield_mobility||!p.imex_contacts)
+      error->all(FLERR,"surface_integrator practical requires nearfield IMEX");
+    if(!p.tolerance_specified)p.rtol=1e-4;
+    if(!p.surface_linear_specified)p.surface_linear=1e-4;
+  }
   if (p.nearfield_mobility && p.imex_contacts && comm->me == 0) {
     std::fprintf(stderr, "slurry/bridge IMEX iteration limits: primary=%d recovery=%d total=%d per_inner_solve\n",
                  imex_primary_iterations, p.imex_workspace.maximum_recovery_iterations, imex_total_iterations);
@@ -211,13 +292,23 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
   }
   if (!(p.eta > 0 && p.nominal_diameter > 0 && p.epsilon > 0 && p.kn > 0 &&
         p.mu >= 0 && p.kt >= 0 && p.mu_roll >= 0 && p.kr >= 0 &&
+        p.cohesion_work >= 0 && p.cohesion_range > 0 &&
+        p.background.hamaker>=0 && p.surface_adaptive>=0 && p.surface_adaptive<1 &&
         p.spectral > 0 && p.spectral_tol > 0 && p.spectral_tol < 1 && p.rtol > 0 && p.rtol < 1 &&
         p.maxit > 0 && p.interval > 0 && p.avg_start >= 0) ||
       !std::isfinite(p.eta + p.shear + p.nominal_diameter + p.epsilon + p.kn + p.mu + p.kt +
-                     p.mu_roll + p.kr + p.spectral + p.spectral_tol + p.rtol + p.avg_start) ||
+                     p.mu_roll + p.kr + p.spectral + p.spectral_tol + p.rtol + p.avg_start +
+                     p.cohesion_work + p.cohesion_range + p.background.hamaker + p.surface_adaptive) ||
       !(p.regularization_length > 0 && std::isfinite(p.regularization_length)) ||
       (p.mu > 0 && p.kt == 0) || (p.mu_roll > 0 && p.kr == 0))
     error->all(FLERR, "Invalid slurry/bridge material or numerical parameter");
+  try { SlurrySurfaceBackground::validate(p.background); }
+  catch(const std::exception &e) { error->all(FLERR,e.what()); }
+  if((p.cohesion_work>0. || p.background.hamaker>0.) && (!p.nearfield_mobility || !p.imex_contacts))
+    error->all(FLERR,"Surface cohesion currently requires nearfield frozen-cap IMEX");
+  if((p.surface_pc||p.surface_coupled)&&(!p.nearfield_mobility||!p.imex_contacts||
+      !(p.surface_adaptive>0.)||!(p.cohesion_work>0.||p.background.hamaker>0.)))
+    error->all(FLERR,"PC/coupled surface integration requires nearfield IMEX, surface forces and surface_adaptive > 0");
   if (!filename.empty() && comm->me == 0) {
     p.csv.open(filename, std::ios::trunc);
     if (!p.csv)
@@ -244,7 +335,13 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "max_overlap_fraction_min_semiaxis,actual_endpoint_max_overlap_fraction_min_semiaxis,"
              "minimum_semiaxis_m,force_geometry_time_s,force_history_time_s,time_integrator,"
              "friction_cap_time_s,max_normal_cap_lag_N,normal_cap_lag_l1_fraction,"
-             "max_sliding_cap_excess_N,max_rolling_cap_excess_N_m,detached_history_release_energy_J\n";
+             "max_sliding_cap_excess_N,max_rolling_cap_excess_N_m,detached_history_release_energy_J,"
+             "sigma_cohesion_Pa,cohesion_energy_J,cohesion_power_W,cohesive_pairs,"
+             "sigma_background_Pa,background_energy_J,background_power_W,background_pairs,"
+             "substeps,substep_rejections,minimum_substep_s,maximum_surface_error,"
+             "roundoff_budget,max_roundoff_fraction,solver_acceptance_ratio,"
+             "surface_quadrature_evaluations,surface_quadrature_max_relative_work_defect,surface_quadrature_max_panels,"
+             "surface_potential_change_power_W,surface_path_work_power_W\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -326,6 +423,14 @@ void FixSlurryBridge::initial_integrate(int) {
       error->one(FLERR,"slurry/bridge missing prepared corrector velocity for atom {}",atom->tag[i]);
     const Eigen::Index j=found-p.advance_tags.begin();
     const V3 w=p.advance_velocity.segment<3>(6*j+3);
+    if(p.direct_advance) {
+      if(p.advance_endpoint.size()!=7*static_cast<Eigen::Index>(p.advance_tags.size()))
+        error->one(FLERR,"slurry/bridge missing prepared adaptive endpoint");
+      for(int k=0;k<3;++k)atom->x[i][k]=p.advance_endpoint[7*j+k];
+      for(int k=0;k<4;++k)b.quat[k]=p.advance_endpoint[7*j+3+k];
+      store_momentum(atom,p.avec,i,w);
+      continue;
+    }
     for (int k = 0; k < 3; ++k)
       atom->x[i][k] += dt * p.advance_velocity[6*j+k];
     Eigen::Quaterniond q = step::rotate(
@@ -361,7 +466,9 @@ void FixSlurryBridge::solve_velocities() {
     error->all(FLERR, "slurry/bridge particle count invalid");
   Eigen::VectorXd physical = Eigen::VectorXd::Zero(6 * n),
                   advance_physical = Eigen::VectorXd::Zero(6 * n),
-                  moments = Eigen::VectorXd::Zero(17 * n);
+                  moments = Eigen::VectorXd::Zero(17 * n),
+                  direct_endpoint=Eigen::VectorXd::Zero(7*n);
+  int direct_advance=0;
   int failed = 0;
   std::string message;
   const char *phase = "initial validation";
@@ -447,6 +554,31 @@ void FixSlurryBridge::solve_velocities() {
         for (int i = 0; i < n; ++i)
           p.tags[i] = records[i].tag;
       }
+      const bool has_surface=p.cohesion_work>0.||p.background.hamaker>0.;
+      p.imex_workspace.use_roundoff_budget=has_surface&&p.surface_roundoff;
+      p.imex_workspace.endpoint_inner_tolerance_fraction=p.surface_practical?1.:.1;
+      p.imex_workspace.require_endpoint_constitutive_match=!p.surface_practical;
+      p.imex_workspace.defer_candidate_validation=(p.surface_practical||(has_surface&&p.surface_adaptive>0.))&&p.surface_defer;
+      p.imex_workspace.reuse_contact_preconditioner_across_solves=
+          (p.surface_practical||(has_surface&&p.surface_adaptive>0.))&&p.surface_reuse;
+      p.imex_workspace.contact_preconditioner_refresh_iterations=p.surface_refresh;
+      if(has_surface||p.surface_practical)p.imex_workspace.linear_relative_target=p.surface_linear;
+      p.imex_workspace.use_krylov=!(has_surface&&p.surface_direct);
+      auto background_parameters=p.background;
+      background_parameters.hamaker/=p.eta*std::pow(length,3)*rate;
+      background_parameters.sigma/=length;background_parameters.reference_gap/=length;
+      background_parameters.curvature_switch/=length;background_parameters.curvature_cutoff/=length;
+      background_parameters.far_switch/=length;background_parameters.far_cutoff/=length;
+      const SlurrySurfaceCohesion::Parameters cohesion_parameters{
+          p.cohesion_work/(p.eta*length*rate),p.cohesion_range/length};
+      struct SurfaceSample {
+        SlurrySurfaceCohesion::Result cohesion;
+        SlurrySurfaceBackground::Result background;
+      };
+      struct ScreenedPair {int i,j; im::ImageIndex image; gr::Vec3 normal;};
+      const double surface_support=std::max(p.cohesion_work>0.?cohesion_parameters.opening_range:0.,
+          p.background.hamaker>0.?background_parameters.far_cutoff-background_parameters.reference_gap:0.);
+      const bool sparse_contacts=(p.surface_practical||(has_surface&&p.surface_adaptive>0.))&&p.surface_sparse&&!p.surface_dg;
       struct Frame {
         bs::Problem problem;
         step::Geometry geometry;
@@ -454,14 +586,32 @@ void FixSlurryBridge::solve_velocities() {
         std::vector<V3> displacements;
         double min_gap=0., overlap=0., overlap_fraction=0., geometry_time=0., middle_time=0.;
         int active_near=0;
+        M3 cohesion_stress=M3::Zero();
+        double cohesion_energy=0.;
+        int cohesive_pairs=0,background_pairs=0;
+        M3 background_stress=M3::Zero();double background_energy=0.;
+        bs::Vector background_external;
+        std::vector<SurfaceSample> surface_samples;
+        std::vector<gr::GapResult> surface_geometry;
+        std::vector<ScreenedPair> screened_pairs;
         pm::Settings settings;
+      };
+      auto candidate_cache=std::make_shared<SlurryVerletImages::Cache>();
+      auto center_cutoff=[&](int i,int j) {
+        const double ai=shape::bounding_radius(bodies[i],false),aj=shape::bounding_radius(bodies[j],false);
+        const auto pair_lengths=nh::pair_lengths(volume_radii[i],volume_radii[j],p.epsilon);
+        const double interaction=p.nearfield_mobility?pair_lengths.cutoff:std::min(ai,aj);
+        double surface=p.cohesion_work>0.?cohesion_parameters.opening_range:0.;
+        if(p.background.hamaker>0.)surface=std::max(surface,background_parameters.far_cutoff);
+        return ai+aj+std::max(interaction,surface);
       };
       auto assemble = [&](const std::vector<gr::Body> &stage_bodies, const M3 &stage_H,
                           const std::vector<Eigen::Quaterniond> &stage_quaternions,
-                          const std::map<PairKey,std::vector<History>> &stage_history) -> Frame {
+                          const std::map<PairKey,std::vector<History>> &stage_history, double stage_dt,
+                          const Frame* hydro_frame=nullptr) -> Frame {
       bs::Problem problem;
       problem.count = n;
-      problem.dt = dt;
+      problem.dt = stage_dt;
       problem.external = Eigen::VectorXd::Zero(6 * n);
       problem.prescribed = Eigen::VectorXd::Zero(11 * n);
       for (int i = 0; i < n; ++i)
@@ -470,29 +620,79 @@ void FixSlurryBridge::solve_velocities() {
       std::vector<Eigen::Triplet<double>> entries;
       std::vector<PairKey> contact_keys;
       std::vector<V3> contact_displacements;
+      std::vector<gr::GapResult> surface_geometry;
       std::vector<im::ImageIndex> contact_images;
       int active_near = 0;
+      M3 cohesion_stress=M3::Zero();
+      double cohesion_energy=0.;
+      int cohesive_pairs=0;
+      M3 background_stress=M3::Zero();double background_energy=0.;int background_pairs=0;
+      bs::Vector background_external=bs::Vector::Zero(6*n);
+      std::vector<SurfaceSample> surface_samples;
+      std::vector<ScreenedPair> screened_pairs;
       double min_gap = std::numeric_limits<double>::infinity(), overlap = 0, overlap_fraction = 0;
       double section = MPI_Wtime();
-      const im::ImageEnumerator image_enumerator(stage_H);
-      for (int i = 0; i < n; ++i)
-        for (int j = i; j < n; ++j) {
-          const double ai = shape::bounding_radius(stage_bodies[i],false),
-                       aj = shape::bounding_radius(stage_bodies[j],false);
-          const auto pair_lengths=nh::pair_lengths(volume_radii[i],volume_radii[j],p.epsilon);
-          const double rc = ai + aj + (p.nearfield_mobility
-              ? pair_lengths.cutoff : std::min(ai,aj));
-          const V3 original = vec(stage_bodies[j].position) - vec(stage_bodies[i].position);
-          for (const auto &image : image_enumerator.within(original, rc)) {
-            if (i == j && !im::positive_image(image.image))
-              continue;
-            const V3 d = image.displacement;
+      const bool use_candidates=(has_surface||p.surface_practical)&&(p.surface_neighbors||p.surface_dg);
+      std::vector<SlurryVerletImages::Candidate> exhaustive;
+      if(use_candidates) {
+        if(!candidate_cache->valid(stage_bodies,stage_H,p.surface_dg?.5:0.))
+          candidate_cache->build(stage_bodies,stage_H,center_cutoff,.1*minimum_volume_radius);
+      } else {
+        const im::ImageEnumerator enumerate(stage_H);
+        for(int i=0;i<n;++i)for(int j=i;j<n;++j) {
+          const V3 d=vec(stage_bodies[j].position)-vec(stage_bodies[i].position);
+          for(const auto &image:enumerate.within(d,center_cutoff(i,j))) {
+            if(i==j&&!im::positive_image(image.image))continue;
+            exhaustive.push_back({i,j,image.image});
+          }
+        }
+      }
+      const auto &candidates=use_candidates?candidate_cache->candidates():exhaustive;
+      for(const auto &candidate:candidates) {
+            const int i=candidate.i,j=candidate.j;
+            const auto pair_lengths=nh::pair_lengths(volume_radii[i],volume_radii[j],p.epsilon);
+            const V3 original=vec(stage_bodies[j].position)-vec(stage_bodies[i].position);
+            const V3 shift=stage_H*candidate.image.cast<double>();
+            const im::Image image{candidate.image,original+shift};
+            const V3 d=image.displacement;
+            const double rc=center_cutoff(i,j);
+            const double tolerance=64.*std::numeric_limits<double>::epsilon()*
+                std::max({rc,original.norm(),shift.norm(),std::numeric_limits<double>::min()});
+            if(!p.surface_dg&&d.norm()>rc+tolerance)continue;
             auto bj = stage_bodies[j];
             bj.position = arr(vec(stage_bodies[i].position) + d);
             const auto gap = exact_gap(stage_bodies[i],bj,i,j,image.image);
+            SurfaceSample surface;
+            if(p.cohesion_work>0. && gap.gap<cohesion_parameters.opening_range) {
+              const auto attraction=SlurrySurfaceCohesion::evaluate(stage_bodies[i],bj,gap,cohesion_parameters);
+              surface.cohesion=attraction;
+              problem.external.segment<3>(6*i)+=vec(attraction.force_i);
+              problem.external.segment<3>(6*i+3)+=vec(attraction.torque_i);
+              problem.external.segment<3>(6*j)+=vec(attraction.force_j);
+              problem.external.segment<3>(6*j+3)+=vec(attraction.torque_j);
+              const V3 fi=vec(attraction.force_i);
+              cohesion_stress+=.5*(d*fi.transpose()+fi*d.transpose());
+              cohesion_energy+=attraction.energy;
+              ++cohesive_pairs;
+            }
+            if(p.background.hamaker>0. && gap.gap<background_parameters.far_cutoff-background_parameters.reference_gap) {
+              const auto attraction=SlurrySurfaceBackground::evaluate(stage_bodies[i],bj,gap,background_parameters);
+              surface.background=attraction;
+              background_external.segment<3>(6*i)+=vec(attraction.force_i);
+              background_external.segment<3>(6*i+3)+=vec(attraction.torque_i);
+              background_external.segment<3>(6*j)+=vec(attraction.force_j);
+              background_external.segment<3>(6*j+3)+=vec(attraction.torque_j);
+              const V3 fi=vec(attraction.force_i);
+              background_stress+=.5*(d*fi.transpose()+fi*d.transpose());
+              background_energy+=attraction.energy;++background_pairs;
+            }
+
             Eigen::Matrix<double,22,22> near_resistance;
-            bool near_active;
-            if(p.nearfield_mobility) {
+            bool near_active=false;
+            if(hydro_frame) {
+              // Hold only the hydrodynamic operator over this macro interval.
+              // Mechanical geometry, cohesion, background and histories stay current.
+            } else if(p.nearfield_mobility) {
               // Mari's gap normalization uses the mean pair radius. The nonspherical extension
               // additionally restricts the range by local surface curvature.
               const auto near=nh::evaluate(stage_bodies[i],bj,gap,1.,1.,
@@ -516,6 +716,12 @@ void FixSlurryBridge::solve_velocities() {
                                          11 * (c < 11 ? i : j) + c % 11, value);
                 }
             }
+            if(sparse_contacts&&gap.gap>surface_support+.1*minimum_volume_radius) {
+              screened_pairs.push_back({i,j,image.image,gap.normal});
+              continue;
+            }
+            if(has_surface)surface_samples.push_back(surface);
+            if(p.surface_dg)surface_geometry.push_back(gap);
             bs::Contact contact;
             contact.i = i;
             contact.j = j;
@@ -558,11 +764,16 @@ void FixSlurryBridge::solve_velocities() {
             contact_keys.push_back(key);
             contact_displacements.push_back(d);
             contact_images.push_back(image.image);
-          }
-        }
-      problem.near_resistance.resize(11 * n, 11 * n);
-      problem.near_resistance.setFromTriplets(entries.begin(), entries.end());
-      problem.near_resistance.makeCompressed();
+      }
+      if(p.background.hamaker>0.)problem.external+=background_external;
+      if(hydro_frame) {
+        problem.near_resistance=hydro_frame->problem.near_resistance;
+        active_near=hydro_frame->active_near;
+      } else {
+        problem.near_resistance.resize(11 * n, 11 * n);
+        problem.near_resistance.setFromTriplets(entries.begin(), entries.end());
+        problem.near_resistance.makeCompressed();
+      }
       double geometry_time = MPI_Wtime() - section;
       section = MPI_Wtime();
       double amax = 0;
@@ -586,7 +797,8 @@ void FixSlurryBridge::solve_velocities() {
         std::fflush(stderr);
       }
       if(p.nearfield_mobility) {
-        problem.self_mobility=ns::build_self_mobility(stage_bodies,p.hydro_workspace());
+        problem.self_mobility=hydro_frame?hydro_frame->problem.self_mobility:
+            ns::build_self_mobility(stage_bodies,p.hydro_workspace());
         settings.threads=1;
       } else {
         std::vector<pm::Body> stage_middle_bodies(n);
@@ -605,15 +817,27 @@ void FixSlurryBridge::solve_velocities() {
         out.displacements=std::move(contact_displacements);
         out.min_gap=min_gap;out.overlap=overlap;out.overlap_fraction=overlap_fraction;out.active_near=active_near;
         out.geometry_time=geometry_time;out.middle_time=middle_time;out.settings=settings;
+        out.cohesion_stress=cohesion_stress;out.cohesion_energy=cohesion_energy;
+        out.cohesive_pairs=cohesive_pairs;
+        out.background_stress=background_stress;out.background_energy=background_energy;
+        out.background_pairs=background_pairs;out.background_external=std::move(background_external);
+        out.surface_samples=std::move(surface_samples);
+        out.surface_geometry=std::move(surface_geometry);
+        out.screened_pairs=std::move(screened_pairs);
         out.geometry.bodies=stage_bodies;out.geometry.quaternions=stage_quaternions;
         out.geometry.lattice=stage_H;out.geometry.kappa=kappa;
         out.geometry.ambient_rotation=omega_inf;out.geometry.contact_onset=0.;
+        if(p.surface_coupled||p.surface_pc||p.surface_practical) {
+          out.geometry.validation_support=surface_support;
+          out.geometry.candidate_cache_support=surface_support;
+        }
         out.geometry.flake=false;out.geometry.gap_tolerance=1e-8*p.epsilon*minimum_volume_radius;
         out.geometry.enforce_work_balance=false;out.geometry.images=std::move(contact_images);
+        if(use_candidates)out.geometry.candidate_cache=candidate_cache;
         return out;
       };
       phase="current assembly";
-      auto current=assemble(bodies,H,quaternions,p.history);
+      auto current=assemble(bodies,H,quaternions,p.history,dt);
       auto &problem=current.problem;
       auto &geometry=current.geometry;
       auto &contact_keys=current.keys;
@@ -630,7 +854,7 @@ void FixSlurryBridge::solve_velocities() {
       options.workspace = p.solver_workspace;
       options.relative_tolerance = p.rtol;
       options.maximum_linear_iterations = p.maxit;
-      options.linear_relative_tolerance = std::min(1e-6, .1 * p.rtol);
+      options.linear_relative_tolerance = p.surface_practical?p.surface_linear:std::min(1e-6, .1 * p.rtol);
       options.max_linear_forcing = .05;
       if (trace_solver) {
         std::fprintf(stderr, "bridge mobility step=%lld backend=%s modes=%zu storage_bytes=%zu setup_s=%.6g\n",
@@ -653,6 +877,497 @@ void FixSlurryBridge::solve_velocities() {
           std::fflush(stderr);
         };
       }
+      if(p.surface_practical||(has_surface && p.surface_adaptive>0.)) {
+        namespace ad=SlurryAdaptiveStep;
+        phase="adaptive coupled surface/contact integration";
+        struct Payload {
+          std::shared_ptr<Frame> frame;
+          step::Result solved;
+          imex::FrozenCaps caps;
+          std::vector<SurfaceSample> endpoint_samples;
+          std::vector<SurfaceSample> applied_samples;
+          std::vector<SlurrySurfaceDiscreteGradient::Result> integrated_surface;
+          imex::FrozenCaps initial_caps;
+          M3 endpoint_cohesion_stress=M3::Zero(),endpoint_background_stress=M3::Zero();
+          M3 applied_cohesion_stress=M3::Zero(),applied_background_stress=M3::Zero();
+          bs::Vector endpoint_background_external;
+          bs::Vector applied_background_external;
+          double endpoint_cohesion_energy=0.,endpoint_background_energy=0.;
+          double applied_cohesion_energy=0.,applied_background_energy=0.;
+          int endpoint_cohesive_pairs=0,endpoint_background_pairs=0;
+          double roundoff=0.,roundoff_fraction=0.,acceptance_ratio=0.;
+        };
+        struct State {
+          std::vector<gr::Body> bodies;
+          std::vector<Eigen::Quaterniond> quaternions;
+          M3 lattice;
+          std::map<PairKey,std::vector<History>> history;
+          bs::Result warm;
+          bool have_warm=false;
+          mutable std::shared_ptr<Frame> cached_frame;
+          std::shared_ptr<Payload> payload;
+        };
+        State initial{bodies,quaternions,H,p.history,p.warm,p.have_warm,
+                      std::make_shared<Frame>(current),{}};
+        const double stress_scale=p.eta*rate/volume;
+        const double energy_scale=p.eta*std::pow(length,3)*rate;
+        const double power_scale=energy_scale*rate,force_scale=p.eta*length*length*rate;
+        const double fraction=p.surface_adaptive,work_fraction=.5*fraction*fraction;
+        double solve_seconds=0.;
+        p.diag.fill(0);p.stress.fill(0.);
+        p.diag[4]=p.diag[27]=std::numeric_limits<double>::infinity();
+        p.imex_workspace.maximum_roundoff_tolerance=0.;
+        auto attempt=[&](const State &state,double sub_dt)->ad::Trial<State> {
+          if(!state.cached_frame) {
+            auto frame=assemble(state.bodies,state.lattice,state.quaternions,state.history,sub_dt,
+                p.surface_lagged_hydro&&p.nearfield_mobility?&current:nullptr);
+            geometry_time+=frame.geometry_time;middle_time+=frame.middle_time;
+            state.cached_frame=std::make_shared<Frame>(std::move(frame));
+          }
+          auto data=std::make_shared<Payload>();
+          // Old-force paths only change this numerical cache's trial dt.
+          // Their physical geometry/history/external loads remain immutable;
+          // endpoint/PC paths retain a private copy because they change loads.
+          data->frame=(p.surface_coupled||p.surface_pc)?
+              std::make_shared<Frame>(*state.cached_frame):state.cached_frame;
+          auto &f=*data->frame;auto &pb=f.problem;pb.dt=sub_dt;
+          data->caps=imex::freeze_caps(pb);
+          auto endpoint_surface=[&](const step::Endpoint&end) {
+            SlurrySurfaceCoupledStep::SurfaceEvaluation answer;
+            answer.external=bs::Vector::Zero(6*n);
+            answer.attraction_gap_derivative.assign(pb.contacts.size(),0.);
+            data->endpoint_samples.assign(pb.contacts.size(),{});
+            data->endpoint_cohesion_stress.setZero();data->endpoint_background_stress.setZero();
+            data->endpoint_background_external=bs::Vector::Zero(6*n);
+            data->endpoint_cohesion_energy=data->endpoint_background_energy=0.;
+            data->endpoint_cohesive_pairs=data->endpoint_background_pairs=0;
+            for(std::size_t k=0;k<pb.contacts.size();++k) {
+              const auto&c=pb.contacts[k];auto bj=end.bodies[c.j];
+              const V3 d=vec(bj.position)-vec(end.bodies[c.i].position)+
+                  end.lattice*f.geometry.images[k].cast<double>();
+              bj.position=arr(vec(end.bodies[c.i].position)+d);
+              if(end.gaps[k]>=surface_support)continue;
+              const auto gap=end.pair_geometry.size()==pb.contacts.size()?end.pair_geometry[k]:
+                  exact_gap(end.bodies[c.i],bj,c.i,c.j,f.geometry.images[k]);
+              auto&sample=data->endpoint_samples[k];
+              if(p.cohesion_work>0.&&gap.gap<cohesion_parameters.opening_range) {
+                sample.cohesion=SlurrySurfaceCohesion::evaluate(end.bodies[c.i],bj,gap,cohesion_parameters);
+                const auto&a=sample.cohesion;
+                answer.external.segment<3>(6*c.i)+=vec(a.force_i);
+                answer.external.segment<3>(6*c.i+3)+=vec(a.torque_i);
+                answer.external.segment<3>(6*c.j)+=vec(a.force_j);
+                answer.external.segment<3>(6*c.j+3)+=vec(a.torque_j);
+                data->endpoint_cohesion_stress+=.5*(d*vec(a.force_i).transpose()+vec(a.force_i)*d.transpose());
+                data->endpoint_cohesion_energy+=a.energy;++data->endpoint_cohesive_pairs;
+                if(gap.gap>0.)answer.attraction_gap_derivative[k]-=
+                    a.attraction_at_contact/cohesion_parameters.opening_range;
+              }
+              if(p.background.hamaker>0.&&gap.gap<background_parameters.far_cutoff-background_parameters.reference_gap) {
+                sample.background=SlurrySurfaceBackground::evaluate(end.bodies[c.i],bj,gap,background_parameters);
+                const auto&a=sample.background;
+                data->endpoint_background_external.segment<3>(6*c.i)+=vec(a.force_i);
+                data->endpoint_background_external.segment<3>(6*c.i+3)+=vec(a.torque_i);
+                data->endpoint_background_external.segment<3>(6*c.j)+=vec(a.force_j);
+                data->endpoint_background_external.segment<3>(6*c.j+3)+=vec(a.torque_j);
+                data->endpoint_background_stress+=.5*(d*vec(a.force_i).transpose()+vec(a.force_i)*d.transpose());
+                data->endpoint_background_energy+=a.energy;++data->endpoint_background_pairs;
+                const double h=gap.gap+background_parameters.reference_gap;
+                // Stiff near-gap tangent only; accepted forces retain all
+                // curvature and switching derivatives of the original law.
+                if(gap.gap>0.&&h<background_parameters.curvature_switch) {
+                  const double R=a.attraction_at_contact/(2.*std::acos(-1.)*
+                      SlurrySurfaceBackground::work_of_separation(background_parameters));
+                  answer.attraction_gap_derivative[k]+=2.*R*background_parameters.hamaker*
+                      (-1./(6.*h*h*h)+std::pow(background_parameters.sigma/h,6)/(45.*h*h*h));
+                }
+              }
+            }
+            answer.external+=data->endpoint_background_external;
+            return answer;
+          };
+          auto integrated_surface=[&](const step::Endpoint&end) {
+            namespace dg=SlurrySurfaceDiscreteGradient;
+            auto answer=endpoint_surface(end);
+            answer.external.setZero();
+            data->applied_samples.assign(pb.contacts.size(),{});
+            data->integrated_surface.assign(pb.contacts.size(),{});
+            data->applied_cohesion_stress.setZero();data->applied_background_stress.setZero();
+            data->applied_background_external=bs::Vector::Zero(6*n);
+            for(std::size_t k=0;k<pb.contacts.size();++k) {
+              const auto&c=pb.contacts[k];
+              dg::Path path;
+              path.initial_i=state.bodies[c.i];path.initial_j=state.bodies[c.j];
+              path.initial_j.position=arr(vec(path.initial_i.position)+f.displacements[k]);
+              path.final_i=end.bodies[c.i];path.final_j=end.bodies[c.j];
+              const V3 end_d=vec(path.final_j.position)-vec(path.final_i.position)+
+                  end.lattice*f.geometry.images[k].cast<double>();
+              path.final_j.position=arr(vec(path.final_i.position)+end_d);
+              path.relative_displacement=arr(end_d-f.displacements[k]);
+              path.rotation_i=arr(end.rotation_increments[c.i]);
+              path.rotation_j=arr(end.rotation_increments[c.j]);
+              const dg::Sample initial_sample{f.surface_geometry[k],
+                  f.surface_samples[k].cohesion,f.surface_samples[k].background};
+              const dg::Sample endpoint_sample{end.pair_geometry[k],
+                  data->endpoint_samples[k].cohesion,data->endpoint_samples[k].background};
+              auto&r=data->integrated_surface[k];
+              r=dg::evaluate(path,cohesion_parameters,background_parameters,{},
+                             &initial_sample,&endpoint_sample);
+              p.diag[67]+=r.evaluations;
+              p.diag[69]=std::max(p.diag[69],double(r.panels));
+              for(const auto*a:{&r.cohesion,&r.background})if(a->work_scale>0.)
+                p.diag[68]=std::max(p.diag[68],std::abs(a->work_defect)/a->work_scale);
+              auto accumulate=[&](const dg::KernelIntegral&a,auto&sample,M3&stress,bs::Vector&external) {
+                sample.force_i=a.force_i;sample.force_j=a.force_j;
+                sample.torque_i=a.torque_i;sample.torque_j=a.torque_j;
+                sample.active=a.average_energy!=0.;
+                external.segment<3>(6*c.i)+=vec(a.force_i);
+                external.segment<3>(6*c.i+3)+=vec(a.torque_i);
+                external.segment<3>(6*c.j)+=vec(a.force_j);
+                external.segment<3>(6*c.j+3)+=vec(a.torque_j);
+                for(int row=0;row<3;++row)for(int col=0;col<3;++col)
+                  stress(row,col)+=a.symmetric_virial[3*row+col];
+              };
+              accumulate(r.cohesion,data->applied_samples[k].cohesion,
+                  data->applied_cohesion_stress,answer.external);
+              accumulate(r.background,data->applied_samples[k].background,
+                  data->applied_background_stress,data->applied_background_external);
+              answer.attraction_gap_derivative[k]=r.cohesion.approximate_normal_tangent+
+                  r.background.approximate_normal_tangent;
+            }
+            answer.external+=data->applied_background_external;
+            return answer;
+          };
+          auto surface_force=[&](const step::Endpoint&end) {
+            return p.surface_dg?integrated_surface(end):endpoint_surface(end);
+          };
+          const double solve_start=MPI_Wtime();
+          int predictor_newton=0,predictor_linear=0;
+          try {
+            if(p.surface_coupled) {
+              auto coupled=SlurrySurfaceCoupledStep::solve(pb,f.geometry,options,p.imex_workspace,
+                  surface_force,state.have_warm?&state.warm:nullptr,&p.coupled_workspace);
+              data->solved=std::move(coupled.solved);data->caps=std::move(coupled.caps);
+              surface_force(data->solved.endpoint);
+              pb.external=std::move(coupled.external);
+            } else if(p.surface_pc) {
+              const auto prediction=nstep::solve_imex(pb,data->caps,f.geometry,options,p.imex_workspace,
+                  state.have_warm?&state.warm:nullptr);
+              predictor_newton=prediction.solution.newton_iterations;
+              predictor_linear=prediction.solution.linear_iterations;
+              const auto predicted_surface=endpoint_surface(prediction.endpoint);
+              data->initial_caps=data->caps;
+              data->applied_samples=f.surface_samples;
+              auto average=[](auto&dst,const auto&src) {
+                dst.attraction_at_contact=std::max(dst.attraction_at_contact,src.attraction_at_contact);
+                dst.active=dst.active||src.active;
+                for(int d=0;d<3;++d) {
+                  dst.force_i[d]=.5*(dst.force_i[d]+src.force_i[d]);
+                  dst.force_j[d]=.5*(dst.force_j[d]+src.force_j[d]);
+                  dst.torque_i[d]=.5*(dst.torque_i[d]+src.torque_i[d]);
+                  dst.torque_j[d]=.5*(dst.torque_j[d]+src.torque_j[d]);
+                }
+              };
+              for(std::size_t k=0;k<pb.contacts.size();++k) {
+                average(data->applied_samples[k].cohesion,data->endpoint_samples[k].cohesion);
+                average(data->applied_samples[k].background,data->endpoint_samples[k].background);
+                data->caps[k]=.5*(data->caps[k]+prediction.solution.contacts[k].normal_load);
+              }
+              data->applied_cohesion_stress=.5*(f.cohesion_stress+data->endpoint_cohesion_stress);
+              data->applied_background_stress=.5*(f.background_stress+data->endpoint_background_stress);
+              data->applied_background_external=.5*(f.background_external+data->endpoint_background_external);
+              data->applied_cohesion_energy=.5*(f.cohesion_energy+data->endpoint_cohesion_energy);
+              data->applied_background_energy=.5*(f.background_energy+data->endpoint_background_energy);
+              pb.external=.5*(pb.external+predicted_surface.external);
+              data->solved=nstep::solve_imex(pb,data->caps,f.geometry,options,p.imex_workspace,&prediction.solution);
+              data->solved.solution.newton_iterations+=prediction.solution.newton_iterations;
+              data->solved.solution.linear_iterations+=prediction.solution.linear_iterations;
+              data->solved.solution.descent_steps+=prediction.solution.descent_steps;
+              data->solved.geometry_iterations+=prediction.geometry_iterations;
+              endpoint_surface(data->solved.endpoint);
+            } else data->solved=nstep::solve_imex(pb,data->caps,f.geometry,options,p.imex_workspace,
+                                                state.have_warm?&state.warm:nullptr);
+          } catch(const bs::NonlinearFailure &e) {
+            solve_seconds+=MPI_Wtime()-solve_start;
+            p.diag[8]+=e.linear_iterations+predictor_linear;
+            p.diag[9]+=e.newton_iterations+predictor_newton;
+            return ad::Trial<State>::retry(e.what());
+          } catch(const std::runtime_error &e) {
+            solve_seconds+=MPI_Wtime()-solve_start;
+            p.diag[8]+=predictor_linear;p.diag[9]+=predictor_newton;
+            if(std::string(e.what()).find("surface AVF ")!=std::string::npos ||
+               std::string(e.what()).find("endpoint correction did not converge")!=std::string::npos ||
+               std::string(e.what()).find("IMEX: convex Newton limit")!=std::string::npos ||
+               std::string(e.what()).find("bridge endpoint gained an unlisted contact; reduce timestep")!=std::string::npos)
+              return ad::Trial<State>::retry(e.what());
+            throw;
+          }
+          solve_seconds+=MPI_Wtime()-solve_start;
+          const auto &sol=data->solved.solution;
+          const auto &end=data->solved.endpoint;
+          p.diag[8]+=sol.linear_iterations;p.diag[9]+=sol.newton_iterations;
+          p.diag[20]+=sol.descent_steps;p.diag[21]+=sol.continuation_stages;
+          p.diag[22]+=sol.continuation_retries;p.diag[23]+=sol.mobility_applications;
+          p.diag[24]+=sol.breakpoint_steps;
+          // DG retains every buffered candidate. The cache certificate at
+          // both endpoints covers the entire linear center/lattice path, so
+          // an omitted pair cannot enter and leave support invisibly.
+          if(p.surface_dg&&!candidate_cache->valid(end.bodies,end.lattice))
+            return ad::Trial<State>::retry("surface AVF path exceeded its candidate buffer");
+          data->roundoff=p.imex_workspace.last_roundoff_tolerance;
+          data->acceptance_ratio=p.imex_workspace.last_acceptance_ratio;
+          if(data->roundoff>0.)
+            data->roundoff_fraction=data->roundoff/std::max(
+                p.imex_workspace.last_acceptance_tolerance,std::numeric_limits<double>::min());
+          // A screened pair must remain outside ALL surface-force support at
+          // the accepted endpoint. Otherwise retry; the buffer includes it in
+          // a later assembly before force engagement. HI was never screened.
+          const double screened_start=MPI_Wtime();
+          for(const auto &pair:f.screened_pairs) {
+            auto bj=end.bodies[pair.j];
+            bj.position=arr(vec(bj.position)+end.lattice*pair.image.cast<double>());
+            if(SlurrySupportBound::separated(end.bodies[pair.i],bj,pair.normal,surface_support))continue;
+            const auto gap=exact_gap(end.bodies[pair.i],bj,pair.i,pair.j,pair.image);
+            if(gap.gap<surface_support) {
+              geometry_time+=MPI_Wtime()-screened_start;
+              return ad::Trial<State>::retry("screened pair entered surface support; reduce timestep");
+            }
+          }
+          geometry_time+=MPI_Wtime()-screened_start;
+          State next;next.bodies=end.bodies;next.lattice=end.lattice;
+          next.quaternions.resize(n);next.have_warm=true;next.warm=sol;next.payload=data;
+          for(int i=0;i<n;++i)next.quaternions[i]=step::rotate(state.quaternions[i],
+              sol.velocity.segment<3>(6*i+3)+omega_inf,sub_dt);
+          double error_ratio=0.,cap_work_sum=0.,cap_scale_sum=0.;
+          const double monitor_start=MPI_Wtime();
+          for(std::size_t k=0;k<pb.contacts.size();++k) {
+            const auto &c=pb.contacts[k];const auto &response=sol.contacts[k];
+            const V3 end_d=vec(end.bodies[c.j].position)-vec(end.bodies[c.i].position)+
+                end.lattice*f.geometry.images[k].cast<double>();
+            if(response.active) {
+              History h;h.elastic=response.tangent_history;h.rolling=response.rolling_history;
+              h.normal=c.normal;
+              h.angle=.5*sub_dt*(sol.velocity.segment<3>(6*c.i+3)+
+                                    sol.velocity.segment<3>(6*c.j+3)+2.*omega_inf);
+              h.predicted=end_d;next.history[f.keys[k]].push_back(h);
+            }
+            if(p.surface_practical) {
+              // No pair-force, pair-work or cap-lag accuracy gate. Only a
+              // resolved physical overlap above the declared model limit can
+              // reject an otherwise converged macro step here.
+              error_ratio=std::max(error_ratio,std::max(0.,-end.gaps[k])/
+                  (.05*std::min(minimum_axis(state.bodies[c.i]),minimum_axis(state.bodies[c.j]))));
+              continue;
+            }
+            if(p.surface_dg) {
+              // Quadrature tests the work of the full potential along this
+              // interval. Endpoint rectangular-force work is not an error
+              // estimate for an interval-averaged applied force.
+              const auto&r=data->integrated_surface[k];
+              for(const auto*a:{&r.cohesion,&r.background})if(a->work_scale>0.)
+                error_ratio=std::max(error_ratio,std::abs(a->work_defect)/(work_fraction*a->work_scale));
+              continue;
+            }
+            const auto &old=f.surface_samples[k];
+            const bool predicted_cohesion=p.surface_pc&&data->applied_samples[k].cohesion.active;
+            const bool predicted_background=p.surface_pc&&data->applied_samples[k].background.active;
+            const bool possible_cohesion=p.cohesion_work>0. &&
+                (predicted_cohesion||std::min(c.gap,end.gaps[k])<cohesion_parameters.opening_range);
+            const bool possible_background=p.background.hamaker>0. &&
+                (predicted_background||std::min(c.gap,end.gaps[k])<background_parameters.far_cutoff-background_parameters.reference_gap);
+            if(!possible_cohesion&&!possible_background)continue;
+            auto bj=end.bodies[c.j];bj.position=arr(vec(end.bodies[c.i].position)+end_d);
+            const auto end_gap=exact_gap(end.bodies[c.i],bj,c.i,c.j,f.geometry.images[k]);
+            SurfaceSample after=(p.surface_coupled||p.surface_pc)?data->endpoint_samples[k]:SurfaceSample{};
+            if(possible_cohesion&&!p.surface_coupled&&!p.surface_pc)after.cohesion=SlurrySurfaceCohesion::evaluate(
+                end.bodies[c.i],bj,end_gap,cohesion_parameters);
+            if(possible_background&&!p.surface_coupled&&!p.surface_pc)after.background=SlurrySurfaceBackground::evaluate(
+                end.bodies[c.i],bj,end_gap,background_parameters);
+            const double cohesive_scale=std::max({old.cohesion.attraction_at_contact,
+                after.cohesion.attraction_at_contact,p.surface_pc?data->applied_samples[k].cohesion.attraction_at_contact:0.});
+            const double background_scale=std::max({old.background.attraction_at_contact,
+                after.background.attraction_at_contact,p.surface_pc?data->applied_samples[k].background.attraction_at_contact:0.});
+            const double normal_scale=cohesive_scale+background_scale;
+            const double binding_scale=cohesive_scale*cohesion_parameters.opening_range+
+                background_scale*background_parameters.reference_gap;
+            if(!(normal_scale>0.)||!(binding_scale>0.))continue;
+            const V3 old_f=vec(old.cohesion.force_i)+vec(old.background.force_i);
+            const V3 new_f=vec(after.cohesion.force_i)+vec(after.background.force_i);
+            const V3 old_ti=vec(old.cohesion.torque_i)+vec(old.background.torque_i);
+            const V3 old_tj=vec(old.cohesion.torque_j)+vec(old.background.torque_j);
+            const V3 new_ti=vec(after.cohesion.torque_i)+vec(after.background.torque_i);
+            const V3 new_tj=vec(after.cohesion.torque_j)+vec(after.background.torque_j);
+            const double old_u=old.cohesion.energy+old.background.energy;
+            const double new_u=after.cohesion.energy+after.background.energy;
+            // Total surface torque includes the normal-force lever arm, whose
+            // scale is F0*a. The separate binding-scale work test below still
+            // resolves the much smaller curvature-dependent binding energy.
+            const double torque_scale=std::max({binding_scale,std::abs(old_u),std::abs(new_u),
+                normal_scale*std::max(shape::bounding_radius(state.bodies[c.i],false),
+                                      shape::bounding_radius(state.bodies[c.j],false))});
+            if(!p.surface_coupled&&!p.surface_pc) {
+              error_ratio=std::max(error_ratio,(new_f-old_f).norm()/(fraction*normal_scale));
+              error_ratio=std::max(error_ratio,(new_ti-old_ti).norm()/(fraction*torque_scale));
+              error_ratio=std::max(error_ratio,(new_tj-old_tj).norm()/(fraction*torque_scale));
+            }
+            const V3 theta_i=sub_dt*(sol.velocity.segment<3>(6*c.i+3)+omega_inf);
+            const V3 theta_j=sub_dt*(sol.velocity.segment<3>(6*c.j+3)+omega_inf);
+            V3 work_f=p.surface_coupled?new_f:old_f;
+            V3 work_ti=p.surface_coupled?new_ti:old_ti;
+            V3 work_tj=p.surface_coupled?new_tj:old_tj;
+            if(p.surface_pc) {
+              const auto&a=data->applied_samples[k];
+              work_f=vec(a.cohesion.force_i)+vec(a.background.force_i);
+              work_ti=vec(a.cohesion.torque_i)+vec(a.background.torque_i);
+              work_tj=vec(a.cohesion.torque_j)+vec(a.background.torque_j);
+              const double corrected_cap=.5*(data->initial_caps[k]+response.normal_load);
+              const auto corrected=imex::contact_response(c,corrected_cap,sol.velocity,sub_dt,end.gaps[k]);
+              const double cap_work=sub_dt*(std::abs((corrected.tangent_force-response.tangent_force).dot(response.relative))+
+                  std::abs((corrected.torque-response.torque).dot(response.relative_rotation)));
+              const double cap_scale=binding_scale+response.normal_energy+response.tangent_energy+
+                  response.rolling_energy+corrected.tangent_energy+corrected.rolling_energy+
+                  sub_dt*(std::abs(response.tangent_force.dot(response.relative))+
+                  std::abs(response.torque.dot(response.relative_rotation)));
+              // Sum absolute defects over mechanically relevant pairs. Dormant
+              // background pairs have hypothetical binding scales, not stored
+              // contact energy, and must not dilute the friction-cap error.
+              const bool cap_relevant=data->initial_caps[k]>0.||data->caps[k]>0.||
+                  response.normal_load>0.||c.history.squaredNorm()>0.||
+                  c.rolling_history.squaredNorm()>0.||cap_work>0.;
+              if(cap_relevant) {cap_work_sum+=cap_work;cap_scale_sum+=cap_scale;}
+            }
+            const double work_defect=std::abs(new_u-old_u-work_f.dot(end_d-f.displacements[k])+
+                                            work_ti.dot(theta_i)+work_tj.dot(theta_j));
+            error_ratio=std::max(error_ratio,work_defect/(work_fraction*binding_scale));
+            // Resolve the load which sets the frozen friction cap as well as
+            // adhesion itself; a saturated attraction alone misses detachment.
+            const double normal_old=data->caps[k],normal_new=response.normal_load;
+            if(!p.surface_coupled&&!p.surface_pc)error_ratio=std::max(error_ratio,std::abs(normal_new-normal_old)/
+                (fraction*std::max({normal_scale,normal_old,normal_new})));
+          }
+          if(p.surface_pc&&cap_scale_sum>0.)
+            error_ratio=std::max(error_ratio,cap_work_sum/(fraction*cap_scale_sum));
+          geometry_time+=MPI_Wtime()-monitor_start;
+          return ad::Trial<State>::completed(std::move(next),error_ratio);
+        };
+        auto accepted=[&](const ad::Trial<State>&trial,double sub_dt) {
+          const auto &data=*trial.next->payload;const auto &f=*data.frame;
+          const auto &sol=data.solved.solution;const double weight=sub_dt/dt;
+          M3 hydro=M3::Zero(),contact_stress=M3::Zero();
+          bs::Vector contact_moments=bs::Vector::Zero(6*n);
+          double normal_energy=0.,tangent_energy=0.,rolling_energy=0.,rolling_work=0.,rotation_power=0.;
+          double lag_max=0.,lag_sum=0.,normal_old_sum=0.,normal_new_sum=0.,detached=0.;
+          int active=0,rolling_yield=0;
+          for(int i=0;i<n;++i)for(int k=0;k<5;++k)
+            hydro-=sol.total_moment[11*i+6+k]*cb::strain_basis()[k];
+          for(std::size_t k=0;k<f.problem.contacts.size();++k) {
+            const auto &c=f.problem.contacts[k];const auto &r=sol.contacts[k];
+            const V3 d=p.surface_coupled?
+                vec(data.solved.endpoint.bodies[c.j].position)-vec(data.solved.endpoint.bodies[c.i].position)+
+                data.solved.endpoint.lattice*f.geometry.images[k].cast<double>():f.displacements[k];
+            contact_stress+=.5*(d*r.traction.transpose()+r.traction*d.transpose());
+            contact_moments.segment<6>(6*c.i)-=bs::generalized_contact_map(c,true).transpose()*bs::contact_wrench(r);
+            contact_moments.segment<6>(6*c.j)-=bs::generalized_contact_map(c,false).transpose()*bs::contact_wrench(r);
+            normal_energy+=r.normal_energy;tangent_energy+=r.tangent_energy;rolling_energy+=r.rolling_energy;
+            rolling_work+=r.rolling_work;rotation_power+=r.torque.dot(r.relative_rotation);
+            active+=r.active;rolling_yield+=r.rolling;
+            const double lag=std::abs(data.caps[k]-r.normal_load);
+            lag_max=std::max(lag_max,lag);lag_sum+=lag;
+            normal_old_sum+=data.caps[k];normal_new_sum+=r.normal_load;
+            p.diag[49]=std::max(p.diag[49],(r.tangent_force.norm()-c.mu*r.normal_load)*force_scale);
+            const V3 rolling=r.torque-c.normal*c.normal.dot(r.torque);
+            p.diag[50]=std::max(p.diag[50],(rolling.norm()-c.mu_roll*c.roll_length*r.normal_load)*energy_scale);
+            if(!r.active)detached+=r.tangent_energy+r.rolling_energy+r.twisting_energy;
+            p.diag[27]=std::min(p.diag[27],data.solved.endpoint.gaps[k]*length);
+            p.diag[45]=std::max(p.diag[45],-data.solved.endpoint.gaps[k]/
+                std::min(minimum_axis(f.geometry.bodies[c.i]),minimum_axis(f.geometry.bodies[c.j])));
+          }
+          const M3&cohesion_stress=(p.surface_pc||p.surface_dg)?data.applied_cohesion_stress:
+              (p.surface_coupled?data.endpoint_cohesion_stress:f.cohesion_stress);
+          const M3&background_stress=(p.surface_pc||p.surface_dg)?data.applied_background_stress:
+              (p.surface_coupled?data.endpoint_background_stress:f.background_stress);
+          const auto&background_external=(p.surface_pc||p.surface_dg)?data.applied_background_external:
+              (p.surface_coupled?data.endpoint_background_external:f.background_external);
+          const double sigma_c=cohesion_stress(0,2)*stress_scale;
+          const double sigma_b=background_stress(0,2)*stress_scale;
+          const std::array<double,4> stress{p.eta*p.shear,hydro(0,2)*stress_scale,
+            contact_stress(0,2)*stress_scale,
+            p.eta*p.shear+(hydro(0,2)+contact_stress(0,2))*stress_scale+sigma_c+sigma_b};
+          for(int k=0;k<4;++k)p.stress[k]+=weight*stress[k];
+          const double hp=(volume*std::pow(p.shear/rate,2)+sol.hydro_power)*power_scale;
+          const double cp=sol.contact_power*power_scale;
+          const double sp=stress[3]*p.shear*volume*std::pow(length,3);
+          const double bp=(-background_external.dot(sol.velocity)+(background_stress.array()*E.array()).sum())*power_scale;
+          const double ap=(-(f.problem.external-background_external).dot(sol.velocity)+
+                           (cohesion_stress.array()*E.array()).sum())*power_scale;
+          p.diag[2]=std::max(p.diag[2],double(f.active_near));p.diag[3]=std::max(p.diag[3],double(active));
+          p.diag[4]=std::min(p.diag[4],f.min_gap*length);p.diag[5]=std::max(p.diag[5],f.overlap*length);
+          p.diag[6]=std::max(p.diag[6],sol.force_residual_norm);p.diag[7]=std::max(p.diag[7],sol.mobility_residual_norm);
+          p.diag[10]+=weight*hp;p.diag[11]+=weight*cp;p.diag[12]+=weight*sp;p.diag[13]+=weight*(sp-hp-cp-ap-bp);
+          p.diag[15]=std::max(p.diag[15],sol.relative_residual);
+          p.diag[25]+=data.solved.geometry_iterations;
+          p.diag[26]=std::max(p.diag[26],data.solved.maximum_gap_error*length);
+          p.diag[29]=normal_energy*energy_scale;p.diag[30]=tangent_energy*energy_scale;
+          p.diag[31]=std::max(p.diag[31],data.solved.maximum_linear_gap_defect*length);
+          p.diag[32]=std::max(p.diag[32],double(f.problem.contacts.size()));
+          p.diag[40]=std::max(p.diag[40],double(rolling_yield));p.diag[41]=rolling_energy*energy_scale;
+          p.diag[42]+=rolling_work/dt*power_scale;p.diag[43]+=weight*rotation_power*power_scale;
+          p.diag[44]=std::max(p.diag[44],f.overlap_fraction);
+          p.diag[47]=std::max(p.diag[47],lag_max*force_scale);
+          p.diag[48]=std::max(p.diag[48],lag_sum/std::max({normal_old_sum,normal_new_sum,std::numeric_limits<double>::min()}));
+          p.diag[51]+=detached*energy_scale;
+          p.diag[52]+=weight*sigma_c;p.diag[53]+=weight*(p.surface_pc?data.applied_cohesion_energy:
+              (p.surface_coupled?data.endpoint_cohesion_energy:f.cohesion_energy))*energy_scale;
+          p.diag[54]+=weight*ap;p.diag[55]=std::max(p.diag[55],double(p.surface_coupled?data.endpoint_cohesive_pairs:f.cohesive_pairs));
+          p.diag[56]+=weight*sigma_b;p.diag[57]+=weight*(p.surface_pc?data.applied_background_energy:
+              (p.surface_coupled?data.endpoint_background_energy:f.background_energy))*energy_scale;
+          p.diag[58]+=weight*bp;p.diag[59]=std::max(p.diag[59],double(p.surface_coupled?data.endpoint_background_pairs:f.background_pairs));
+          p.diag[64]=std::max(p.diag[64],data.roundoff);p.diag[65]=std::max(p.diag[65],data.roundoff_fraction);
+          p.diag[66]=std::max(p.diag[66],data.acceptance_ratio);
+          if(p.surface_dg)for(const auto&r:data.integrated_surface)
+            for(const auto*a:{&r.cohesion,&r.background}) {
+              p.diag[70]+=(a->endpoint_energy-a->initial_energy)/dt*power_scale;
+              p.diag[71]+=a->work/dt*power_scale;
+            }
+          // Per-atom values describe the last accepted internal stage; interval
+          // stress and powers above are the time-weighted macrostep averages.
+          for(int i=0;i<n;++i) {
+            physical.segment<3>(6*i)=length*rate*(sol.velocity.segment<3>(6*i)+kappa*vec(f.geometry.bodies[i].position));
+            physical.segment<3>(6*i+3)=rate*(sol.velocity.segment<3>(6*i+3)+omega_inf);
+            moments.segment<3>(17*i)=-force_scale*sol.total_moment.segment<3>(11*i);
+            moments.segment<3>(17*i+3)=-energy_scale*sol.total_moment.segment<3>(11*i+3);
+            moments.segment<5>(17*i+6)=energy_scale*sol.total_moment.segment<5>(11*i+6);
+            moments.segment<3>(17*i+11)=force_scale*contact_moments.segment<3>(6*i);
+            moments.segment<3>(17*i+14)=energy_scale*contact_moments.segment<3>(6*i+3);
+          }
+        };
+        ad::Options adaptive_options;
+        adaptive_options.initial_step=p.surface_practical?dt:
+            (p.suggested_surface_step>0.?std::min(dt,p.suggested_surface_step):dt);
+        adaptive_options.maximum_step=dt;
+        adaptive_options.minimum_step=std::ldexp(dt,p.surface_practical?-6:-30);
+        adaptive_options.maximum_attempts=p.surface_practical?128:20000;
+        auto advanced=ad::advance(std::move(initial),dt,adaptive_options,attempt,accepted);
+        p.suggested_surface_step=advanced.suggested_step;
+        p.pending=std::move(advanced.state.history);p.warm=std::move(advanced.state.warm);p.have_warm=true;
+        p.diag[0]=p.stress[3];p.diag[1]=p.shear?p.stress[3]/p.shear:std::numeric_limits<double>::quiet_NaN();
+        p.diag[16]=geometry_time;p.diag[17]=middle_time;p.diag[18]=solve_seconds;
+        p.diag[19]=MPI_Wtime()-begun;p.diag[28]=std::max(0.,-p.diag[27]);
+        p.diag[33]=6*n;p.diag[35]=1.;p.diag[36]=p.hydro_workspace().symbolic_analyses+
+            (p.surface_coupled?p.coupled_workspace.symbolic_analyses:0);
+        p.diag[37]=p.hydro_workspace().numeric_factorizations+
+            (p.surface_coupled?p.coupled_workspace.numeric_factorizations:0);
+        p.diag[38]=p.hydro_workspace().numeric_reuses;
+        p.diag[46]=minimum_semiaxis*length;p.diag[60]=advanced.statistics.accepted;
+        p.diag[61]=advanced.statistics.rejected;p.diag[62]=advanced.statistics.minimum_accepted_step/rate;
+        p.diag[63]=advanced.statistics.maximum_accepted_error;
+        direct_advance=1;advance_physical=physical;
+        for(int i=0;i<n;++i) {
+          for(int k=0;k<3;++k)direct_endpoint[7*i+k]=domain->boxlo[k]+length*advanced.state.bodies[i].position[k];
+          const auto &q=advanced.state.quaternions[i];
+          direct_endpoint[7*i+3]=q.w();direct_endpoint[7*i+4]=q.x();
+          direct_endpoint[7*i+5]=q.y();direct_endpoint[7*i+6]=q.z();
+        }
+      } else {
       section = MPI_Wtime();
       step::Result consistent;
       Eigen::VectorXd integration_velocity;
@@ -749,7 +1464,7 @@ void FixSlurryBridge::solve_velocities() {
             initial.velocity.segment<3>(6*i+3)+omega_inf,dt);
       phase="predicted assembly";
       auto predicted=assemble(predictor_endpoint.bodies,predictor_endpoint.lattice,
-                              predictor_quaternions,predictor_history);
+                              predictor_quaternions,predictor_history,dt);
       phase="predicted hydrodynamic solve";
       auto predicted_solution=SlurryBridgeLinearSolver::solve(predicted.problem,options,&initial);
       geometry_time+=predicted.geometry_time;middle_time+=predicted.middle_time;
@@ -887,10 +1602,21 @@ void FixSlurryBridge::solve_velocities() {
       p.stress = {p.eta * p.shear, hydro(0, 2) * stress_scale, contact_stress(0, 2) * stress_scale,
                   0};
       p.stress[3] = p.stress[0] + p.stress[1] + p.stress[2];
+      if(p.cohesion_work>0.)p.stress[3]+=current.cohesion_stress(0,2)*stress_scale;
+      if(p.background.hamaker>0.)p.stress[3]+=current.background_stress(0,2)*stress_scale;
       const double solvent_power = volume * (p.shear / rate) * (p.shear / rate),
                    hydro_power = (solvent_power + result.hydro_power) * power_scale,
                    contact_power = result.contact_power * power_scale;
       const double stress_power = p.stress[3] * p.shear * volume * std::pow(length, 3);
+      // Conservative power is minus pair work at the actual velocities.
+      // The affine rotation contribution cancels by pair angular momentum;
+      // the remaining affine work is minus the symmetric pair virial:E.
+      const double cohesion_power=p.cohesion_work>0. ?
+          (-(p.background.hamaker>0.?bs::Vector(problem.external-current.background_external):problem.external).dot(result.velocity)+
+           (current.cohesion_stress.array()*E.array()).sum())*power_scale : 0.;
+      const double background_power=p.background.hamaker>0.?
+          (-current.background_external.dot(result.velocity)+
+           (current.background_stress.array()*E.array()).sum())*power_scale:0.;
       p.diag.fill(0);
       p.diag[0] = p.stress[3];
       p.diag[1] = p.shear ? p.stress[3] / p.shear : std::numeric_limits<double>::quiet_NaN();
@@ -906,6 +1632,8 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[11] = contact_power;
       p.diag[12] = stress_power;
       p.diag[13] = stress_power - hydro_power - contact_power;
+      if(p.cohesion_work>0.)p.diag[13]-=cohesion_power;
+      if(p.background.hamaker>0.)p.diag[13]-=background_power;
       p.diag[14] = p.nearfield_mobility ? 0 : mobility.mode_count();
       p.diag[15] = result.relative_residual;
       p.diag[20] = result.descent_steps;
@@ -946,6 +1674,15 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[49] = sliding_cap_excess*force_scale;
       p.diag[50] = rolling_cap_excess*energy_scale;
       p.diag[51] = detached_release*energy_scale;
+      p.diag[52] = current.cohesion_stress(0,2)*stress_scale;
+      p.diag[53] = current.cohesion_energy*energy_scale;
+      p.diag[54] = cohesion_power;
+      p.diag[55] = current.cohesive_pairs;
+      p.diag[56]=current.background_stress(0,2)*stress_scale;
+      p.diag[57]=current.background_energy*energy_scale;p.diag[58]=background_power;
+      p.diag[59]=current.background_pairs;p.diag[60]=1.;p.diag[62]=update->dt;
+      p.diag[64]=p.imex_workspace.last_roundoff_tolerance;
+      p.diag[66]=p.imex_workspace.last_acceptance_ratio;
       p.diag[16] = geometry_time;
       p.diag[17] = middle_time;
       p.diag[18] = solve_time;
@@ -969,6 +1706,7 @@ void FixSlurryBridge::solve_velocities() {
       }
       p.warm = std::move(next_warm);
       p.have_warm = true;
+      } // original single-step path
     } catch (const bs::NonlinearFailure &e) {
       failed = 1;
       std::ostringstream diagnostic;
@@ -1002,6 +1740,10 @@ void FixSlurryBridge::solve_velocities() {
   p.advance_tags.resize(n);
   for(int j=0;j<n;++j)p.advance_tags[j]=records[j].tag;
   p.advance_velocity=std::move(advance_physical);
+  MPI_Bcast(&direct_advance,1,MPI_INT,0,world);
+  p.direct_advance=direct_advance;
+  if(direct_advance)MPI_Bcast(direct_endpoint.data(),7*n,MPI_DOUBLE,0,world);
+  p.advance_endpoint=std::move(direct_endpoint);
   MPI_Bcast(moments.data(), 17 * n, MPI_DOUBLE, 0, world);
   if (atom->nmax > p.nmax) {
     p.nmax = atom->nmax;
@@ -1057,7 +1799,7 @@ void FixSlurryBridge::write_history() {
     o << ',' << time+update->dt << ',' << p.diag[42]*update->dt;
     for(int k=44;k<47;++k)o << ',' << p.diag[k];
     o << ',' << time << ',' << (p.nearfield_mobility?time+update->dt:time)
-      << ',' << (p.nearfield_mobility?(p.imex_contacts?"imex_frozen_cap":"backward_euler"):"heun")
+      << ',' << (p.direct_advance?(p.surface_lagged_hydro?"imex_surface_hydro_reuse":"imex_surface_substeps"):(p.nearfield_mobility?(p.imex_contacts?"imex_frozen_cap":"backward_euler"):"heun"))
       << ',' << (p.nearfield_mobility&&!p.imex_contacts?time+update->dt:time);
     for(int k=47;k<static_cast<int>(p.diag.size());++k)o << ',' << p.diag[k];
     o << '\n';

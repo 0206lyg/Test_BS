@@ -30,6 +30,13 @@ struct Workspace {
   std::size_t symbolic_analyses = 0, numeric_factorizations = 0,
               numeric_reuses = 0, solves = 0, refinement_solves = 0,
               self_quadrature_evaluations = 0, self_factorizations = 0;
+  // Exact snapshots let a warm implicit solve prepare its CURRENT operator
+  // without constructing and solving an unused explicit-contact problem.
+  bs::Sparse prepared_near_resistance;
+  bool prepared_operator_ready = false;
+  std::size_t resistance_generation = 0, prepared_resistance_generation = 0,
+              prepared_self_generation = 0, resistance_preparations = 0,
+              resistance_assemblies = 0, resistance_preparation_reuses = 0;
 };
 
 inline std::vector<bs::Matrix11>
@@ -65,7 +72,8 @@ build_self_mobility(const std::vector<gr::Body> &bodies, Workspace &workspace,
 }
 
 namespace detail {
-inline void validate(const bs::Problem &p, const bs::Options &o) {
+inline void validate(const bs::Problem &p, const bs::Options &o,
+                     bool validate_operator = true) {
   const int n = p.count;
   // p.mobility is deliberately not required: the sole mobility is M_self.
   if (n <= 0 || int(p.self_mobility.size()) != n ||
@@ -77,6 +85,7 @@ inline void validate(const bs::Problem &p, const bs::Options &o) {
   if (!(o.relative_tolerance > 0.) || !std::isfinite(o.relative_tolerance) ||
       o.absolute_tolerance < 0. || !std::isfinite(o.absolute_tolerance))
     throw std::invalid_argument("nearfield solver: invalid residual tolerance");
+  if (validate_operator) {
   for (const auto &m : p.self_mobility)
     if (!m.allFinite() || (m-m.transpose()).norm() > 1e-12*std::max(1., m.norm()))
       throw std::invalid_argument("nearfield solver: self mobility must be finite and symmetric");
@@ -87,6 +96,7 @@ inline void validate(const bs::Problem &p, const bs::Options &o) {
   const bs::Sparse antisymmetric = p.near_resistance-bs::Sparse(p.near_resistance.transpose());
   if (antisymmetric.norm() > 1e-12*std::max(1., p.near_resistance.norm()))
     throw std::invalid_argument("nearfield solver: pair resistance must be symmetric");
+  }
   for (const auto &c : p.contacts)
     if (!c.normal.allFinite() || c.i < 0 || c.j < 0 || c.i >= n || c.j >= n ||
         std::abs(c.normal.norm()-1.) > 1e-8 || c.kn < 0. || c.kt < 0. || c.mu < 0. ||
@@ -131,6 +141,7 @@ inline void factorize(const bs::Sparse &a, Workspace &w) {
   }
   w.factor.factorize(w.matrix);
   ++w.numeric_factorizations;
+  ++w.resistance_generation;
   if (w.factor.info() != Eigen::Success || !w.factor.vectorD().allFinite() ||
       w.factor.vectorD().minCoeff() <= 0.)
     throw std::runtime_error("nearfield solver: sparse resistance is not positive definite");
@@ -154,12 +165,62 @@ inline double mobility_metric_squared(const bs::Vector &velocity, const Workspac
 }
 } // namespace detail
 
+// Prepare/factor only the exact current hydrodynamic resistance. This function
+// performs no force solve and no contact update. Snapshot hits are coefficient-
+// exact, including the full eleven-coordinate pair operator and self mobility;
+// there is no geometry tolerance or approximate/stale matrix reuse.
+inline void prepare_resistance(const bs::Problem &p, Workspace &workspace,
+                               const bs::Options &options = bs::Options{}) {
+  ++workspace.resistance_preparations;
+  bool same_self = workspace.self_snapshot.size() == p.self_mobility.size();
+  for (std::size_t i = 0; same_self && i < p.self_mobility.size(); ++i)
+    same_self = (workspace.self_snapshot[i].array() == p.self_mobility[i].array()).all();
+  const bool same_operator = workspace.ready && workspace.prepared_operator_ready &&
+      workspace.matrix.rows() == 6*p.count &&
+      workspace.prepared_resistance_generation == workspace.resistance_generation &&
+      workspace.prepared_self_generation == workspace.self_factorizations && same_self &&
+      bs::detail::same_matrix(workspace.prepared_near_resistance, p.near_resistance);
+  // Even a snapshot hit validates current dt, dimensions, applied forces,
+  // contact geometry/history/coefficient inputs and solver tolerances.
+  detail::validate(p, options, !same_operator);
+  if (same_operator) {
+    ++workspace.resistance_preparation_reuses;
+    ++workspace.numeric_reuses;
+    return;
+  }
+  workspace.prepared_operator_ready = false;
+  detail::prepare_self(p, workspace);
+  const int n = p.count;
+  std::vector<Eigen::Triplet<double>> entries;
+  entries.reserve(36*n+p.near_resistance.nonZeros());
+  for (int i = 0; i < n; ++i)
+    for (int r = 0; r < 6; ++r)
+      for (int c = 0; c < 6; ++c)
+        if (workspace.self_inverse[i](r, c) != 0.)
+          entries.emplace_back(6*i+r, 6*i+c, workspace.self_inverse[i](r, c));
+  for (int outer = 0; outer < p.near_resistance.outerSize(); ++outer)
+    for (bs::Sparse::InnerIterator it(p.near_resistance, outer); it; ++it)
+      if (it.row()%11 < 6 && it.col()%11 < 6)
+        entries.emplace_back(6*(it.row()/11)+it.row()%11,
+                             6*(it.col()/11)+it.col()%11, it.value());
+  bs::Sparse a(6*n, 6*n);
+  a.setFromTriplets(entries.begin(), entries.end());
+  // Remove only assembly roundoff; residuals use the full original operator.
+  a = (.5*(a+bs::Sparse(a.transpose()))).eval();
+  a.makeCompressed();
+  ++workspace.resistance_assemblies;
+  detail::factorize(a, workspace);
+  workspace.prepared_near_resistance = p.near_resistance;
+  workspace.prepared_resistance_generation = workspace.resistance_generation;
+  workspace.prepared_self_generation = workspace.self_factorizations;
+  workspace.prepared_operator_ready = true;
+}
+
 inline bs::Result solve(const bs::Problem &p, const bs::Options &options,
                         Workspace &workspace, const bs::Result *warm = nullptr) {
   (void)warm; // Direct factor solves do not depend on a velocity guess.
   const auto start = std::chrono::steady_clock::now();
-  detail::validate(p, options);
-  detail::prepare_self(p, workspace);
+  prepare_resistance(p, workspace, options);
   const int n = p.count;
   bs::Result out;
   out.contacts.reserve(p.contacts.size());
@@ -175,28 +236,10 @@ inline bs::Result solve(const bs::Problem &p, const bs::Options &options,
   }
   const bs::Vector near_prescribed = p.near_resistance*p.prescribed;
   bs::Vector prescribed_moment = near_prescribed;
-  std::vector<Eigen::Triplet<double>> entries;
-  entries.reserve(36*n+p.near_resistance.nonZeros());
   for (int i = 0; i < n; ++i) {
     prescribed_moment.segment<11>(11*i).noalias() +=
         workspace.self_inverse[i]*p.prescribed.segment<11>(11*i);
-    for (int r = 0; r < 6; ++r)
-      for (int c = 0; c < 6; ++c)
-        if (workspace.self_inverse[i](r, c) != 0.)
-          entries.emplace_back(6*i+r, 6*i+c, workspace.self_inverse[i](r, c));
   }
-  for (int outer = 0; outer < p.near_resistance.outerSize(); ++outer)
-    for (bs::Sparse::InnerIterator it(p.near_resistance, outer); it; ++it)
-      if (it.row()%11 < 6 && it.col()%11 < 6)
-        entries.emplace_back(6*(it.row()/11)+it.row()%11,
-                             6*(it.col()/11)+it.col()%11, it.value());
-  bs::Sparse a(6*n, 6*n);
-  a.setFromTriplets(entries.begin(), entries.end());
-  // Remove only matrix assembly roundoff; the physical residual below still
-  // uses the original full eleven-coordinate self and pair operators.
-  a = (.5*(a+bs::Sparse(a.transpose()))).eval();
-  a.makeCompressed();
-  detail::factorize(a, workspace);
   const bs::Vector rhs = force-bs::detail::select(prescribed_moment, n);
   out.velocity = workspace.factor.solve(rhs);
   ++workspace.solves;

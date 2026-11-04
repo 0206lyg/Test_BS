@@ -35,6 +35,15 @@ TANGENTIAL_STIFFNESS=100  # N/m
 ROLLING_FRICTION=10                  # strong-friction trial; not a measured graphite value
 ROLLING_STIFFNESS=100  # N/m
 
+# Optional surface interactions; the existing attraction-free run stays default.
+COHESION_WORK=0                       # J/m^2; cohesive excess, 0 disables
+COHESION_RANGE=6.7e-10                # m; independent of lubrication epsilon
+BACKGROUND_HAMAKER=0                 # J; 0 disables Test_LB background
+BACKGROUND_REFERENCE_GAP=2e-9        # m; energy reference, not contact onset
+BACKGROUND_SIGMA=4.197e-10           # m; background LJ length
+SURFACE_ADAPTIVE=0                    # fractional surface-change limit; 0 disables
+SURFACE_ROUNDOFF=no                   # yes enables the derived roundoff budget
+
 INITIALIZATION=random                 # random or aligned; no automatic switch
 SEED=1729
 INITIAL_PHI=0.05
@@ -108,6 +117,10 @@ SLURRY_ARGUMENTS=(
     --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
     --tangential-stiffness "$TANGENTIAL_STIFFNESS"
     --rolling-friction "$ROLLING_FRICTION" --rolling-stiffness "$ROLLING_STIFFNESS"
+    --cohesion-work "$COHESION_WORK" --cohesion-range "$COHESION_RANGE"
+    --background-hamaker "$BACKGROUND_HAMAKER"
+    --background-reference-gap "$BACKGROUND_REFERENCE_GAP" --background-sigma "$BACKGROUND_SIGMA"
+    --surface-adaptive "$SURFACE_ADAPTIVE" --surface-roundoff "$SURFACE_ROUNDOFF"
     --initialization "$INITIALIZATION" --seed "$SEED" --initial-phi "$INITIAL_PHI"
     --growth-fraction "$GROWTH_FRACTION" --overlap-tolerance "$OVERLAP_TOLERANCE"
     --max-relax "$MAX_RELAX" --mobility-backend "$MOBILITY_BACKEND"

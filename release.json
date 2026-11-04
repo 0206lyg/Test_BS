@@ -1,10 +1,10 @@
 {
   "release_id": "20261028-imex-huber-recovery",
-  "status": "PASS_BOUNDED_VALIDATION_USER_STOPPED",
+  "status": "PASS_PRACTICAL_N1000_FINITE_PROGRESS",
   "baseline_git_commit": "4855a3a3681306a47a94c098cb0f10cfda2839e2",
   "prepare_case_sha256": "a8ddbb65a9154bb48e098938676908c8107a6998cbc001e3c59553fea3d4d2ba",
-  "prepare_bridge_sha256": "4b7742287a58978a766387f30a5fc5951cd081c056dc45d8ed14fa63bb8386fd",
-  "details": "docs/AR5_SOLVER_RECOVERY.md",
+  "prepare_bridge_sha256": "e0ebdfd122439426c3fa178cb42882eca2e7b6bac719b4f1670202ca118fde2d",
+  "details": "validation_practical_20261102/FINAL_REPORT.md",
   "legacy_release": "20261028-bidisperse-imex",
   "model_stage": "NEARFIELD_LUBRICATION_WITH_ISOLATED_SPHEROID_DRAG",
   "periodic_middle": "omitted in default nearfield model; periodicity retained for geometry and imposed shear",
@@ -31,9 +31,22 @@
       "nearfield_linear_fast_path_limit": "min(KRYLOV_ITERATIONS, 160), then checked direct fallback",
       "line_search_trial_limit": 30,
       "batch_settings_helper": "apply_solver_limits.py adds IMEX_MAX_ITERATIONS and environment export while preserving existing run settings"
+    },
+    "practical_mode": {
+      "surface_integrator": "practical",
+      "surface_adaptive": 0,
+      "nonlinear_relative_tolerance": 0.0001,
+      "linear_relative_target": 0.0001,
+      "endpoint_inner_tolerance_fraction": 1.0,
+      "require_pairwise_endpoint_constitutive_match": false,
+      "pair_force_work_cap_change_rejection": false,
+      "final_actual_endpoint_force_balance_required": true,
+      "maximum_overlap_fraction_min_semiaxis": 0.05,
+      "nonlinear_total_limit_from_launcher": 100,
+      "recovery": "Actual solve/candidate/overlap failures only; at most128 attempts per macro interval, minimum internal step dt/64. Each new macro interval starts at nominal dt."
     }
   },
-  "run_batch": "run_slurry_cpu.sbatch",
+  "run_batch": "run_slurry_practical_cpu.sbatch",
   "particle_shapes": [
     "spheroid"
   ],
@@ -64,16 +77,24 @@
   "scope": "Mari sphere lubrication plus local-curvature spheroid extension; isolated spheroid hydrodynamics; no many-body far-field model",
   "default_timestep_stability_passed": true,
   "timestep_stability_report": "docs/AR5_SOLVER_RECOVERY.md",
-  "validation_scope": "User requested stopping long tests and packaging. Exact supplied N=1000, AR=5, phi=0.20 initial particles; kn=300 and kt=kr=240 N/m; dt=2.5e-6 s; eta=0.01 Pa.s; shear=100/s: accepted through step 1974, strain 0.4935, then Ctrl-C exit 130. Instrumented companion stopped after step 1917. Neither is a completed 4000-step test. Two v4 N=256 integrations completed: AR=1, phi=0.34 through strain 1 and AR=5, phi=0.24 through strain 0.25. Captured failures and finite transient checks pass; no strain-50 or attraction validation.",
+  "validation_scope": "N=1000, AR4, phi0.24, bidisperse1.4, kn900/kt=kr300 N/m, eta0.00089 Pa.s, shear100/s, 0.67 nm cohesion plus background, dt1e-6 s: practical mode advanced 607 macro steps to strain0.0607 within a 300-second measurement budget, without rejected/subdivided steps. Requested1000-step target was not completed; stop was measurement timeout. Same-config attraction-off100-step control completed. No steady-state or strain50 validation.",
   "integration": {
     "method": "Nearfield frozen-cap IMEX; coupled endpoint Coulomb optional; legacy mesh/direct Heun",
     "default_timestep_s": 2.5e-06,
     "default_steps": 200000,
     "default_output_interval": 40,
-    "default_total_strain": 50.0
+    "default_total_strain": 50.0,
+    "practical_launcher": {
+      "timestep_s": 1e-06,
+      "steps": 500000,
+      "output_interval": 400,
+      "target_total_strain": 50,
+      "validated_total_strain": 0.0607,
+      "target_completed_in_validation": false
+    }
   },
-  "validation_report": "validation_ar5_recovery_20261028/FINAL_VALIDATION.json",
-  "packaging_revision": "20261028-ar5-recovery1",
+  "validation_report": "validation_practical_20261102/FINAL_REPORT.json",
+  "packaging_revision": "20261102-practical-n1000",
   "particle_size_distribution": {
     "default": "bidisperse",
     "size_ratio": 1.4,
@@ -104,5 +125,5 @@
       "tested_total_nonlinear_limit": 120
     }
   },
-  "default_timestep_stability_scope": "Finite validation only: exact supplied N=1000, AR=5, phi=0.20 case accepted through step 1974, strain 0.4935, plus the two completed N=256 cases. Does not certify strain 50, steady state, or attraction. Long integrations used v4 with 40+80 updates; the final configurable-ceiling wrapper has separate short validation in validation_report."
+  "default_timestep_stability_scope": "Finite practical N1000 prefix only; see current validation_report. Legacy AR5 validation remains recorded separately in high_stiffness_validation."
 }

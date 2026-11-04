@@ -162,6 +162,10 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertIn("#SBATCH --ntasks=1\n", text)
         settings_text, separator, runtime_text = text.partition("# End of run settings.")
         self.assertTrue(separator, "Cannot find the batch settings section")
+        for name, value in (("COHESION_WORK", "0"), ("BACKGROUND_HAMAKER", "0"),
+                            ("SURFACE_ADAPTIVE", "0"), ("SURFACE_ROUNDOFF", "no")):
+            self.assertRegex(settings_text, r"(?m)^"+name+"="+value+r"(?:\s|$)",
+                             "Surface changes must remain explicitly disabled by default")
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)/"source with spaces"
             tools = root/"lammps_slurry/tools"
@@ -188,11 +192,18 @@ class BridgeToolsTest(unittest.TestCase):
                     "PARTICLE_SHAPE": shape, "AR": ar, "COUNT": count,
                     "SIZE_DISTRIBUTION": "monodisperse", "SIZE_RATIO": 1.4,
                     "PHI": .24, "STEPS": 100000, "OUTPUT_INTERVAL": 100,
-                    "NORMAL_STIFFNESS": 100, "MOBILITY_BACKEND": "mesh",
+                    "NORMAL_STIFFNESS": 100, "MOBILITY_BACKEND": "mesh" if ar == 2 else "nearfield",
                     "FRICTION": 10, "ROLLING_FRICTION": 10, "ROLLING_STIFFNESS": 80,
                     "NOMINAL_DIAMETER_UM": 8, "LUBRICATION_EPSILON": .001,
                     "OUTPUT_DIR": '""', "BUILD_ENV": '""',
                     "PREPARE_ONLY": 0, "TRACE_SOLVER": 0,
+                    "COHESION_WORK": 0 if ar == 2 else .021243,
+                    "COHESION_RANGE": 8e-10,
+                    "BACKGROUND_HAMAKER": 0 if ar == 2 else 9.9e-20,
+                    "BACKGROUND_REFERENCE_GAP": 2.2e-9,
+                    "BACKGROUND_SIGMA": 4.2e-10,
+                    "SURFACE_ADAPTIVE": 0 if ar == 2 else .1,
+                    "SURFACE_ROUNDOFF": "no" if ar == 2 else "yes",
                 }
                 configured = settings_text
                 for name, value in settings.items():
@@ -215,7 +226,8 @@ class BridgeToolsTest(unittest.TestCase):
                 # The advanced reference integrator uses its generator default;
                 # existing user batch scripts need no new mandatory assignment.
                 expected = {option for action in prepare.parser()._actions for option in action.option_strings
-                            if option not in ("-h", "--help", "--packer", "--contact-scheme")}
+                            if option not in ("-h", "--help", "--packer", "--contact-scheme",
+                                              "--surface-integrator", "--surface-linear")}
                 self.assertEqual(supplied, expected)
                 args = prepare.parser().parse_args(arguments)
                 self.assertEqual(args.ar, ar)
@@ -226,12 +238,17 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(args.steps, 100000)
                 self.assertEqual(args.output_interval, 100)
                 self.assertEqual(args.normal_stiffness, 100.)
-                self.assertEqual(args.mobility_backend, "mesh")
+                self.assertEqual(args.mobility_backend, settings["MOBILITY_BACKEND"])
                 self.assertEqual(args.friction, 10.)
                 self.assertEqual(args.rolling_friction, 10.)
                 self.assertEqual(args.rolling_stiffness, 80.)
                 self.assertEqual(args.nominal_diameter_um, 8.)
                 self.assertEqual(args.lubrication_epsilon, .001)
+                for name in ("cohesion_work", "cohesion_range", "background_hamaker",
+                             "background_reference_gap", "background_sigma", "surface_adaptive",
+                             "surface_roundoff"):
+                    self.assertEqual(getattr(args, name), settings[name.upper()])
+                prepare.validate_args(args)
                 self.assertIn("12345", str(args.output))
 
     def test_defaults_and_explicit_physical_overrides(self):
@@ -250,6 +267,8 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertEqual(defaults.rolling_friction, 10.)
         self.assertEqual(defaults.mobility_backend, "nearfield")
         self.assertEqual(defaults.contact_scheme, "imex")
+        self.assertIsNone(defaults.surface_integrator)
+        self.assertIsNone(defaults.surface_linear)
         self.assertEqual(defaults.shape, "spheroid")
         explicit = prepare.parser().parse_args([
             "--output", "unused", "--normal-stiffness", "250", "--friction", "0",
@@ -261,6 +280,86 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertEqual(explicit.mobility_backend, "direct")
         coupled = prepare.parser().parse_args(["--output", "unused", "--contact-scheme", "coupled"])
         self.assertEqual(coupled.contact_scheme, "coupled")
+
+    def test_surface_numerical_options_are_optional_and_forwarded(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            for number, mode in enumerate((None, "variation", "reuse", "coupled", "pc", "dg", "practical")):
+                output = Path(temporary)/str(number)
+                flags = ["--output", str(output), "--initialization", "aligned", "--count", "1",
+                         "--phi", ".01", "--steps", "0", "--size-distribution", "monodisperse"]
+                if mode is not None:
+                    flags += ["--surface-integrator", mode, "--surface-linear", "1e-4"]
+                if mode in ("coupled", "pc", "dg"):
+                    flags += ["--surface-adaptive", ".1", "--cohesion-work", ".021243"]
+                args = prepare.parser().parse_args(flags)
+                with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    record = prepare.prepare(args)
+                force = next(line for line in (output/"in.bridge").read_text().splitlines()
+                             if line.startswith("fix hydro ")).split()
+                self.assertEqual(record["surface_integrator"], mode)
+                self.assertEqual(record["surface_linear"], None if mode is None else 1e-4)
+                if mode is None:
+                    self.assertNotIn("surface_integrator", force)
+                    self.assertNotIn("surface_linear", force)
+                else:
+                    self.assertEqual(force.count("surface_integrator"), 1)
+                    self.assertEqual(force[force.index("surface_integrator")+1], mode)
+                    self.assertEqual(float(force[force.index("surface_linear")+1]), 1e-4)
+                self.assertEqual(record["cohesion_range"], 6.7e-10)
+                self.assertEqual(record["normal_stiffness"], 30.)
+
+    def test_surface_numerical_options_reject_invalid_values_before_output(self):
+        cases = [["--surface-linear", value] for value in ("0", "-1", "1", "nan", "inf")]
+        cases += [["--surface-integrator", "practical", "--surface-adaptive", ".1"],
+                  ["--surface-integrator", "practical", "--contact-scheme", "coupled"],
+                  ["--surface-integrator", "pc"]]
+        with tempfile.TemporaryDirectory() as temporary:
+            for number, flags in enumerate(cases):
+                output = Path(temporary)/str(number)
+                args = prepare.parser().parse_args(["--output", str(output)]+flags)
+                with self.subTest(flags=flags), self.assertRaises(ValueError):
+                    prepare.prepare(args)
+                self.assertFalse(output.exists())
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            prepare.parser().parse_args(["--output", "unused", "--surface-integrator", "unknown"])
+
+    def test_practical_batch_preserves_benchmark_physics_and_forwards_options(self):
+        source = TOOLS.parents[1]/"run_slurry_practical_cpu.sbatch"
+        text = source.read_text()
+        subprocess.run(["bash", "-n", str(source)], check=True, capture_output=True)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)/"source with spaces"
+            tools = root/"lammps_slurry/tools";tools.mkdir(parents=True)
+            (tools/"run_bridge.py").write_text("# intercepted by test python executable\n")
+            script = root/source.name;script.write_text(text)
+            stub = root/"bin/python3";stub.parent.mkdir()
+            stub.write_text("#!"+sys.executable+"\nimport json,os,sys\n"
+                            "with open(os.environ['CAPTURE'],'w') as f:\n"
+                            " json.dump({'argv':sys.argv[1:], 'maxit':os.environ['SLURRY_IMEX_MAX_ITERATIONS']},f)\n")
+            stub.chmod(0o755);capture=root/"capture.json"
+            environment={k:v for k,v in os.environ.items() if not k.startswith(("SLURM_","BASH_FUNC_"))
+                         and k not in ("BASH_ENV","SLURRY_ROOT")}
+            environment.update(PATH=str(stub.parent)+os.pathsep+os.environ["PATH"],SLURRY_ROOT=str(root),
+                               SLURM_JOB_ID="12345",SLURM_CPUS_PER_TASK="2",CAPTURE=str(capture))
+            subprocess.run(["bash",str(script)],env=environment,check=True,capture_output=True,text=True)
+            record=json.loads(capture.read_text());self.assertEqual(record["maxit"],"100")
+            arguments=record["argv"][1:];index=arguments.index("--build-env");del arguments[index:index+2]
+            self.assertEqual(len({a for a in arguments if a.startswith("--")}),
+                             sum(a.startswith("--") for a in arguments))
+            args=prepare.parser().parse_args(arguments);prepare.validate_args(args)
+            expected={"count":1000,"ar":4.,"phi":.24,"steps":500000,"timestep":1e-6,
+                      "output_interval":400,"average_start_strain":5.,"viscosity":.00089,
+                      "shear_rate":100.,"nominal_diameter_um":8.,"friction":10.,"rolling_friction":10.,
+                      "normal_stiffness":900.,"tangential_stiffness":300.,"rolling_stiffness":300.,
+                      "cohesion_work":.0212434877286055,"cohesion_range":6.7e-10,"background_hamaker":9.9e-20,
+                      "background_reference_gap":2e-9,"background_sigma":4.197e-10,
+                      "size_distribution":"bidisperse","size_ratio":1.4,"initialization":"random","seed":1729,
+                      "surface_integrator":"practical","surface_adaptive":0.,"surface_roundoff":"yes",
+                      "surface_linear":1e-4,"tolerance":1e-4}
+            for key,value in expected.items():self.assertEqual(getattr(args,key),value,key)
+            self.assertEqual([p["count"] for p in prepare.population(args)],[733,267])
+            self.assertEqual(args.steps*args.timestep*args.shear_rate,50.)
 
     def test_fixed_nominal_diameter_and_regularization_across_ar(self):
         with tempfile.TemporaryDirectory() as temporary:
