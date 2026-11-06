@@ -11,6 +11,7 @@
 #SBATCH --output=slurry_%j.out
 
 # Edit this section, then submit from the slurry repository: sbatch run_slurry_cpu.sbatch
+# Baseline: contact friction + lubrication, using the practical numerical solver.
 # Exactly one simulation is launched. No command-line parameters are needed.
 PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
 AR=5                                 # supported range: 1 through 5
@@ -18,9 +19,10 @@ PHI=0.34
 COUNT=1000
 STEPS=200000
 OUTPUT_INTERVAL=400
-TIMESTEP=2.5e-6  # s; nearfield frozen-cap IMEX
+TIMESTEP=2.5e-6  # s; nominal nearfield IMEX timestep
 AVERAGE_START_STRAIN=5
-# If reducing TIMESTEP tenfold, increase STEPS tenfold for the same total strain.
+# Recover Newton failures and excessive overlap at the same dt first.
+# If those recovery attempts fail, the existing limited dt subdivision remains.
 
 NOMINAL_DIAMETER_UM=8                 # volume-equivalent D; fixed while AR changes
 SIZE_RATIO=1.4
@@ -30,19 +32,19 @@ DENSITY=2400
 VISCOSITY=0.01
 SHEAR_RATE=100
 FRICTION=10                          # strong-friction trial; saturation must be checked
-NORMAL_STIFFNESS=100  # N/m
+NORMAL_STIFFNESS=300  # N/m; initial and minimum normal stiffness
 TANGENTIAL_STIFFNESS=100  # N/m
 ROLLING_FRICTION=10                  # strong-friction trial; not a measured graphite value
 ROLLING_STIFFNESS=100  # N/m
 
-# Optional surface interactions; the existing attraction-free run stays default.
-COHESION_WORK=0                       # J/m^2; cohesive excess, 0 disables
-COHESION_RANGE=6.7e-10                # m; independent of lubrication epsilon
-BACKGROUND_HAMAKER=0                 # J; 0 disables Test_LB background
-BACKGROUND_REFERENCE_GAP=2e-9        # m; energy reference, not contact onset
-BACKGROUND_SIGMA=4.197e-10           # m; background LJ length
-SURFACE_ADAPTIVE=0                    # fractional surface-change limit; 0 disables
-SURFACE_ROUNDOFF=no                   # yes enables the derived roundoff budget
+# Normal-stiffness control is always enabled for overlap management.
+# Fractions use the pair's smaller minimum semiaxis. Only kn adapts;
+# tangential/rolling stiffness, friction coefficients and histories are not rescaled.
+KN_TARGET=0.02
+KN_RAISE=0.03
+KN_LOWER=0.01
+KN_RELAX_STRAIN=0.02
+KN_MAX_FACTOR=1000
 
 INITIALIZATION=random                 # random or aligned; no automatic switch
 SEED=1729
@@ -54,14 +56,15 @@ MAX_RELAX=20000
 MOBILITY_BACKEND=nearfield  # isolated spheroid drag + local lubrication; no FFT
 SPECTRAL=2
 SPECTRAL_TOLERANCE=1e-8
-SOLVER_TOLERANCE=1e-6
+SOLVER_TOLERANCE=1e-4
+LINEAR_TOLERANCE=1e-4
 KRYLOV_ITERATIONS=1000
 
 OUTPUT_DIR=""                         # empty: runs/<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>
 BUILD_ENV=""                          # empty: build/lammps/env.sh
 PREPARE_ONLY=0
 TRACE_SOLVER=0
-IMEX_MAX_ITERATIONS=1000  # total nonlinear updates per inner IMEX solve
+IMEX_MAX_ITERATIONS=100  # Newton updates per solve; same-dt ADMM recovery is additional
 export SLURRY_IMEX_MAX_ITERATIONS="$IMEX_MAX_ITERATIONS"
 # End of run settings. Resource requests are the #SBATCH lines above.
 
@@ -117,10 +120,9 @@ SLURRY_ARGUMENTS=(
     --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
     --tangential-stiffness "$TANGENTIAL_STIFFNESS"
     --rolling-friction "$ROLLING_FRICTION" --rolling-stiffness "$ROLLING_STIFFNESS"
-    --cohesion-work "$COHESION_WORK" --cohesion-range "$COHESION_RANGE"
-    --background-hamaker "$BACKGROUND_HAMAKER"
-    --background-reference-gap "$BACKGROUND_REFERENCE_GAP" --background-sigma "$BACKGROUND_SIGMA"
-    --surface-adaptive "$SURFACE_ADAPTIVE" --surface-roundoff "$SURFACE_ROUNDOFF"
+    --surface-integrator practical --surface-linear "$LINEAR_TOLERANCE"
+    --kn-adapt yes --kn-target "$KN_TARGET" --kn-raise "$KN_RAISE"
+    --kn-lower "$KN_LOWER" --kn-relax-strain "$KN_RELAX_STRAIN" --kn-max-factor "$KN_MAX_FACTOR"
     --initialization "$INITIALIZATION" --seed "$SEED" --initial-phi "$INITIAL_PHI"
     --growth-fraction "$GROWTH_FRACTION" --overlap-tolerance "$OVERLAP_TOLERANCE"
     --max-relax "$MAX_RELAX" --mobility-backend "$MOBILITY_BACKEND"
@@ -136,3 +138,4 @@ fi
 printf 'SHAPE=%s AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
     "$PARTICLE_SHAPE" "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" "${SLURRY_ARGUMENTS[@]}"
+

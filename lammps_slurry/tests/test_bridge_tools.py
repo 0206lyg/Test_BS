@@ -134,10 +134,8 @@ class BridgeToolsTest(unittest.TestCase):
         self.assertIn("#SBATCH --ntasks=1\n", text)
         settings_text, separator, runtime_text = text.partition("# End of run settings.")
         self.assertTrue(separator, "Cannot find the batch settings section")
-        for name, value in (("COHESION_WORK", "0"), ("BACKGROUND_HAMAKER", "0"),
-                            ("SURFACE_ADAPTIVE", "0"), ("SURFACE_ROUNDOFF", "no")):
-            self.assertRegex(settings_text, r"(?m)^"+name+"="+value+r"(?:\s|$)",
-                             "Surface changes must remain explicitly disabled by default")
+        self.assertNotRegex(settings_text, r"(?m)^(?:COHESION_|BACKGROUND_|SURFACE_)",
+                            "Baseline must not expose attraction settings")
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)/"source with spaces"
             tools = root/"lammps_slurry/tools"
@@ -148,7 +146,8 @@ class BridgeToolsTest(unittest.TestCase):
             stub.parent.mkdir()
             stub.write_text("#!"+sys.executable+"\nimport json,os,sys\n"
                             "with open(os.environ['CAPTURE'], 'a') as f:\n"
-                            " f.write(json.dumps({'argv':sys.argv[1:], 'threads':os.environ['OMP_NUM_THREADS']})+'\\n')\n")
+                            " f.write(json.dumps({'argv':sys.argv[1:], 'threads':os.environ['OMP_NUM_THREADS'], "
+                            "'maxit':os.environ['SLURRY_IMEX_MAX_ITERATIONS']})+'\\n')\n")
             stub.chmod(0o755)
             capture = root/"capture.jsonl"
             environment = {key: value for key, value in os.environ.items()
@@ -164,18 +163,15 @@ class BridgeToolsTest(unittest.TestCase):
                     "PARTICLE_SHAPE": shape, "AR": ar, "COUNT": count,
                     "SIZE_DISTRIBUTION": "monodisperse", "SIZE_RATIO": 1.4,
                     "PHI": .24, "STEPS": 100000, "OUTPUT_INTERVAL": 100,
-                    "NORMAL_STIFFNESS": 100, "MOBILITY_BACKEND": "mesh" if ar == 2 else "nearfield",
+                    "NORMAL_STIFFNESS": 300, "MOBILITY_BACKEND": "nearfield",
                     "FRICTION": 10, "ROLLING_FRICTION": 10, "ROLLING_STIFFNESS": 80,
                     "NOMINAL_DIAMETER_UM": 8, "LUBRICATION_EPSILON": .001,
                     "OUTPUT_DIR": '""', "BUILD_ENV": '""',
                     "PREPARE_ONLY": 0, "TRACE_SOLVER": 0,
-                    "COHESION_WORK": 0 if ar == 2 else .021243,
-                    "COHESION_RANGE": 8e-10,
-                    "BACKGROUND_HAMAKER": 0 if ar == 2 else 9.9e-20,
-                    "BACKGROUND_REFERENCE_GAP": 2.2e-9,
-                    "BACKGROUND_SIGMA": 4.2e-10,
-                    "SURFACE_ADAPTIVE": 0 if ar == 2 else .1,
-                    "SURFACE_ROUNDOFF": "no" if ar == 2 else "yes",
+                    "TIMESTEP": 2.5e-6, "SOLVER_TOLERANCE": 1e-4,
+                    "LINEAR_TOLERANCE": 1e-4, "IMEX_MAX_ITERATIONS": 100,
+                    "KN_TARGET": .025, "KN_RAISE": .035, "KN_LOWER": .015,
+                    "KN_MAX_FACTOR": 500, "KN_RELAX_STRAIN": .04,
                 }
                 configured = settings_text
                 for name, value in settings.items():
@@ -190,19 +186,19 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(len(records), 1 if ar == 2 else 2)
                 record = records[-1]
                 self.assertEqual(record["threads"], "16")
+                self.assertEqual(record["maxit"], "100")
                 arguments = record["argv"][1:]
                 index = arguments.index("--build-env")
                 del arguments[index:index+2]
                 supplied = {arg for arg in arguments if arg.startswith("--")}
                 self.assertEqual(len(supplied), sum(arg.startswith("--") for arg in arguments))
-                # The advanced reference integrator and the practical-only kn
-                # control use their generator defaults; existing user batch
-                # scripts need no new mandatory assignment.
+                # Baseline selects the common practical numerical path, but
+                # omits physical surface options and uses their zero defaults.
                 expected = {option for action in prepare.parser()._actions for option in action.option_strings
                             if option not in ("-h", "--help", "--packer", "--contact-scheme",
-                                              "--surface-integrator", "--surface-linear",
-                                              "--kn-adapt", "--kn-target", "--kn-raise", "--kn-lower",
-                                              "--kn-max-factor", "--kn-relax-strain")}
+                                              "--cohesion-work", "--cohesion-range", "--background-hamaker",
+                                              "--background-reference-gap", "--background-sigma",
+                                              "--surface-adaptive", "--surface-roundoff")}
                 self.assertEqual(supplied, expected)
                 args = prepare.parser().parse_args(arguments)
                 self.assertEqual(args.ar, ar)
@@ -212,16 +208,22 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(args.phi, .24)
                 self.assertEqual(args.steps, 100000)
                 self.assertEqual(args.output_interval, 100)
-                self.assertEqual(args.normal_stiffness, 100.)
+                self.assertEqual(args.normal_stiffness, 300.)
                 self.assertEqual(args.mobility_backend, settings["MOBILITY_BACKEND"])
                 self.assertEqual(args.friction, 10.)
                 self.assertEqual(args.rolling_friction, 10.)
                 self.assertEqual(args.rolling_stiffness, 80.)
                 self.assertEqual(args.nominal_diameter_um, 8.)
                 self.assertEqual(args.lubrication_epsilon, .001)
-                for name in ("cohesion_work", "cohesion_range", "background_hamaker",
-                             "background_reference_gap", "background_sigma", "surface_adaptive",
-                             "surface_roundoff"):
+                self.assertEqual(args.cohesion_work, 0.)
+                self.assertEqual(args.background_hamaker, 0.)
+                self.assertEqual(args.surface_adaptive, 0.)
+                self.assertEqual(args.surface_integrator, "practical")
+                self.assertEqual(args.surface_linear, 1e-4)
+                self.assertEqual(args.tolerance, 1e-4)
+                self.assertEqual(args.timestep, 2.5e-6)
+                self.assertEqual(args.kn_adapt, "yes")
+                for name in ("kn_target", "kn_raise", "kn_lower", "kn_max_factor", "kn_relax_strain"):
                     self.assertEqual(getattr(args, name), settings[name.upper()])
                 prepare.validate_args(args)
                 self.assertIn("12345", str(args.output))
@@ -318,6 +320,8 @@ class BridgeToolsTest(unittest.TestCase):
                     record = prepare.prepare(args)
                 force = next(line for line in (output/"in.bridge").read_text().splitlines()
                              if line.startswith("fix hydro ")).split()
+                self.assertNotIn("cohesion", force)
+                self.assertNotIn("background", force)
                 control = record["normal_stiffness_control"]
                 if adapt == "no":
                     self.assertNotIn("kn_adapt", force)
@@ -746,3 +750,4 @@ class BridgeToolsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
