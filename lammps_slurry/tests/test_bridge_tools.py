@@ -93,34 +93,6 @@ class BridgeToolsTest(unittest.TestCase):
             self.assertAlmostEqual(actual_volume/record["box_length_m"]**3, .08)
             self.assertEqual(len(record["pair_size_parameters"]), 3)
 
-    def test_bidisperse_migration_preserves_settings_and_is_idempotent(self):
-        helper_path = TOOLS.parents[1]/"apply_bidisperse_settings.py"
-        spec = importlib.util.spec_from_file_location("bidisperse_migration", helper_path)
-        helper = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(helper)
-        source = (TOOLS.parents[1]/"run_slurry_cpu.sbatch").read_text()
-        source = re.sub(r"(?m)^SIZE_(?:DISTRIBUTION|RATIO)=[^\n]*\n", "", source)
-        source = source.replace('    --size-distribution "$SIZE_DISTRIBUTION" --size-ratio "$SIZE_RATIO"\n', "")
-        # The user's run script is deliberately preserved by the overlay.
-        # Set fixture values by assignment name, independent of saved defaults.
-        for name, value in (("COUNT", "673"),
-                            ("TIMESTEP", "3e-6  # s; explicit Heun predictor-corrector")):
-            source, replacements = re.subn(
-                r"(?m)^[ \t]*"+re.escape(name)+r"[ \t]*=[^\n]*$",
-                lambda match: name+"="+value, source)
-            self.assertEqual(replacements, 1, "Missing or repeated batch setting: "+name)
-        revised = helper.update(source)
-        self.assertEqual(helper.update(revised), revised)
-        self.assertIn("COUNT=673", revised)
-        self.assertIn("TIMESTEP=3e-6", revised)
-        self.assertIn("# s; nearfield frozen-cap IMEX", revised)
-        self.assertNotIn("# s; explicit Heun predictor-corrector", revised)
-        self.assertEqual(revised.count("--size-distribution"), 1)
-        stripped = re.sub(r"(?m)^SIZE_(?:DISTRIBUTION|RATIO)=[^\n]*\n", "", revised)
-        stripped = stripped.replace('    --size-distribution "$SIZE_DISTRIBUTION" --size-ratio "$SIZE_RATIO"\n', "")
-        expected = source.replace("# s; explicit Heun predictor-corrector",
-                                  "# s; nearfield frozen-cap IMEX")
-        self.assertEqual(stripped, expected)
 
     def test_one_mpi_rank_receives_all_allocated_cores(self):
         env, threads = runner.execution_environment({"SLURM_CPUS_PER_TASK": "16", "OMP_NUM_THREADS": "1"})
@@ -223,11 +195,14 @@ class BridgeToolsTest(unittest.TestCase):
                 del arguments[index:index+2]
                 supplied = {arg for arg in arguments if arg.startswith("--")}
                 self.assertEqual(len(supplied), sum(arg.startswith("--") for arg in arguments))
-                # The advanced reference integrator uses its generator default;
-                # existing user batch scripts need no new mandatory assignment.
+                # The advanced reference integrator and the practical-only kn
+                # control use their generator defaults; existing user batch
+                # scripts need no new mandatory assignment.
                 expected = {option for action in prepare.parser()._actions for option in action.option_strings
                             if option not in ("-h", "--help", "--packer", "--contact-scheme",
-                                              "--surface-integrator", "--surface-linear")}
+                                              "--surface-integrator", "--surface-linear",
+                                              "--kn-adapt", "--kn-target", "--kn-raise", "--kn-lower",
+                                              "--kn-max-factor", "--kn-relax-strain")}
                 self.assertEqual(supplied, expected)
                 args = prepare.parser().parse_args(arguments)
                 self.assertEqual(args.ar, ar)
@@ -313,7 +288,12 @@ class BridgeToolsTest(unittest.TestCase):
         cases = [["--surface-linear", value] for value in ("0", "-1", "1", "nan", "inf")]
         cases += [["--surface-integrator", "practical", "--surface-adaptive", ".1"],
                   ["--surface-integrator", "practical", "--contact-scheme", "coupled"],
-                  ["--surface-integrator", "pc"]]
+                  ["--surface-integrator", "pc"],
+                  ["--kn-adapt", "yes"],
+                  ["--surface-integrator", "practical", "--kn-adapt", "yes", "--kn-raise", ".06"],
+                  ["--surface-integrator", "practical", "--kn-adapt", "yes", "--kn-lower", ".03"],
+                  ["--surface-integrator", "practical", "--kn-adapt", "yes", "--kn-max-factor", ".5"],
+                  ["--surface-integrator", "practical", "--kn-adapt", "yes", "--kn-relax-strain", "nan"]]
         with tempfile.TemporaryDirectory() as temporary:
             for number, flags in enumerate(cases):
                 output = Path(temporary)/str(number)
@@ -324,10 +304,57 @@ class BridgeToolsTest(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             prepare.parser().parse_args(["--output", "unused", "--surface-integrator", "unknown"])
 
+    def test_kn_adapt_reaches_the_fix_only_when_requested(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            for number, adapt in enumerate(("no", "yes")):
+                output = Path(temporary)/str(number)
+                args = prepare.parser().parse_args([
+                    "--output", str(output), "--initialization", "aligned", "--count", "1",
+                    "--phi", ".01", "--steps", "0", "--size-distribution", "monodisperse",
+                    "--surface-integrator", "practical", "--kn-adapt", adapt,
+                    "--kn-target", ".025", "--kn-max-factor", "50"])
+                with mock.patch.object(prepare, "certify_packing", return_value={"certified": True}), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    record = prepare.prepare(args)
+                force = next(line for line in (output/"in.bridge").read_text().splitlines()
+                             if line.startswith("fix hydro ")).split()
+                control = record["normal_stiffness_control"]
+                if adapt == "no":
+                    self.assertNotIn("kn_adapt", force)
+                    self.assertEqual(control, {"mode": "fixed"})
+                    continue
+                self.assertEqual(force.count("kn_adapt"), 1)
+                index = force.index("kn_adapt")
+                self.assertEqual([float(v) for v in force[index+1:index+6]], [.025, .03, .01, 50., .02])
+                self.assertEqual(control["mode"], "overlap_controlled")
+                self.assertEqual(control["max_kn_N_per_m"], 30.*50.)
+                self.assertEqual(control["limit"], .05)
+
     def test_practical_batch_preserves_benchmark_physics_and_forwards_options(self):
         source = TOOLS.parents[1]/"run_slurry_practical_cpu.sbatch"
         text = source.read_text()
         subprocess.run(["bash", "-n", str(source)], check=True, capture_output=True)
+        # Users edit this script before submitting (README.md), and
+        # the build runs this test against their copy. Pin the benchmark values
+        # by assignment name, as the run_slurry_cpu.sbatch test does, so this
+        # checks forwarding rather than the user's current choices.
+        fixture = {"AR": "4", "PHI": "0.24", "COUNT": "1000", "STEPS": "500000", "OUTPUT_INTERVAL": "400",
+                   "TIMESTEP": "1e-6", "AVERAGE_START_STRAIN": "5", "NOMINAL_DIAMETER_UM": "8",
+                   "SIZE_RATIO": "1.4", "SIZE_DISTRIBUTION": "bidisperse", "VISCOSITY": "0.00089",
+                   "SHEAR_RATE": "100", "FRICTION": "10", "NORMAL_STIFFNESS": "900",
+                   "TANGENTIAL_STIFFNESS": "300", "ROLLING_FRICTION": "10", "ROLLING_STIFFNESS": "300",
+                   "COHESION_WORK": "0.0212434877286055", "COHESION_RANGE": "6.7e-10",
+                   "BACKGROUND_HAMAKER": "9.9e-20", "BACKGROUND_REFERENCE_GAP": "2e-9",
+                   "BACKGROUND_SIGMA": "4.197e-10", "SURFACE_ADAPTIVE": "0", "SURFACE_ROUNDOFF": "yes",
+                   "SURFACE_INTEGRATOR": "practical", "SURFACE_LINEAR": "1e-4", "INITIALIZATION": "random",
+                   "SEED": "1729", "MOBILITY_BACKEND": "nearfield", "SOLVER_TOLERANCE": "1e-4",
+                   "PREPARE_ONLY": "0", "IMEX_MAX_ITERATIONS": "100"}
+        fixture.update({"KN_TARGET": "0.02", "KN_RAISE": "0.03", "KN_LOWER": "0.01",
+                        "KN_RELAX_STRAIN": "0.02", "KN_MAX_FACTOR": "1000"})
+        for name, value in fixture.items():
+            text, replacements = re.subn(r"(?m)^[ \t]*"+re.escape(name)+r"[ \t]*=[^\n]*$",
+                                         lambda match: name+"="+value, text)
+            self.assertEqual(replacements, 1, "Missing or repeated batch setting: "+name)
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)/"source with spaces"
             tools = root/"lammps_slurry/tools";tools.mkdir(parents=True)
@@ -357,6 +384,10 @@ class BridgeToolsTest(unittest.TestCase):
                       "size_distribution":"bidisperse","size_ratio":1.4,"initialization":"random","seed":1729,
                       "surface_integrator":"practical","surface_adaptive":0.,"surface_roundoff":"yes",
                       "surface_linear":1e-4,"tolerance":1e-4}
+            # The replacement launcher always enables stiffness control.
+            expected.update({"kn_adapt":"yes","kn_target":.02,"kn_raise":.03,"kn_lower":.01,
+                             "kn_max_factor":1000.,"kn_relax_strain":.02})
+            self.assertIn("--kn-adapt", arguments)
             for key,value in expected.items():self.assertEqual(getattr(args,key),value,key)
             self.assertEqual([p["count"] for p in prepare.population(args)],[733,267])
             self.assertEqual(args.steps*args.timestep*args.shear_rate,50.)

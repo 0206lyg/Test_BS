@@ -378,6 +378,16 @@ def parser():
                    default=None, help="optional surface integration mode; omitted preserves the runtime default")
     p.add_argument("--surface-linear", type=float, default=None,
                    help="optional relative linear-solve target for surface/contact solves, in (0,1)")
+    p.add_argument("--kn-adapt", choices=("yes", "no"), default="no",
+                   help="practical IMEX only: raise kn instead of reducing dt when the endpoint overlap "
+                        "exceeds 5%% of the minimum semiaxis; relax kn back toward --normal-stiffness")
+    for name, default, help_text in (
+            ("kn-target", .02, "overlap/min semiaxis aimed for after a kn raise"),
+            ("kn-raise", .03, "raise kn after an accepted step above this overlap fraction"),
+            ("kn-lower", .01, "relax kn after a quiet strain window below this overlap fraction"),
+            ("kn-max-factor", 1000., "upper bound of kn as a multiple of --normal-stiffness"),
+            ("kn-relax-strain", .02, "strain window below --kn-lower before kn is halved")):
+        p.add_argument("--"+name, type=float, default=default, help=help_text)
     for name, default, help_text in (
             ("ar", 2., "equatorial/polar semiaxis ratio, 1 <= AR <= 5"),
             ("nominal-diameter-um", 8., "cubic-volume mean diameter D in micrometers; fixed across AR"),
@@ -450,6 +460,15 @@ def validate_args(args):
             raise ValueError("coupled/pc/dg surface-integrator requires surface forces and surface-adaptive > 0")
     if (args.cohesion_work > 0 or args.background_hamaker > 0) and (args.mobility_backend != "nearfield" or args.contact_scheme != "imex"):
         raise ValueError("Surface cohesion requires nearfield frozen-cap IMEX")
+    if args.kn_adapt == "yes":
+        if args.surface_integrator != "practical":
+            raise ValueError("kn-adapt requires --surface-integrator practical")
+        values = (args.kn_lower, args.kn_target, args.kn_raise, args.kn_max_factor, args.kn_relax_strain)
+        if not all(math.isfinite(v) for v in values) or not (
+                0 < args.kn_lower < args.kn_target < args.kn_raise < .05 and
+                args.kn_max_factor >= 1 and args.kn_relax_strain > 0):
+            raise ValueError("kn-adapt requires 0 < kn-lower < kn-target < kn-raise < 0.05, "
+                             "kn-max-factor >= 1 and kn-relax-strain > 0")
     for name in ("count", "output_interval", "max_relax", "iterations"):
         if getattr(args, name) < 1:
             raise ValueError(name+" must be a positive integer")
@@ -523,7 +542,10 @@ write_data final.data nocoeff
            surface_options=((" surface_adaptive "+f(args.surface_adaptive) if args.surface_adaptive>0 else "")+
                             (" surface_roundoff yes" if args.surface_roundoff=="yes" else "")+
                             (" surface_integrator "+args.surface_integrator if args.surface_integrator is not None else "")+
-                            (" surface_linear "+f(args.surface_linear) if args.surface_linear is not None else "")),
+                            (" surface_linear "+f(args.surface_linear) if args.surface_linear is not None else "")+
+                            (" kn_adapt "+" ".join(f(v) for v in (args.kn_target, args.kn_raise, args.kn_lower,
+                                                                  args.kn_max_factor, args.kn_relax_strain))
+                             if args.kn_adapt == "yes" else "")),
            spectral=f(args.spectral), spectral_tolerance=f(args.spectral_tolerance), tolerance=f(args.tolerance),
            iterations=args.iterations, interval=args.output_interval, average=f(args.average_start_strain), steps=args.steps,
            slurry_plugin="{slurry_plugin}")
@@ -584,6 +606,15 @@ write_data final.data nocoeff
                      "packing": packing, "packing_max_PW_overlap": worst, "packing_image_checks": checked,
                      "packing_clearance": clearance,
                      "normal_contact_law": "linear spring; normal_stiffness in N/m; no Hertz conversion",
+                     "normal_stiffness_control": ({"mode": "overlap_controlled", "input_kn_N_per_m": args.normal_stiffness,
+                         "target": args.kn_target, "raise": args.kn_raise, "lower": args.kn_lower, "limit": .05,
+                         "max_kn_N_per_m": args.normal_stiffness*args.kn_max_factor, "relax_strain": args.kn_relax_strain,
+                         "rule": "a trial above the 5% limit is re-solved with kn*clamp(overlap/target,2,16) before any dt "
+                                 "reduction; after an accepted step above raise kn*=min(4,overlap/target); after "
+                                 "relax_strain entirely below lower kn is halved (never below input); frozen Coulomb caps "
+                                 "use the load that produced the committed overlaps; kt, kr and histories unchanged",
+                         "history_columns": ["kn_N_per_m", "kn_stiffening_retries_total", "kn_adjustments_total"]}
+                                                  if args.kn_adapt == "yes" else {"mode": "fixed"}),
                      "contact_stiffness_role": "numerical penalty; validate overlap and stiffness dependence for each case",
                      "maximum_overlap_fraction_criterion": .05,
                      "overlap_fraction_reference": "minimum particle semiaxis; sphere radius for AR1",

@@ -15,6 +15,11 @@ namespace ns = SlurryNearfieldSolver;
 using FrozenCaps = std::vector<double>;
 struct Workspace : ns::Workspace {
   bool use_krylov = true;
+  // At most one recoverable nonlinear-failure snapshot. It belongs to the
+  // immutable current inner problem, never to committed particle history.
+  // Callers retaining it across another solve must keep their own shared_ptr.
+  std::shared_ptr<bs::Result> failed_iterate;
+  double failed_iterate_tolerance=0.;
   // Optional floating-point backward-error allowance. It is disabled for the
   // original attraction-free path. solve_imex supplies geometric length scales
   // for support-gap evaluation; no physical force floor or relaxed rtol enters.
@@ -69,6 +74,11 @@ struct Workspace : ns::Workspace {
   std::size_t contact_preconditioner_refreshes=0,contact_preconditioner_solves=0;
   int krylov_limit = 160, krylov_restart = 80;
   double linear_relative_target = 1e-10;
+  // Inexact Newton forcing. Only the inner direction accuracy is
+  // adapted; the original physical residual and line search remain unchanged.
+  bool use_adaptive_linear_forcing = false;
+  std::size_t adaptive_linear_forcing_calls=0;
+  double last_linear_forcing=0.,maximum_used_linear_forcing=0.;
   std::size_t krylov_calls=0,krylov_iterations=0,krylov_max_iterations=0,
               krylov_fallbacks=0,jacobian_products=0;
   double maximum_true_relative_linear_residual=0.;
@@ -496,6 +506,7 @@ inline void factorize(const bs::Sparse&j,Workspace&w) {
 } // namespace detail
 inline bs::Result solve(const bs::Problem&p,const FrozenCaps&caps,const bs::Options&o,
                         Workspace&w,const bs::Result*warm=nullptr) {
+  w.failed_iterate.reset();w.failed_iterate_tolerance=0.;
   if(caps.size()!=p.contacts.size()||o.maximum_newton_iterations<=0||o.maximum_line_search_iterations<=0||
       o.maximum_linear_iterations<=0||o.gmres_restart<=0||w.krylov_limit<=0||w.krylov_restart<=0||
       w.contact_preconditioner_refresh_iterations<=0||
@@ -532,6 +543,24 @@ inline bs::Result solve(const bs::Problem&p,const FrozenCaps&caps,const bs::Opti
   };
   double tolerance=evaluated_tolerance(at);
   int updates=0,descent=0;
+  double previous_nonlinear_norm=0.;
+  // Allocate/copy only on the two explicitly recoverable failures below.
+  // The current state stays intact: rejected line-search probes are excluded.
+  auto capture_failed_iterate=[&]() {
+    auto result=std::make_shared<bs::Result>(at.state);
+    result->residual_norm=at.norm;
+    result->relative_residual=at.norm/std::max({scale,o.absolute_tolerance,
+                                             std::numeric_limits<double>::min()});
+    result->force_residual_norm=at.residual.norm();
+    result->mobility_residual_norm=at.mobility_norm;
+    result->newton_iterations=updates;
+    result->linear_iterations=int(w.krylov_iterations-initial_linear);
+    result->descent_steps=descent;
+    result->hydro_power=result->q.dot(result->total_moment);
+    result->contact_power=0.;
+    for(const auto&r:result->contacts)result->contact_power+=bs::contact_power(r);
+    w.failed_iterate=std::move(result);w.failed_iterate_tolerance=tolerance;
+  };
   const bool previous_preconditioner=w.reuse_contact_preconditioner_across_solves&&
       w.jacobian_ready&&w.jacobian.rows()==6*p.count&&w.jacobian.cols()==6*p.count&&
       !w.contact_preconditioner_refresh_pending;
@@ -542,6 +571,7 @@ inline bs::Result solve(const bs::Problem&p,const FrozenCaps&caps,const bs::Opti
       std::ostringstream message;message<<"IMEX: convex Newton limit; residual="<<at.norm<<"; tolerance="<<tolerance
         <<"; iterations="<<updates<<"; primary_limit="<<o.maximum_newton_iterations
         <<"; recovery_limit="<<w.maximum_recovery_iterations;
+      capture_failed_iterate();
       throw std::runtime_error(message.str());
     }
     const bool recovery_entry=!recovering&&updates>=o.maximum_newton_iterations;
@@ -552,7 +582,30 @@ inline bs::Result solve(const bs::Problem&p,const FrozenCaps&caps,const bs::Opti
     const bool majorized=recovery_entry||(w.use_huber_globalization&&majorize_next);
     if(majorized)++w.huber_majorized_directions;
     const bs::Sparse j=detail::jacobian(p,at,w,majorized);
-    const double rhs=at.residual.norm(),target=w.linear_relative_target*rhs;
+    const double rhs=at.residual.norm();
+    double forcing=w.linear_relative_target;
+    if(w.use_adaptive_linear_forcing) {
+      const double floor=w.linear_relative_target,
+                   cap=std::max(floor,std::min(.05,o.max_linear_forcing));
+      forcing=cap;
+      if(previous_nonlinear_norm>0.) {
+        const double ratio=at.norm/previous_nonlinear_norm;
+        forcing=std::clamp(ratio>=1.?cap:.9*std::pow(ratio,1.5),floor,cap);
+      }
+      // Near termination bound the forcing number by 0.5*tol/r. This is a
+      // dimensionless safeguard, not an error bound between different norms;
+      // the unchanged full physical residual still decides convergence.
+      // The 0.05 cap already satisfies it inside ten nonlinear tolerances.
+      // Outside that region do not impose tol/r: that would oversolve the
+      // earliest Newton systems and defeat the inexact forcing strategy.
+      if(at.norm<=10.*tolerance)
+        forcing=std::min(forcing,std::max(floor,.5*tolerance/at.norm));
+      ++w.adaptive_linear_forcing_calls;
+    }
+    previous_nonlinear_norm=at.norm;
+    w.last_linear_forcing=forcing;
+    w.maximum_used_linear_forcing=std::max(w.maximum_used_linear_forcing,forcing);
+    const double target=forcing*rhs;
     bs::Vector direction;bool solved=false;int iterations=0;double linear_residual=0.;
     if(w.use_krylov) {
       if(w.use_contact_preconditioner&&refresh_contact_preconditioner) {
@@ -648,7 +701,10 @@ inline bs::Result solve(const bs::Problem&p,const FrozenCaps&caps,const bs::Opti
         }
       }
     }
-    if(!accepted)throw std::runtime_error("IMEX: convex objective line search failed");
+    if(!accepted) {
+      capture_failed_iterate();
+      throw std::runtime_error("IMEX: convex objective line search failed");
+    }
     if(w.use_roundoff_budget)tolerance=evaluated_tolerance(at);
     majorize_next=!majorized&&accepted_alpha<=.5;
     ++updates;

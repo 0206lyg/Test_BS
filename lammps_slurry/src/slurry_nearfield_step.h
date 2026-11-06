@@ -7,14 +7,113 @@
 #include "slurry_bridge_step.h"
 #include "slurry_nearfield_implicit_solver.h"
 #include "slurry_nearfield_imex_solver.h"
+#include "slurry_nearfield_admm_contact_solver.h"
 
 namespace SlurryNearfieldStep {
 namespace bs = SlurryBridgeSolver;
 namespace step = SlurryBridgeStep;
 namespace ni = SlurryNearfieldImplicitSolver;
 namespace imex = SlurryNearfieldImexSolver;
+namespace admm = SlurryNearfieldAdmmContactSolver;
 
 namespace detail {
+inline bool recoverable_imex_failure(const std::string &message) {
+  return message.find("IMEX: convex Newton limit")==0 ||
+         message=="IMEX: convex objective line search failed";
+}
+
+inline void add_solver_work(bs::Result &result,const bs::Result &previous) {
+  result.newton_iterations+=previous.newton_iterations;
+  result.linear_iterations+=previous.linear_iterations;
+  result.descent_steps+=previous.descent_steps;
+  result.breakpoint_steps+=previous.breakpoint_steps;
+  result.continuation_stages+=previous.continuation_stages;
+  result.continuation_retries+=previous.continuation_retries;
+  result.mobility_applications+=previous.mobility_applications;
+  result.kink_reselections+=previous.kink_reselections;
+}
+
+inline bs::Result solve_imex_inner(const bs::Problem &problem,
+    const imex::FrozenCaps &caps,const bs::Options &options,
+    imex::Workspace &workspace,const bs::Result *warm) {
+  std::shared_ptr<bs::Result> failed;
+  std::string first_failure;
+  try {
+    return imex::solve(problem,caps,options,workspace,warm);
+  } catch(const std::runtime_error &failure) {
+    if(!recoverable_imex_failure(failure.what()) || !workspace.failed_iterate)
+      throw;
+    // Hold ownership: another solve on this workspace clears failed_iterate.
+    failed=workspace.failed_iterate;
+    if(failed->velocity.size()!=6*problem.count || !failed->velocity.allFinite())
+      throw;
+    first_failure=failure.what();
+  }
+
+  // This is a bounded algebraic recovery, not a new physical substep. Neither
+  // the failed iterate nor the ADMM split variables commit any history/state.
+  admm::Workspace recovery;
+  recovery.use_roundoff_budget=workspace.use_roundoff_budget;
+  recovery.use_lazy_roundoff_screen=workspace.use_lazy_roundoff_screen;
+  recovery.reuse_evaluation_metrics=workspace.reuse_evaluation_metrics;
+  recovery.contact_roundoff_length=workspace.contact_roundoff_length;
+  admm::Options split_options;
+  split_options.nonlinear=options;
+  split_options.frozen_normal_loads=caps;
+  split_options.maximum_iterations=100;
+  auto split=admm::solve(problem,split_options,recovery,failed.get());
+
+  // Count the additional local factor/solve work without transferring factors
+  // or changing the original resistance cache used by endpoint acceptance.
+  workspace.symbolic_analyses+=recovery.symbolic_analyses+recovery.augmented_factorizations;
+  workspace.numeric_factorizations+=recovery.numeric_factorizations+recovery.augmented_factorizations;
+  workspace.solves+=recovery.solves+recovery.augmented_solves;
+  workspace.refinement_solves+=recovery.refinement_solves;
+  if(split.converged) {
+    const auto metric=imex::acceptance_metric(problem,caps,split.state,
+        split.state.contacts,workspace,options);
+    if(metric.residual_norm<=metric.tolerance) {
+      workspace.last_roundoff_tolerance=metric.roundoff_tolerance;
+      workspace.last_acceptance_tolerance=metric.tolerance;
+      workspace.last_acceptance_ratio=metric.residual_norm/std::max(
+          metric.tolerance,std::numeric_limits<double>::min());
+      workspace.maximum_roundoff_tolerance=std::max(
+          workspace.maximum_roundoff_tolerance,metric.roundoff_tolerance);
+      if(metric.residual_norm>metric.tolerance-metric.roundoff_tolerance)
+        ++workspace.roundoff_inner_acceptances;
+      split.state.residual_norm=metric.residual_norm;
+      split.state.relative_residual=metric.residual_norm/std::max({metric.rhs_norm,
+          options.absolute_tolerance,std::numeric_limits<double>::min()});
+      split.state.force_residual_norm=metric.force_norm;
+      split.state.mobility_residual_norm=metric.mobility_norm;
+      add_solver_work(split.state,*failed);
+      workspace.failed_iterate.reset();workspace.failed_iterate_tolerance=0.;
+      return std::move(split.state);
+    }
+  }
+  // One Newton polish, directly through imex::solve: no recursive recovery.
+  try {
+    auto polished=imex::solve(problem,caps,options,workspace,&split.state);
+    add_solver_work(polished,*failed);
+    add_solver_work(polished,split.state);
+    return polished;
+  } catch(const std::runtime_error &failure) {
+    if(!recoverable_imex_failure(failure.what()))
+      throw std::runtime_error(std::string("same-dt IMEX recovery polish failed: ")+failure.what());
+    bs::Result work=workspace.failed_iterate?*workspace.failed_iterate:split.state;
+    const double residual=work.residual_norm;
+    const double tolerance=workspace.failed_iterate?
+        workspace.failed_iterate_tolerance:split.physical_tolerance;
+    add_solver_work(work,*failed);
+    if(workspace.failed_iterate)add_solver_work(work,split.state);
+    std::ostringstream message;
+    message << "same-dt IMEX recovery exhausted after " << split.iterations
+            << " ADMM sweeps and one Newton polish; initial_failure=" << first_failure
+            << "; polish_failure=" << failure.what();
+    throw bs::NonlinearFailure(message.str(),work,residual,tolerance);
+  }
+}
+
 template<class Workspace,class Solver,class Response,class Metric>
 inline step::Result solve_endpoint(const bs::Problem &original,const step::Geometry &geometry,
                           const bs::Options &options,Workspace &workspace,
@@ -181,7 +280,7 @@ inline step::Result solve_imex(const bs::Problem &original,const imex::FrozenCap
   } else workspace.contact_roundoff_length.clear();
   imex::Metric last_metric;
   auto result=detail::solve_endpoint(original,geometry,options,workspace,warm,
-      [&](const auto &p,const auto &o,auto &w,const auto *seed){return imex::solve(p,caps,o,w,seed);},
+      [&](const auto &p,const auto &o,auto &w,const auto *seed){return detail::solve_imex_inner(p,caps,o,w,seed);},
       [&](std::size_t k,const auto &c,const auto &u,double dt,double gap){
         return imex::contact_response(c,caps[k],u,dt,gap);
       },

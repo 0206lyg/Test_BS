@@ -31,6 +31,7 @@
 #include "slurry_surface_coupled_step.h"
 #include "slurry_surface_discrete_gradient.h"
 #include "slurry_periodic_mobility.h"
+#include "slurry_stiffness_control.h"
 #include "update.h"
 #include "utils.h"
 #include <algorithm>
@@ -105,6 +106,13 @@ struct FixSlurryBridge::Impl {
   double reference_radius = 0, regularization_length = 0;
   double mu = 10., kt = 2.4, mu_roll = 10., kr = 2.4; // kn, kt, kr: N/m
   double cohesion_work = 0., cohesion_range = .67e-9; // J/m^2, m; disabled by default
+  // Optional overlap-controlled normal stiffness (practical IMEX only). kn is
+  // the stiffness of the next solve; kn_load is the stiffness that produced the
+  // committed overlaps, from which frozen Coulomb caps take their load.
+  bool kn_control = false;
+  double kn_load = 0.;
+  SlurryStiffnessControl::Settings kn_settings;
+  SlurryStiffnessControl::State kn_state;
   SlurrySurfaceBackground::Parameters background;
   double surface_adaptive=0., suggested_surface_step=0.;
   bool surface_roundoff=false, direct_advance=false;
@@ -117,7 +125,7 @@ struct FixSlurryBridge::Impl {
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
   std::ofstream csv;
-  std::array<double, 72> diag{};
+  std::array<double, 75> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
   long double selected_integral = 0;
@@ -156,6 +164,7 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
                       "[contact_scheme imex|coupled] "
                       "[cohesion work_J_per_m2 opening_range_m] "
                       "[background AH_J h0_m sigma_m] [surface_adaptive fraction] [surface_roundoff yes|no] "
+                      "[kn_adapt target raise lower max_factor relax_strain] "
                       "[surface_reuse yes|no] [surface_defer yes|no] "
                       "[tolerance rtol] [iterations maxit] [history file interval average_start_strain]");
   auto &p = *p_;
@@ -163,6 +172,8 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
   // Freeze a positive-definite contact Jacobian as the Krylov preconditioner;
   // every linear solve still checks the current exact Jacobian residual.
   p.imex_workspace.use_contact_preconditioner = true;
+  // Adapt only intermediate Newton solves; final physical tolerances are unchanged.
+  p.imex_workspace.use_adaptive_linear_forcing = true;
   // Keep the tested 40-update primary strategy; allow a generous continuation
   // budget without forcing any extra work after the original residual passes.
   // The batch can expose this independently from its linear Krylov limit.
@@ -199,6 +210,15 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
       p.background.reference_gap=utils::numeric(FLERR,arg[k+2],false,lmp);
       p.background.sigma=utils::numeric(FLERR,arg[k+3],false,lmp);
       k+=4;
+    } else if (!std::strcmp(arg[k], "kn_adapt") && k + 5 < narg) {
+      // kn_adapt target raise lower max_factor relax_strain
+      p.kn_control = true;
+      p.kn_settings.target = utils::numeric(FLERR, arg[k + 1], false, lmp);
+      p.kn_settings.raise = utils::numeric(FLERR, arg[k + 2], false, lmp);
+      p.kn_settings.lower = utils::numeric(FLERR, arg[k + 3], false, lmp);
+      p.kn_settings.max_factor = utils::numeric(FLERR, arg[k + 4], false, lmp);
+      p.kn_settings.relax_strain = utils::numeric(FLERR, arg[k + 5], false, lmp);
+      k += 6;
     } else if (!std::strcmp(arg[k], "surface_adaptive") && k + 1 < narg) {
       p.surface_adaptive=utils::numeric(FLERR,arg[k+1],false,lmp);k+=2;
     } else if (!std::strcmp(arg[k], "surface_integrator") && k + 1 < narg) {
@@ -304,6 +324,14 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
     error->all(FLERR, "Invalid slurry/bridge material or numerical parameter");
   try { SlurrySurfaceBackground::validate(p.background); }
   catch(const std::exception &e) { error->all(FLERR,e.what()); }
+  p.kn_load = p.kn;
+  p.kn_state = SlurryStiffnessControl::initial_state(p.kn);
+  if (p.kn_control) {
+    if (!p.surface_practical)
+      error->all(FLERR, "kn_adapt requires surface_integrator practical");
+    try { SlurryStiffnessControl::validate(p.kn_settings); }
+    catch (const std::exception &e) { error->all(FLERR, e.what()); }
+  }
   if((p.cohesion_work>0. || p.background.hamaker>0.) && (!p.nearfield_mobility || !p.imex_contacts))
     error->all(FLERR,"Surface cohesion currently requires nearfield frozen-cap IMEX");
   if((p.surface_pc||p.surface_coupled)&&(!p.nearfield_mobility||!p.imex_contacts||
@@ -341,7 +369,8 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
              "substeps,substep_rejections,minimum_substep_s,maximum_surface_error,"
              "roundoff_budget,max_roundoff_fraction,solver_acceptance_ratio,"
              "surface_quadrature_evaluations,surface_quadrature_max_relative_work_defect,surface_quadrature_max_panels,"
-             "surface_potential_change_power_W,surface_path_work_power_W\n";
+             "surface_potential_change_power_W,surface_path_work_power_W,"
+             "kn_N_per_m,kn_stiffening_retries_total,kn_adjustments_total\n";
   }
   peratom_flag = 1;
   size_peratom_cols = 17;
@@ -906,9 +935,11 @@ void FixSlurryBridge::solve_velocities() {
           bool have_warm=false;
           mutable std::shared_ptr<Frame> cached_frame;
           std::shared_ptr<Payload> payload;
+          double load_kn=0.; // N/m that produced these overlaps (frozen-cap load)
         };
         State initial{bodies,quaternions,H,p.history,p.warm,p.have_warm,
-                      std::make_shared<Frame>(current),{}};
+                      std::make_shared<Frame>(current),{},p.kn_load};
+        const double kn_unit=p.eta*length*rate; // N/m per nondimensional stiffness
         const double stress_scale=p.eta*rate/volume;
         const double energy_scale=p.eta*std::pow(length,3)*rate;
         const double power_scale=energy_scale*rate,force_scale=p.eta*length*length*rate;
@@ -931,7 +962,14 @@ void FixSlurryBridge::solve_velocities() {
           data->frame=(p.surface_coupled||p.surface_pc)?
               std::make_shared<Frame>(*state.cached_frame):state.cached_frame;
           auto &f=*data->frame;auto &pb=f.problem;pb.dt=sub_dt;
-          data->caps=imex::freeze_caps(pb);
+          if(p.kn_control) {
+            // The cached frame may predate a stiffness change. Springs use the
+            // current kn; the frozen Coulomb load is the PHYSICAL load of the
+            // committed overlaps, load_kn*overlap, never kn*overlap.
+            for(auto &c:pb.contacts)c.kn=p.kn/kn_unit;
+            data->caps=imex::freeze_caps(pb);
+            if(state.load_kn!=p.kn)for(auto &cap:data->caps)cap*=state.load_kn/p.kn;
+          } else data->caps=imex::freeze_caps(pb);
           auto endpoint_surface=[&](const step::Endpoint&end) {
             SlurrySurfaceCoupledStep::SurfaceEvaluation answer;
             answer.external=bs::Vector::Zero(6*n);
@@ -1042,6 +1080,7 @@ void FixSlurryBridge::solve_velocities() {
           };
           const double solve_start=MPI_Wtime();
           int predictor_newton=0,predictor_linear=0;
+          for(int stiffen=0;;++stiffen) {
           try {
             if(p.surface_coupled) {
               auto coupled=SlurrySurfaceCoupledStep::solve(pb,f.geometry,options,p.imex_workspace,
@@ -1101,6 +1140,28 @@ void FixSlurryBridge::solve_velocities() {
               return ad::Trial<State>::retry(e.what());
             throw;
           }
+          if(!p.kn_control)break;
+          // Overlap gate BEFORE any dt reduction: a quasi-static endpoint
+          // overlap is set by force balance (N/kn), so only a stiffer spring
+          // can remove it. Re-solve the same trial with the same physical
+          // frozen caps; a stiffness at its bound falls through to rejection.
+          double overlap_ratio=0.;
+          for(std::size_t k=0;k<pb.contacts.size();++k) {
+            const auto &c=pb.contacts[k];
+            overlap_ratio=std::max(overlap_ratio,std::max(0.,-data->solved.endpoint.gaps[k])/
+                std::min(minimum_axis(state.bodies[c.i]),minimum_axis(state.bodies[c.j])));
+          }
+          const double stiffer=SlurryStiffnessControl::retry_stiffness(p.kn_state,p.kn_settings,overlap_ratio);
+          if(!(stiffer>p.kn)||stiffen>=p.kn_settings.max_retries)break;
+          p.diag[8]+=data->solved.solution.linear_iterations;
+          p.diag[9]+=data->solved.solution.newton_iterations;
+          std::fprintf(stderr,"slurry/bridge kn_adapt: step=%lld retry substep_dt=%.6g s max_overlap/min_semiaxis=%.6g kn %.6g -> %.6g N/m\n",
+                       static_cast<long long>(update->ntimestep),sub_dt/rate,overlap_ratio,p.kn,stiffer);
+          std::fflush(stderr);
+          p.kn=p.kn_state.current=stiffer;++p.kn_state.retries;
+          for(auto &c:pb.contacts)c.kn=p.kn/kn_unit;
+          p.imex_workspace.contact_preconditioner_refresh_pending=true;
+          }
           solve_seconds+=MPI_Wtime()-solve_start;
           const auto &sol=data->solved.solution;
           const auto &end=data->solved.endpoint;
@@ -1135,6 +1196,7 @@ void FixSlurryBridge::solve_velocities() {
           geometry_time+=MPI_Wtime()-screened_start;
           State next;next.bodies=end.bodies;next.lattice=end.lattice;
           next.quaternions.resize(n);next.have_warm=true;next.warm=sol;next.payload=data;
+          next.load_kn=p.kn_control?p.kn:state.load_kn;
           for(int i=0;i<n;++i)next.quaternions[i]=step::rotate(state.quaternions[i],
               sol.velocity.segment<3>(6*i+3)+omega_inf,sub_dt);
           double error_ratio=0.,cap_work_sum=0.,cap_scale_sum=0.;
@@ -1360,6 +1422,24 @@ void FixSlurryBridge::solve_velocities() {
         p.diag[46]=minimum_semiaxis*length;p.diag[60]=advanced.statistics.accepted;
         p.diag[61]=advanced.statistics.rejected;p.diag[62]=advanced.statistics.minimum_accepted_step/rate;
         p.diag[63]=advanced.statistics.maximum_accepted_error;
+        // The committed overlaps belong to the stiffness of the last accepted
+        // trial; the next step's frozen caps take their load from it.
+        p.kn_load=advanced.state.load_kn;
+        p.diag[72]=p.kn_load;
+        if(p.kn_control) {
+          const double before=p.kn;
+          if(SlurryStiffnessControl::after_step(p.kn_state,p.kn_settings,p.diag[45],
+                                                std::abs(p.shear)*update->dt)) {
+            p.kn=p.kn_state.current;
+            p.imex_workspace.contact_preconditioner_refresh_pending=true;
+            std::fprintf(stderr,"slurry/bridge kn_adapt: step=%lld %s max_overlap/min_semiaxis=%.6g kn %.6g -> %.6g N/m\n",
+                         static_cast<long long>(update->ntimestep),p.kn>before?"raise":"relax",
+                         p.diag[45],before,p.kn);
+            std::fflush(stderr);
+          }
+        }
+        p.diag[73]=double(p.kn_state.retries);
+        p.diag[74]=double(p.kn_state.raises+p.kn_state.lowers);
         direct_advance=1;advance_physical=physical;
         for(int i=0;i<n;++i) {
           for(int k=0;k<3;++k)direct_endpoint[7*i+k]=domain->boxlo[k]+length*advanced.state.bodies[i].position[k];
@@ -1618,6 +1698,7 @@ void FixSlurryBridge::solve_velocities() {
           (-current.background_external.dot(result.velocity)+
            (current.background_stress.array()*E.array()).sum())*power_scale:0.;
       p.diag.fill(0);
+      p.diag[72] = p.kn; // fixed stiffness outside practical kn_adapt
       p.diag[0] = p.stress[3];
       p.diag[1] = p.shear ? p.stress[3] / p.shear : std::numeric_limits<double>::quiet_NaN();
       p.diag[2] = active_near;
@@ -1723,6 +1804,9 @@ void FixSlurryBridge::solve_velocities() {
       diagnostic << e.what() << "; phase=" << phase << "; step=" << update->ntimestep
                  << "; time_s=" << std::setprecision(17) << simulation_time()
                  << "; dt_s=" << update->dt;
+      if (p.kn_control)
+        diagnostic << "; kn_N_per_m=" << p.kn << "; kn_max_N_per_m="
+                   << SlurryStiffnessControl::maximum(p.kn_state, p.kn_settings);
       message = diagnostic.str();
     }
   MPI_Bcast(&failed, 1, MPI_INT, 0, world);

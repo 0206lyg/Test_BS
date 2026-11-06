@@ -18,9 +18,10 @@ PHI=0.24
 COUNT=1000
 STEPS=500000  # target strain = shear_rate * timestep * steps = 50
 OUTPUT_INTERVAL=400
-TIMESTEP=1e-6  # s; practical fixed-step IMEX
+TIMESTEP=1e-6  # s; nominal IMEX timestep
 AVERAGE_START_STRAIN=5
-# Production uses the nominal timestep; microscopic pair variation does not subdivide it.
+# Recover Newton failures and excessive overlap at the same dt first.
+# If those recovery attempts fail, the existing limited dt subdivision remains.
 
 NOMINAL_DIAMETER_UM=8                 # volume-equivalent D; fixed while AR changes
 SIZE_RATIO=1.4
@@ -30,23 +31,32 @@ DENSITY=2400
 VISCOSITY=0.00089
 SHEAR_RATE=100
 FRICTION=10
-NORMAL_STIFFNESS=900  # N/m
+NORMAL_STIFFNESS=900  # N/m; initial and minimum normal stiffness
 TANGENTIAL_STIFFNESS=300  # N/m
 ROLLING_FRICTION=10
 ROLLING_STIFFNESS=300  # N/m
 
 # Physical interactions match the current N1000 attraction benchmark settings.
 # Packing matches its bidisperse 1.4-ratio, random-seed-1729 fixture (733/267).
-# The original run_slurry_cpu.sbatch remains unchanged.
+# For contact + lubrication baseline, set COHESION_WORK=0 and BACKGROUND_HAMAKER=0.
 COHESION_WORK=0.0212434877286055  # J/m^2
 COHESION_RANGE=6.7e-10  # m; 0.67 nm retained
 BACKGROUND_HAMAKER=9.9e-20  # J
 BACKGROUND_REFERENCE_GAP=2e-9  # m; potential reference, not contact onset
 BACKGROUND_SIGMA=4.197e-10  # m
-SURFACE_ADAPTIVE=0  # practical mode uses the requested fixed timestep
+SURFACE_ADAPTIVE=0  # no microscopic pair-change timestep gate in practical mode
 SURFACE_ROUNDOFF=yes
 SURFACE_INTEGRATOR=practical
 SURFACE_LINEAR=1e-4
+
+# Normal-stiffness control is part of this launcher; it is always enabled.
+# All overlap fractions below use the pair's smaller minimum semiaxis.
+# Tangential/rolling stiffness and friction coefficients are not rescaled.
+KN_TARGET=0.02          # target overlap fraction after increasing kn
+KN_RAISE=0.03           # increase kn after a step exceeds this fraction
+KN_LOWER=0.01           # relax kn after staying below this fraction
+KN_RELAX_STRAIN=0.02    # strain window for relaxation toward NORMAL_STIFFNESS
+KN_MAX_FACTOR=1000      # maximum kn / NORMAL_STIFFNESS
 
 INITIALIZATION=random                 # random or aligned; no automatic switch
 SEED=1729
@@ -65,7 +75,7 @@ OUTPUT_DIR=""                         # empty: runs/<shape>_ar<AR>_phi<PHI>_n<CO
 BUILD_ENV=""                          # empty: build/lammps/env.sh
 PREPARE_ONLY=0
 TRACE_SOLVER=0
-IMEX_MAX_ITERATIONS=100  # bounded nonlinear updates before solver retry
+IMEX_MAX_ITERATIONS=100  # Newton updates per solve; same-dt ADMM recovery is additional
 export SLURRY_IMEX_MAX_ITERATIONS="$IMEX_MAX_ITERATIONS"
 # End of run settings. Resource requests are the #SBATCH lines above.
 
@@ -121,6 +131,8 @@ SLURRY_ARGUMENTS=(
     --friction "$FRICTION" --normal-stiffness "$NORMAL_STIFFNESS"
     --tangential-stiffness "$TANGENTIAL_STIFFNESS"
     --rolling-friction "$ROLLING_FRICTION" --rolling-stiffness "$ROLLING_STIFFNESS"
+    --kn-adapt yes --kn-target "$KN_TARGET" --kn-raise "$KN_RAISE"
+    --kn-lower "$KN_LOWER" --kn-relax-strain "$KN_RELAX_STRAIN" --kn-max-factor "$KN_MAX_FACTOR"
     --cohesion-work "$COHESION_WORK" --cohesion-range "$COHESION_RANGE"
     --background-hamaker "$BACKGROUND_HAMAKER"
     --background-reference-gap "$BACKGROUND_REFERENCE_GAP" --background-sigma "$BACKGROUND_SIGMA"
@@ -141,3 +153,4 @@ fi
 printf 'SHAPE=%s AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
     "$PARTICLE_SHAPE" "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" "${SLURRY_ARGUMENTS[@]}"
+
