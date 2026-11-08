@@ -1,5 +1,85 @@
 # Test_BS — baseline 및 인력 suspension 실행 안내
 
+## CMC별 0.1 s⁻¹ 시험: `run_cmc.sbatch`
+
+현재 CMC 농도별 수동 인력 시험은 **`run_cmc.sbatch`**로 실행한다. `run_slurry_practical_cpu.sbatch`의 입자·마찰·인력 kernel·practical solver·강성 조절·허용오차를 그대로 사용하며, total CMC에서 계산한 **free CMC로 매질 점도만** 자동 설정한다. `COHESION_WORK`와 `BACKGROUND_HAMAKER`는 서로 독립적인 수동 입력이다. CMC 농도를 바꿔도 두 값을 자동 감쇠하지 않는다.
+
+파일 상단에서 다음 세 값을 편집한 뒤 저장소 루트에서 제출한다. 아래 인력 수치는 practical launcher에서 유지한 기본값이며 4 g/L에 보정한 값이 아니다. `COHESION_WORK` 단위는 **J/m²**이므로, 예를 들어 2.199 mJ/m²를 시험하려면 `0.002199`를 입력한다.
+
+```bash
+CMC_TOTAL=4                         # total CMC, g/L of liquid; 0--16
+COHESION_WORK=0.0212434877286055      # J/m², manual
+BACKGROUND_HAMAKER=9.9e-20           # J, manual
+```
+
+```bash
+sbatch run_cmc.sbatch
+```
+
+접촉+lubrication 기준 시험은 두 인력을 모두 `0`으로 지정한다. 별도 command-line 인자는 받지 않는다. `PREPARE_ONLY=1`은 기존 verified-build 입력 생성만 수행한다. 이번 추가 파일은 기존 solver, 입력 생성기, build fingerprint를 수정하지 않으므로 **이미 현재 practical solver를 빌드했다면 재빌드가 필요 없다.**
+
+기본 전단률은 `SHEAR_RATE=0.1` s⁻¹이다. 기존 `TIMESTEP=1e-6` s와 평균 시작 strain 5를 유지하면서 총 strain 50까지 가도록 **`STEPS=500000000`**으로 지정했다. 물리 시간은 500 s이며, 기존 100 s⁻¹ 시험보다 step 수가 1000배다. `STEPS=500000`을 그대로 쓰면 총 strain 0.05여서 평균 구간에 도달하지 못한다. timestep은 자동 확대하지 않는다. 실행 길이는 `STEPS`로 직접 변경할 수 있으며 평균을 얻으려면 `abs(SHEAR_RATE)*TIMESTEP*STEPS > AVERAGE_START_STRAIN`이어야 한다. 기본 출력 간격 400 step도 유지하므로 전체 실행은 약 125만 개 출력 구간을 갖는다. 이 step 수는 목표 실행 길이이며 7일 walltime 내 완료를 보장하지 않는다.
+
+### 농도 분배와 점도
+
+출처: [ACS Nano, DOI 10.1021/acsnano.6c10201](https://doi.org/10.1021/acsnano.6c10201), 90k CMC. 모든 농도 단위는 **액체 부피 기준 g/L**이다. `CMC_TOTAL`은 투입량이며 매질 점도표에는 **free CMC**를 대입한다. 흡착량은 프로젝트에서 채택한 포화량 2.8 g/L와 total 4 g/L에서 adsorbed 2.7 / free 1.3 g/L를 연결하는 다음 명목 질량수지를 사용한다.
+
+$$
+c_t=c_a+c_f,\qquad c_a=\frac{q_{\max}c_f}{K_d+c_f},\qquad
+q_{\max}=2.8,\quad K_d=1.3\left(\frac{2.8}{2.7}-1\right)=0.048148148\;\mathrm{g/L}.
+$$
+
+$$
+c_f=\frac{c_t-q_{\max}-K_d+\sqrt{(q_{\max}+K_d-c_t)^2+4K_dc_t}}{2}.
+$$
+
+이는 각 농도의 흡착량을 직접 측정했다는 의미가 아니라, 채택한 ACS 흡착 기준값을 만족시키는 연속 보간 모델이다. 원문의 흡착 측정은 graphite+carbon black 시스템이며, 이를 현재 graphite 모델에 적용하는 명목 분배다. 작은 농도에서는 위 근의 수치 소거를 피하는 동치 식을 계산한다. 지원 범위는 total 0–16 g/L이며 범위 밖이나 NaN/Inf 입력은 실행 전 거부한다.
+
+매질 점도는 **Fig. 2(c)의 Cross fitting에서 얻은 90k specific viscosity**를 `η_m = 0.89 × (1 + η_sp)` mPa·s로 변환한 표를 사용한다. 90k 매질을 Newtonian으로 근사하므로 전단률에 따라 추가 보정하지 않는다. 이전 Fig. 2(b) 점도표와 혼용하지 않는다. 그림 판독값이므로 아래 소수 자릿수는 계산 재현용이며 측정 정밀도를 뜻하지 않는다.
+
+| Total CMC (g/L) | Adsorbed CMC (g/L) | Free CMC (g/L) | 매질 점도 (mPa·s) | solver 입력 (Pa·s) |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0.890000 | 0.000890000 |
+| 1 | 0.974305 | 0.025695 | 0.912784 | 0.000912784 |
+| 2 | 1.898588 | 0.101412 | 0.979922 | 0.000979922 |
+| 4 | 2.700000 | 1.300000 | 2.042713 | 0.002042713 |
+| 5 | 2.741552 | 2.258448 | 2.428364 | 0.002428364 |
+| 6 | 2.759012 | 3.240988 | 2.762316 | 0.002762316 |
+| 7 | 2.768499 | 4.231501 | 3.172650 | 0.003172650 |
+| 8 | 2.774436 | 5.225564 | 3.311921 | 0.003311921 |
+| 10 | 2.781448 | 7.218552 | 4.567323 | 0.004567323 |
+| 12 | 2.785445 | 9.214555 | 5.126602 | 0.005126602 |
+| 16 | 2.789832 | 13.210168 | 7.233567 | 0.007233567 |
+
+계산에 사용한 free CMC 점도 원표는 다음과 같다. 농도와 **절대 점도에 대해 구간별 선형 보간**하며 로그 보간하지 않는다. 0–1.5 g/L 구간은 물과 첫 판독점 사이의 보간이다. 4/5 및 8/9 g/L에서 판독값의 작은 역전을 제거하기 위해 각 쌍을 같은 가중치로 평균했다. 이 표는 total CMC가 아니라 순수 용액의 CMC 농도, 즉 현재 계산의 free CMC가 독립변수다.
+
+| Free CMC (g/L) | 사용 점도 (mPa·s) |
+| ---: | ---: |
+| 0 | 0.890000000 |
+| 1.5 | 2.220053693 |
+| 3 | 2.632034186 |
+| 4 | 3.172650056 |
+| 5 | 3.172650056 |
+| 6 | 3.790085754 |
+| 7 | 4.467310797 |
+| 8 | 4.924922244 |
+| 9 | 4.924922244 |
+| 10 | 5.864917005 |
+| 12 | 6.498789916 |
+| 16 | 8.927466454 |
+
+변환은 `lammps_slurry/tools/cmc_medium.py`에서 수행한다. 출력 로그 `slurry_cmc_manual_<job ID>.out`에 total/adsorbed/free CMC, 매질 점도, 출처, 실제 수동 인력 입력을 남긴다. 기본 결과 폴더는 `runs/cmc<TOTAL>_spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>`이며, 기존 `parameters.json`과 `launch.json`에는 실제 전달한 점도와 인력이 기록된다. `parameters.json`의 `viscosity`는 **Pa·s**다. 조성 원문 기록은 sbatch 출력 로그에 있으므로 결과 폴더와 함께 보관한다. 실행 없이 계산만 확인하려면 다음을 사용한다.
+
+```bash
+python3 lammps_slurry/tools/cmc_medium.py --total 4
+```
+
+검증은 `python3 -m unittest discover -s lammps_slurry/tests -p 'test_cmc*.py' -v`로 실행한다. 새 매질 경로 7개와 기존 CMC 경로 15개가 통과했다. 농도별 점도, 두 인력의 독립 수동 입력, practical 인자 보존과 실제 `in.bridge` 입력 생성을 확인했다. 이 검증은 입력 생성 검증이며 0.1 s⁻¹의 장시간 유변 계산은 별도로 제출한다.
+
+기존 `run_slurry_cmc_cpu.sbatch`는 이전 Fig. 2(b) 표와 자동 인력 감쇠식을 사용하는 별도 legacy 시험 파일이다. 이번 수동 인력 sweep에는 사용하지 않는다. 해당 파일과 [이전 모델 문서](docs/CMC_MINIMAL_MODEL.md)는 기존 시험 재현을 위해 유지한다.
+
+## 기존 두 실행 파일
+
 이 문서가 현재 빌드·실행·설정·정리 안내다. `run_slurry_cpu.sbatch`는 contact friction + lubrication baseline용, `run_slurry_practical_cpu.sbatch`는 인력이 있는 별도 시험용이다. 두 실행 파일은 합치지 않는다. 두 시험 모두 공통 solver의 practical 계산 경로와 자동 법선 강성 조절을 사용한다. 별도 `apply_*.py` 실행이나 SHA256 수동 검사는 필요 없다.
 
 ## 적용 및 실행
