@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --hint=nomultithread
-#SBATCH --mem=8G
+#SBATCH --mem=4G
 #SBATCH --time=7-00:00:00
 #SBATCH --output=/scratch/negishi/lee6456/bl_%j.out
 
@@ -16,10 +16,10 @@
 PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
 AR=5                                 # supported range: 1 through 5
 PHI=0.34
-COUNT=1000
-STEPS=200000
-OUTPUT_INTERVAL=400
-TIMESTEP=2.5e-6  # s; nominal nearfield IMEX timestep
+COUNT=500
+STEPS=500000
+OUTPUT_INTERVAL=500
+TIMESTEP=1.0e-6  # s; nominal nearfield IMEX timestep
 AVERAGE_START_STRAIN=5
 # Recover Newton failures and excessive overlap at the same dt first.
 # If those recovery attempts fail, the existing limited dt subdivision remains.
@@ -32,7 +32,7 @@ DENSITY=2400
 VISCOSITY=0.01
 SHEAR_RATE=100
 FRICTION=10                          # strong-friction trial; saturation must be checked
-NORMAL_STIFFNESS=300  # N/m; initial and minimum normal stiffness
+NORMAL_STIFFNESS=100  # N/m; initial and minimum normal stiffness
 TANGENTIAL_STIFFNESS=100  # N/m
 ROLLING_FRICTION=10                  # strong-friction trial; not a measured graphite value
 ROLLING_STIFFNESS=100  # N/m

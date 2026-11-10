@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --hint=nomultithread
-#SBATCH --mem=8G
+#SBATCH --mem=4G
 #SBATCH --time=7-00:00:00
 #SBATCH --output=/scratch/negishi/lee6456/pG_%j.out
 
