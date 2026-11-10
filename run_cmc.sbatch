@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=slurry_cmc_manual
+#SBATCH --job-name=cmc
 #SBATCH --account=ardekani
 #SBATCH --partition=cpu
 #SBATCH --nodes=1
@@ -8,7 +8,7 @@
 #SBATCH --hint=nomultithread
 #SBATCH --mem=8G
 #SBATCH --time=7-00:00:00
-#SBATCH --output=slurry_cmc_manual_%j.out
+#SBATCH --output=/scratch/negishi/lee6456/cmc_%j.out
 
 # Edit this section, then submit from the slurry repository: sbatch run_cmc.sbatch
 # Exactly one simulation is launched. No command-line parameters are needed.
@@ -74,7 +74,8 @@ SPECTRAL_TOLERANCE=1e-8
 SOLVER_TOLERANCE=1e-4
 KRYLOV_ITERATIONS=1000
 
-OUTPUT_DIR=""                         # empty: runs/cmc<TOTAL>_<shape>_ar<AR>_phi<PHI>_n<COUNT>_<job ID>
+RESULTS_ROOT="/scratch/negishi/lee6456"  # default output parent; never falls back to the source tree
+OUTPUT_DIR=""  # empty: cmc_c<TOTAL>_cw<WORK:.4f>_h<A/1e-20>_n<COUNT>_sr<RATE>_<JOB_ID>; relative names are under RESULTS_ROOT
 BUILD_ENV=""                          # empty: build/lammps/env.sh
 PREPARE_ONLY=0
 TRACE_SOLVER=0
@@ -115,11 +116,21 @@ export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-16}"
 export OMP_DYNAMIC=FALSE OMP_PLACES=cores OMP_PROC_BIND=close OMP_MAX_ACTIVE_LEVELS=1
 export MKL_NUM_THREADS="$OMP_NUM_THREADS" MKL_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 SLURRY_BRIDGE_TRACE="$TRACE_SOLVER"
+if [[ "$RESULTS_ROOT" != /* ]]; then
+    printf 'RESULTS_ROOT must be an absolute path.\n' >&2
+    exit 2
+fi
 if [[ -z "$OUTPUT_DIR" ]]; then
     SLURRY_RUN_ID="${SLURM_JOB_ID:-local_$(date -u +%Y%m%dT%H%M%SZ)_$$}"
-    OUTPUT_DIR="${SLURRY_RESULTS_ROOT:-$SLURRY_BASE/runs}/cmc${CMC_TOTAL}_${PARTICLE_SHAPE}_ar${AR}_phi${PHI}_n${COUNT}_${SLURRY_RUN_ID}"
+    SLURRY_SR_TAG="$(LC_ALL=C awk -v value="$SHEAR_RATE" 'BEGIN { printf "%.12g", value }')"
+    # Round only the directory label; pass the full COHESION_WORK to the solver.
+    SLURRY_CW_TAG="$(LC_ALL=C printf '%.4f' "$COHESION_WORK")"
+    SLURRY_CMC_TAG="$(LC_ALL=C awk -v value="$CMC_TOTAL" 'BEGIN { printf "%.12g", value }')"
+    # h is Hamaker amplitude in units of 1e-20 J, not its scientific-notation mantissa.
+    SLURRY_H_TAG="$(LC_ALL=C awk -v value="$BACKGROUND_HAMAKER" 'BEGIN { printf "%.12g", value/1e-20 }')"
+    OUTPUT_DIR="$RESULTS_ROOT/cmc_c${SLURRY_CMC_TAG}_cw${SLURRY_CW_TAG}_h${SLURRY_H_TAG}_n${COUNT}_sr${SLURRY_SR_TAG}_${SLURRY_RUN_ID}"
 elif [[ "$OUTPUT_DIR" != /* ]]; then
-    OUTPUT_DIR="$SLURRY_BASE/$OUTPUT_DIR"
+    OUTPUT_DIR="$RESULTS_ROOT/$OUTPUT_DIR"
 fi
 if [[ -z "$BUILD_ENV" ]]; then
     BUILD_ENV="$SLURRY_BASE/build/lammps/env.sh"
@@ -166,4 +177,5 @@ printf 'Manual COHESION_WORK=%s J/m^2; BACKGROUND_HAMAKER=%s J\n' \
 printf 'SHAPE=%s AR=%s PHI=%s COUNT=%s STEPS=%s THREADS=%s\nRun directory: %s\n' \
     "$PARTICLE_SHAPE" "$AR" "$PHI" "$COUNT" "$STEPS" "$OMP_NUM_THREADS" "$OUTPUT_DIR"
 exec python3 "$SLURRY_BASE/lammps_slurry/tools/run_bridge.py" "${SLURRY_ARGUMENTS[@]}"
+
 

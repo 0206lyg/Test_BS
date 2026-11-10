@@ -1,8 +1,56 @@
-# Test_BS — baseline 및 인력 suspension 실행 안내
+# Test_BS — baseline · pure graphite · CMC 실행 안내
+
+## 실행 파일과 결과 위치
+
+| 실행 파일 | 역할 | 조절할 주요 값 | 기본 결과 폴더 |
+| --- | --- | --- | --- |
+| `run_baseline.sbatch` | contact friction + lubrication 기준 시험, 두 인력 없음 | `AR`, `PHI`, `COUNT`, `SHEAR_RATE`, `VISCOSITY` | `bl_ar<AR>_phi<PHI>_n<N>_sr<RATE>_<JOB_ID>` |
+| `run_pureGr.sbatch` | pure graphite의 contact attraction + background vdW 시험 | `COHESION_WORK`, `BACKGROUND_HAMAKER`, `COUNT`, `SHEAR_RATE` | `pG_cw<WORK>_n<N>_sr<RATE>_<JOB_ID>` |
+| `run_cmc.sbatch` | total CMC에 따라 흡착량·free CMC·매질 점도 자동 계산, 두 인력은 수동 | `CMC_TOTAL`, `COHESION_WORK`, `BACKGROUND_HAMAKER`, `COUNT`, `SHEAR_RATE` | `cmc_c<TOTAL>_cw<WORK>_h<H>_n<N>_sr<RATE>_<JOB_ID>` |
+
+**세 파일의 기본 결과 저장 경로는 `/scratch/negishi/lee6456`이다.** 소스 저장소의 `runs/`로 저장하지 않는다. 예시는 다음과 같다. 예시에 나온 값으로 실행 기본값을 바꾼 것은 아니다.
+
+```text
+/scratch/negishi/lee6456/bl_ar2_phi0.32_n1000_sr0.1_44897439
+/scratch/negishi/lee6456/pG_cw0.0021_n1000_sr0.1_44897439
+/scratch/negishi/lee6456/cmc_c16_cw0.0021_h9.9_n1000_sr0.1_44897439
+```
+
+- `cw`: `COHESION_WORK`의 J/m² 값을 소수점 넷째 자리까지 반올림해 표시한다. 예: `0.00212434877286055 → cw0.0021`, `0 → cw0.0000`. **폴더명만 반올림하며 실제 solver 입력은 원래 정밀도를 유지한다.**
+- `h`: `BACKGROUND_HAMAKER / 1e-20 J`. 예: `9.9e-20 → h9.9`, `9.9e-22 → h0.099`, `0 → h0`. 지수를 버리고 가수만 표시하지 않는다.
+- `c`: total CMC, 액상 기준 g/L. `16.0`도 `c16`으로 표시한다. `sr` 단위는 s⁻¹이다.
+- Job ID가 폴더명 끝에 붙어 서로 다른 작업을 구분한다. Slurm 밖에서 실행하면 UTC 시각과 process ID를 사용한다.
+- `RESULTS_ROOT`에서 기본 결과 상위 경로를 편집할 수 있다. `OUTPUT_DIR=""`이면 위 이름을 자동 생성하고, `OUTPUT_DIR="test1"`이면 `$RESULTS_ROOT/test1`에 저장한다. 절대 `OUTPUT_DIR`을 입력하면 그 경로를 사용한다. `SLURRY_RESULTS_ROOT` 환경변수에 의한 숨은 경로 변경은 사용하지 않는다.
+- Slurm stdout/stderr도 기본적으로 `/scratch/negishi/lee6456/bl_<JOB_ID>.out`, `pG_<JOB_ID>.out`, `cmc_<JOB_ID>.out`에 저장한다. 결과 폴더 안의 `console.log`, `history.csv`, `parameters.json`, `launch.json`, `runtime/`도 scratch에 생성된다. Slurm 로그 경로는 파일 위쪽 `#SBATCH --output`에서 별도로 지정한다.
+
+## 이번 overlay 적용
+
+기준 Git: `7bafb33bc353de9c54e64fa9a794030333eeb6ed`. 계산 설정·solver·시간 간격·입력 정밀도는 유지하고 실행 이름과 저장 경로를 변경했다. 기존 두 launcher는 아래 적용 스크립트가 `launcher_backups/<시각>/`에 `.bak`으로 보관한다. `run_cmc.sbatch`는 기존 이름으로 갱신한다. ZIP에는 현재 Git에서 누락된 `lammps_slurry/tools/cmc_medium.py`도 포함한다.
+
+소스 저장소 루트에서 실행한다.
+
+```bash
+unzip -o slurry_launchers_scratch_overlay_20261110.zip
+bash retire_old_launchers.sh
+mkdir -p /scratch/negishi/lee6456
+```
+
+Slurm은 batch 본문 실행 전에 출력 파일을 열기 때문에 위 scratch 상위 디렉토리가 존재해야 한다. 각 실행 파일 상단에서 원하는 물리 설정을 편집하고 필요한 작업만 제출한다.
+
+```bash
+sbatch run_baseline.sbatch
+sbatch run_pureGr.sbatch
+sbatch run_cmc.sbatch
+```
+
+이미 현재 solver를 빌드했다면 **재빌드가 필요 없다.** `release.json`, `build.py`, solver, 입력 생성기와 runtime 검증 코드는 수정하지 않는다. 이 파일들의 과거 `run_batch` 문자열은 빌드 당시의 기록이며 실행 파일을 선택하는 기능이 아니다.
+
+두 sweep 도우미도 새 이름을 사용한다. `bash sweep_slurry.sh`는 `run_baseline.sbatch`, `bash sweep_practical_slurry.sh`는 `run_pureGr.sbatch`를 복사한다. sweep 복사본과 `jobs.tsv`는 `/scratch/negishi/lee6456/sweeps/`에 저장하며, 결과는 각 launcher의 위 경로로 저장한다. 제출 없이 복사본만 확인하려면 `--dry-run`을 붙인다.
+
 
 ## CMC별 0.1 s⁻¹ 시험: `run_cmc.sbatch`
 
-현재 CMC 농도별 수동 인력 시험은 **`run_cmc.sbatch`**로 실행한다. `run_slurry_practical_cpu.sbatch`의 입자·마찰·인력 kernel·practical solver·강성 조절·허용오차를 그대로 사용하며, total CMC에서 계산한 **free CMC로 매질 점도만** 자동 설정한다. `COHESION_WORK`와 `BACKGROUND_HAMAKER`는 서로 독립적인 수동 입력이다. CMC 농도를 바꿔도 두 값을 자동 감쇠하지 않는다.
+현재 CMC 농도별 수동 인력 시험은 **`run_cmc.sbatch`**로 실행한다. `run_pureGr.sbatch`의 입자·마찰·인력 kernel·practical solver·강성 조절·허용오차를 그대로 사용하며, total CMC에서 계산한 **free CMC로 매질 점도만** 자동 설정한다. `COHESION_WORK`와 `BACKGROUND_HAMAKER`는 서로 독립적인 수동 입력이다. CMC 농도를 바꿔도 두 값을 자동 감쇠하지 않는다.
 
 파일 상단에서 다음 세 값을 편집한 뒤 저장소 루트에서 제출한다. 아래 인력 수치는 practical launcher에서 유지한 기본값이며 4 g/L에 보정한 값이 아니다. `COHESION_WORK` 단위는 **J/m²**이므로, 예를 들어 2.199 mJ/m²를 시험하려면 `0.002199`를 입력한다.
 
@@ -68,44 +116,29 @@ $$
 | 12 | 6.498789916 |
 | 16 | 8.927466454 |
 
-변환은 `lammps_slurry/tools/cmc_medium.py`에서 수행한다. 출력 로그 `slurry_cmc_manual_<job ID>.out`에 total/adsorbed/free CMC, 매질 점도, 출처, 실제 수동 인력 입력을 남긴다. 기본 결과 폴더는 `runs/cmc<TOTAL>_spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>`이며, 기존 `parameters.json`과 `launch.json`에는 실제 전달한 점도와 인력이 기록된다. `parameters.json`의 `viscosity`는 **Pa·s**다. 조성 원문 기록은 sbatch 출력 로그에 있으므로 결과 폴더와 함께 보관한다. 실행 없이 계산만 확인하려면 다음을 사용한다.
+변환은 `lammps_slurry/tools/cmc_medium.py`에서 수행한다. 출력 로그 `/scratch/negishi/lee6456/cmc_<job ID>.out`에 total/adsorbed/free CMC, 매질 점도, 출처, 실제 수동 인력 입력을 남긴다. 기본 결과 폴더는 `/scratch/negishi/lee6456/cmc_c<TOTAL>_cw<WORK>_h<H>_n<COUNT>_sr<RATE>_<job ID>`이며, 기존 `parameters.json`과 `launch.json`에는 실제 전달한 점도와 인력이 기록된다. `parameters.json`의 `viscosity`는 **Pa·s**다. 조성 원문 기록은 sbatch 출력 로그에 있으므로 결과 폴더와 함께 보관한다. 실행 없이 계산만 확인하려면 다음을 사용한다.
 
 ```bash
 python3 lammps_slurry/tools/cmc_medium.py --total 4
 ```
 
-검증은 `python3 -m unittest discover -s lammps_slurry/tests -p 'test_cmc*.py' -v`로 실행한다. 새 매질 경로 7개와 기존 CMC 경로 15개가 통과했다. 농도별 점도, 두 인력의 독립 수동 입력, practical 인자 보존과 실제 `in.bridge` 입력 생성을 확인했다. 이 검증은 입력 생성 검증이며 0.1 s⁻¹의 장시간 유변 계산은 별도로 제출한다.
+새 폴더명·scratch 경로·입력 정밀도 검증은 `python3 lammps_slurry/tests/test_launcher_paths.py`로 실행한다. 기존 입력 생성 검사는 `python3 lammps_slurry/tests/test_bridge_tools.py`를 사용한다. 이 검증은 실행 준비 검증이며 0.1 s⁻¹의 장시간 유변 계산은 별도로 제출한다.
 
-기존 `run_slurry_cmc_cpu.sbatch`는 이전 Fig. 2(b) 표와 자동 인력 감쇠식을 사용하는 별도 legacy 시험 파일이다. 이번 수동 인력 sweep에는 사용하지 않는다. 해당 파일과 [이전 모델 문서](docs/CMC_MINIMAL_MODEL.md)는 기존 시험 재현을 위해 유지한다.
+이전 자동 인력 감쇠형 CMC 실행 파일을 따로 보관하고 있더라도, 이번 수동 인력 시험에는 위의 `run_cmc.sbatch`를 사용한다.
 
 ## 기존 두 실행 파일
 
-이 문서가 현재 빌드·실행·설정·정리 안내다. `run_slurry_cpu.sbatch`는 contact friction + lubrication baseline용, `run_slurry_practical_cpu.sbatch`는 인력이 있는 별도 시험용이다. 두 실행 파일은 합치지 않는다. 두 시험 모두 공통 solver의 practical 계산 경로와 자동 법선 강성 조절을 사용한다. 별도 `apply_*.py` 실행이나 SHA256 수동 검사는 필요 없다.
+이 문서가 현재 빌드·실행·설정·정리 안내다. `run_baseline.sbatch`는 contact friction + lubrication baseline용, `run_pureGr.sbatch`는 인력이 있는 별도 시험용이다. 두 실행 파일은 합치지 않는다. 두 시험 모두 공통 solver의 practical 계산 경로와 자동 법선 강성 조절을 사용한다. 별도 `apply_*.py` 실행이나 SHA256 수동 검사는 필요 없다.
 
-## 적용 및 실행
+## 빌드와 실행 환경
 
-`build_slurry_cpu.sbatch`와 `lammps_slurry/`가 있는 저장소 루트에서 실행한다. 이번 baseline overlay는 Git `6bf0ac4bb8423003922dfc7a6a3861e4aef3e1e7`에 이미 포함된 개선 solver를 사용한다. 교체 파일은 baseline 실행 파일, 기존 테스트와 이 README 3개다. 인력 시험 실행 파일과 C++ solver는 변경하지 않는다. 기존 baseline 실행 파일을 교체하므로 사용자 설정은 적용 뒤 상단에서 편집한다.
-
-```bash
-unzip -DD -o slurry_baseline_practical_overlay.zip
-sbatch run_slurry_cpu.sbatch
-```
-
-현재 Git의 개선 solver를 이미 빌드했다면 다시 빌드할 필요가 없다. 이전 solver 바이너리를 사용 중이면 먼저 `sbatch build_slurry_cpu.sbatch`를 실행하고 `Build complete` 뒤에 baseline을 제출한다. 이번 ZIP만으로 과거 Git의 solver 소스까지 갱신하지는 않는다.
-
-인력 시험은 계속 별도 파일로 제출한다.
-
-```bash
-sbatch run_slurry_practical_cpu.sbatch
-```
-
-기존 빌드 절차와 의존성은 유지한다. 빌드 시 GCC, OpenMPI, CMake, FFTW, static oneMKL 모듈을 사용한다. 기본 nearfield 시뮬레이션에서 FFT를 사용한다는 의미는 아니다. 각 시뮬레이션은 MPI 프로세스 하나이며, 기본 요청 자원은 CPU 2개·32 GB다.
+`build_slurry_cpu.sbatch`와 `lammps_slurry/`가 있는 저장소 루트에서 제출한다. 현재 solver의 검증된 빌드가 없으면 `sbatch build_slurry_cpu.sbatch`를 먼저 실행하고 `Build complete` 뒤 원하는 launcher를 제출한다. 기존 빌드 절차와 GCC/OpenMPI/CMake/FFTW/oneMKL 의존성은 유지한다. 기본 nearfield 계산에서 FFT를 사용한다는 의미는 아니다. 세 launcher의 기본 Slurm 요청 자원은 MPI 프로세스 1개, CPU 2개, 메모리 8 GB다.
 
 ## 실행 설정
 
 각 시험의 설정은 해당 실행 파일 상단에서 독립적으로 편집한다.
 
-| 설정 | baseline: `run_slurry_cpu.sbatch` | 인력: `run_slurry_practical_cpu.sbatch` |
+| 설정 | baseline: `run_baseline.sbatch` | 인력: `run_pureGr.sbatch` |
 | --- | --- | --- |
 | 입자 | AR=5, phi=0.34, N=1000 | AR=4, phi=0.24, N=1000 |
 | 크기 | 평균 체적 등가 직경 8 μm, bidisperse 크기비 1.4 | 동일 |
@@ -139,7 +172,7 @@ AR 범위는 1–5다. 평균 체적과 요청한 phi를 유지하며, N1000·�
 
 ## 출력과 확인 범위
 
-Baseline 기본 출력은 `runs/spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`, 인력 시험은 `runs/practical_spheroid_ar<AR>_phi<PHI>_n<COUNT>_<job ID>/`다. `history.csv`에는 응력·점도·overlap·반복 횟수·잔차·시간과 함께 `kn_N_per_m`, `kn_stiffening_retries_total`, `kn_adjustments_total`이 기록된다. `parameters.json`에는 입력 설정과 강성 제어 규칙이 저장된다. `final.data`는 기하 저장이며 접촉 이력까지 보존한 restart 파일은 아니다.
+세 실행 파일의 출력 경로와 폴더명은 이 문서 첫 표를 따른다. `history.csv`에는 응력·점도·overlap·반복 횟수·잔차·시간과 함께 `kn_N_per_m`, `kn_stiffening_retries_total`, `kn_adjustments_total`이 기록된다. `parameters.json`에는 입력 설정과 강성 제어 규칙이 저장된다. `final.data`는 기하 저장이며 접촉 이력까지 보존한 restart 파일은 아니다.
 
 이번 baseline 변경에서는 실행 인자 전달, 인력 옵션 생략 시 실제 생성 입력에서 인력이 없는지, 기존 practical 실행 파일의 보존, 소스 검사와 기존 Python 테스트를 확인했다. 기존 bridge 테스트 31개(3개 환경 의존 검사 제외), bundle guard 테스트 8개, shell 문법·소스 검사가 통과했다. 실제 단기 계산 결과는 아래와 같다. 정상상태 점도나 N1000 목표 strain 50의 완료를 뜻하지 않는다. 서로 다른 과도 궤적의 응력이 일치해야 한다는 조건은 사용하지 않는다.
 
@@ -177,7 +210,8 @@ rm -f -- README_KO.md README_PRACTICAL_KO.md README_UPDATE_KO.md \
 | 유지 | `build_slurry_cpu.sbatch`, `lammps_slurry/tools/`의 빌드·실행 도구, `release.json`, `lammps_slurry/src/`, `vendor/`, CMake와 기존 테스트·fixture. |
 | 현재 빌드 테스트 때문에 유지 | `diagnose_flake.py`는 `test_diagnose_flake.py`가 참조한다. 현재 상태에서 단독 삭제하면 전체 빌드 테스트가 실패한다. |
 | 폴더 전체 삭제 금지 | `validation_basis/`의 `run_physical_gate.py`, `run_interpolation_gate.py`는 소스 검사·offline 도구가 참조한다. `validation_solver500/fixtures/ar2/packing.final`, `fixtures/ar20/packing.final`은 packing 테스트 입력이다. |
-| 기존 baseline·sweep | `run_slurry_cpu.sbatch`는 baseline용 독립 실행 파일이며 `sweep_slurry.sh`의 template이다. 인력 시험은 `run_slurry_practical_cpu.sbatch`와 `sweep_practical_slurry.sh`를 사용한다. |
+| 기존 baseline·sweep | `run_baseline.sbatch`는 baseline용 독립 실행 파일이며 `sweep_slurry.sh`의 template이다. 인력 시험은 `run_pureGr.sbatch`와 `sweep_practical_slurry.sh`를 사용한다. |
 
 SHA256는 파일 내용의 지문이다. 별도 `.sha256` 목록과 과거 overlay manifest는 실행 입력이 아니므로 위처럼 삭제해도 된다. `release.json`과 `bundle_guard.py` 내부의 소스/빌드 일치 검사는 기존 빌드가 사용하는 기능이므로 유지한다. 사용자가 checksum 명령을 따로 실행할 필요는 없다.
+
 

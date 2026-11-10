@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run_slurry_practical_cpu.sbatch와 같은 디렉토리에 두고 실행:
+# run_pureGr.sbatch와 같은 디렉토리에 두고 실행:
 #   bash sweep_practical_slurry.sh
 # 제출 없이 복사본만 생성: bash sweep_practical_slurry.sh --dry-run
 # 원본은 수정하지 않습니다. 각 복사본의 COHESION_WORK 값만 변경합니다.
@@ -29,7 +29,7 @@ esac
 (( $# == 0 )) || { printf 'Unexpected arguments.\n' >&2; exit 1; }
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATE="$ROOT/run_slurry_practical_cpu.sbatch"
+TEMPLATE="$ROOT/run_pureGr.sbatch"
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 [[ -f "$TEMPLATE" ]] || die "Missing template: $TEMPLATE"
 (( ${#COHESION_WORK_VALUES[@]} > 0 )) || die 'COHESION_WORK_VALUES is empty.'
@@ -64,15 +64,16 @@ if (( ! DRY_RUN )); then
     command -v sbatch >/dev/null || die 'sbatch not found; run on the cluster login node.'
 fi
 
-mkdir -p -- "$ROOT/sweeps"
-SWEEP_DIR="$(mktemp -d "$ROOT/sweeps/cohesion_$(date +%Y%m%d_%H%M%S)_XXXXXX")"
+SWEEP_ROOT="/scratch/negishi/lee6456/sweeps"
+mkdir -p -- "$SWEEP_ROOT"
+SWEEP_DIR="$(mktemp -d "$SWEEP_ROOT/cohesion_$(date +%Y%m%d_%H%M%S)_XXXXXX")"
 cp -- "$TEMPLATE" "$SWEEP_DIR/template.sbatch"
 SCRIPTS=()
 for i in "${!COHESION_WORK_VALUES[@]}"; do
     work="${COHESION_WORK_VALUES[$i]}"
     printf -v case_name '%03d_cw%s' "$((i+1))" "$work"
     mkdir -- "$SWEEP_DIR/$case_name"
-    script="$SWEEP_DIR/$case_name/run_slurry_practical_cpu.sbatch"
+    script="$SWEEP_DIR/$case_name/run_pureGr.sbatch"
     awk -v work="$work" '
         /^[[:space:]]*COHESION_WORK=/ { sub(/=[^[:space:]#]*/, "=" work) }
         { print }
@@ -99,3 +100,4 @@ for i in "${!SCRIPTS[@]}"; do
     printf 'COHESION_WORK=%s J/m^2 -> %s\n' "$work" "$job_id"
 done
 printf 'Recorded %s case(s): %s/jobs.tsv\n' "${#SCRIPTS[@]}" "$SWEEP_DIR"
+

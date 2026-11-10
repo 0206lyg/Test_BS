@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run_slurry_cpu.sbatch와 같은 디렉토리에 두고: bash sweep_slurry.sh
+# run_baseline.sbatch와 같은 디렉토리에 두고: bash sweep_slurry.sh
 # 제출 없이 복사본만 생성하려면: bash sweep_slurry.sh --dry-run
 set -Eeuo pipefail
 
@@ -22,7 +22,7 @@ esac
 (( $# == 0 )) || { printf 'Unexpected arguments.\n' >&2; exit 1; }
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATE="$ROOT/run_slurry_cpu.sbatch"
+TEMPLATE="$ROOT/run_baseline.sbatch"
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 [[ -f "$TEMPLATE" ]] || die "Missing template: $TEMPLATE"
 (( ${#PAIRS[@]} > 0 )) || die 'PAIRS is empty.'
@@ -64,8 +64,9 @@ if (( ! DRY_RUN )); then
     command -v sbatch >/dev/null || die 'sbatch not found; run on the cluster login node.'
 fi
 
-mkdir -p -- "$ROOT/sweeps"
-SWEEP_DIR="$(mktemp -d "$ROOT/sweeps/sweep_$(date +%Y%m%d_%H%M%S)_XXXXXX")"
+SWEEP_ROOT="/scratch/negishi/lee6456/sweeps"
+mkdir -p -- "$SWEEP_ROOT"
+SWEEP_DIR="$(mktemp -d "$SWEEP_ROOT/sweep_$(date +%Y%m%d_%H%M%S)_XXXXXX")"
 cp -- "$TEMPLATE" "$SWEEP_DIR/template.sbatch"
 SCRIPTS=()
 for i in "${!ARS[@]}"; do
@@ -73,7 +74,7 @@ for i in "${!ARS[@]}"; do
     phi="${PHIS[$i]}"
     printf -v case_name '%03d_ar%s_phi%s' "$((i+1))" "$ar" "$phi"
     mkdir -- "$SWEEP_DIR/$case_name"
-    script="$SWEEP_DIR/$case_name/run_slurry_cpu.sbatch"
+    script="$SWEEP_DIR/$case_name/run_baseline.sbatch"
     awk -v ar="$ar" -v phi="$phi" '
         /^[[:space:]]*AR=/ { sub(/=[^[:space:]#]*/, "=" ar) }
         /^[[:space:]]*PHI=/ { sub(/=[^[:space:]#]*/, "=" phi) }
@@ -100,3 +101,4 @@ for i in "${!SCRIPTS[@]}"; do
     printf 'AR=%s PHI=%s -> %s\n' "${ARS[$i]}" "${PHIS[$i]}" "$job_id"
 done
 printf 'Recorded %s case(s): %s/jobs.tsv\n' "${#SCRIPTS[@]}" "$SWEEP_DIR"
+

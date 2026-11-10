@@ -129,7 +129,7 @@ class BridgeToolsTest(unittest.TestCase):
             self.assertEqual((Path(temporary)/"console.log").read_text(), "simulation failed\n")
 
     def test_single_batch_forwards_every_physical_setting_once(self):
-        source = TOOLS.parents[1]/"run_slurry_cpu.sbatch"
+        source = TOOLS.parents[1]/"run_baseline.sbatch"
         text = source.read_text()
         self.assertIn("#SBATCH --ntasks=1\n", text)
         settings_text, separator, runtime_text = text.partition("# End of run settings.")
@@ -141,7 +141,7 @@ class BridgeToolsTest(unittest.TestCase):
             tools = root/"lammps_slurry/tools"
             tools.mkdir(parents=True)
             (tools/"run_bridge.py").write_text("# command is captured before this file executes\n")
-            script = root/"run_slurry_cpu.sbatch"
+            script = root/"run_baseline.sbatch"
             stub = root/"bin/python3"
             stub.parent.mkdir()
             stub.write_text("#!"+sys.executable+"\nimport json,os,sys\n"
@@ -203,7 +203,7 @@ class BridgeToolsTest(unittest.TestCase):
                 args = prepare.parser().parse_args(arguments)
                 self.assertEqual(args.ar, ar)
                 self.assertEqual(args.shape, shape)
-                self.assertIn(shape+"_ar", str(args.output))
+                self.assertIn("bl_ar", str(args.output))
                 self.assertEqual(args.count, count)
                 self.assertEqual(args.phi, .24)
                 self.assertEqual(args.steps, 100000)
@@ -335,12 +335,12 @@ class BridgeToolsTest(unittest.TestCase):
                 self.assertEqual(control["limit"], .05)
 
     def test_practical_batch_preserves_benchmark_physics_and_forwards_options(self):
-        source = TOOLS.parents[1]/"run_slurry_practical_cpu.sbatch"
+        source = TOOLS.parents[1]/"run_pureGr.sbatch"
         text = source.read_text()
         subprocess.run(["bash", "-n", str(source)], check=True, capture_output=True)
         # Users edit this script before submitting (README.md), and
         # the build runs this test against their copy. Pin the benchmark values
-        # by assignment name, as the run_slurry_cpu.sbatch test does, so this
+        # by assignment name, as the run_baseline.sbatch test does, so this
         # checks forwarding rather than the user's current choices.
         fixture = {"AR": "4", "PHI": "0.24", "COUNT": "1000", "STEPS": "500000", "OUTPUT_INTERVAL": "400",
                    "TIMESTEP": "1e-6", "AVERAGE_START_STRAIN": "5", "NOMINAL_DIAMETER_UM": "8",
@@ -750,4 +750,5 @@ class BridgeToolsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
