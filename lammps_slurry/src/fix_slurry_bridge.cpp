@@ -20,6 +20,7 @@
 #include "slurry_bridge_shape.h"
 #include "slurry_compact_bridge.h"
 #include "slurry_history_math.h"
+#include "slurry_rheology_diagnostics.h"
 #include "slurry_nearfield_hydro.h"
 #include "slurry_nearfield_solver.h"
 #include "slurry_nearfield_step.h"
@@ -128,6 +129,12 @@ struct FixSlurryBridge::Impl {
   std::array<double, 75> diag{};
   std::array<double, 4> stress{};
   std::array<long double, 4> interval_stress{};
+  // Observation-only values on the CSV writer rank: normalized N1, N2, Z_NR.
+  // Prepared substep means are committed alongside interval_stress, never at
+  // setup/run 0. A missing nonrattler core propagates NaN through its interval.
+  std::array<double, 3> rheology{};
+  std::array<long double, 3> interval_rheology{};
+  SlurryRheologyDiagnostics::ContactNetwork contact_network;
   long double selected_integral = 0;
   double selected_duration = 0, interval_duration = 0, interval_start = 0;
   bigint interval_steps = 0, last_output = -1;
@@ -345,11 +352,12 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
           << "step,time_s,strain,sigma_solvent_Pa,sigma_hydro_Pa,sigma_contact_Pa,sigma_xz_Pa,eta_"
              "Pa_s,eta_relative,mean_eta_Pa_s,average_duration_s,hydro_dissipation_W,contact_power_"
              "W,stress_power_W,power_balance_error_W,force_residual,mobility_residual,linear_"
-             "iterations,newton_iterations,near_pairs,contacts,reciprocal_modes,min_gap_m,max_"
+             "iterations,newton_iterations,near_pairs,contacts,interval_mean_Z_nonrattler,reciprocal_modes,min_gap_m,max_"
              "overlap_m,profile_geometry_s,profile_middle_s,profile_solve_s,profile_total_s,"
              "interval_steps,interval_start_time_s,interval_end_time_s,interval_start_strain,"
              "interval_end_strain,interval_mean_sigma_solvent_Pa,interval_mean_sigma_hydro_Pa,"
-             "interval_mean_sigma_contact_Pa,interval_mean_sigma_xz_Pa,interval_mean_eta_Pa_s,"
+             "interval_mean_sigma_contact_Pa,interval_mean_sigma_xz_Pa,"
+             "interval_mean_N1_normalized,interval_mean_N2_normalized,interval_mean_eta_Pa_s,"
              "interval_mean_eta_relative,solver_relative_residual,descent_steps,continuation_stages,"
              "continuation_retries,mobility_applications,breakpoint_steps,geometry_iterations,"
              "contact_gap_consistency_m,actual_endpoint_min_gap_m,actual_endpoint_overlap_m,"
@@ -437,6 +445,11 @@ void FixSlurryBridge::initial_integrate(int) {
   p.interval_duration += dt;
   for (int k = 0; k < 4; ++k)
     p.interval_stress[k] += p.stress[k] * dt;
+  // The solver already owns the complete contact graph on rank 0. These
+  // CSV-only observations need neither duplicated graph work nor a collective.
+  if (comm->me == 0)
+    for (int k = 0; k < 3; ++k)
+      p.interval_rheology[k] += p.rheology[k] * dt;
   if (p.shear != 0) {
     double selected = std::max(0., end - std::max(start, p.avg_start / std::abs(p.shear)));
     p.selected_duration += selected;
@@ -945,7 +958,7 @@ void FixSlurryBridge::solve_velocities() {
         const double power_scale=energy_scale*rate,force_scale=p.eta*length*length*rate;
         const double fraction=p.surface_adaptive,work_fraction=.5*fraction*fraction;
         double solve_seconds=0.;
-        p.diag.fill(0);p.stress.fill(0.);
+        p.diag.fill(0);p.stress.fill(0.);p.rheology.fill(0.);
         p.diag[4]=p.diag[27]=std::numeric_limits<double>::infinity();
         p.imex_workspace.maximum_roundoff_tolerance=0.;
         auto attempt=[&](const State &state,double sub_dt)->ad::Trial<State> {
@@ -1319,6 +1332,9 @@ void FixSlurryBridge::solve_velocities() {
           double normal_energy=0.,tangent_energy=0.,rolling_energy=0.,rolling_work=0.,rotation_power=0.;
           double lag_max=0.,lag_sum=0.,normal_old_sum=0.,normal_new_sum=0.,detached=0.;
           int active=0,rolling_yield=0;
+          // Exact accepted endpoint contacts only: no Newton/rejected-trial
+          // graph work and no additional geometry or force evaluation.
+          p.contact_network.reset(n);
           for(int i=0;i<n;++i)for(int k=0;k<5;++k)
             hydro-=sol.total_moment[11*i+6+k]*cb::strain_basis()[k];
           for(std::size_t k=0;k<f.problem.contacts.size();++k) {
@@ -1332,6 +1348,7 @@ void FixSlurryBridge::solve_velocities() {
             normal_energy+=r.normal_energy;tangent_energy+=r.tangent_energy;rolling_energy+=r.rolling_energy;
             rolling_work+=r.rolling_work;rotation_power+=r.torque.dot(r.relative_rotation);
             active+=r.active;rolling_yield+=r.rolling;
+            if(r.active)p.contact_network.add_contact(c.i,c.j);
             const double lag=std::abs(data.caps[k]-r.normal_load);
             lag_max=std::max(lag_max,lag);lag_sum+=lag;
             normal_old_sum+=data.caps[k];normal_new_sum+=r.normal_load;
@@ -1355,6 +1372,13 @@ void FixSlurryBridge::solve_velocities() {
             contact_stress(0,2)*stress_scale,
             p.eta*p.shear+(hydro(0,2)+contact_stress(0,2))*stress_scale+sigma_c+sigma_b};
           for(int k=0;k<4;++k)p.stress[k]+=weight*stress[k];
+          const M3 total_particle_stress=
+              (hydro+contact_stress+cohesion_stress+background_stress)*stress_scale;
+          const auto normal=SlurryRheologyDiagnostics::normalized_normal_stress(
+              total_particle_stress(0,0),total_particle_stress(1,1),
+              total_particle_stress(2,2),p.eta,p.shear);
+          p.rheology[0]+=weight*normal[0];p.rheology[1]+=weight*normal[1];
+          p.rheology[2]+=weight*p.contact_network.nonrattler_coordination();
           const double hp=(volume*std::pow(p.shear/rate,2)+sol.hydro_power)*power_scale;
           const double cp=sol.contact_power*power_scale;
           const double sp=stress[3]*p.shear*volume*std::pow(length,3);
@@ -1660,6 +1684,7 @@ void FixSlurryBridge::solve_velocities() {
       // Heun reports instantaneous current loads. CSV stage times identify both.
       double rolling_work = corrected_rolling_work, rotation_power = 0.;
       int rolling_yield = corrected_rolling_yield;
+      p.contact_network.reset(n);
       for (size_t k = 0; k < problem.contacts.size(); ++k) {
         const auto &c = problem.contacts[k];
         const auto &response = result.contacts[k];
@@ -1675,6 +1700,10 @@ void FixSlurryBridge::solve_velocities() {
         contact_moments.segment<6>(6 * c.j) -=
             bs::generalized_contact_map(c,false).transpose() * bs::contact_wrench(response);
         if (response.active) ++contacts;
+        // Near-field responses use exact accepted endpoint gaps. Legacy Heun
+        // reports start forces, so use its already-computed corrector gaps.
+        if (p.nearfield_mobility ? response.active : consistent.endpoint.gaps[k] < 0.)
+          p.contact_network.add_contact(c.i,c.j);
       }
       p.pending=std::move(corrected_history);
       const double stress_scale = p.eta * rate / volume,
@@ -1684,6 +1713,12 @@ void FixSlurryBridge::solve_velocities() {
       p.stress[3] = p.stress[0] + p.stress[1] + p.stress[2];
       if(p.cohesion_work>0.)p.stress[3]+=current.cohesion_stress(0,2)*stress_scale;
       if(p.background.hamaker>0.)p.stress[3]+=current.background_stress(0,2)*stress_scale;
+      const M3 total_particle_stress=
+          (hydro+contact_stress+current.cohesion_stress+current.background_stress)*stress_scale;
+      const auto normal=SlurryRheologyDiagnostics::normalized_normal_stress(
+          total_particle_stress(0,0),total_particle_stress(1,1),
+          total_particle_stress(2,2),p.eta,p.shear);
+      p.rheology={normal[0],normal[1],p.contact_network.nonrattler_coordination()};
       const double solvent_power = volume * (p.shear / rate) * (p.shear / rate),
                    hydro_power = (solvent_power + result.hydro_power) * power_scale,
                    contact_power = result.contact_power * power_scale;
@@ -1853,6 +1888,9 @@ void FixSlurryBridge::write_history() {
     return;
   const double time = simulation_time(), nan = std::numeric_limits<double>::quiet_NaN();
   auto eta = [&](double s) { return p.shear ? s / p.shear : nan; };
+  auto mean_rheology = [&](int k) {
+    return p.interval_duration ? static_cast<double>(p.interval_rheology[k]/p.interval_duration) : nan;
+  };
   if (comm->me == 0 && p.csv) {
     auto &o = p.csv;
     o << update->ntimestep << ',' << time << ',' << std::abs(p.shear) * time;
@@ -1861,8 +1899,10 @@ void FixSlurryBridge::write_history() {
     o << ',' << eta(p.stress[3]) << ',' << eta(p.stress[3]) / p.eta << ','
       << (p.selected_duration > 0 ? eta(p.selected_integral / p.selected_duration) : nan) << ','
       << p.selected_duration;
-    for (int k : {10, 11, 12, 13, 6, 7, 8, 9, 2, 3, 14, 4, 5, 16, 17, 18, 19})
+    for (int k : {10, 11, 12, 13, 6, 7, 8, 9, 2, 3, 14, 4, 5, 16, 17, 18, 19}) {
       o << ',' << p.diag[k];
+      if (k == 3) o << ',' << mean_rheology(2);
+    }
     double begin = p.interval_steps ? p.interval_start : time;
     o << ',' << p.interval_steps << ',' << begin << ',' << time << ',' << std::abs(p.shear) * begin
       << ',' << std::abs(p.shear) * time;
@@ -1873,6 +1913,7 @@ void FixSlurryBridge::write_history() {
       if (k == 3)
         mean = value;
     }
+    o << ',' << mean_rheology(0) << ',' << mean_rheology(1);
     o << ',' << eta(mean) << ',' << eta(mean) / p.eta << ',' << p.diag[15] << ',' << p.diag[20]
       << ',' << p.diag[21] << ',' << p.diag[22] << ',' << p.diag[23]
       << ',' << p.diag[24];
@@ -1895,5 +1936,6 @@ void FixSlurryBridge::write_history() {
   p.interval_steps = 0;
   p.interval_duration = 0;
   p.interval_stress.fill(0);
+  p.interval_rheology.fill(0);
 }
 

@@ -1,0 +1,497 @@
+{
+  "date": "2026-11-14",
+  "base_repository": "https://github.com/0206lyg/Test_BS",
+  "base_commit": "bd78eab69bb0f29f0423b49f1098fb60a9172b74",
+  "environment": {
+    "repository_commit": "bd78eab69bb0f29f0423b49f1098fb60a9172b74",
+    "lammps_commit": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+    "lammps_version": "30 Sep 2026",
+    "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+    "optimization": "-O3 -DNDEBUG",
+    "lammps_mpi": false,
+    "packages": [
+      "ASPHERE",
+      "PLUGIN"
+    ],
+    "sparse_backend": "Eigen-reference",
+    "fft_backend": "builtin-reference",
+    "production_mkl_benchmark": false,
+    "sha256": {
+      "lmp": "35afcf7ac3cc7b83633348da070d9e400d6f6b2e6490a02db387283e5f431b31",
+      "baseline_plugin": "911f9735e2cc663e674470b6db6b1423a5007c7fcbdc8a0c538a9d0341f37c82",
+      "modified_plugin": "c3f7a6d8abcae8d5074351043580dd308aa5b867c94f8c52b376c19f45d67661",
+      "packer": "84c1aa84e055e7128291af0300b61541c48682f1220f0b7aa16c11638a41a959"
+    },
+    "rheology_ctest": "passed",
+    "notes": [
+      "Identical pinned LAMMPS and compiler settings for baseline and modified plugin.",
+      "Local development build; production FFTW and MKL backends were not used.",
+      "Baseline source extracted from pinned Git HEAD; modified source from Test_BS worktree."
+    ]
+  },
+  "passed_checks": [
+    "New C++ diagnostics CTest, including 2000 randomized comparisons to an independent full-scan pruning oracle",
+    "AddressSanitizer and UndefinedBehaviorSanitizer for the diagnostic helper; LeakSanitizer unavailable in this environment",
+    "31 bridge-tools tests with the actual compiled packer",
+    "8 bundle-guard tests",
+    "9 runtime-link-path tests",
+    "Current source release/hash guard and git diff --check"
+  ],
+  "small_runtime": {
+    "scope": "Exact pinned LAMMPS serial build, Eigen-reference sparse backend; small custom contact clusters with launcher material coefficients. Not full-size steady-state validation.",
+    "cases": {
+      "baseline": {
+        "rows": 9,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 0.028519016000245756,
+        "modified_elapsed_s": 0.014269497999521263,
+        "finite_Z_rows": 6,
+        "Z_values": [
+          null,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          null,
+          null
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "fixture": {
+          "name": "baseline",
+          "particle_count": 3,
+          "cluster": "triangle",
+          "interval": 1,
+          "steps": 8,
+          "parameters": {
+            "ar": 5,
+            "eta": 0.01,
+            "shear": 100,
+            "kn": 100,
+            "kt": 100,
+            "mur": 10,
+            "kr": 100,
+            "mu": 10,
+            "dt": 1e-06
+          }
+        },
+        "trajectory_byte_equal": true,
+        "final_data_byte_equal": true,
+        "interval_weighted_mean_max_relative_error": 2.2204460492503136e-16,
+        "output_interval_dynamics_unchanged": true
+      },
+      "pureGr": {
+        "rows": 9,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 0.011381747999621439,
+        "modified_elapsed_s": 0.013026839999838558,
+        "finite_Z_rows": 8,
+        "Z_values": [
+          null,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "fixture": {
+          "name": "pureGr",
+          "particle_count": 3,
+          "cluster": "triangle",
+          "interval": 1,
+          "steps": 8,
+          "parameters": {
+            "ar": 4,
+            "eta": 0.00089,
+            "shear": 100,
+            "kn": 900,
+            "kt": 300,
+            "mur": 10,
+            "kr": 300,
+            "mu": 10,
+            "dt": 1e-06
+          }
+        },
+        "trajectory_byte_equal": true,
+        "final_data_byte_equal": true,
+        "interval_weighted_mean_max_relative_error": 2.2204460492503136e-16,
+        "output_interval_dynamics_unchanged": true
+      },
+      "cmc": {
+        "rows": 9,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 0.011127364999993006,
+        "modified_elapsed_s": 0.012645015000089188,
+        "finite_Z_rows": 8,
+        "Z_values": [
+          null,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "fixture": {
+          "name": "cmc",
+          "particle_count": 3,
+          "cluster": "triangle",
+          "interval": 1,
+          "steps": 8,
+          "parameters": {
+            "ar": 4,
+            "eta": 0.002042713200430848,
+            "shear": 0.1,
+            "kn": 900,
+            "kt": 300,
+            "mur": 10,
+            "kr": 300,
+            "mu": 10,
+            "dt": 1e-06
+          }
+        },
+        "trajectory_byte_equal": true,
+        "final_data_byte_equal": true,
+        "interval_weighted_mean_max_relative_error": 2.2204460492503136e-16,
+        "output_interval_dynamics_unchanged": true
+      },
+      "no_nonrattlers": {
+        "rows": 4,
+        "passed": true
+      },
+      "zero_shear": {
+        "rows": 4,
+        "passed": true
+      },
+      "isolated": {
+        "rows": 4,
+        "passed": true
+      }
+    },
+    "excluded_timing_columns": [
+      "profile_geometry_s",
+      "profile_middle_s",
+      "profile_solve_s",
+      "profile_total_s"
+    ],
+    "nan_encoding": "null in this report; nan in history.csv",
+    "status": "passed"
+  },
+  "n1000_runtime": {
+    "source_commit": "bd78eab69bb0f29f0423b49f1098fb60a9172b74",
+    "scope": "N1000 AR5 phi0.24 bidisperse existing fixture; baseline material coefficients, practical integrator, 5 physical steps per run; serial exact pinned LAMMPS and Eigen reference sparse backend. Timing includes preparation of step0 and the final forward step.",
+    "repeats": [
+      {
+        "rows": 6,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 2.9416209520004486,
+        "modified_elapsed_s": 2.808206976999827,
+        "finite_Z_rows": 0,
+        "Z_values": [
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN"
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "trajectory.lammpstrj_byte_equal": true,
+        "final.data_byte_equal": true,
+        "before_profile_total_s": 2.832667827606201,
+        "before_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ],
+        "after_profile_total_s": 2.722762107849121,
+        "after_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ]
+      },
+      {
+        "rows": 6,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 2.657485558999724,
+        "modified_elapsed_s": 2.593526962999931,
+        "finite_Z_rows": 0,
+        "Z_values": [
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN"
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "trajectory.lammpstrj_byte_equal": true,
+        "final.data_byte_equal": true,
+        "before_profile_total_s": 2.568588972091675,
+        "before_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ],
+        "after_profile_total_s": 2.510202407836914,
+        "after_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ]
+      },
+      {
+        "rows": 6,
+        "old_columns_exact": 97,
+        "new_column_positions": {
+          "interval_mean_Z_nonrattler": 22,
+          "interval_mean_N1_normalized": 39,
+          "interval_mean_N2_normalized": 40
+        },
+        "baseline_elapsed_s": 2.531848022000304,
+        "modified_elapsed_s": 2.615373053999974,
+        "finite_Z_rows": 0,
+        "Z_values": [
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN",
+          "NaN"
+        ],
+        "max_substeps": 1.0,
+        "max_rejected": 0.0,
+        "trajectory.lammpstrj_byte_equal": true,
+        "final.data_byte_equal": true,
+        "before_profile_total_s": 2.4461662769317627,
+        "before_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ],
+        "after_profile_total_s": 2.5034801959991455,
+        "after_active_contacts": [
+          4,
+          5,
+          5,
+          7,
+          8,
+          8
+        ]
+      }
+    ],
+    "timing": {
+      "before_profile_s": [
+        2.832667827606201,
+        2.568588972091675,
+        2.4461662769317627
+      ],
+      "after_profile_s": [
+        2.722762107849121,
+        2.510202407836914,
+        2.5034801959991455
+      ],
+      "before_median_s": 2.568588972091675,
+      "after_median_s": 2.510202407836914,
+      "median_relative_change_percent": -2.273098767032977,
+      "interpretation": "Short local timing comparison, not a production-HPC speed guarantee; inspect run-to-run spread."
+    },
+    "status": "passed"
+  },
+  "coordination_microbenchmark": {
+    "scope": "Synthetic graphs; includes reset, all active-edge insertions, and recursive nonrattler pruning. Seven batches of 10000 calls, g++ -O3 -DNDEBUG. Not whole-simulation overhead.",
+    "rows": [
+      {
+        "case": "connected_degree_2",
+        "particles": "500",
+        "contacts": "500",
+        "median_us_per_call": "4.7566682",
+        "min_us_per_call": "4.4427755",
+        "max_us_per_call": "6.1963526"
+      },
+      {
+        "case": "connected_degree_6",
+        "particles": "500",
+        "contacts": "1500",
+        "median_us_per_call": "13.7580566",
+        "min_us_per_call": "12.6216886",
+        "max_us_per_call": "14.4752546"
+      },
+      {
+        "case": "connected_degree_12",
+        "particles": "500",
+        "contacts": "3000",
+        "median_us_per_call": "25.565218",
+        "min_us_per_call": "23.1987001",
+        "max_us_per_call": "30.9501908"
+      },
+      {
+        "case": "connected_degree_40",
+        "particles": "500",
+        "contacts": "10000",
+        "median_us_per_call": "84.8655176",
+        "min_us_per_call": "83.1265827",
+        "max_us_per_call": "93.1075795"
+      },
+      {
+        "case": "chain_all_removed",
+        "particles": "500",
+        "contacts": "499",
+        "median_us_per_call": "6.958549",
+        "min_us_per_call": "6.3342536",
+        "max_us_per_call": "8.2652109"
+      },
+      {
+        "case": "cycle_long_branch",
+        "particles": "500",
+        "contacts": "500",
+        "median_us_per_call": "8.1358055",
+        "min_us_per_call": "7.2155232",
+        "max_us_per_call": "8.6585802"
+      },
+      {
+        "case": "connected_degree_2",
+        "particles": "1000",
+        "contacts": "1000",
+        "median_us_per_call": "8.8947672",
+        "min_us_per_call": "8.287173",
+        "max_us_per_call": "11.0067626"
+      },
+      {
+        "case": "connected_degree_6",
+        "particles": "1000",
+        "contacts": "3000",
+        "median_us_per_call": "26.7471711",
+        "min_us_per_call": "26.12311",
+        "max_us_per_call": "29.5245934"
+      },
+      {
+        "case": "connected_degree_12",
+        "particles": "1000",
+        "contacts": "6000",
+        "median_us_per_call": "53.7332285",
+        "min_us_per_call": "48.395882",
+        "max_us_per_call": "57.9522637"
+      },
+      {
+        "case": "connected_degree_40",
+        "particles": "1000",
+        "contacts": "20000",
+        "median_us_per_call": "171.830196",
+        "min_us_per_call": "166.81418",
+        "max_us_per_call": "179.508719"
+      },
+      {
+        "case": "chain_all_removed",
+        "particles": "1000",
+        "contacts": "999",
+        "median_us_per_call": "13.2485727",
+        "min_us_per_call": "12.3905191",
+        "max_us_per_call": "14.3140721"
+      },
+      {
+        "case": "cycle_long_branch",
+        "particles": "1000",
+        "contacts": "1000",
+        "median_us_per_call": "15.4859294",
+        "min_us_per_call": "14.4073473",
+        "max_us_per_call": "17.006601"
+      }
+    ]
+  },
+  "limitations": [
+    "Runtime validation used serial LAMMPS and Eigen-reference sparse solver. Production MPI/MKL execution was not run here.",
+    "N1000 timing used an initial AR5 phi0.24 bidisperse fixture with 4 to 8 active contacts, five physical steps per run, three alternating before/after repetitions. It is not a mature cohesive-network timing measurement.",
+    "N1000 timing medians were 2.568589 s before and 2.510202 s after; overlapping run-to-run variation does not establish a speedup.",
+    "Actual runtime fixtures used one accepted internal substep per macrostep. Hook placement for rejected/multiple internal substeps was reviewed; no multi-substep runtime claim is made.",
+    "Long-strain rheology and production-cluster performance are outside this diagnostic regression."
+  ],
+  "preexisting_unrelated_test_failures": [
+    "test_summarize_rheology.py: two finite_gap KeyErrors reproduced on the pristine baseline.",
+    "test_launcher_paths.py: sweep_slurry.sh and sweep_practical_slurry.sh are absent in the pristine baseline, causing two sweep subtest errors. The three requested run scripts exist."
+  ],
+  "overlay_files": {
+    "lammps_slurry/CMakeLists.txt": {
+      "sha256": "9d18c7df6f995c2c109d06125f2eb908ecc80eb8a8bbac3396033edc6ae68561",
+      "base_sha256": "e2d5e7a80f858565df39c43b9fa2661cead033d8e769bbd3d9e41a8ffcf9bb33"
+    },
+    "lammps_slurry/src/fix_slurry_bridge.cpp": {
+      "sha256": "c024083992110f572b7657b83f7a97bf140fdc3eaba7db07cb4130911c0f3ec8",
+      "base_sha256": "3ed35f0f080b9aa9bdb912afe27d6b5c24f5df92c24b74f053243466830a4b5b"
+    },
+    "lammps_slurry/src/slurry_rheology_diagnostics.h": {
+      "sha256": "ad3c5933d02dcb9160997745c33fd2231baa11322312156fc7ade76955dd639c",
+      "base_sha256": null
+    },
+    "lammps_slurry/tests/test_rheology_diagnostics.cpp": {
+      "sha256": "322047c3ee7727369e5fe2b07251c5001bc510a58f2db9cb5fa90b7f7bd7a118",
+      "base_sha256": null
+    },
+    "lammps_slurry/tools/prepare_bridge.py": {
+      "sha256": "cad591ee762274e9415db9c85123ca44913ee4246b40fdb48978daf04582bccc",
+      "base_sha256": "bf0f5af8bd91c88f6cbc2443f9f986d21bd65cde6cd36f785e1d020d541f45d6"
+    },
+    "release.json": {
+      "sha256": "f6d4c780f3a9bb79ef3875fac7303e1a087b9084855e8579e6ab06ad17bf40a9",
+      "base_sha256": "f67479137a20e84dc8c166b4e59dd49facdb67b75dac125464b43d1097e6e89f"
+    },
+    "docs/RHEOLOGY_DIAGNOSTICS.md": {
+      "sha256": "30ec0a38d3e1f9d5ab2d71ef923b7c1bdb74d7f043f0a6bdb8b72ec09d6d5861",
+      "base_sha256": null
+    }
+  }
+}
