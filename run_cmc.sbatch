@@ -7,20 +7,20 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --hint=nomultithread
 #SBATCH --mem=4G
-#SBATCH --time=7-00:00:00
+#SBATCH --time=14-00:00:00
 #SBATCH --output=/scratch/negishi/lee6456/cmc_%j.out
 
 # Edit this section, then submit from the slurry repository: sbatch run_cmc.sbatch
 # Exactly one simulation is launched. No command-line parameters are needed.
-CMC_TOTAL=4  # g/L of liquid, 90k CMC; supported range 0--16
+CMC_TOTAL=16  # g/L of liquid, 90k CMC; supported range 0--16
 # Only medium viscosity is computed from CMC. Both attraction inputs stay manual.
 PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
 AR=4
 PHI=0.24
-COUNT=1000
-STEPS=500000000  # strain 50 at 0.1/s and dt=1e-6; 500 s of physical time
-OUTPUT_INTERVAL=400
-TIMESTEP=1e-6  # s; nominal IMEX timestep
+COUNT=500
+STEPS=500000  # strain 50 at 0.1/s and dt=1e-6; 500 s of physical time
+OUTPUT_INTERVAL=500
+TIMESTEP=1.0e-6  # s; nominal IMEX timestep
 AVERAGE_START_STRAIN=5
 # Recover Newton failures and excessive overlap at the same dt first.
 # If those recovery attempts fail, the existing limited dt subdivision remains.
@@ -31,7 +31,7 @@ SIZE_DISTRIBUTION=bidisperse
 LUBRICATION_EPSILON=0.001             # additive gap epsilon*(D/2) = 4 nm at D=8 um
 DENSITY=2400
 # VISCOSITY is calculated from free CMC using ACS Nano Fig. 2(c).
-SHEAR_RATE=0.1
+SHEAR_RATE=100
 FRICTION=10
 NORMAL_STIFFNESS=900  # N/m; initial and minimum normal stiffness
 TANGENTIAL_STIFFNESS=300  # N/m

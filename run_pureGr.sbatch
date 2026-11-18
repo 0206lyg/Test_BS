@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --hint=nomultithread
 #SBATCH --mem=4G
-#SBATCH --time=7-00:00:00
+#SBATCH --time=14-00:00:00
 #SBATCH --output=/scratch/negishi/lee6456/pG_%j.out
 
 # Edit this section, then submit from the slurry repository: sbatch run_pureGr.sbatch
@@ -15,10 +15,10 @@
 PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
 AR=4
 PHI=0.24
-COUNT=1000
+COUNT=500
 STEPS=500000  # target strain = shear_rate * timestep * steps = 50
-OUTPUT_INTERVAL=400
-TIMESTEP=1e-6  # s; nominal IMEX timestep
+OUTPUT_INTERVAL=500
+TIMESTEP=1.0e-6  # s; nominal IMEX timestep
 AVERAGE_START_STRAIN=5
 # Recover Newton failures and excessive overlap at the same dt first.
 # If those recovery attempts fail, the existing limited dt subdivision remains.

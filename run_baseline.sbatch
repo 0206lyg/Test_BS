@@ -4,18 +4,18 @@
 #SBATCH --partition=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=1
 #SBATCH --hint=nomultithread
-#SBATCH --mem=4G
-#SBATCH --time=7-00:00:00
+#SBATCH --mem=2G
+#SBATCH --time=14-00:00:00
 #SBATCH --output=/scratch/negishi/lee6456/bl_%j.out
 
 # Edit this section, then submit from the slurry repository: sbatch run_baseline.sbatch
 # Baseline: contact friction + lubrication, using the practical numerical solver.
 # Exactly one simulation is launched. No command-line parameters are needed.
 PARTICLE_SHAPE=spheroid               # this contact-overlap model supports spheroids
-AR=5                                 # supported range: 1 through 5
-PHI=0.34
+AR=4                                # supported range: 1 through 5
+PHI=0.24
 COUNT=500
 STEPS=500000
 OUTPUT_INTERVAL=500
@@ -31,10 +31,10 @@ LUBRICATION_EPSILON=0.001             # additive gap epsilon*(D/2) = 4 nm at D=8
 DENSITY=2400
 VISCOSITY=0.01
 SHEAR_RATE=100
-FRICTION=10                          # strong-friction trial; saturation must be checked
+FRICTION=0.1                          # strong-friction trial; saturation must be checked
 NORMAL_STIFFNESS=100  # N/m; initial and minimum normal stiffness
 TANGENTIAL_STIFFNESS=100  # N/m
-ROLLING_FRICTION=10                  # strong-friction trial; not a measured graphite value
+ROLLING_FRICTION=0.1                  # strong-friction trial; not a measured graphite value
 ROLLING_STIFFNESS=100  # N/m
 
 # Normal-stiffness control is always enabled for overlap management.

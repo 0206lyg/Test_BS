@@ -7,25 +7,25 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --hint=nomultithread
 #SBATCH --mem=4G
-#SBATCH --time=7-00:00:00
+#SBATCH --time=14-00:00:00
 #SBATCH --output=restart_%j.out
 
 # Edit these settings, then submit from the built repository: sbatch run_restart.sbatch
 # One entry point for bl, pG, and cmc. The original in.bridge supplies all
 # remaining force, solver, output, and averaging settings without regeneration.
-SOURCE_RUN="/scratch/negishi/lee6456/pG/pG_cw0.0212_n500_sr100_45690406"
+SOURCE_RUN="/scratch/negishi/lee6456/cmc_c12/cmc_c12_cw0.0000_h7.5_n500_sr100_45929568"
 NEW_SHEAR_RATE=10
 NEW_TIMESTEP=2.5e-6
 NEW_STEPS=1000000
-RESULTS_ROOT="/scratch/negishi/lee6456/pG"
+RESULTS_ROOT="/scratch/negishi/lee6456/cmc_c12"
 
 # N/m. Empty means inherit the value in the source run's in.bridge.
 # Example: for a 100 -> 10 /s test with old kn=kt=kr=100, set all three to 10.
 # No automatic shear-rate scaling is applied. The existing kn_adapt settings
 # remain unchanged; NEW_NORMAL_STIFFNESS sets its initial/minimum stiffness.
-NEW_NORMAL_STIFFNESS=""
-NEW_TANGENTIAL_STIFFNESS=""
-NEW_ROLLING_STIFFNESS=""
+NEW_NORMAL_STIFFNESS="450"
+NEW_TANGENTIAL_STIFFNESS="150"
+NEW_ROLLING_STIFFNESS="150"
 
 # final.data retains positions, orientations, particle properties and box tilt.
 # This is a configuration restart: contact springs, adaptive-kn state and solver
