@@ -75,6 +75,60 @@ struct History {
 };
 gr::Vec3 arr(const V3 &x) { return {x[0], x[1], x[2]}; }
 V3 vec(const gr::Vec3 &x) { return {x[0], x[1], x[2]}; }
+
+// Owned only by the writer rank when requested. A near-field solve at step n
+// prepares contact loads and positions for n+1; do not publish until committed.
+struct ContactNetworkOutput {
+  struct Edge {
+    tagint i, j;
+    V3 branch_m;
+    double force_N;
+  };
+  double stride = 2., last_period = 0.;
+  bigint pending_step = -1;
+  double pending_period = 0.;
+  std::vector<Edge> edges;
+  std::ofstream csv;
+
+  double period(double strain) const {
+    const double ratio = strain / stride;
+    // A target that lands on the dump grid can be a few ULPs below an integer.
+    return std::floor(ratio + 8. * std::numeric_limits<double>::epsilon() * std::max(1., ratio));
+  }
+
+  void capture(bigint step_index, double sample_period, const std::vector<Record>& particles,
+               const bs::Problem& problem, const bs::Result& solution,
+               const std::vector<gr::Body>& bodies, const M3& lattice,
+               const std::vector<im::ImageIndex>& images, double length, double force_scale) {
+    pending_step = step_index;
+    pending_period = sample_period;
+    edges.clear();
+    for (std::size_t k = 0; k < problem.contacts.size(); ++k) {
+      const auto& response = solution.contacts[k];
+      if (!response.active) continue;
+      const auto& c = problem.contacts[k];
+      const V3 branch_m = length * (vec(bodies[c.j].position) - vec(bodies[c.i].position)
+                                  + lattice * images[k].cast<double>());
+      edges.push_back({particles[c.i].tag, particles[c.j].tag, branch_m,
+                       force_scale * response.traction.norm()});
+    }
+  }
+
+  bool write_committed(bigint step_index, double time, double strain) {
+    if (step_index != pending_step) return true;
+    if (edges.empty())
+      csv << step_index << ',' << time << ',' << strain << ",,,,,,\n";
+    for (const auto& edge : edges) {
+      csv << step_index << ',' << time << ',' << strain << ',' << edge.i << ',' << edge.j
+          << ',' << edge.branch_m.x() << ',' << edge.branch_m.y() << ',' << edge.branch_m.z()
+          << ',' << edge.force_N << '\n';
+    }
+    csv.flush();
+    last_period = pending_period;
+    pending_step = -1;
+    return csv.good();
+  }
+};
 void store_momentum(Atom *atom, AtomVecEllipsoid *avec, int i, const V3 &omega) {
   auto &b = avec->bonus[atom->ellipsoid[i]];
   double R[3][3], ob[3], lb[3], l[3];
@@ -125,6 +179,7 @@ struct FixSlurryBridge::Impl {
   double surface_linear=1e-10;
   double spectral = 2, spectral_tol = 1e-8, rtol = 1e-7, avg_start = 5;
   int maxit = 1200, interval = 100, nmax = 0;
+  std::unique_ptr<ContactNetworkOutput> network_output;
   std::ofstream csv;
   std::array<double, 75> diag{};
   std::array<double, 4> stress{};
@@ -344,6 +399,27 @@ FixSlurryBridge::FixSlurryBridge(LAMMPS *lmp, int narg, char **arg)
   if((p.surface_pc||p.surface_coupled)&&(!p.nearfield_mobility||!p.imex_contacts||
       !(p.surface_adaptive>0.)||!(p.cohesion_work>0.||p.background.hamaker>0.)))
     error->all(FLERR,"PC/coupled surface integration requires nearfield IMEX, surface forces and surface_adaptive > 0");
+  if (const char *setting = std::getenv("SLURRY_CONTACT_NETWORK")) {
+    if (std::strcmp(setting, "0") && std::strcmp(setting, "1"))
+      error->all(FLERR, "SLURRY_CONTACT_NETWORK must be 0 or 1");
+    if (!std::strcmp(setting, "1")) {
+      double stride = 2.;
+      if (const char *value = std::getenv("SLURRY_CONTACT_NETWORK_STRAIN_INTERVAL"))
+        stride = utils::numeric(FLERR, value, false, lmp);
+      if (!std::isfinite(stride) || stride <= 0.)
+        error->all(FLERR, "Contact network strain sampling requires a positive finite interval");
+      if (comm->me == 0) {
+        p.network_output.reset(new ContactNetworkOutput);
+        auto &output = *p.network_output;
+        output.stride = stride;
+        output.csv.open("contact_network.csv", std::ios::trunc);
+        output.csv << std::setprecision(17)
+                   << "step,time_s,strain,id_i,id_j,dx_m,dy_m,dz_m,F_contact_N\n";
+        if (!output.csv)
+          error->one(FLERR, "Cannot create contact_network.csv");
+      }
+    }
+  }
   if (!filename.empty() && comm->me == 0) {
     p.csv.open(filename, std::ios::trunc);
     if (!p.csv)
@@ -483,6 +559,9 @@ void FixSlurryBridge::initial_integrate(int) {
     b.quat[3] = q.z();
     store_momentum(atom, p.avec, i, w);
   }
+  if (p.network_output && p.network_output->pending_step == update->ntimestep &&
+      !p.network_output->write_committed(update->ntimestep, end, std::abs(p.shear) * end))
+    error->one(FLERR, "Cannot write contact_network.csv");
 }
 void FixSlurryBridge::solve_velocities() {
   auto &p = *p_;
@@ -516,6 +595,25 @@ void FixSlurryBridge::solve_velocities() {
   const char *phase = "initial validation";
   if (comm->me == 0)
     try {
+      bigint network_step = 0;
+      double network_strain = 0., network_period = 0.;
+      bool capture_network = false;
+      if (p.network_output) {
+        // The generated trajectory and history share p.interval. Sample the first
+        // common dump at or after each positive strain multiple.
+        auto &output = *p.network_output;
+        output.pending_step = -1;
+        network_step = update->ntimestep + (p.nearfield_mobility ? 1 : 0);
+        // Also prepare the last lookahead: a following "run ... pre no" can
+        // commit it without a new setup. A run 0 never commits that endpoint.
+        if (network_step > 0 && network_step % p.interval == 0) {
+          const double time = simulation_time() + (p.nearfield_mobility ? update->dt : 0.);
+          network_strain = std::abs(p.shear) * time;
+          // Without accumulated shear, take just the first committed dump.
+          network_period = p.shear == 0. ? 1. : output.period(network_strain);
+          capture_network = network_period > output.last_period;
+        }
+      }
       const double length = p.reference_radius, rate = std::max(std::abs(p.shear), 1.);
       for (const auto &r : records)
         for (double a : r.axes)
@@ -1433,6 +1531,15 @@ void FixSlurryBridge::solve_velocities() {
         adaptive_options.minimum_step=std::ldexp(dt,p.surface_practical?-6:-30);
         adaptive_options.maximum_attempts=p.surface_practical?128:20000;
         auto advanced=ad::advance(std::move(initial),dt,adaptive_options,attempt,accepted);
+        if (capture_network) {
+          // Only the final accepted substep has the geometry of the trajectory
+          // endpoint. The image displacement is invariant under wrapping/tilt flips.
+          const auto& data = *advanced.state.payload;
+          const auto& frame = *data.frame;
+          p.network_output->capture(network_step, network_period, records, frame.problem,
+              data.solved.solution, advanced.state.bodies, advanced.state.lattice,
+              frame.geometry.images, length, force_scale);
+        }
         p.suggested_surface_step=advanced.suggested_step;
         p.pending=std::move(advanced.state.history);p.warm=std::move(advanced.state.warm);p.have_warm=true;
         p.diag[0]=p.stress[3];p.diag[1]=p.shear?p.stress[3]/p.shear:std::numeric_limits<double>::quiet_NaN();
@@ -1784,6 +1891,17 @@ void FixSlurryBridge::solve_velocities() {
       p.diag[45] = endpoint_overlap_fraction;
       p.diag[46] = minimum_semiaxis * length;
       const double force_scale=p.eta*length*length*rate;
+      if (capture_network) {
+        // Backward Euler reports endpoint forces. The legacy Heun branch
+        // reports the instantaneous start forces on the current geometry.
+        const auto& centers = p.nearfield_mobility ? consistent.endpoint.bodies : bodies;
+        const auto& cell = p.nearfield_mobility ? consistent.endpoint.lattice : H;
+        p.network_output->capture(network_step, network_period, records, problem, result,
+                                  centers, cell, geometry.images, length, force_scale);
+        if (!p.nearfield_mobility &&
+            !p.network_output->write_committed(network_step, simulation_time(), network_strain))
+          throw std::runtime_error("Cannot write contact_network.csv");
+      }
       p.diag[47] = normal_cap_lag*force_scale;
       p.diag[48] = normal_cap_lag_sum/std::max({old_normal_sum,end_normal_sum,
                                               std::numeric_limits<double>::min()});

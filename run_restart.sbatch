@@ -27,6 +27,12 @@ NEW_NORMAL_STIFFNESS="450"
 NEW_TANGENTIAL_STIFFNESS="150"
 NEW_ROLLING_STIFFNESS="150"
 
+# Fig. 2(d) pair contact forces. Snapshots coincide with trajectory output.
+CONTACT_NETWORK=0                   # 0 = off, 1 = on
+CONTACT_NETWORK_STRAIN_INTERVAL=2    # accumulated strain between requested snapshots
+export SLURRY_CONTACT_NETWORK="$CONTACT_NETWORK"
+export SLURRY_CONTACT_NETWORK_STRAIN_INTERVAL="$CONTACT_NETWORK_STRAIN_INTERVAL"
+
 # final.data retains positions, orientations, particle properties and box tilt.
 # This is a configuration restart: contact springs, adaptive-kn state and solver
 # warm starts initialize anew. Only the explicitly supplied settings change.

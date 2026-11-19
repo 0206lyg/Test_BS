@@ -67,6 +67,12 @@ PREPARE_ONLY=0
 TRACE_SOLVER=0
 IMEX_MAX_ITERATIONS=100  # Newton updates per solve; same-dt ADMM recovery is additional
 export SLURRY_IMEX_MAX_ITERATIONS="$IMEX_MAX_ITERATIONS"
+# Fig. 2(d) pair contact forces. Snapshots coincide with trajectory output.
+CONTACT_NETWORK=0                   # 0 = off, 1 = on
+CONTACT_NETWORK_STRAIN_INTERVAL=2    # accumulated strain between requested snapshots
+export SLURRY_CONTACT_NETWORK="$CONTACT_NETWORK"
+export SLURRY_CONTACT_NETWORK_STRAIN_INTERVAL="$CONTACT_NETWORK_STRAIN_INTERVAL"
+
 # End of run settings. Resource requests are the #SBATCH lines above.
 
 set -Eeuo pipefail
